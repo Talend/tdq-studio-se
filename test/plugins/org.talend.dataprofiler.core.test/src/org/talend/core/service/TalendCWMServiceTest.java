@@ -12,16 +12,21 @@
 // ============================================================================
 package org.talend.core.service;
 
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.model.context.JobContextManager;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.properties.ContextItem;
@@ -36,6 +41,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils;
+import org.talend.repository.ProjectManager;
 
 /**
  * created by talend on Oct 9, 2012 Detailled comment
@@ -46,6 +52,10 @@ public class TalendCWMServiceTest {
 
     ProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
 
+    private static Project currentProject;
+
+    final static String dqTestProjectName = "testForSoftWareTDQ"; //$NON-NLS-1$
+
     /**
      * DOC talend Comment method "setUp".
      * 
@@ -53,7 +63,7 @@ public class TalendCWMServiceTest {
      */
     @Before
     public void setUp() throws Exception {
-        UnitTestBuildHelper.initProjectStructure("testForSoftWareTDQ"); //$NON-NLS-1$
+        UnitTestBuildHelper.initProjectStructure(dqTestProjectName);
     }
 
     /**
@@ -63,6 +73,26 @@ public class TalendCWMServiceTest {
      */
     @After
     public void tearDown() throws Exception {
+        //
+    }
+
+    @BeforeClass
+    public static void recordCurrentProject() {
+        currentProject = ProjectManager.getInstance().getCurrentProject();
+    }
+
+    @AfterClass
+    public static void BackToCurrentProject() throws Exception {
+        if (currentProject != null) {
+            ProxyRepositoryFactory.getInstance().logOffProject();
+            ProxyRepositoryFactory.getInstance().logOnProject(currentProject, null);
+        }
+
+        // clean test project
+        IProject testProject = ResourcesPlugin.getWorkspace().getRoot().getProject(dqTestProjectName.toUpperCase());
+        if (testProject.exists()) {
+            testProject.delete(true, null);
+        }
     }
 
     @Test

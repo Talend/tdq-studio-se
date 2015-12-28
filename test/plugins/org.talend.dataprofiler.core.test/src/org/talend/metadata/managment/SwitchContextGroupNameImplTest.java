@@ -12,7 +12,8 @@
 // ============================================================================
 package org.talend.metadata.managment;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +21,14 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.junit.AfterClass;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.utils.VersionUtils;
@@ -31,6 +36,7 @@ import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.context.JobContextManager;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -51,6 +57,7 @@ import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
 import org.talend.metadata.managment.ui.utils.ConnectionContextHelper;
 import org.talend.metadata.managment.ui.utils.DBConnectionContextUtils;
 import org.talend.metadata.managment.ui.utils.SwitchContextGroupNameImpl;
+import org.talend.repository.ProjectManager;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
@@ -59,6 +66,8 @@ import orgomg.cwm.resource.relational.Schema;
  * 
  */
 public class SwitchContextGroupNameImplTest {
+
+    final static String dqTestProjectName = "testForContextGroupTDQ"; //$NON-NLS-1$
 
     DatabaseConnectionItem createDatabaseConnectionItem = null;
 
@@ -94,6 +103,8 @@ public class SwitchContextGroupNameImplTest {
 
     String contextSchemaName = ContextParameterUtils.JAVA_NEW_CONTEXT_PREFIX + paramNameSchema;
 
+    private static Project currentProject;
+
     /**
      * DOC talend Comment method "setUp".
      * 
@@ -101,9 +112,27 @@ public class SwitchContextGroupNameImplTest {
      */
     @Before
     public void setUp() throws Exception {
-        UnitTestBuildHelper.initProjectStructure("testForContextGroupTDQ"); //$NON-NLS-1$
+        UnitTestBuildHelper.initProjectStructure(dqTestProjectName); //$NON-NLS-1$
         createContextItem("contentName" + index++); //$NON-NLS-1$
         Connectionlabel = ConnectionContextHelper.convertContextLabel(connectionName);
+    }
+
+    @BeforeClass
+    public static void recordCurrentProject() {
+        currentProject = ProjectManager.getInstance().getCurrentProject();
+    }
+
+    @AfterClass
+    public static void BackToCurrentProject() throws Exception {
+        if (currentProject != null) {
+            ProxyRepositoryFactory.getInstance().logOffProject();
+            ProxyRepositoryFactory.getInstance().logOnProject(currentProject, null);
+        }
+        // clean test project
+        IProject testProject = ResourcesPlugin.getWorkspace().getRoot().getProject(dqTestProjectName.toUpperCase());
+        if (testProject.exists()) {
+            testProject.delete(true, null);
+        }
     }
 
     /**
