@@ -79,6 +79,29 @@
        class = "org.talend.dataquality.domain.sql.SQLPackage"
        genModel = "model/dataquality.genmodel" /> 
   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dataquality -->
+      <package
+            uri="http://dataquality.rules"
+            class="org.talend.dataquality.rules.RulesPackage"
+            genModel="model/dataquality.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dataquality -->
+      <package
+            uri="http://dataquality.properties"
+            class="org.talend.dataquality.properties.PropertiesPackage"
+            genModel="model/dataquality.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated dataquality -->
+      <parser
+            type="properties"
+            class="org.talend.dataquality.properties.util.PropertiesResourceFactoryImpl"/>
+   </extension>
    <extension
          point="org.eclipse.emf.ecore.extension_parser">
       <parser
@@ -109,6 +132,29 @@
             genModel="model/dataquality.genmodel"
             uri="http://dataquality.indicators.definition.userdefine">
       </package>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dataquality -->
+      <package
+            uri="http://dataquality.indicators.sql"
+            class="org.talend.dataquality.indicators.sql.IndicatorSqlPackage"
+            genModel="model/dataquality.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated dataquality -->
+      <package
+            uri="http://dataquality.indicators.columnset"
+            class="org.talend.dataquality.indicators.columnset.ColumnsetPackage"
+            genModel="model/dataquality.genmodel"/>
+   </extension>
+   <extension
+         point="org.talend.core.runtime.service">
+      <Service
+            class="org.talend.dataquality.Service1"
+            serviceId="org.talend.dataquality.Service1">
+      </Service>
    </extension>
 
 </plugin>
