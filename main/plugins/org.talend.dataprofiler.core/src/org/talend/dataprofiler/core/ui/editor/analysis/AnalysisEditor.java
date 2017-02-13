@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -472,13 +471,8 @@ public class AnalysisEditor extends SupportContextEditor {
 
             @Override
             public boolean handle(Object data) {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    public void run() {
-                        WorkbenchUtils.refreshCurrentAnalysisEditor(getMasterPage().getCurrentModelElement().getName());
-                    }
-
-                });
+                // TDQ-13275 remove 'Display.getDefault().asyncExec' to avoid error with Multi-thread open editors.
+                WorkbenchUtils.refreshCurrentAnalysisEditor(getMasterPage().getCurrentModelElement().getName());
 
                 return true;
             }
