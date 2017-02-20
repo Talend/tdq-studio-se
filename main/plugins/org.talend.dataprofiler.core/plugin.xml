@@ -1897,6 +1897,12 @@
        <handler
              class="org.talend.dataprofiler.core.ui.handlers.ImportItemHandler"
              commandId="org.talend.dataprofiler.core.importItem">
+          <activeWhen>
+             <systemTest
+                   property="ReadOnlyUser"
+                   value="false">
+             </systemTest>
+          </activeWhen>
        </handler>
     </extension>
     <extension

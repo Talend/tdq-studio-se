@@ -600,6 +600,8 @@ public class CorePlugin extends AbstractUIPlugin {
                         }
                     }
                     CWMPlugin.getDefault().createLibFolderIfNotExist();
+                    // TDQ-11348 the readOnlyUser property is false for TOP.
+                    System.getProperties().put("ReadOnlyUser", new Boolean(false).toString()); //$NON-NLS-1$
                 }
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);
