@@ -140,7 +140,7 @@ public class TextParametersWithoutOptionsForm extends AbstractIndicatorForm {
         }
 
         if (!CheckValueUtils.isNumberOfShownValue(numberTxt.getText())) {
-            updateStatus(IStatus.ERROR, MSG_ONLY_NUMBER);
+            updateStatus(IStatus.ERROR, MSG_ONLY_POSITIVE_NUMBER);
             return false;
         }
 

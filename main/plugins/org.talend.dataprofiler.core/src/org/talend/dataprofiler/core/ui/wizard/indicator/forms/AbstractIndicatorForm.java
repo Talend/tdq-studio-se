@@ -30,6 +30,8 @@ public abstract class AbstractIndicatorForm extends AbstractForm {
 
     public static final String MSG_ONLY_NUMBER = UIMessages.MSG_ONLY_NUMBER;
 
+    public static final String MSG_ONLY_POSITIVE_NUMBER = UIMessages.MSG_ONLY_POSITIVE_NUMBER;
+
     public static final String MSG_ONLY_REAL_NUMBER = UIMessages.MSG_ONLY_REAL_NUMBER;
 
     public static final String MSG_ONLY_DATE = UIMessages.MSG_ONLY_DATE;

@@ -30,6 +30,8 @@ public final class UIMessages {
 
     public static final String MSG_ONLY_NUMBER = DefaultMessagesImpl.getString("UIMessages.numeric"); //$NON-NLS-1$
 
+    public static final String MSG_ONLY_POSITIVE_NUMBER = DefaultMessagesImpl.getString("UIMessages.positiveNumeric"); //$NON-NLS-1$
+
     public static final String MSG_ONLY_REAL_NUMBER = DefaultMessagesImpl.getString("UIMessages.realNumber"); //$NON-NLS-1$
 
     public static final String MSG_ONLY_DATE = DefaultMessagesImpl.getString("UIMessages.date"); //$NON-NLS-1$

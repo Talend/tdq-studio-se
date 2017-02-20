@@ -95,7 +95,7 @@ public class FreqBinsDesignerForm extends BinsDesignerForm {
         }
 
         if (!CheckValueUtils.isNumberOfShownValue(numberTxt.getText())) {
-            updateStatus(IStatus.ERROR, MSG_ONLY_NUMBER);
+            updateStatus(IStatus.ERROR, MSG_ONLY_POSITIVE_NUMBER);
             return false;
         }
 

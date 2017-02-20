@@ -188,10 +188,10 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
         }
 
         if (!CheckValueUtils.isNumberOfShownValue(frequenceText.getText())) {
-            IndicatorSettingsPage.this.setErrorMessage(UIMessages.MSG_ONLY_NUMBER);
+            IndicatorSettingsPage.this.setErrorMessage(UIMessages.MSG_ONLY_POSITIVE_NUMBER);
             IndicatorSettingsPage.this.setValid(false);
             IndicatorSettingsPage.this.updateApplyButton();
-            errorMessageMap.put(frequenceText, UIMessages.MSG_ONLY_NUMBER);
+            errorMessageMap.put(frequenceText, UIMessages.MSG_ONLY_POSITIVE_NUMBER);
             analysisApplyButton.setEnabled(false);
             return false;
         }
