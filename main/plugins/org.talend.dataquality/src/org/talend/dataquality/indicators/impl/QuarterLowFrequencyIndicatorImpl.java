@@ -30,6 +30,7 @@ public class QuarterLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected QuarterLowFrequencyIndicatorImpl() {
@@ -38,6 +39,7 @@ public class QuarterLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -47,7 +49,7 @@ public class QuarterLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl 
 
     @Override
     public IndicatorParameters getParameters() {
-        parameters = super.getParameters();
+        IndicatorParameters parameters = super.getParameters();
         if (parameters == null) {
             parameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
         }
@@ -57,6 +59,7 @@ public class QuarterLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl 
         }
         dateParameters.setDateAggregationType(DateGrain.QUARTER);
         parameters.setDateParameters(dateParameters);
+        this.setParameters(parameters);
         return parameters;
     }
 

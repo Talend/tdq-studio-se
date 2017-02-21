@@ -28,6 +28,7 @@ public class MonthFrequencyIndicatorImpl extends FrequencyIndicatorImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected MonthFrequencyIndicatorImpl() {
@@ -36,6 +37,7 @@ public class MonthFrequencyIndicatorImpl extends FrequencyIndicatorImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -45,7 +47,7 @@ public class MonthFrequencyIndicatorImpl extends FrequencyIndicatorImpl implemen
 
     @Override
     public IndicatorParameters getParameters() {
-        parameters = super.getParameters();
+        IndicatorParameters parameters = super.getParameters();
         if (parameters == null) {
             parameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
         }
@@ -55,6 +57,7 @@ public class MonthFrequencyIndicatorImpl extends FrequencyIndicatorImpl implemen
         }
         dateParameters.setDateAggregationType(DateGrain.MONTH);
         parameters.setDateParameters(dateParameters);
+        this.setParameters(parameters);
         return parameters;
     }
 

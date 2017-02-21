@@ -28,6 +28,7 @@ public class YearLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected YearLowFrequencyIndicatorImpl() {
@@ -36,6 +37,7 @@ public class YearLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -45,7 +47,7 @@ public class YearLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
 
     @Override
     public IndicatorParameters getParameters() {
-        parameters = super.getParameters();
+        IndicatorParameters parameters = super.getParameters();
         if (parameters == null) {
             parameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
         }
@@ -55,6 +57,7 @@ public class YearLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
         }
         dateParameters.setDateAggregationType(DateGrain.YEAR);
         parameters.setDateParameters(dateParameters);
+        this.setParameters(parameters);
         return parameters;
     }
 

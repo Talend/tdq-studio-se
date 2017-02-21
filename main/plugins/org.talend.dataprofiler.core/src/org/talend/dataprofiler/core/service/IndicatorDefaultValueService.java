@@ -44,4 +44,24 @@ public class IndicatorDefaultValueService implements IIndicatorDefaultValueServi
         return defaultValue == 0 ? IndicatorsFactoryImpl.eINSTANCE.createIndicatorParameters().getTopN() : defaultValue;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.dataquality.service.IIndicatorDefaultValueService#setLowFrequencyLimitResult(int)
+     */
+    public void setLowFrequencyLimitResult(int limit) {
+        CorePlugin.getDefault().getPreferenceStore().setValue(IndicatorSettingsPage.LOW_FREQUENCY_TABLE_RESULT_LIMIT_KEY, limit);
+
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.dataquality.service.IIndicatorDefaultValueService#setFrequencyLimitResult(int)
+     */
+    public void setFrequencyLimitResult(int limit) {
+        CorePlugin.getDefault().getPreferenceStore().setValue(IndicatorSettingsPage.FREQUENCY_TABLE_RESULT_LIMIT_KEY, limit);
+
+    }
+
 }

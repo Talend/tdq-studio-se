@@ -33,6 +33,7 @@ public class WeekFrequencyIndicatorImpl extends FrequencyIndicatorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected WeekFrequencyIndicatorImpl() {
@@ -41,6 +42,7 @@ public class WeekFrequencyIndicatorImpl extends FrequencyIndicatorImpl implement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -50,7 +52,7 @@ public class WeekFrequencyIndicatorImpl extends FrequencyIndicatorImpl implement
 
     @Override
     public IndicatorParameters getParameters() {
-        parameters = super.getParameters();
+        IndicatorParameters parameters = super.getParameters();
         if (parameters == null) {
             parameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
         }
@@ -60,6 +62,7 @@ public class WeekFrequencyIndicatorImpl extends FrequencyIndicatorImpl implement
         }
         dateParameters.setDateAggregationType(DateGrain.WEEK);
         parameters.setDateParameters(dateParameters);
+        this.setParameters(parameters);
         return parameters;
     }
 

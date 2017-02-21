@@ -31,6 +31,7 @@ public class WeekLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected WeekLowFrequencyIndicatorImpl() {
@@ -39,6 +40,7 @@ public class WeekLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -48,7 +50,7 @@ public class WeekLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
 
     @Override
     public IndicatorParameters getParameters() {
-        parameters = super.getParameters();
+        IndicatorParameters parameters = super.getParameters();
         if (parameters == null) {
             parameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
         }
@@ -58,6 +60,7 @@ public class WeekLowFrequencyIndicatorImpl extends LowFrequencyIndicatorImpl imp
         }
         dateParameters.setDateAggregationType(DateGrain.WEEK);
         parameters.setDateParameters(dateParameters);
+        this.setParameters(parameters);
         return parameters;
     }
 

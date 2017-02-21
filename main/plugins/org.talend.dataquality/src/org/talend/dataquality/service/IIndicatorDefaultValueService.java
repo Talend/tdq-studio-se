@@ -20,4 +20,8 @@ public interface IIndicatorDefaultValueService {
     int getLowFrequencyLimitResult();
 
     int getFrequencyLimitResult();
+
+    void setLowFrequencyLimitResult(int limit);
+
+    void setFrequencyLimitResult(int limit);
 }
