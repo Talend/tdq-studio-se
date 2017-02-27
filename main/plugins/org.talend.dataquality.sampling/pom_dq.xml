@@ -9,7 +9,7 @@
      <distributionManagement>
         <repository>
             <id>talend_nexus_deployment</id>
-            <url>http://newbuild.talend.com:8081/nexus/content/repositories/snapshots</url>
+            <url>https://artifacts-zl.talend.com/nexus/content/repositories/snapshots</url>
         </repository>
     </distributionManagement>
     
