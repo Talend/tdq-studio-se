@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.ModifyEvent;
@@ -26,7 +25,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
@@ -201,15 +199,6 @@ public class MatchAndSurvivorKeySection extends AnaMatchSurvivorSection {
      */
     @Override
     protected void addNewMatchRule() {
-        if (matchRuleWithSurvMap.keySet() != null && matchRuleWithSurvMap.keySet().size() > 0) {
-            boolean isOk = MessageDialogWithToggle
-                    .openConfirm(
-                            PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            DefaultMessagesImpl.getString("AnaMatchSurvivorSection.Tswoosh"), DefaultMessagesImpl.getString("AnaMatchSurvivorSection.MultiRule")); //$NON-NLS-1$ //$NON-NLS-2$ 
-            if (!isOk) {
-                return;
-            }
-        }
         super.addNewMatchRule();
     }
 }
