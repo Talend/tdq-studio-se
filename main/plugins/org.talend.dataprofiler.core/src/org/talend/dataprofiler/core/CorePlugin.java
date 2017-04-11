@@ -550,9 +550,13 @@ public class CorePlugin extends AbstractUIPlugin {
                     new EMFUtil();
                     project = new Project(xmiResourceManager.loadProject(rootProject));
                 } else {
+                    String username = "talend@talend.com"; //$NON-NLS-1$
+                    String password = "talend@talend.com"; //$NON-NLS-1$
+
                     User user = PropertiesFactoryImpl.eINSTANCE.createUser();
-                    user.setLogin("talend@talend.com"); //$NON-NLS-1$
-                    user.setPassword("talend@talend.com".getBytes()); //$NON-NLS-1$
+                    user.setLogin(username);
+                    user.setPassword(password.getBytes());
+
                     String projectName = ResourceManager.getRootProjectName();
                     String projectDesc = ResourcesPlugin.getWorkspace().newProjectDescription(projectName).getComment();
                     Project projectInfor = ProjectHelper.createProject(projectName, projectDesc, ECodeLanguage.JAVA.getName(),
@@ -561,8 +565,7 @@ public class CorePlugin extends AbstractUIPlugin {
                     // MOD zshen create project by proxyRepository
                     checkFileName(projectInfor.getLabel(), RepositoryConstants.PROJECT_PATTERN);
 
-                    project = proxyRepository.getRepositoryFactoryFromProvider().createProject(projectInfor);
-
+                    project = proxyRepository.createProject(user, password, projectInfor);
                 }
 
                 if (project != null) {
