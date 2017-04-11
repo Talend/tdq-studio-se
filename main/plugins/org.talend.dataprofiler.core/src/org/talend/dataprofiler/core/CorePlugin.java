@@ -556,7 +556,6 @@ public class CorePlugin extends AbstractUIPlugin {
                     User user = PropertiesFactoryImpl.eINSTANCE.createUser();
                     user.setLogin(username);
                     user.setPassword(password.getBytes());
-
                     String projectName = ResourceManager.getRootProjectName();
                     String projectDesc = ResourcesPlugin.getWorkspace().newProjectDescription(projectName).getComment();
                     Project projectInfor = ProjectHelper.createProject(projectName, projectDesc, ECodeLanguage.JAVA.getName(),
@@ -565,7 +564,7 @@ public class CorePlugin extends AbstractUIPlugin {
                     // MOD zshen create project by proxyRepository
                     checkFileName(projectInfor.getLabel(), RepositoryConstants.PROJECT_PATTERN);
 
-                    project = proxyRepository.createProject(user, password, projectInfor);
+                    project = proxyRepository.getRepositoryFactoryFromProvider().createProject(user, password, projectInfor);
                 }
 
                 if (project != null) {
