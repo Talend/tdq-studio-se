@@ -1,5 +1,6 @@
 package org.talend.dataquality;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -9,12 +10,10 @@ public class DataQualityPlugin extends Plugin {
 
     private BundleContext bundleContext = null;
 
-    public DataQualityPlugin() {
-        super();
-        plugin = this;
-    }
-
     public static DataQualityPlugin getDefault() {
+        if (plugin == null && !Platform.isRunning()) {
+            plugin = new DataQualityPlugin();
+        }
         return plugin;
     }
 
@@ -26,7 +25,14 @@ public class DataQualityPlugin extends Plugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
         this.bundleContext = context;
+        plugin = this;
+    }
 
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        super.stop(context);
+        this.bundleContext = null;
+        plugin = null;
     }
 
 }
