@@ -37,8 +37,9 @@ public class IndicatorDefaultValueServiceUtil {
     }
 
     public IIndicatorDefaultValueService getIndicatorDVService() {
-        if (indicatorDV == null) {
-            BundleContext context = DataQualityPlugin.getDefault().getBundleContext();
+        DataQualityPlugin defaultDQPlugin = DataQualityPlugin.getDefault();
+        if (indicatorDV == null && defaultDQPlugin != null) {
+            BundleContext context = defaultDQPlugin.getBundleContext();
             if (context != null) {
                 ServiceReference serviceReference = context.getServiceReference(IIndicatorDefaultValueService.class.getName());
                 if (serviceReference != null) {

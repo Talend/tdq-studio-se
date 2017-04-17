@@ -5,6 +5,7 @@
  */
 package org.talend.dataquality.indicators.impl;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
@@ -620,10 +621,13 @@ public class IndicatorParametersImpl extends EObjectImpl implements IndicatorPar
     protected void eBasicSetContainer(InternalEObject newContainer, int newContainerFeatureID) {
         super.eBasicSetContainer(newContainer, newContainerFeatureID);
         if (this.hasSet == false && newContainer instanceof FrequencyIndicator) {
-            if (newContainer instanceof LowFrequencyIndicator) {
-                this.setTopN(IndicatorDefaultValueServiceUtil.getIstance().getIndicatorDVService().getLowFrequencyLimitResult());
-            } else {
-                this.setTopN(IndicatorDefaultValueServiceUtil.getIstance().getIndicatorDVService().getFrequencyLimitResult());
+            if (Platform.isRunning()) {
+                if (newContainer instanceof LowFrequencyIndicator) {
+                    this.setTopN(IndicatorDefaultValueServiceUtil.getIstance().getIndicatorDVService()
+                            .getLowFrequencyLimitResult());
+                } else {
+                    this.setTopN(IndicatorDefaultValueServiceUtil.getIstance().getIndicatorDVService().getFrequencyLimitResult());
+                }
             }
         }
     }
