@@ -106,26 +106,6 @@ public final class PluginConstant {
 
     public static final String LANGUAGE_SELECTOR = "languageSelector"; //$NON-NLS-1$
 
-    public static final String UNIQUE_COUNT_ID = "_ccHq0RF2Ed2PKb6nEJEvhw";//$NON-NLS-1$
-
-    public static final String DISTINCT_COUNT_ID = "_ccHq0BF2Ed2PKb6nEJEvhw";//$NON-NLS-1$
-
-    public static final String BLANK_COUNT_ID = "_ccHq0xF2Ed2PKb6nEJEvhw";//$NON-NLS-1$
-
-    public static final String DEFAULT_VALUE_COUNT_ID = "_xnOs8O1MEd2L4a5zyMnylw";//$NON-NLS-1$
-
-    public static final String ROW_COUNT_ID = "_ccFOkBF2Ed2PKb6nEJEvhw";//$NON-NLS-1$
-
-    public static final String DUPLICATE_COUNT_ID = "_ccHq0hF2Ed2PKb6nEJEvhw";//$NON-NLS-1$
-
-    public static final String NULL_COUNT_ID = "_GrAeADh9Ed2XmO7pl5Yuyg";//$NON-NLS-1$
-
-    public static final String PATTERN_FREQUENCY_TABLE_ID = "_kQzTsJR-Ed2XO-JvLwVAwg";//$NON-NLS-1$
-
-    public static final String PATTERN_LOW_FREQUENCY_TABLE_ID = "_OCTbwJR_Ed2XO-JvLwVAwg";//$NON-NLS-1$
-
-    public static final String DATE_PATTERN_FREQUENCY_TABLE_ID = "_hraIkTE2EeGvsfvHpG2Eqg";//$NON-NLS-1$
-
     public static final String UNCATEGORIES = "uncategories";//$NON-NLS-1$
 
     public static final String SVN_SUFFIX = ".svn"; //$NON-NLS-1$
