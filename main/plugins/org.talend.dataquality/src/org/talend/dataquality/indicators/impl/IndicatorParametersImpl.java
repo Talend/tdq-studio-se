@@ -19,6 +19,7 @@ import org.talend.dataquality.indicators.IndicatorParameters;
 import org.talend.dataquality.indicators.IndicatorsPackage;
 import org.talend.dataquality.indicators.LowFrequencyIndicator;
 import org.talend.dataquality.indicators.TextParameters;
+import org.talend.dataquality.service.IIndicatorDefaultValueService;
 import org.talend.dataquality.service.IndicatorDefaultValueServiceUtil;
 
 /**
@@ -620,10 +621,17 @@ public class IndicatorParametersImpl extends EObjectImpl implements IndicatorPar
     protected void eBasicSetContainer(InternalEObject newContainer, int newContainerFeatureID) {
         super.eBasicSetContainer(newContainer, newContainerFeatureID);
         if (this.hasSet == false && newContainer instanceof FrequencyIndicator) {
-            if (newContainer instanceof LowFrequencyIndicator) {
-                this.setTopN(IndicatorDefaultValueServiceUtil.getIstance().getIndicatorDVService().getLowFrequencyLimitResult());
+            IIndicatorDefaultValueService indicatorDVService = IndicatorDefaultValueServiceUtil.getIstance()
+                    .getIndicatorDVService();
+            // TDQ-13485: when didn't have UI(for example tDqReportRun component etc.), the indicatorDVService is null
+            if (indicatorDVService == null) {
+                this.setTopN(IndicatorsFactoryImpl.eINSTANCE.createIndicatorParameters().getTopN());
             } else {
-                this.setTopN(IndicatorDefaultValueServiceUtil.getIstance().getIndicatorDVService().getFrequencyLimitResult());
+                if (newContainer instanceof LowFrequencyIndicator) {
+                    this.setTopN(indicatorDVService.getLowFrequencyLimitResult());
+                } else {
+                    this.setTopN(indicatorDVService.getFrequencyLimitResult());
+                }
             }
         }
     }
