@@ -29,9 +29,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
-import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.migration.impl.UpdateUDIIndicatorsWithNewModelTask;
 import org.talend.dataprofiler.core.ui.utils.UDIUtils;
 import org.talend.dataquality.helpers.IndicatorCategoryHelper;
@@ -139,10 +137,9 @@ public class IndicatorDuplicateHandle extends ModelElementDuplicateHandle {
 
     private void updateCategory(ModelElement duplicateModelElement, IndicatorDefinition definition) {
         IndicatorCategory category = null;
-        String indDefUuid = ResourceHelper.getUUID(duplicateModelElement);
-        if (PluginConstant.PATTERN_FREQUENCY_TABLE_ID.equals(indDefUuid)
-                || PluginConstant.DATE_PATTERN_FREQUENCY_TABLE_ID.equals(indDefUuid)
-                || PluginConstant.PATTERN_LOW_FREQUENCY_TABLE_ID.equals(indDefUuid)) {
+        // TDQ-13543: set all the frequency type indicator's category is UserDefinedFrequency
+        if (IndicatorCategoryHelper.isFrequencyCategory(IndicatorCategoryHelper
+                .getCategory((IndicatorDefinition) duplicateModelElement))) {
             category = DefinitionHandler.getInstance().getUserDefinedFrequencyIndicatorCategory();
         } else {
             category = DefinitionHandler.getInstance().getUserDefinedCountIndicatorCategory();

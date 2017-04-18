@@ -703,30 +703,31 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
 
             public void modifyText(ModifyEvent e) {
                 if (needConfirm) {
-                    boolean openQuestion = MessageDialogWithToggle.openQuestion(Display.getCurrent().getActiveShell(),
-                            DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.changeCategoryTitle"), //$NON-NLS-1$
-                            DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.changeCategory")); //$NON-NLS-1$
+                    // TDQ-13543: we always do change the category
+                    setDirty(true);
+                    category = DefinitionHandler.getInstance().getIndicatorCategoryByLabel(comboCategory.getText());
+                    updateIndicatorCategoryDetail();
 
-                    if (openQuestion) {
-                        setDirty(true);
-                        category = DefinitionHandler.getInstance().getIndicatorCategoryByLabel(comboCategory.getText());
-                        updateIndicatorCategoryDetail();
-                        // clear all the temp maps except the java type
-                        removeFromTempMapsExceptJava();
+                    if (dataBaseComp != null) {
+                        Control[] children = dataBaseComp.getChildren();
+                        // TDQ-13543: only when have definitions, confirm whether lost them
+                        if (children != null && children.length > 0) {
 
-                        if (dataBaseComp != null) {
-                            Control[] children = dataBaseComp.getChildren();
-                            for (Control con : children) {
-                                con.dispose();
+                            boolean openQuestion = MessageDialogWithToggle.openQuestion(Display.getCurrent().getActiveShell(),
+                                    DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.changeCategoryTitle"), //$NON-NLS-1$
+                                    DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.changeCategory")); //$NON-NLS-1$
+                            if (openQuestion) {
+                                // clear all the temp maps except the java type
+                                removeFromTempMapsExceptJava();
+
+                                for (Control con : children) {
+                                    con.dispose();
+                                }
+
+                                definitionSection.setExpanded(false);
+                                definitionSection.setExpanded(true);
                             }
-
                         }
-                        definitionSection.setExpanded(false);
-                        definitionSection.setExpanded(true);
-                    } else {
-                        needConfirm = false;
-                        comboCategory.setText(InternationalizationUtil.getCategoryInternationalizationLabel(category.getLabel()));
-                        needConfirm = true;
                     }
                 }
             }
