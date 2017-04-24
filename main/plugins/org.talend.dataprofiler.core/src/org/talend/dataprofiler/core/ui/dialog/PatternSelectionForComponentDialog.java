@@ -55,7 +55,7 @@ public class PatternSelectionForComponentDialog extends ElementTreeSelectionDial
                     analyzeNode.add((RepositoryNode) object);
                 } else if (object instanceof PatternRepNode) {
                     PatternRepNode patternNode = (PatternRepNode) object;
-                    if (hasJavaExpression(patternNode)) {
+                    if (includeJavaOrDefaultExpression(patternNode)) {
                         analyzeNode.add(patternNode);
                     }
                 }
@@ -71,10 +71,10 @@ public class PatternSelectionForComponentDialog extends ElementTreeSelectionDial
          * @param patternNode
          * @return
          */
-        private boolean hasJavaExpression(PatternRepNode patternNode) {
-            boolean has = false;
+        private boolean includeJavaOrDefaultExpression(PatternRepNode patternNode) {
+            boolean result = false;
             if (patternNode == null) {
-                return has;
+                return result;
             }
             EList<PatternComponent> sqlGenericExpression = patternNode.getPattern().getComponents();
             for (PatternComponent sqlExp : sqlGenericExpression) {
@@ -82,12 +82,12 @@ public class PatternSelectionForComponentDialog extends ElementTreeSelectionDial
                     String language = ((RegularExpression) sqlExp).getExpression().getLanguage();
                     if (DbmsLanguage.SQL.equalsIgnoreCase(language)
                             || PatternLanguageType.JAVA.getLiteral().equals(language)) {
-                        has = true;
+                        result = true;
                         break;
                     }
                 }
             }
-            return has;
+            return result;
         }
 
 
