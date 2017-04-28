@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.ui.PartInitException;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.talend.commons.exception.BusinessException;
@@ -68,6 +69,7 @@ public class WorkbenchUtilsTest {
      * {@link org.talend.dataprofiler.core.ui.utils.WorkbenchUtils#impactExistingAnalyses(orgomg.cwm.foundation.softwaredeployment.DataProvider)}
      * .
      */
+    @Ignore
     @Test
     public void testImpactExistingAnalyses_1() {
         // DatabaseConnection mock_data = mock(DatabaseConnection.class);
@@ -97,6 +99,7 @@ public class WorkbenchUtilsTest {
      * .
      */
     // when getClientDependency return null
+    @Ignore
     @Test
     public void testImpactExistingAnalyses_2() {
         // DatabaseConnection mock_data = mock(DatabaseConnection.class);

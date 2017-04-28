@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.talend.dataprofiler.ecos.test
 Bundle-SymbolicName: org.talend.dataprofiler.ecos.test
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Fragment-Host: org.talend.dataprofiler.ecos
 Bundle-ClassPath: .

@@ -12,9 +12,13 @@
 // ============================================================================
 package org.talend.dataprofiler.rcp;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -24,18 +28,27 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.LoginException;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.exception.SystemException;
+import org.talend.commons.utils.workbench.resources.ResourceUtils;
 import org.talend.core.ICoreService;
 import org.talend.core.model.general.LibraryInfo;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.ColumnNameChanged;
 import org.talend.core.model.metadata.IMetadataTable;
+import org.talend.core.model.metadata.MetadataTalendType;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
+import org.talend.repository.ProjectManager;
+import org.talend.repository.RepositoryWorkUnit;
+import org.talend.utils.io.FilesUtils;
 
 /**
  * 
@@ -463,6 +476,27 @@ public class TopService implements ICoreService {
 
     @Override
     public void syncMappingsFileFromSystemToProject() {
-        throw new UnsupportedOperationException();
+        RepositoryWorkUnit workUnit = new RepositoryWorkUnit("Sync mapping files from system to project") { //$NON-NLS-1$
+
+            @Override
+            protected void run() throws LoginException, PersistenceException {
+                try {
+                    File sysMappingfolder = new File(MetadataTalendType.getSystemForderURLOfMappingsFile().getPath());
+                    IFolder projectMappingFolder = ResourceUtils.getProject(ProjectManager.getInstance().getCurrentProject())
+                            .getFolder(MetadataTalendType.PROJECT_MAPPING_FOLDER);
+                    if (!projectMappingFolder.exists()) {
+                        projectMappingFolder.create(true, true, null);
+                    }
+                    for (File in : sysMappingfolder.listFiles()) {
+                        IFile out = projectMappingFolder.getFile(in.getName());
+                        FilesUtils.copyFile(in, out.getLocation().toFile());
+                    }
+                } catch (SystemException | CoreException | IOException e) {
+                    ExceptionHandler.process(e);
+                }
+            }
+        };
+        workUnit.setAvoidUnloadResources(true);
+        ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
 }

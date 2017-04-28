@@ -88,7 +88,6 @@ import org.talend.dataquality.indicators.sql.UserDefIndicator;
 import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.dq.helper.RepositoryNodeHelper;
-import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.SysIndicatorDefinitionRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.utils.sugars.TypedReturnCode;
@@ -866,7 +865,7 @@ public class AnalysisColumnTreeViewer extends AbstractColumnDropTree {
      * 
      * @return the analysis
      */
-    public AnalysisRepNode getAnalysisNode() {
+    public IRepositoryNode getAnalysisNode() {
         return this.masterPage.getCurrentRepNode();
     }
 
@@ -953,7 +952,7 @@ public class AnalysisColumnTreeViewer extends AbstractColumnDropTree {
          * @see org.talend.dataprofiler.core.ui.editor.composite.ModelElementTreeMenuProvider#getAnalysis2()
          */
         @Override
-        protected AnalysisRepNode getAnalysis2() {
+        protected IRepositoryNode getAnalysis2() {
             return getAnalysisNode();
         }
 

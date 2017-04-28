@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: TOP Chart plugin
 Bundle-SymbolicName: org.talend.dataprofiler.top.chart;singleton:=true
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Activator: org.talend.dataprofiler.chart.TOPChartPlugin
 Require-Bundle: org.apache.log4j,
  org.eclipse.ui,

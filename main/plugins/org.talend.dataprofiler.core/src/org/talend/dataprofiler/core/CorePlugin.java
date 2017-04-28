@@ -542,7 +542,7 @@ public class CorePlugin extends AbstractUIPlugin {
                 proxyRepository.checkAvailability();
                 proxyRepository.initialize();
 
-                XmiResourceManager xmiResourceManager = new XmiResourceManager();
+                XmiResourceManager xmiResourceManager = proxyRepository.getRepositoryFactoryFromProvider().getResourceManager();
                 IProject rootProject = ResourceManager.getRootProject();
 
                 if (rootProject.getFile(FileConstants.LOCAL_PROJECT_FILENAME).exists()) {
@@ -600,6 +600,8 @@ public class CorePlugin extends AbstractUIPlugin {
                         }
                     }
                     CWMPlugin.getDefault().createLibFolderIfNotExist();
+                    // TDQ-11348 the readOnlyUser property is false for TOP.
+                    System.getProperties().put("ReadOnlyUser", new Boolean(false).toString()); //$NON-NLS-1$
                 }
             } catch (PersistenceException e) {
                 ExceptionHandler.process(e);

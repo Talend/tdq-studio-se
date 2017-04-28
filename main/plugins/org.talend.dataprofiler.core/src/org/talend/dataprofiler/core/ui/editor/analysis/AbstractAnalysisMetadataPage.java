@@ -113,6 +113,7 @@ import org.talend.dq.helper.resourcehelper.AnaResourceFileHelper;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.DBConnectionRepNode;
 import org.talend.dq.nodes.DFConnectionRepNode;
+import org.talend.dq.nodes.ReportAnalysisRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
@@ -128,7 +129,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
 
     private static Logger log = Logger.getLogger(AbstractAnalysisMetadataPage.class);
 
-    protected AnalysisRepNode analysisRepNode;
+    protected IRepositoryNode analysisRepNode;
 
     protected Section analysisParamSection;
 
@@ -1673,8 +1674,8 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      * @see org.talend.dataprofiler.core.ui.editor.AbstractMetadataFormPage#getCurrentRepNode()
      */
     @Override
-    public AnalysisRepNode getCurrentRepNode() {
-        return this.analysisRepNode;
+    public IRepositoryNode getCurrentRepNode() {
+        return analysisRepNode;
     }
 
     /*
@@ -1684,7 +1685,10 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      */
     @Override
     public Analysis getCurrentModelElement() {
-        return analysisRepNode.getAnalysis();
+        if (analysisRepNode instanceof ReportAnalysisRepNode) {
+            return ((ReportAnalysisRepNode) analysisRepNode).getAnalysis();
+        }
+        return ((AnalysisRepNode) analysisRepNode).getAnalysis();
     }
 
     /*
@@ -1704,7 +1708,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      * @param editorInput
      * @return
      */
-    private AnalysisRepNode getAnalysisRepNodeFromInput(IEditorInput editorInput) {
+    private IRepositoryNode getAnalysisRepNodeFromInput(IEditorInput editorInput) {
         if (editorInput instanceof FileEditorInput) {
             FileEditorInput fileEditorInput = (FileEditorInput) editorInput;
             IFile file = fileEditorInput.getFile();

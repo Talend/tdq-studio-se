@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.dataprofiler.core.service;
 
+import org.eclipse.core.runtime.IPath;
+import org.talend.commons.exception.PersistenceException;
+
 /**
  * 
  * DOC mzhao Svn repository service.
@@ -23,4 +26,8 @@ public abstract class AbstractSvnRepositoryService implements IService {
         return false;
     }
 
+    //Added TDQ-12180
+    public void addIfImportOverride(IPath desPath){
+        
+    }
 }

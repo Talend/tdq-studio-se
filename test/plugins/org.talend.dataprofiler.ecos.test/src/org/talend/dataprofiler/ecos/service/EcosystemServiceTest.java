@@ -16,6 +16,7 @@ import static org.junit.Assert.fail;
 
 import org.apache.commons.lang.StringUtils;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.dataprofiler.ecos.model.impl.Revision;
 
@@ -110,6 +111,7 @@ public class EcosystemServiceTest {
     /**
      * Test method for {@link org.talend.dataprofiler.ecos.service.EcosystemService#getVersionList()}.
      */
+    @Ignore
     @Test
     public void testGetVersionList() {
         // try {
@@ -128,6 +130,7 @@ public class EcosystemServiceTest {
      * Test method for
      * {@link org.talend.dataprofiler.ecos.service.EcosystemService#parseJsonObject(java.lang.String, java.lang.Class)}.
      */
+    @Ignore
     @Test
     public void testParseJsonObject() {
         // try {
@@ -147,6 +150,7 @@ public class EcosystemServiceTest {
     /**
      * Test method for {@link org.talend.dataprofiler.ecos.service.EcosystemService#sendGetRequest(java.lang.String)}.
      */
+    @Ignore
     @Test
     public void testSendGetRequest() {
         // try {
@@ -165,6 +169,7 @@ public class EcosystemServiceTest {
      * Test method for
      * {@link org.talend.dataprofiler.ecos.service.EcosystemService#sendPostRequest(java.lang.String, java.util.Map)}.
      */
+    @Ignore
     @Test
     public void testSendPostRequest() {
         // Map<String, String> parameter = new HashMap<String, String>();
@@ -238,6 +243,7 @@ public class EcosystemServiceTest {
     /**
      * Test method for {@link org.talend.dataprofiler.ecos.service.EcosystemService#getCategoryList(java.lang.String)}.
      */
+    @Ignore
     @Test
     public void testGetCategoryList() {
         // List<IEcosCategory> list;
@@ -259,6 +265,7 @@ public class EcosystemServiceTest {
      * Test method for
      * {@link org.talend.dataprofiler.ecos.service.EcosystemService#getRevisionList(java.lang.String, java.lang.String)} .
      */
+    @Ignore
     @Test
     public void testGetRevisionList() {
         // try {

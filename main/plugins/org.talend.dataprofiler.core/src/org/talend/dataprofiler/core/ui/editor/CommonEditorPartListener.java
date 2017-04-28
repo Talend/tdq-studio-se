@@ -103,11 +103,11 @@ public class CommonEditorPartListener extends PartListener {
         // MOD qiongli 2011-7-14 bug 22276,just unlock and commit for editable itme.
         if (ProxyRepositoryManager.getInstance().isReadOnly() || ProxyRepositoryManager.getInstance().isEditable(item)) {
             ProxyRepositoryManager.getInstance().unLock(item);
-            WorkspaceResourceHelper.refreshItem(item);
         } else {
             ProxyRepositoryManager.getInstance().refresh();
-            CorePlugin.getDefault().refreshDQView();
         }
+        // TDQ-11982: only refresh item instead of all view to avoid fold all in the view.
+        WorkspaceResourceHelper.refreshItem(item);
 
         super.partClosed(part);
     }

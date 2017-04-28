@@ -299,8 +299,7 @@ public final class IndicatorHelper {
     }
 
     /**
-     * Method "getIndicatorLeaves" returns the leaf indicators when the given indicator is a composite indicator or the
-     * given indicator.
+     * This method only be used when running analysis. it get RowCountIndicator from RowCountIndicatorsAdapter.
      * 
      * @param indicator the indicator
      * @return the leaf indicators
@@ -330,8 +329,8 @@ public final class IndicatorHelper {
     }
 
     /**
-     * Method "getIndicatorLeaves" returns the leaf indicators when the given indicator is a composite indicator or the
-     * given indicator.
+     * This method is used when not running analysis.returns the leaf indicators when the given indicator is a composite indicator
+     * or the given indicator.
      * 
      * @param indicator the indicator
      * @return the leaf indicators
@@ -354,7 +353,8 @@ public final class IndicatorHelper {
     }
 
     /**
-     * Method "getIndicatorLeaves".
+     * This method is used when not running analysis.returns the leaf indicators when the given indicator is a composite indicator
+     * or the given indicator.
      * 
      * @param result
      * @return all the leaf indicators
@@ -373,7 +373,7 @@ public final class IndicatorHelper {
     }
 
     /**
-     * Method "getIndicatorLeaves".
+     * This method only used when running analysis. it get RowCountIndicator from RowCountIndicatorsAdapter.
      * 
      * @param result
      * @return all the leaf indicators
@@ -405,7 +405,7 @@ public final class IndicatorHelper {
             EList<Indicator> indicators2 = result.getIndicators();
             if (indicators2 != null) {
                 for (Indicator indicator : indicators2) {
-                    List<Indicator> indicatorLeaves = getIndicatorLeaves(indicator);
+                    List<Indicator> indicatorLeaves = getIndicatorLeavesBySingleNode(indicator);
                     if (indicator instanceof CompositeIndicator) {
                         indicators.add(indicator);
                     }

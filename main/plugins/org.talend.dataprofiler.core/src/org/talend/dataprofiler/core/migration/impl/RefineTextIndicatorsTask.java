@@ -57,7 +57,7 @@ public class RefineTextIndicatorsTask extends AbstractWorksapceUpdateTask {
                     for (Indicator indicator : allIndics) {
                         if (indicator instanceof TextIndicator) {
                             textIndCategory = indicator;
-                            textIndLeaves = IndicatorHelper.getIndicatorLeaves(indicator);
+                            textIndLeaves = IndicatorHelper.getIndicatorLeavesBySingleNode(indicator);
                             hasTextIndicators = true;
                             break;
                         }

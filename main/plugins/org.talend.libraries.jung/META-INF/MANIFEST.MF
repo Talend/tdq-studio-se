@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jung Plug-in
 Bundle-SymbolicName: org.talend.libraries.jung;singleton:=true
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: lib/collections-generic-4.01.jar,
  lib/colt.jar,

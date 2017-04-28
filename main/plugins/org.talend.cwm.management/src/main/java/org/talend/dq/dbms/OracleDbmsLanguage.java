@@ -349,4 +349,15 @@ public class OracleDbmsLanguage extends DbmsLanguage {
     public String getRandomQuery(String query) {
         return query + orderBy() + "dbms_random.value "; //$NON-NLS-1$
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.dq.dbms.DbmsLanguage#quote(java.lang.String)
+     */
+    @Override
+    public String quote(String sqlIdentifier) {
+        return super.quote(sqlIdentifier).toUpperCase();
+    }
+
 }

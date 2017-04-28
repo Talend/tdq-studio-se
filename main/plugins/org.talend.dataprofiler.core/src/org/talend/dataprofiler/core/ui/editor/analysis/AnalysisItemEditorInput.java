@@ -13,8 +13,10 @@
 package org.talend.dataprofiler.core.ui.editor.analysis;
 
 import org.talend.dataprofiler.core.ui.editor.AbstractItemEditorInput;
+import org.talend.dataquality.analysis.Analysis;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.AnalysisRepNode;
+import org.talend.dq.nodes.ReportAnalysisRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -24,7 +26,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  */
 public class AnalysisItemEditorInput extends AbstractItemEditorInput {
 
-    private AnalysisRepNode anaRepNode;
+    private IRepositoryNode anaRepNode;
 
     private IRepositoryNode connectionNode;
 
@@ -40,7 +42,7 @@ public class AnalysisItemEditorInput extends AbstractItemEditorInput {
     public IRepositoryNode getConnectionNode() {
         // MOD mzhao bug 19244, when connection node wasn't set before, find it from analysis.
         if (connectionNode == null) {
-            DataManager connection = anaRepNode.getAnalysis().getContext().getConnection();
+            DataManager connection = ((Analysis) getModel()).getContext().getConnection();
             if (connection != null) {
                 connectionNode = RepositoryNodeHelper.recursiveFind(connection);
             }
@@ -58,7 +60,7 @@ public class AnalysisItemEditorInput extends AbstractItemEditorInput {
      * @see org.talend.dataprofiler.core.ui.editor.AbstractItemEditorInput#getRepNode()
      */
     @Override
-    public AnalysisRepNode getRepNode() {
+    public IRepositoryNode getRepNode() {
         return anaRepNode;
     }
 
@@ -69,7 +71,10 @@ public class AnalysisItemEditorInput extends AbstractItemEditorInput {
      */
     @Override
     public ModelElement getModel() {
-        return anaRepNode.getAnalysis();
+        if (anaRepNode instanceof ReportAnalysisRepNode) {
+            return ((ReportAnalysisRepNode) anaRepNode).getAnalysis();
+        }
+        return ((AnalysisRepNode) anaRepNode).getAnalysis();
     }
 
     /*
@@ -79,7 +84,7 @@ public class AnalysisItemEditorInput extends AbstractItemEditorInput {
      */
     @Override
     public void setRepNode(IRepositoryNode node) {
-        this.anaRepNode = (AnalysisRepNode) node;
+        this.anaRepNode = node;
     }
 
 }

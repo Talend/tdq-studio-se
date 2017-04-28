@@ -27,7 +27,9 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
 
     private boolean isChecked = false;
 
-    public static String INVALID = "invalid";//$NON-NLS-1$
+    public static String INVALID = "invalid"; //$NON-NLS-1$
+
+    public static String ZERO = "0"; //$NON-NLS-1$
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -96,7 +98,7 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
     }
 
     /**
-     * if the val is 1~9, then return 1 if it is "0", return 0, if it is return , return -1
+     * if the val is 1~9 then return 1; if it is "0" then return 0; if it is non-number then return -1
      * 
      * @param val
      * @return
@@ -145,7 +147,7 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
 
         int isInvalid = isInvalid(data);
         if (isInvalid == 0) {
-            setValue("0");
+            setValue(ZERO);
         } else if (isInvalid < 0) {
             setValue(INVALID);
         } else {
@@ -204,7 +206,12 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
         for (int i = 1; i <= 9; i++) {
             this.valueToFreq.put(String.valueOf(i), 0L);
         }
-        this.valueToFreq.put("invalid", 0L);
+        if (this.valueToFreq.get(INVALID) != null) {
+            this.valueToFreq.put(INVALID, 0L);
+        }
+        if (this.valueToFreq.get(ZERO) != null) {
+            this.valueToFreq.put(ZERO, 0L);
+        }
         return ok;
     }
 

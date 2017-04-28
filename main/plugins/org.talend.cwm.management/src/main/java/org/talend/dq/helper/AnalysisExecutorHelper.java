@@ -153,6 +153,9 @@ public final class AnalysisExecutorHelper {
         String languageName = LanguageManager.getCurrentLanguage().getName();
 
         int limitValue = JavaSqlFactory.getLimitValue(delimitedFileconnection);
+        if (limitValue <= 0) {
+            limitValue = limit;
+        }
         int headValue = JavaSqlFactory.getHeadValue(delimitedFileconnection);
         int footValue = JavaSqlFactory.getFooterValue(delimitedFileconnection);
         String path = JavaSqlFactory.getURL(delimitedFileconnection);

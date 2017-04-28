@@ -18,6 +18,7 @@ import junit.framework.Assert;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.GlobalServiceRegister;
@@ -244,6 +245,7 @@ public class AElementPersistanceRealTest {
      * 
      * case1: between UDI and analysis
      */
+    @Ignore
     @Test
     public void testSaveAnalysisCase1() throws PersistenceException {
         // AnalysisWriter createAnalysisWriter = ElementWriterFactory.getInstance().createAnalysisWrite();
@@ -306,6 +308,7 @@ public class AElementPersistanceRealTest {
      * 
      * case2: between Pattern and analysis
      */
+    @Ignore
     @Test
     public void testSaveAnalysisCase2() throws PersistenceException {
         // AnalysisWriter createAnalysisWriter = ElementWriterFactory.getInstance().createAnalysisWrite();
@@ -386,6 +389,7 @@ public class AElementPersistanceRealTest {
      * 
      * case3: between Rule and analysis
      */
+    @Ignore
     @Test
     public void testSaveAnalysisCase3() throws PersistenceException {
         // AnalysisWriter createAnalysisWriter = ElementWriterFactory.getInstance().createAnalysisWrite();
@@ -447,6 +451,7 @@ public class AElementPersistanceRealTest {
      * 
      * case1: between analysis and report
      */
+    @Ignore
     @Test
     public void testSaveReportCase1() throws PersistenceException {
         // ReportWriter createReportWriter = ElementWriterFactory.getInstance().createReportWriter();

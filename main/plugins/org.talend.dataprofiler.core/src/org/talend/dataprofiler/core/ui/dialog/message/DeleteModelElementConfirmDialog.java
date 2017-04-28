@@ -494,6 +494,12 @@ public class DeleteModelElementConfirmDialog {
             if (lockedByOthers(me)) {
                 lockedByOthers.add(me);
             }
+
+            // TDQ-8129 msjian : find from sub-level's also(for analysis, can get dependency client report, so we need to check
+            // report's lock status)
+            List<ModelElement> dependencyList = EObjectHelper.getDependencyClients(me);
+            findLockedByOthersModelElement(lockedByOthers, dependencyList);
+            // TDQ-8129 ~
         }
     }
 

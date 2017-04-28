@@ -130,7 +130,7 @@ public class IndicatorEvaluator extends Evaluator<String> {
                 col = columnlistMap.get(col);
 
                 // --- get content of column
-                Object object = ResultSetUtils.getObject(resultSet, col);
+                Object object = ResultSetUtils.getBigObject(resultSet, col);
 
                 // MOD zshen, when the type of object is TIMESTAMP then need getTimestamp(col) to get correct value,or
                 // the value only is the name of type and can't be match with TIMESTAMP.
@@ -186,7 +186,7 @@ public class IndicatorEvaluator extends Evaluator<String> {
                             List<Object> inputRowList = new ArrayList<Object>();
                             for (int j = 0; j < columnCount; j++) {
                                 String newcol = columnList.get(j).getName();
-                                Object newobject = ResultSetUtils.getObject(resultSet, newcol);
+                                Object newobject = ResultSetUtils.getBigObject(resultSet, newcol);
                                 // TDQ-10833 Format Drill down Date data by TalendFormatTime with
                                 // "HH:mm:ss:SSS",TalendFormatDate with "yyyy-MM-dd HH:mm:ss:SSS".So that it is
                                 // same format as result page.

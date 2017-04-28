@@ -87,7 +87,7 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
             // --- get data filter
             stringDataFilter = ContextHelper.getDataFilterWithoutContext(analysis);
             // --- get all the leaf indicators used for the sql computation
-            Collection<Indicator> leafIndicators = IndicatorHelper.getIndicatorLeaves(results);
+            Collection<Indicator> leafIndicators = IndicatorHelper.getIndicatorLeavesBySingleNode(results);
             // --- create one sql statement for each leaf indicator
             for (Indicator indicator : leafIndicators) {
                 if (!createSqlQuery(stringDataFilter, indicator, false)) {
@@ -327,7 +327,7 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
         try {
             Long rowCount = 0L;
 
-            List<Indicator> indicatorList = IndicatorHelper.getIndicatorLeaves(analysis.getResults());
+            List<Indicator> indicatorList = IndicatorHelper.getIndicatorLeavesBySingleNode(analysis.getResults());
 
             // execute the row count
             Indicator rowIndicator = indicatorList.get(0);

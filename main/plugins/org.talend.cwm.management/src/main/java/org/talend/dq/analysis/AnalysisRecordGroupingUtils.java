@@ -406,7 +406,7 @@ public class AnalysisRecordGroupingUtils {
             analysisMatchRecordGrouping.initialize();
         } else {
             analysisMatchRecordGrouping.setRecordLinkAlgorithm(RecordMatcherType.T_SwooshAlgorithm);
-            analysisMatchRecordGrouping.setOrginalInputColumnSize(columnMap.size()+1);
+            analysisMatchRecordGrouping.setOrginalInputColumnSize(columnMap.size() + 1);
             analysisMatchRecordGrouping.initialize();
             SurvivorShipAlgorithmParams survivorShipAlgorithmParams = createSurvivorShipAlgorithmParams(
                     analysisMatchRecordGrouping, recordMatchingIndicator, columnMap);
@@ -414,6 +414,17 @@ public class AnalysisRecordGroupingUtils {
         }
     }
 
+    /**
+     * 
+     * DOC zshen Comment method "createSurvivorShipAlgorithmParams".
+     * Same with {@link SurvivorshipUtils#createSurvivorShipAlgorithmParams(AnalysisMatchRecordGrouping, List, List, Map, Map)} so
+     * that any modify need to synchronization them with same time
+     * 
+     * @param analysisMatchRecordGrouping
+     * @param recordMatchingIndicator
+     * @param columnMap
+     * @return
+     */
     public static SurvivorShipAlgorithmParams createSurvivorShipAlgorithmParams(
             AnalysisMatchRecordGrouping analysisMatchRecordGrouping, RecordMatchingIndicator recordMatchingIndicator,
             Map<MetadataColumn, String> columnMap) {
@@ -443,10 +454,7 @@ public class AnalysisRecordGroupingUtils {
             for (DefaultSurvivorshipDefinition defSurvDef : defSurvDefs) {
                 // the column's data type start with id_, so need to add id_ ahead of the default survivorship's data
                 // type before judging if they are equal
-                if (StringUtils.equals(dataTypeName, "id_" + defSurvDef.getDataType())) { //$NON-NLS-1$
-                    putNewSurvFunc(columnMap, survivorShipAlgorithmParams, defaultSurvRules, metaColumn, defSurvDef);
-                    break;
-                } else if (StringUtils.equals(defSurvDef.getDataType(), "Number") && JavaTypesManager.isNumber(dataTypeName)) { //$NON-NLS-1$
+                if (StringUtils.equals(dataTypeName, "id_" + defSurvDef.getDataType()) || StringUtils.equals(defSurvDef.getDataType(), "Number") && JavaTypesManager.isNumber(dataTypeName)) { //$NON-NLS-1$
                     putNewSurvFunc(columnMap, survivorShipAlgorithmParams, defaultSurvRules, metaColumn, defSurvDef);
                     break;
                 }
@@ -474,7 +482,7 @@ public class AnalysisRecordGroupingUtils {
             int idx = 0;
             for (Map<String, String> mkDef : matchrule) {
                 String matcherType = mkDef.get(IRecordGrouping.MATCHING_TYPE);
-                if (AttributeMatcherType.DUMMY.name().equals(matcherType)) {
+                if (AttributeMatcherType.DUMMY.name().equalsIgnoreCase(matcherType)) {
                     // Find the func from default survivorship rule.
                     surFuncsInMatcher[idx] = colIdx2DefaultSurvFunc.get(Integer.valueOf(mkDef.get(IRecordGrouping.COLUMN_IDX)));
                     if (surFuncsInMatcher[idx] == null) {

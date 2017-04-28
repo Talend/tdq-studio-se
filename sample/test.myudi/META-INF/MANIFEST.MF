@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Myudi
 Bundle-SymbolicName: test.myudi
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Require-Bundle: org.talend.dataquality;bundle-version="6.0.0",
  org.talend.testutils;bundle-version="1.0.0",
  org.apache.log4j,

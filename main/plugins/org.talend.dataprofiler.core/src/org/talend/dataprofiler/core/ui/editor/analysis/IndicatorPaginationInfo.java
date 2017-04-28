@@ -166,8 +166,8 @@ public abstract class IndicatorPaginationInfo extends PaginationInfo {
         // TDQ-7275~
         for (ChartDataEntity oneDataEntity : chartDataEntities) {
             Indicator indicator = oneDataEntity.getIndicator();
-            Menu menu = TOPChartUtils.getInstance().createMenu(composite, dataExplorer, analysis, currentEngine, oneDataEntity,
-                    indicator, false);
+            Menu menu = TOPChartUtils.getInstance()
+                    .createMenu(composite, dataExplorer, analysis, oneDataEntity, indicator, false);
             ChartTableFactory.addJobGenerationMenu(menu, analysis, indicator);
 
             menuMap.put(oneDataEntity.getLabel(), menu);

@@ -64,6 +64,8 @@ import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
 import org.talend.dataprofiler.core.migration.helper.IndicatorDefinitionFileHelper;
 import org.talend.dataprofiler.core.migration.helper.WorkspaceVersionHelper;
 import org.talend.dataprofiler.core.migration.impl.RenamePatternFinderFolderTask;
+import org.talend.dataprofiler.core.service.AbstractSvnRepositoryService;
+import org.talend.dataprofiler.core.service.GlobalServiceRegister;
 import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
 import org.talend.dataprofiler.migration.IMigrationTask;
 import org.talend.dataprofiler.migration.IWorkspaceMigrationTask.MigrationTaskType;
@@ -107,6 +109,7 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -488,6 +491,7 @@ public class FileSystemImportWriter implements IImportWriter {
                         fMonitor.subTask("Importing " + record.getName());//$NON-NLS-1$
 
                         if (record.isValid()) {
+                            boolean isDeleted = false;
                             log.info("Importing " + record.getFile().getAbsolutePath());//$NON-NLS-1$
 
                             // Delete the conflict node before import.
@@ -527,8 +531,11 @@ public class FileSystemImportWriter implements IImportWriter {
                                 } else {
                                     // remove the dependency of the object
                                     EObjectHelper.removeDependencys(PropertyHelper.getModelElement(object.getProperty()));
+                                    
+                                    isDeleted = true;
                                     // delete the object
                                     ProxyRepositoryFactory.getInstance().deleteObjectPhysical(object);
+                                    
                                 }
                             }
 
@@ -545,6 +552,15 @@ public class FileSystemImportWriter implements IImportWriter {
                                         allCopiedFiles.add(desPath.toFile());
                                     }
                                     allImportItems.add(desPath);
+                                    //TDQ-12180
+                                    if(isDeleted){
+                                        AbstractSvnRepositoryService svnReposService = GlobalServiceRegister.getDefault().getSvnRepositoryService(
+                                                AbstractSvnRepositoryService.class);
+                                        if (svnReposService != null){
+                                            svnReposService.addIfImportOverride(desPath);
+                                        }
+                                 
+                                    }
                                 }
 
                                 for (File file : updateFiles) {

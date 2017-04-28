@@ -2,7 +2,7 @@
 <feature
       id="org.talend.top.libraries.feature"
       label="Libraries_feature Feature"
-      version="6.3.1.qualifier"
+      version="6.3.2.qualifier"
       provider-name=".Talend SA.">
 
    <description>

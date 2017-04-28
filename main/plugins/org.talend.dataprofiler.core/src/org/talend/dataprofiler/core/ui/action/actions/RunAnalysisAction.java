@@ -59,6 +59,8 @@ import org.talend.dataprofiler.core.ui.editor.analysis.ColumnAnalysisResultPage;
 import org.talend.dataprofiler.core.ui.editor.analysis.DynamicAnalysisMasterPage;
 import org.talend.dataprofiler.core.ui.events.EventEnum;
 import org.talend.dataprofiler.core.ui.events.EventManager;
+import org.talend.dataprofiler.core.ui.utils.RepNodeUtils;
+import org.talend.dataprofiler.core.ui.views.resources.IRepositoryObjectCRUDAction;
 import org.talend.dataprofiler.service.ISemanticStudioService;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
@@ -86,6 +88,8 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
     public static final String ID = "org.talend.common.runTalendElement"; //$NON-NLS-1$
 
     private static final DecimalFormat FORMAT_SECONDS = new DecimalFormat("0.00"); //$NON-NLS-1$
+
+    private IRepositoryObjectCRUDAction repositoryObjectCRUD = RepNodeUtils.getRepositoryObjectCRUD();
 
     private IRuningStatusListener listener;
 
@@ -121,6 +125,9 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
     @Override
     public void run() {
         if (items != null) {
+            // TDQ-11550: refresh first especially for remote project, can get the lastest item status correctly
+            repositoryObjectCRUD.refreshDQViewForRemoteProject();
+
             for (TDQAnalysisItem anaItem : items) {
                 runAnalysisForItem(anaItem);
             }
@@ -402,7 +409,7 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
             }
             MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
                     DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"), //$NON-NLS-1$
-                    DefaultMessagesImpl.getString("RunAnalysisAction.error.lockByOthers")); //$NON-NLS-1$
+                    DefaultMessagesImpl.getString("RunAnalysisAction.error.lockByOthers", runItem.getAnalysis().getName())); //$NON-NLS-1$
             return true;
         } // ~ TDQ-5452
         return false;

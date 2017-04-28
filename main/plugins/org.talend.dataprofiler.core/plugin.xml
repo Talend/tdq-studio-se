@@ -80,7 +80,7 @@
            <options>
               <property
                     name="org.eclipse.ui.navigator.hideLinkWithEditorAction"
-                    value="true">
+                    value="false">
               </property>
            </options>
         </viewer>
@@ -1701,8 +1701,8 @@
      <workspacetask
            class="org.talend.dataprofiler.core.migration.impl.AddBenfordLaw4RedshiftTask"
            id="org.talend.dataprofiler.core.migration.impl.AddBenfordLaw4RedshiftTask"
-           name="add Benford Law Indicator for Redshift Task"
-           version="6.2.0">
+           name="add or update Benford Law Indicator for Redshift Task"
+           version="6.3.2">
      </workspacetask>
      <workspacetask
            class="org.talend.dataprofiler.core.migration.impl.AddExasolRegularExpressionMatchingTask"
@@ -1891,6 +1891,12 @@
        <handler
              class="org.talend.dataprofiler.core.ui.handlers.ImportItemHandler"
              commandId="org.talend.dataprofiler.core.importItem">
+          <activeWhen>
+             <systemTest
+                   property="ReadOnlyUser"
+                   value="false">
+             </systemTest>
+          </activeWhen>
        </handler>
     </extension>
     <extension

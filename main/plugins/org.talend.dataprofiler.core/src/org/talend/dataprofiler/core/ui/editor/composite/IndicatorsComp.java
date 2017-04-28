@@ -113,7 +113,7 @@ public class IndicatorsComp extends AbstractPagePart {
             if (indicatorObj instanceof SimpleStatIndicator || indicatorObj instanceof CountAvgNullIndicator
                     || indicatorObj instanceof MinMaxDateIndicator || indicatorObj instanceof WeakCorrelationIndicator) {
                 columnSetIndicator = (ColumnSetMultiValueIndicator) indicatorObj;
-                for (Indicator indicator : IndicatorHelper.getIndicatorLeaves(columnSetIndicator)) {
+                for (Indicator indicator : IndicatorHelper.getIndicatorLeavesBySingleNode(columnSetIndicator)) {
                     IndicatorEnum indicatorEnum = IndicatorEnum.findIndicatorEnum(indicator.eClass());
                     indicatortList.add(new ColumnSetIndicatorUnit(indicatorEnum, indicator));
                 }

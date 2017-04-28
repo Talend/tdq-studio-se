@@ -518,7 +518,7 @@ public class TablesSelectionDialog extends TwoPartCheckSelectionDialog {
         // Added TDQ-8718 20140505 yyin: if no columns checked, warn the user
         if (allCheckedTables.size() == 0) {
             MessageDialogWithToggle.openWarning(this.getShell(), DefaultMessagesImpl.getString("ColumnSelectionDialog.warning"),//$NON-NLS-1$ 
-                    DefaultMessagesImpl.getString("TablesSelectionDialog.NoTableSelecte"));//$NON-NLS-1$
+                    DefaultMessagesImpl.getString("TablesSelectionDialog.NoTableSelected"));//$NON-NLS-1$
             return;
         }// ~
         super.okPressed();

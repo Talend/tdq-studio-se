@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -57,6 +58,7 @@ public class DelimitedFileIndicatorEvaluatorTest {
     @Rule
     public PowerMockRule powerMockRule = new PowerMockRule();
 
+    @Ignore
     @Test
     public void testExecuteSqlQuery_delimetd() throws Exception {
         String empty = ""; //$NON-NLS-1$

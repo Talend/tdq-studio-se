@@ -155,7 +155,7 @@ public class ColumnSetIndicatorEvaluator extends Evaluator<String> {
                 EList<Object> objectLs = new BasicEList<Object>();
                 Iterator<String> it = columnNames.iterator();
                 while (it.hasNext()) {
-                    Object obj = ResultSetUtils.getObject(resultSet, it.next());
+                    Object obj = ResultSetUtils.getBigObject(resultSet, it.next());
                     objectLs.add(obj);
                 }
                 if (objectLs.size() == 0) {

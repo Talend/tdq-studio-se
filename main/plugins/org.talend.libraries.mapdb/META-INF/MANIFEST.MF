@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Mapdb plugin
 Bundle-SymbolicName: org.talend.libraries.mapdb
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-ClassPath: lib/mapdb-1.0.3.jar,
  .
 Bundle-Vendor: .Talend SA.

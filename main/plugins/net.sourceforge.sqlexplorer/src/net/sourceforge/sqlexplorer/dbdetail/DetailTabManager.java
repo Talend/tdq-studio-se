@@ -57,7 +57,6 @@ public class DetailTabManager {
 
     private static final HashMap<Session, HashMap<String, List<IDetailTab>>> _sessionTabCache = new HashMap();
 
-
     /**
      * Clear the detail tab cache for a given node.
      * 
@@ -70,10 +69,11 @@ public class DetailTabManager {
         }
 
         HashMap<String, List<IDetailTab>> tabCache = _sessionTabCache.get(node.getSession());
-        tabCache.remove(node.getUniqueIdentifier());
+        if (tabCache != null) {
+            tabCache.remove(node.getUniqueIdentifier());
+        }
 
     }
-
 
     /**
      * Clear cache of a given session. This method is called when a session is
@@ -89,7 +89,6 @@ public class DetailTabManager {
 
         _sessionTabCache.remove(session);
     }
-
 
     /**
      * Creates all the tabs in the detail pane to display the information for a
@@ -122,7 +121,6 @@ public class DetailTabManager {
 
                 // noop
             }
-
 
             public void widgetSelected(SelectionEvent e) {
 
@@ -190,7 +188,6 @@ public class DetailTabManager {
         tabFolder.layout();
 
     }
-
 
     /**
      * Returns a list of all available tabs for a given node. These tabs can be
@@ -350,7 +347,6 @@ public class DetailTabManager {
         return tabList;
     }
 
-
     /**
      * This method returns the tabs for a given node from the cache. Tabs are
      * cached per sessionTreeNode. If the tabs don't exist in the cache, they
@@ -388,7 +384,6 @@ public class DetailTabManager {
 
         return tabs;
     }
-
 
     /**
      * Store the name of the active tab, so that we can reselect it when a

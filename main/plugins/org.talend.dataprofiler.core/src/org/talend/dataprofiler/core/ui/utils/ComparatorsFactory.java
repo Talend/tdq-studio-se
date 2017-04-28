@@ -238,6 +238,9 @@ public final class ComparatorsFactory {
     static class FrequencyIndicatorComparator implements Comparator<FrequencyExt> {
 
         public int compare(FrequencyExt o1, FrequencyExt o2) {
+            if (o1.getValue() == o2.getValue()) {
+                return 0;
+            }
             if (o1.getValue() < o2.getValue()) {
                 return 1;
             }
@@ -262,6 +265,9 @@ public final class ComparatorsFactory {
             if (o1.getKey().toString().compareTo(o2.getKey().toString()) > 0) {
                 return 1;
             }
+            if (o1.getKey().toString().compareTo(o2.getKey().toString()) == 0) {
+                return 0;
+            }
             return -1;
         }
     }// ~
@@ -272,6 +278,9 @@ public final class ComparatorsFactory {
     static class LowFrequencyIndicatorComparator implements Comparator<FrequencyExt> {
 
         public int compare(FrequencyExt o1, FrequencyExt o2) {
+            if (o1.getValue() == o2.getValue()) {
+                return 0;
+            }
             if (o1.getValue() > o2.getValue()) {
                 return 1;
             }

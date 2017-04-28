@@ -19,7 +19,6 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -47,6 +46,9 @@ import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.properties.TDQAnalysisItem;
 import org.talend.dq.helper.resourcehelper.AnaResourceFileHelper;
+import org.talend.dq.nodes.AnalysisRepNode;
+import org.talend.dq.nodes.ReportAnalysisRepNode;
+import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.utils.sugars.ReturnCode;
 
@@ -207,7 +209,7 @@ public class AnalysisEditor extends SupportContextEditor {
         }
         setEditorObject(getMasterPage().getCurrentRepNode());
         super.doSave(monitor);
-        
+
         masterPage.setOldDataproviderName(masterPage.getCurrentModelElement().getName());
 
     }
@@ -295,7 +297,14 @@ public class AnalysisEditor extends SupportContextEditor {
     public void performGlobalAction(String id) {
         if (id.equals(RunAnalysisAction.ID)) {
             // TDQ-10748: make the ref project analysis can not run when press F6
-            if (this.getMasterPage().getCurrentRepNode().getProject().isMainProject()) {
+            IRepositoryNode currentRepNode = this.getMasterPage().getCurrentRepNode();
+            boolean isMainProject = false;
+            if (currentRepNode instanceof ReportAnalysisRepNode) {
+                isMainProject = ((ReportAnalysisRepNode) currentRepNode).getProject().isMainProject();
+            } else if (currentRepNode instanceof AnalysisRepNode) {
+                isMainProject = ((AnalysisRepNode) currentRepNode).getProject().isMainProject();
+            }
+            if (isMainProject) {
                 runAction.run();
             }
             // TDQ-10748~
@@ -462,13 +471,8 @@ public class AnalysisEditor extends SupportContextEditor {
 
             @Override
             public boolean handle(Object data) {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    public void run() {
-                        WorkbenchUtils.refreshCurrentAnalysisEditor(getMasterPage().getCurrentModelElement().getName());
-                    }
-
-                });
+                // TDQ-13275 remove 'Display.getDefault().asyncExec' to avoid error with Multi-thread open editors.
+                WorkbenchUtils.refreshCurrentAnalysisEditor(getMasterPage().getCurrentModelElement().getName());
 
                 return true;
             }

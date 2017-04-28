@@ -20,6 +20,7 @@ import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPersistableElement;
 import org.eclipse.ui.ide.ResourceUtil;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Property;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
@@ -64,11 +65,11 @@ public abstract class AbstractItemEditorInput implements IEditorInput {
     }
 
     public String getName() {
-        return getPath() + getModel().getName();
+        return getPath() + (getModel() == null ? "" : getModel().getName()); //$NON-NLS-1$
     }
 
     public String getToolTipText() {
-        return getPath() + getModel().getName();
+        return getPath() + (getModel() == null ? "" : getModel().getName());//$NON-NLS-1$
     }
 
     public IPersistableElement getPersistable() {
@@ -83,13 +84,16 @@ public abstract class AbstractItemEditorInput implements IEditorInput {
     }
 
     public String getPath() {
-        return getItem().getState().getPath() + "/";//$NON-NLS-1$ 
+        return getItem() == null ? "/" : getItem().getState().getPath() + "/";//$NON-NLS-1$ //$NON-NLS-2$ 
     }
 
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof AbstractItemEditorInput) {
             AbstractItemEditorInput other = (AbstractItemEditorInput) obj;
+            if (getItem() == null && other.getItem() == null) {
+                return true;
+            }
             boolean isEqualsId = getItem().getProperty().getId().equals(other.getItem().getProperty().getId());
             if (isEqualsId) {
                 if (StringUtils.equals(getName(), other.getName())) {
@@ -115,7 +119,11 @@ public abstract class AbstractItemEditorInput implements IEditorInput {
     }
 
     public Item getItem() {
-        Item item = getRepNode().getObject().getProperty().getItem();
+        Property property = getRepNode().getObject().getProperty();
+        if (property == null) {
+            return null;
+        }
+        Item item = property.getItem();
         item = (Item) EObjectHelper.resolveObject(item);
         return item;
     }

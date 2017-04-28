@@ -664,45 +664,58 @@ public final class DependenciesHandler {
         // from file to get model and change it
         if (foundFile != null) {
             Property property = PropertyHelper.getProperty(foundFile);
-            ModelElement modelElement2 = PropertyHelper.getModelElement(property);
-            List<ModelElement> dependencyClients = EObjectHelper.getDependencyClients(modelElement2);
-            for (ModelElement model : dependencyClients) {
-                if (StringUtils.equals(model.getName(), analysis.getName())) {
-                    dependencyClients.remove(model);
-                    break;
-                }
-            }
-            EList<Dependency> supplierDependency = modelElement2.getSupplierDependency();
-            Iterator<Dependency> iterator = supplierDependency.iterator();
-            while (iterator.hasNext()) {
-                Dependency model = iterator.next();
-                EList<ModelElement> clients = model.getClient();
-                for (ModelElement client : clients) {
-                    if (StringUtils.equals(client.getName(), analysis.getName())) {
-                        iterator.remove();
-                        break;
-                    }
-                }
-            }
 
             // change the cache content also
             Item item = property.getItem();
             Resource itemResource = ProxyRepositoryFactory.getInstance().getRepositoryFactoryFromProvider().getResourceManager()
                     .getItemResource(item);
-            EObject toRemove = null;
+
+            List<EObject> toRemoveObjList = new ArrayList<EObject>();
             for (EObject obj : itemResource.getContents()) {
                 if (obj != null && obj instanceof Dependency) {
                     EList<ModelElement> clients = ((Dependency) obj).getClient();
                     for (ModelElement model : clients) {
-                        if (StringUtils.equals(model.getName(), analysis.getName())) {
-                            toRemove = obj;
-                            break;
+                        if (model.getName() == null) {
+                            toRemoveObjList.add(obj);
+                        } else {
+                            if (StringUtils.equals(model.getName(), analysis.getName())) {
+                                toRemoveObjList.add(obj);
+                                break;
+                            }
+                        }
+                    }
+
+                    EList<ModelElement> supplier = ((Dependency) obj).getSupplier();
+                    for (ModelElement model : supplier) {
+                        if (model.getName() == null) {
+                            toRemoveObjList.add(obj);
+                        } else {
+                            if (StringUtils.equals(model.getName(), item.getProperty().getLabel())) {
+                                toRemoveObjList.add(obj);
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    // modify where rule
+                    EList<Dependency> supplierDependency = ((ModelElement) obj).getSupplierDependency();
+                    Iterator<Dependency> iterator = supplierDependency.iterator();
+                    while (iterator.hasNext()) {
+                        Dependency model = iterator.next();
+                        EList<ModelElement> clients = model.getClient();
+                        for (ModelElement client : clients) {
+                            if (StringUtils.equals(client.getName(), analysis.getName())) {
+                                iterator.remove();
+                                break;
+                            }
                         }
                     }
                 }
             }
-            if (toRemove != null) {
-                itemResource.getContents().remove(toRemove);
+            for (EObject removeObj : toRemoveObjList) {
+                if (removeObj != null) {
+                    itemResource.getContents().remove(removeObj);
+                }
             }
 
             // save the node

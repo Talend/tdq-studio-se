@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.cwm.management.i18n;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -47,6 +48,7 @@ public class MessagesTest {
     /**
      * Test method for {@link org.talend.cwm.management.i18n.Messages#getString(java.lang.String)}.
      */
+    @Ignore
     @Test
     public void testGetStringString() {
         // for (String[] element : keyToExpected) {
@@ -61,6 +63,7 @@ public class MessagesTest {
     /**
      * Test method for {@link org.talend.cwm.management.i18n.Messages#getString(java.lang.String, java.lang.Object[])}.
      */
+    @Ignore
     @Test
     public void testGetStringStringObjectArray() {
         // for (String[] keyToExpectedWithArg : keyToExpectedWithArgs) {

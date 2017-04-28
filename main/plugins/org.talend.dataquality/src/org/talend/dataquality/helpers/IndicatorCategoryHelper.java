@@ -46,6 +46,14 @@ public final class IndicatorCategoryHelper {
 
     public static final String SYSTEM_PHONENUMBER = "_Ohyz4bEEEeCVE-ofo1XCug";
 
+    public static final String SYSTEM_ADVANCED_STATISTICS_CATEGORY = "_ccKuIRF2Ed2PKb6nEJEvhw";
+
+    public static final String SYSTEM_SOUNDEX_CATEGORY = "_entEUPbCEd298st2mPm9SA";
+
+    public static final String SYSTEM_PATTERN_FREQUENCY_STATISTICS_CATEGORY = "_0n3BsJR-Ed2XO-JvLwVAwg";
+
+    public static final String SYSTEM_FRAND_DETECTION_CATEGORY = "_2aGLUOzJEeG0fbygDv6UrQ";
+
     /**
      * if the IndicatorCategory is one kind of User Defined Category return true, else return false. If
      * indicatorCategory is null return false.
@@ -134,6 +142,16 @@ public final class IndicatorCategoryHelper {
     public static final boolean isPhoneNumberCategory(IndicatorCategory indicatorCategory) {
         if (indicatorCategory != null) {
             return SYSTEM_PHONENUMBER.equals(ResourceHelper.getUUID(indicatorCategory));
+        }
+        return false;
+    }
+
+    public static final boolean isFrequencyCategory(IndicatorCategory indicatorCategory) {
+        if (indicatorCategory != null) {
+            return SYSTEM_ADVANCED_STATISTICS_CATEGORY.equals(ResourceHelper.getUUID(indicatorCategory))
+                    || SYSTEM_FRAND_DETECTION_CATEGORY.equals(ResourceHelper.getUUID(indicatorCategory))
+                    || SYSTEM_PATTERN_FREQUENCY_STATISTICS_CATEGORY.equals(ResourceHelper.getUUID(indicatorCategory))
+                    || SYSTEM_SOUNDEX_CATEGORY.equals(ResourceHelper.getUUID(indicatorCategory));
         }
         return false;
     }

@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.AllDataProfilerCoreTests;
 import org.talend.core.model.metadata.IMetadataConnection;
@@ -109,6 +110,7 @@ public class MultiColAnalysisCreationTest {
      * 
      * @throws TalendException
      */
+    @Ignore
     @Test
     public void run() throws TalendException {
         // analysisBuilder = new AnalysisBuilder();

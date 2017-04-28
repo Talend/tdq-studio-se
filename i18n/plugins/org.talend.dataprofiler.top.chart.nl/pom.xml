@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.talend.studio</groupId>
     <artifactId>tdq-studio-se</artifactId>
-    <version>6.3.1</version>
+    <version>6.3.2-SNAPSHOT</version>
     <relativePath>../../../</relativePath>
   </parent>
   <artifactId>org.talend.dataprofiler.top.chart.nl</artifactId>

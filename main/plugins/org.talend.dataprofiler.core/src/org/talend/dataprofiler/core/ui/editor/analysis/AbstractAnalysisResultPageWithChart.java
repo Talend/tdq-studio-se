@@ -16,17 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.forms.editor.FormEditor;
-import org.talend.core.model.metadata.builder.connection.Connection;
-import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.dataprofiler.core.ui.editor.preview.model.ChartTableFactory;
 import org.talend.dataprofiler.core.ui.editor.preview.model.ChartTableMenuGenerator;
 import org.talend.dataprofiler.core.ui.editor.preview.model.MenuItemEntity;
@@ -35,7 +30,6 @@ import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dq.analysis.explore.DataExplorer;
 import org.talend.dq.analysis.explore.IDataExplorer;
-import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
 
 /**
@@ -99,8 +93,10 @@ public abstract class AbstractAnalysisResultPageWithChart extends AbstractAnalys
             MenuItem item = new MenuItem(menu, SWT.PUSH);
             item.setText(itemEntity.geti18nLabel());
             item.setImage(itemEntity.getIcon());
-            item.addSelectionListener(createSelectionAdapter(analysis, editorName1, itemEntity));
-
+            // TDQ-10069 msjian : support column set java engine chart drill down
+            item.addSelectionListener(TOPChartUtils.getInstance().createSelectionAdapter(analysis, currentDataEntity,
+                    editorName1, itemEntity, false));
+            // TDQ-10069~
         }
         return menu;
     }
@@ -108,36 +104,4 @@ public abstract class AbstractAnalysisResultPageWithChart extends AbstractAnalys
     protected Image getItemImage(MenuItemEntity menuItem) {
         return menuItem.getIcon();
     }
-
-    /**
-     * DOC yyin Comment method "createSelectionAdapter".
-     * 
-     * @param analysis1
-     * @param currentEngine
-     * @param currentDataEntity
-     * @param currentIndicator
-     * @param itemEntity
-     * @return
-     */
-    private SelectionAdapter createSelectionAdapter(final Analysis analysis1, final String editorName1,
-            final MenuItemEntity itemEntity) {
-        return new SelectionAdapter() {
-
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                Display.getDefault().asyncExec(new Runnable() {
-
-                    public void run() {
-                        Connection tdDataProvider = SwitchHelpers.CONNECTION_SWITCH.doSwitch(analysis1.getContext()
-                                .getConnection());
-                        String query = itemEntity.getQuery();
-                        String editorName = editorName1;
-                        SqlExplorerUtils.getDefault().runInDQViewer(tdDataProvider, query, editorName);
-                    }
-
-                });
-            }
-        };
-    }
-
 }

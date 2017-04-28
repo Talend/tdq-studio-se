@@ -86,6 +86,7 @@ import org.talend.metadata.managment.hive.HiveClassLoaderFactory;
 import org.talend.metadata.managment.utils.DatabaseConstant;
 import org.talend.utils.collections.MultiMapHelper;
 import org.talend.utils.sql.Java2SqlType;
+import org.talend.utils.sql.ResultSetUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
 import orgomg.cwm.objectmodel.core.Expression;
@@ -1490,7 +1491,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 while (resultSet.next()) {
                     Object[] result = new Object[columnCount];
                     for (int i = 0; i < columnCount; i++) {
-                        result[i] = resultSet.getObject(i + 1);
+                        result[i] = ResultSetUtils.getBigObject(resultSet, i + 1);
                     }
                     myResultSet.add(result);
                 }

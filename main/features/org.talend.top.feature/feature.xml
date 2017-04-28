@@ -2,7 +2,7 @@
 <feature
       id="org.talend.top.feature"
       label="Top_feature Feature"
-      version="6.3.1.qualifier"
+      version="6.3.2.qualifier"
       provider-name=".Talend SA.">
 
    <description url="http://www.example.com/description">

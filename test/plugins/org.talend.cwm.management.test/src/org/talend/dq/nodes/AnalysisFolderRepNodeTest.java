@@ -14,6 +14,7 @@ package org.talend.dq.nodes;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQItemService;
@@ -53,6 +54,7 @@ public class AnalysisFolderRepNodeTest {
      * Test method for {@link org.talend.dq.nodes.AnalysisFolderRepNode#getChildren()}. Testing Analysis's children is
      * empty or not.
      */
+    @Ignore
     @Test
     public void testGetChildren() {
 

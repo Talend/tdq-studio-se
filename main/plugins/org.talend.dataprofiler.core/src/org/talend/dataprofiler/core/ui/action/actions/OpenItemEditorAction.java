@@ -69,7 +69,6 @@ import org.talend.dataprofiler.core.ui.editor.report.ReportItemEditorInput;
 import org.talend.dataprofiler.core.ui.utils.RepNodeUtils;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
 import org.talend.dataprofiler.core.ui.views.resources.IRepositoryObjectCRUDAction;
-import org.talend.dataprofiler.core.ui.views.resources.RemoteRepositoryObjectCRUD;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
 import org.talend.dataquality.properties.TDQAnalysisItem;
@@ -142,9 +141,19 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
     }
 
     protected void duRun(IRepositoryNode repNode) throws BusinessException {
-        // TDQ-12034: before open the object editor, reload it first especially for git remote project
-        // TODO: extract the code to a IRepositoryObjectCRUDAction method, because this only need to do for git remote
-        if (repositoryObjectCRUD instanceof RemoteRepositoryObjectCRUD) {
+        // TDQ-12200: fix a NPE when the open item is unsynchronized status(for example is deleted by others).
+        repositoryObjectCRUD.refreshDQViewForRemoteProject();
+
+        // TDQ-13357: fix NPE, because for ReportFileRepNode, repNode.getObject() == null
+        if (repNode.getObject() != null) {
+            if (repNode.getObject().getProperty() == null) {
+                repositoryObjectCRUD.showWarningDialog();
+                return;
+            }
+            // TDQ-12200~
+
+            // TDQ-12034: before open the object editor, reload it first especially for git remote project
+            // TDQ-12771: for local, also can avoid error when the cache node is changed but not save it.
             try {
                 ProxyRepositoryFactory.getInstance().reload(repNode.getObject().getProperty());
                 IFile objFile = PropertyHelper.getItemFile(repNode.getObject().getProperty());

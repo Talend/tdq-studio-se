@@ -2,7 +2,7 @@
 <feature
       id="org.talend.rcp.branding.top.feature"
       label="Top_feature Feature"
-      version="6.3.1.qualifier"
+      version="6.3.2.qualifier"
       provider-name=".Talend SA.">
 
    <description>
@@ -14,7 +14,7 @@
    </copyright>
 
    <license url="http://www.talend.com/top/terms-conditions/index.php">
-      Talend Open Studio for Data Quality is licensed under the GNU GENERAL PUBLIC LICENSE.
+      Talend Open Studio for Data Quality is licensed under the Apache License Version 2.0.
    </license>
 
    <url>

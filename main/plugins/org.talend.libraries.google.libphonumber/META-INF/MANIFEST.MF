@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Libphonumber
 Bundle-SymbolicName: org.talend.libraries.google.libphonumber
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: .,
  lib/carrier-1.29.jar,

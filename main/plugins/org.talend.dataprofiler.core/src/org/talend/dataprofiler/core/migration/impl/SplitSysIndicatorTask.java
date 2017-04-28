@@ -77,7 +77,7 @@ public class SplitSysIndicatorTask extends AbstractWorksapceUpdateTask {
                 for (Indicator ind : ana.getResults().getIndicators()) {
                     updateIndDefinition(ind);
                     if (ind instanceof CompositeIndicator) {
-                        for (Indicator indLeave : IndicatorHelper.getIndicatorLeaves(ind)) {
+                        for (Indicator indLeave : IndicatorHelper.getIndicatorLeavesBySingleNode(ind)) {
                             updateIndDefinition(indLeave);
                         }
                     }

@@ -156,7 +156,7 @@ public class DatabaseSQLExecutor extends SQLExecutor {
                 // --- for each column
                 for (int i = 0; i < columnListSize; i++) {
                     // --- get content of column
-                    oneRow[i] = ResultSetUtils.getObject(resultSet, i + 1);
+                    oneRow[i] = ResultSetUtils.getBigObject(resultSet, i + 1);
                 }
                 handleRow(oneRow);
             }

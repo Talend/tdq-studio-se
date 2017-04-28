@@ -12,6 +12,10 @@
 // ============================================================================
 package org.talend.dq.dbms;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.regex.Matcher;
 
 import org.talend.dataquality.PluginConstant;
@@ -165,6 +169,15 @@ public class SybaseASEDbmsLanguage extends DbmsLanguage {
         String catalogName = getCatalog(columnset).getName();
         String schemaName = getSchema(columnset).getName();
         return getQualifiedColumnSetName(columnset, catalogName, schemaName);
+    }
+
+    @Override
+    public Statement createStatement(Connection connection, int fetchSize) throws SQLException {
+        // TDQ-12520 when using fetchSize on SybConnection,should specify these 2 default parameters "ResultSet.TYPE_FORWARD_ONLY,
+        // ResultSet.CONCUR_READ_ONLY"
+        Statement statement = connection.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
+        statement.setFetchSize(fetchSize);
+        return statement;
     }
 
 }

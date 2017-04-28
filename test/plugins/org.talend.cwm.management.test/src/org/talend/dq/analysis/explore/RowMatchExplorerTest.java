@@ -145,7 +145,7 @@ public class RowMatchExplorerTest {
         assertEquals(
                 COMMENTS
                         + "-- Showing: View match rows ;\n" //$NON-NLS-1$
-                        + "SELECT * FROM \"catalogA\".\"schemaA\".\"tableA\" WHERE ((\"catalogA\".\"schemaA\".\"tableA\".\"columnA\") IN (SELECT  A.\"columnA\" FROM  (SELECT * FROM \"catalogA\".\"schemaA\".\"tableA\") A JOIN  (SELECT * FROM \"catalogB\".\"schemaB\".\"tableB\") B ON  (A.\"columnA\"= B.\"columnB\") )) ", //$NON-NLS-1$
+                        + "SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\" WHERE ((\"CATALOGA\".\"SCHEMAA\".\"TABLEA\".\"COLUMNA\") IN (SELECT  A.\"COLUMNA\" FROM  (SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\") A JOIN  (SELECT * FROM \"CATALOGB\".\"SCHEMAB\".\"TABLEB\") B ON  (A.\"COLUMNA\"= B.\"COLUMNB\") )) ", //$NON-NLS-1$
                 explorer.getRowsMatchStatement());
 
         // test postgresql
@@ -196,7 +196,7 @@ public class RowMatchExplorerTest {
         assertEquals(
                 COMMENTS
                         + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
-                        + "SELECT A.* FROM  (SELECT * FROM \"catalogA\".\"schemaA\".\"tableA\") A LEFT JOIN  (SELECT * FROM \"catalogB\".\"schemaB\".\"tableB\") B ON  (A.\"columnA\"= B.\"columnB\")  WHERE  B.\"columnB\" IS NULL ", //$NON-NLS-1$
+                        + "SELECT A.* FROM  (SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\") A LEFT JOIN  (SELECT * FROM \"CATALOGB\".\"SCHEMAB\".\"TABLEB\") B ON  (A.\"COLUMNA\"= B.\"COLUMNB\")  WHERE  B.\"COLUMNB\" IS NULL ", //$NON-NLS-1$
                 explorer.getRowsNotMatchStatement());
 
         // test postgresql

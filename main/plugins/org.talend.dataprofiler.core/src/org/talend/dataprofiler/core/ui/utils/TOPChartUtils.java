@@ -301,8 +301,7 @@ public class TOPChartUtils extends AbstractOSGIServiceUtils {
      * @return
      */
     public Menu createMenu(final Composite composite, final IDataExplorer explorer, final Analysis analysis,
-            final ExecutionLanguage currentEngine, final ChartDataEntity currentDataEntity, final Indicator currentIndicator,
-            final boolean checkSql) {
+            final ChartDataEntity currentDataEntity, final Indicator currentIndicator, final boolean checkSql) {
         final Menu menu = new Menu(composite.getShell(), SWT.POP_UP);
         // TDQ-12737: fix the no more handles error, because we create a potentially unreferenced menu, so we must dispose it
         composite.addListener(SWT.Dispose, new Listener() {
@@ -319,8 +318,8 @@ public class TOPChartUtils extends AbstractOSGIServiceUtils {
             item.setText(itemEntity.geti18nLabel());
             item.setImage(itemEntity.getIcon());
             item.setEnabled(DrillDownUtils.isMenuItemEnable(currentDataEntity, itemEntity, analysis));
-            item.addSelectionListener(createSelectionAdapter(analysis, currentEngine, currentDataEntity, currentIndicator,
-                    itemEntity, checkSql));
+            item.addSelectionListener(createSelectionAdapter(analysis, currentDataEntity, currentIndicator.getName(), itemEntity,
+                    checkSql));
 
             if (ChartTableFactory.isPatternFrequencyIndicator(currentIndicator)
                     && !ChartTableFactory.isEastAsiaPatternFrequencyIndicator(currentIndicator) && createPatternFlag == 0) {
@@ -332,14 +331,13 @@ public class TOPChartUtils extends AbstractOSGIServiceUtils {
         return menu;
     }
 
-    private SelectionAdapter createSelectionAdapter(final Analysis analysis1, final ExecutionLanguage currentEngine,
-            final ChartDataEntity currentDataEntity, final Indicator currentIndicator, final MenuItemEntity itemEntity,
-            final boolean checkSql) {
+    public SelectionAdapter createSelectionAdapter(final Analysis analysis1, final ChartDataEntity currentDataEntity,
+            final String editorName, final MenuItemEntity itemEntity, final boolean checkSql) {
         return new SelectionAdapter() {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (ExecutionLanguage.JAVA == currentEngine) {
+                if (ExecutionLanguage.JAVA == analysis1.getParameters().getExecutionLanguage()) {
                     try {
                         DrillDownEditorInput input = new DrillDownEditorInput(analysis1, currentDataEntity, itemEntity);
                         Boolean check = checkSql ? SqlExplorerUtils.getDefault().getSqlexplorerService() != null : input
@@ -371,7 +369,6 @@ public class TOPChartUtils extends AbstractOSGIServiceUtils {
                             Connection tdDataProvider = SwitchHelpers.CONNECTION_SWITCH.doSwitch(analysis1.getContext()
                                     .getConnection());
                             String query = itemEntity.getQuery();
-                            String editorName = currentIndicator.getName();
                             SqlExplorerUtils.getDefault().runInDQViewer(tdDataProvider, query, editorName);
                         }
 
@@ -443,12 +440,14 @@ public class TOPChartUtils extends AbstractOSGIServiceUtils {
         }
         return null;
     }
+
     public List getColumnKeys(Object dataset) {
         if (isTOPChartInstalled()) {
             return chartService.getColumnKeys(dataset);
         }
         return null;
     }
+
     public void setValue(Object dataset, Number value, Comparable rowKey, Comparable columnKey) {
         if (isTOPChartInstalled()) {
             chartService.setValue(dataset, value, rowKey, columnKey);

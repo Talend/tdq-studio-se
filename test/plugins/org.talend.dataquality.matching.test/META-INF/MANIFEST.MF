@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.talend.dataquality.matching.test
 Bundle-SymbolicName: org.talend.dataquality.matching.test
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Fragment-Host: org.talend.dataquality.matching
 Require-Bundle: org.eclipse.core.runtime,

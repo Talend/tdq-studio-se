@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Matching Plug-in
 Bundle-SymbolicName: org.talend.dataquality.matching
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Bundle-ActivationPolicy: lazy
 Export-Package: org.talend.dataquality.matching.date.pattern

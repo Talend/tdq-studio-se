@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Clearspring Analystics Stream library
 Bundle-SymbolicName: org.talend.libraries.clearspring.analytics
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Eclipse-BundleShape: dir
 Bundle-ClassPath: .,

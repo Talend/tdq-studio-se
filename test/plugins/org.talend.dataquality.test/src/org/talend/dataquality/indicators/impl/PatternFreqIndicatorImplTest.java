@@ -15,6 +15,7 @@ package org.talend.dataquality.indicators.impl;
 import java.util.Random;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.dataquality.common.regex.ChainResponsibilityHandler;
 import org.talend.dataquality.common.regex.HandlerFactory;
@@ -36,6 +37,7 @@ public class PatternFreqIndicatorImplTest {
         Assert.assertEquals(LATIN_CHARS_PATT, matchIndicator.getFrequencyLabel(LATIN_CHARS));
     }
 
+    @Ignore
     @Test
     public void testLatin1PerfWithLoop() {
         // int countStart = 800000;

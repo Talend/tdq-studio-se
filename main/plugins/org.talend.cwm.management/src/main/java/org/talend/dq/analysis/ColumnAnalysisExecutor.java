@@ -121,7 +121,7 @@ public class ColumnAnalysisExecutor extends AnalysisExecutor {
      * @param tdColumn a column
      * @return false when the given column has an owner different from the one registered in the map.
      */
-    protected boolean belongToSameSchemata(final TdColumn tdColumn) {
+    protected boolean belongToSameSchemata(final ModelElement tdColumn) {
         assert tdColumn != null;
         if (schemata.get(tdColumn) != null) {
             return true;

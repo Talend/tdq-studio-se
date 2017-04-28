@@ -16,7 +16,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
@@ -28,23 +31,14 @@ import org.apache.lucene.document.StringField;
 import org.apache.lucene.index.*;
 import org.apache.lucene.index.CheckIndex.Status;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Bits;
 import org.apache.lucene.util.Version;
 
-/**
- * A tool to regenerate all "out of the box" indexes with specified analyzer. The regeneration simply reads and
- * re-writes all detected indexes in inputPath. This class is independent from SynonymIndexBuilder class.
- * 
- * @author sizhaoliu
- */
-public class IndexMigrator {
+public class FirstNameIndexMigrator {
 
     // Use standard analyzer without English stop words like "an", "was"
     private Analyzer analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
 
-    // Default value points to an SVN working copy.
-    // The provided indexes are located at "addons" folder of the studio.
-    private String inputPath = "../../../../tdq-studio-ee/main/plugins/org.talend.dataquality.data.resources/data/synonym";//$NON-NLS-1$
+    private String inputPath = "../../../../tdq-studio-ee/main/plugins/org.talend.dataquality.data.index/TalendGivenNames_index";
 
     private String outputPath = "";
 
@@ -55,6 +49,12 @@ public class IndexMigrator {
     public static final String F_WORDTERM = "wordterm";
 
     public static final String F_SYNTERM = "synterm";
+
+    private static final boolean IS_MIGRATING_FIRSTNAME_INDEX = true;
+
+    private Map<String, List<String[]>> nameMap = new HashMap<String, List<String[]>>();
+
+    private int count = 0;
 
     /**
      * Sets the inputPath.
@@ -101,7 +101,7 @@ public class IndexMigrator {
     public int run() throws IOException {
         File inputFolder = new File(inputPath);
         if (!inputFolder.exists() || !inputFolder.isDirectory()) {
-            System.err.println("The input path <" + inputFolder.getAbsolutePath() + "> does not exist or is not a folder.");
+            System.err.println("The input path <" + inputPath + "> does not exist or is not a folder.");
             System.err.println("Usage: java -jar IndexMigrator.jar <inputPath> <outputPath(optinal)>");
             return -1;
         }
@@ -133,8 +133,8 @@ public class IndexMigrator {
      * @throws java.io.IOException
      */
     private int regenerate(File inputFolder, File outputFolder) throws IOException {
-        FSDirectory inputDir = FSDirectory.open(inputFolder);
-        CheckIndex check = new CheckIndex(inputDir);
+        FSDirectory indexDir = FSDirectory.open(inputFolder);
+        CheckIndex check = new CheckIndex(indexDir);
         Status status = check.checkIndex();
         if (status.missingSegments) {
             for (File f : inputFolder.listFiles()) {
@@ -145,53 +145,31 @@ public class IndexMigrator {
                 }
             }
         } else {
-            System.out.println("REGENERATE: " + inputFolder.getPath());
+            System.out.println("REGENERATE: " + inputFolder.getAbsoluteFile());
             FSDirectory outputDir = FSDirectory.open(outputFolder);
 
-            analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
             IndexWriterConfig config = new IndexWriterConfig(Version.LATEST, analyzer);
             IndexWriter writer = new IndexWriter(outputDir, config);
 
-            IndexReader reader = DirectoryReader.open(inputDir);
+            IndexReader reader = DirectoryReader.open(indexDir);
 
+            Document doc = null;
             // for any other indexes, regenerate with new Analyzer, but no
             // changes to document.
-            Collection<String> fieldNames = new ArrayList<String>();
-
-            int count = 0;
-            Bits liveDocs = MultiFields.getLiveDocs(reader);
             for (int i = 0; i < reader.maxDoc(); i++) {
-                if (liveDocs != null && !liveDocs.get(i)) {
-                    continue;
-                }
-                Document doc = reader.document(i);
+                doc = reader.document(i);
 
-                List<IndexableField> fields = doc.getFields();
-                for (int k = 0; k < fields.size(); k++) {
-                    fieldNames.add(fields.get(k).name());
-                }
-
-                if (fieldNames.contains(F_WORD)) {
-                    // for "out of the box" indexes, regenerate the index with 2
-                    // extra fields ("SYNTERM" and "WORDTERM") for better scoring.
-                    String word = doc.getValues(F_WORD)[0];
-                    String[] synonyms = doc.getValues(F_SYN);
-                    Set<String> synonymSet = new HashSet<String>();
-                    for (String syn : synonyms) {
-                        if (!syn.equals(word)) {
-                            synonymSet.add(syn);
-                        }
+                if (IS_MIGRATING_FIRSTNAME_INDEX) {
+                    Document newDoc = generateFirstNameDoc(doc);
+                    if (newDoc != null) {
+                        writer.addDocument(newDoc);
                     }
-                    Document newDoc = generateDocument(word, synonymSet);
-                    writer.addDocument(newDoc);
                 } else {
                     writer.addDocument(doc);
                 }
-                count++;
             }
             System.out.println("count: " + count);
 
-            reader.close();
             writer.commit();
             writer.close();
             outputDir.close();
@@ -207,6 +185,33 @@ public class IndexMigrator {
         return 0;
     }
 
+    private Document generateFirstNameDoc(Document doc) {
+
+        String name = doc.get("name");//$NON-NLS-1$
+        String country = doc.get("country");//$NON-NLS-1$
+        String gender = doc.get("gender");//$NON-NLS-1$
+
+        List<String[]> variants = nameMap.get(name);
+        if (variants != null) {
+            // see if the current doc is duplicated
+            for (String[] tuple : variants) {
+                if ((country == null && tuple[0] == null || country != null && country.equals(tuple[0]))//
+                        && (gender == null && tuple[1] == null || gender != null && gender.equals(tuple[1]))) {
+                    return null;
+                }
+            }
+            // return null;
+        } else {
+            variants = new ArrayList<String[]>();
+        }
+        variants.add(new String[] { country, gender });
+        nameMap.put(name, variants);
+
+        count++;
+        // TODO Auto-generated method stub
+        return generateDocument(name, country, gender);
+    }
+
     /**
      * generate a document.
      *
@@ -214,28 +219,29 @@ public class IndexMigrator {
      * @param synonyms
      * @return
      */
-    private Document generateDocument(String word, Set<String> synonyms) {
+    private Document generateDocument(String name, String country, String gender) {
+        name = name.trim();
+        Document doc = new Document();
         FieldType ft = new FieldType();
         ft.setStored(true);
         ft.setIndexed(true);
         ft.setOmitNorms(true);
         ft.freeze();
 
-        String tempWord = word.trim();
-        Document doc = new Document();
-
-        Field wordField = new Field(F_WORD, tempWord, ft);
+        Field wordField = new Field("name", name, ft);
         doc.add(wordField);
-        Field wordTermField = new StringField(F_WORDTERM, tempWord.toLowerCase(), Field.Store.NO);
+
+        Field wordTermField = new StringField("nameterm", name.toLowerCase(), Field.Store.NO);
         doc.add(wordTermField);
-        for (String syn : synonyms) {
-            if (syn != null) {
-                syn = syn.trim();
-                if (syn.length() > 0 && !syn.equals(tempWord)) {
-                    doc.add(new Field(F_SYN, syn, ft));
-                    doc.add(new StringField(F_SYNTERM, syn.toLowerCase(), Field.Store.NO));
-                }
-            }
+
+        if (country != null) {
+            Field countryField = new StringField("country", country, Field.Store.YES);
+            doc.add(countryField);
+        }
+
+        if (gender != null) {
+            Field genderField = new StringField("gender", gender, Field.Store.YES);
+            doc.add(genderField);
         }
         return doc;
     }
@@ -249,7 +255,11 @@ public class IndexMigrator {
      */
     private boolean isLuceneIndexFile(File file) {
         String fileName = file.getName();
-        if (fileName.startsWith("segments") || "write.lock".equals(fileName) || fileName.startsWith("_")) {
+        if (fileName.startsWith("segments") || "write.lock".equals(fileName) || fileName.endsWith(".cfs")
+                || fileName.endsWith(".fnm") || fileName.endsWith(".fdx") || fileName.endsWith(".fdt")
+                || fileName.endsWith(".tis") || fileName.endsWith(".tii") || fileName.endsWith(".frq")
+                || fileName.endsWith(".prx") || fileName.endsWith(".nrm") || fileName.endsWith(".tvx")
+                || fileName.endsWith(".tvd") || fileName.endsWith(".tvf") || fileName.endsWith(".del")) {
             return true;
         }
         return false;
@@ -271,32 +281,27 @@ public class IndexMigrator {
                 if (!targetFolder.exists()) {
                     targetFolder.mkdirs();
                 }
-                File targetFile = new File(targetFolder + "/" + source.getName());
-                if (!targetFile.exists()) {
-                    fos = new FileOutputStream(targetFile);
-                    byte[] buf = new byte[1024];
-                    int i = 0;
-                    while ((i = fis.read(buf)) != -1) {
-                        fos.write(buf, 0, i);
-                    }
+                fos = new FileOutputStream(targetFolder + "/" + source.getName());
+                byte[] buf = new byte[1024];
+                int i = 0;
+                while ((i = fis.read(buf)) != -1) {
+                    fos.write(buf, 0, i);
                 }
             } finally {
                 try {
                     fis.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
                 try {
                     fos.close();
                 } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
         }
     }
 
     public static void main(String[] args) throws IOException {
-        IndexMigrator migration = new IndexMigrator();
+        FirstNameIndexMigrator migration = new FirstNameIndexMigrator();
         if (args.length > 0) {
             String inputPath = args[0];
             migration.setInputPath(inputPath);

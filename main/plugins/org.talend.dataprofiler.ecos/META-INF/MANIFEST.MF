@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ecos Plug-in
 Bundle-SymbolicName: org.talend.dataprofiler.ecos
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Activator: org.talend.dataprofiler.ecos.EcosPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.discovery,

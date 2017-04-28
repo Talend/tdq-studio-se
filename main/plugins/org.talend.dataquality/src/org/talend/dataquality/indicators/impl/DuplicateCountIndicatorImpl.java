@@ -36,8 +36,8 @@ import org.talend.utils.sql.ResultSetUtils;
  * <p>
  * The following features are implemented:
  * <ul>
- * <li>{@link org.talend.dataquality.indicators.impl.DuplicateCountIndicatorImpl#getDuplicateValueCount <em>Duplicate
- * Value Count</em>}</li>
+ * <li>{@link org.talend.dataquality.indicators.impl.DuplicateCountIndicatorImpl#getDuplicateValueCount <em>Duplicate Value Count
+ * </em>}</li>
  * </ul>
  * </p>
  *
@@ -316,7 +316,7 @@ public class DuplicateCountIndicatorImpl extends IndicatorImpl implements Duplic
             List<Object> valueObject = new ArrayList<Object>();
 
             for (int i = 0; i < columnSize; i++) {
-                Object object = ResultSetUtils.getObject(resultSet, i + 1);
+                Object object = ResultSetUtils.getBigObject(resultSet, i + 1);
 
                 // TDQ-9455 msjian: if the value is null, we show it "<null>" in the drill down editor
                 valueObject.add(object == null ? PluginConstant.NULL_STRING : object);

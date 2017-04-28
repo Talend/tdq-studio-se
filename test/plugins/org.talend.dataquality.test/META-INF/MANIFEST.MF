@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: All tests for TQD Plug-in
 Bundle-SymbolicName: org.talend.dataquality.test
-Bundle-Version: 6.3.1.qualifier
+Bundle-Version: 6.3.2.qualifier
 Bundle-Vendor: .Talend SA.
 Fragment-Host: org.talend.dataquality
 Require-Bundle: org.talend.testutils,

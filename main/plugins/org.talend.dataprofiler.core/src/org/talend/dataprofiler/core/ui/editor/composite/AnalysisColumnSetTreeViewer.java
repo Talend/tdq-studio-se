@@ -67,7 +67,6 @@ import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.dataquality.helpers.MetadataHelper;
 import org.talend.dataquality.indicators.DataminingType;
 import org.talend.dq.helper.RepositoryNodeHelper;
-import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.ColumnSetRepNode;
 import org.talend.dq.nodes.DBColumnRepNode;
 import org.talend.dq.nodes.DBTableRepNode;
@@ -646,7 +645,7 @@ public class AnalysisColumnSetTreeViewer extends AbstractColumnDropTree {
      * 
      * @return the analysis
      */
-    public AnalysisRepNode getAnalysisNode() {
+    public IRepositoryNode getAnalysisNode() {
         return this.masterPage.getCurrentRepNode();
     }
 
@@ -792,7 +791,7 @@ public class AnalysisColumnSetTreeViewer extends AbstractColumnDropTree {
         }
 
         @Override
-        protected AnalysisRepNode getAnalysis2() {
+        protected IRepositoryNode getAnalysis2() {
             return getAnalysisNode();
         }
 

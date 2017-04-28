@@ -51,6 +51,7 @@ import org.talend.dataprofiler.core.ui.editor.preview.ColumnIndicatorUnit;
 import org.talend.dataprofiler.core.ui.editor.preview.IndicatorUnit;
 import org.talend.dataprofiler.core.ui.views.DQRespositoryView;
 import org.talend.dataprofiler.core.ui.views.RespositoryDetailView;
+import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.domain.pattern.Pattern;
 import org.talend.dataquality.indicators.FrequencyIndicator;
 import org.talend.dataquality.indicators.Indicator;
@@ -62,6 +63,7 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.helper.resourcehelper.ResourceFileMap;
 import org.talend.dq.nodes.AnalysisRepNode;
+import org.talend.dq.nodes.ReportAnalysisRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import orgomg.cwm.objectmodel.core.Expression;
@@ -198,7 +200,14 @@ public abstract class ModelElementTreeMenuProvider {
                             IJobService.class);
                     if (service != null) {
                         service.setIndicator(getSelectedIndicator(tree.getSelection()));
-                        service.setAnalysis(getAnalysis2().getAnalysis());
+                        IRepositoryNode anaNode = getAnalysis2();
+                        Analysis ana;
+                        if (anaNode instanceof ReportAnalysisRepNode) {
+                            ana = ((ReportAnalysisRepNode) anaNode).getAnalysis();
+                        } else {
+                            ana = ((AnalysisRepNode) anaNode).getAnalysis();
+                        }
+                        service.setAnalysis(ana);
                         service.executeJob();
                     }
                 }
@@ -237,7 +246,7 @@ public abstract class ModelElementTreeMenuProvider {
             public void widgetSelected(SelectionEvent e) {
                 TreeItem[] selection = tree.getSelection();
                 if (selection.length > 0) {
-                    AnalysisRepNode ana = getAnalysis2();
+                    IRepositoryNode ana = getAnalysis2();
                     // MOD qiongli 2011-1-12 feature 16796 :handle the case of ModelElement name is null
                     (new TdAddTaskAction(tree.getShell(), ana)).run();
                 }
@@ -272,7 +281,7 @@ public abstract class ModelElementTreeMenuProvider {
      */
     protected abstract void removeSelectedElements2(Tree tree);
 
-    protected abstract AnalysisRepNode getAnalysis2();
+    protected abstract IRepositoryNode getAnalysis2();
 
     private void editPattern(Tree tree) {
         TreeItem[] selection = tree.getSelection();

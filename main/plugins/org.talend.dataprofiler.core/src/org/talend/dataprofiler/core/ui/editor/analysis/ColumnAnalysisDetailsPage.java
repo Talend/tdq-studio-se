@@ -1021,8 +1021,12 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
                     changeExecuteLanguageToJava(false);
                     execLang = execCombo1.getText();
                     return;
-                } else if (ExecutionLanguage.JAVA.equals(currentLanguage) && checkSqlEnginIndicatorExist() && isRunWithSampleData) {
-                    MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlIndicatorExistWarning")); //$NON-NLS-1$
+                } else if (ExecutionLanguage.JAVA.equals(currentLanguage) && checkSqlEnginIndicatorExist()) {
+                    if (isRunWithSampleData) {
+                        MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlIndicatorExistWarning")); //$NON-NLS-1$
+                    } else {
+                        MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlIndicatorExistWarning2")); //$NON-NLS-1$
+                    }
                     changeExecuteLanguageToSql(true);
                     execLang = execCombo1.getText();
                     return;

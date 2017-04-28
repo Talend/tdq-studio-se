@@ -87,9 +87,11 @@ public final class ColumnAnalysisSqlParallelExecutor extends ColumnAnalysisSqlEx
 
             synchronized (schemata) {
                 // set the connection's catalog
-                String catalogName = getCatalogOrSchemaName(indicator.getAnalyzedElement());
-                if (catalogName != null) { // check whether null argument can be given
-                    changeCatalog(catalogName, connection);
+                if (belongToSameSchemata(indicator.getAnalyzedElement())) {
+                    String catalogName = getCatalogOrSchemaName(indicator.getAnalyzedElement());
+                    if (catalogName != null) { // check whether null argument can be given
+                        changeCatalog(catalogName, connection);
+                    }
                 }
             }
 

@@ -48,6 +48,7 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -64,6 +65,7 @@ import org.talend.dataprofiler.core.ui.utils.RepNodeUtils;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
 import org.talend.dataprofiler.core.ui.views.DQRespositoryView;
 import org.talend.dataprofiler.core.ui.views.resources.IRepositoryObjectCRUDAction;
+import org.talend.dataprofiler.core.ui.views.resources.RemoteRepositoryObjectCRUD;
 import org.talend.dataquality.properties.TDQReportItem;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
@@ -219,6 +221,21 @@ public class DQDeleteAction extends DeleteAction {
         for (Object obj : deleteElements) {
             RepositoryNode node = (RepositoryNode) obj;
             selectedNodes.add(node);
+
+            // TDQ-12034: reload the delete node to make sure when check the dependency correct.
+            if (repositoryObjectCRUD instanceof RemoteRepositoryObjectCRUD) {
+                // TDQ-13357: fix NPE, because for ReportFileRepNode, repNode.getObject() == null
+                if (node.getObject() != null) {
+                    try {
+                        ProxyRepositoryFactory.getInstance().reload(node.getObject().getProperty());
+                        IFile objFile = PropertyHelper.getItemFile(node.getObject().getProperty());
+                        objFile.refreshLocal(IResource.DEPTH_INFINITE, null);
+                    } catch (Exception e1) {
+                        log.error(e1, e1);
+                    }
+                }
+            }
+            // TDQ-12034~
         }
         if (DQRepositoryNode.isOnFilterring()) {
             setPreviousFilteredNode(selectedNodes.get(0));
@@ -618,8 +635,26 @@ public class DQDeleteAction extends DeleteAction {
         if (tempNode != null) {
             // logcial delete dependcy element.
             if (tempNode.getObject() != null) {
-                CorePlugin.getDefault().closeEditorIfOpened(tempNode.getObject().getProperty().getItem());
+                // TDQ-13184 msjian: because when item is opening, when close it we will do unlock, so we make sure we do unlock
+                // only one time here(else for mode: ask user will popup twice unlock confirm when select no)
+                if (CorePlugin.getDefault().itemIsOpening(tempNode.getObject().getProperty().getItem())) {
+                    CorePlugin.getDefault().closeEditorIfOpened(tempNode.getObject().getProperty().getItem());
+                } else {
+                    // TDQ-12207 msjian: unlock the object which is locked by user only, then we will unify the logic to the same
+                    // as above closeEditorIfOpened: alway will do unlock.
+                    if (ProxyRepositoryFactory.getInstance().getStatus(tempNode.getObject()) == ERepositoryStatus.LOCK_BY_USER) {
+                        try {
+                            ProxyRepositoryFactory.getInstance().unlock(tempNode.getObject());
+                        } catch (PersistenceException e) {
+                            log.error(e, e);
+                        } catch (LoginException e) {
+                            log.error(e, e);
+                        }
+                    }
+                    // TDQ-12207~
+                }
             }
+
             // need to pass the tempNode parameter at here for logical delete dependce.
             excuteSuperRun(tempNode, tempNode.getParent());
             CorePlugin.getDefault().refreshDQView(RepositoryNodeHelper.getRecycleBinRepNode());
