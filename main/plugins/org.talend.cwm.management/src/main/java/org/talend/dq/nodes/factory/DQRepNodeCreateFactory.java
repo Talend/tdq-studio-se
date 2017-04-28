@@ -44,7 +44,7 @@ public class DQRepNodeCreateFactory {
         Item databaseItem = viewObject.getProperty().getItem();
         DatabaseConnection dbConnection = (DatabaseConnection) ((DatabaseConnectionItem) databaseItem).getConnection();
         SupportDBUrlType dbTypeByKey = SupportDBUrlType.getDBTypeByKey(dbConnection.getDatabaseType());
-        switch (dbTypeByKey) {
+        switch (dbTypeByKey == null ? SupportDBUrlType.MYSQLDEFAULTURL : dbTypeByKey) {
         case SYBASEDEFAULTURL:
             return new DBSybaseCatalogRepNode(viewObject, parent, type, inWhichProject);
         default:

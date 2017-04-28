@@ -37,6 +37,7 @@ import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.TDQItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -252,6 +253,10 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
             }
             if (ERepositoryObjectType.METADATA_CONNECTIONS.getKey().equals(key)) {
                 result = new ConnectionItemEditorInput(repNode);
+                Connection connection = ((ConnectionItem) item).getConnection();
+                if (connection == null || connection.getDataPackage().size() == 0) {
+                    throw ExceptionFactory.getInstance().createBusinessException(repViewObj);
+                }
                 editorID = ConnectionEditor.class.getName();
             } else if (ERepositoryObjectType.TDQ_ANALYSIS_ELEMENT.getKey().equals(key)) {
                 result = new AnalysisItemEditorInput(repNode);
