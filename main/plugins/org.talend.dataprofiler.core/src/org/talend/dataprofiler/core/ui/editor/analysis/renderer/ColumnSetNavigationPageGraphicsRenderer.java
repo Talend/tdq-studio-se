@@ -45,13 +45,23 @@ public class ColumnSetNavigationPageGraphicsRenderer extends AbstractPageControl
     private boolean keepLeft = false;
 
     public ColumnSetNavigationPageGraphicsRenderer(Composite parent, int style, PageableController controller) {
-        this(parent, style, controller, BlueNavigationPageGraphicsConfigurator.getInstance());
+        this(parent, style, controller, BlueNavigationPageGraphicsConfigurator.getInstance(), false);
+    }
+
+    public ColumnSetNavigationPageGraphicsRenderer(Composite parent, int style, PageableController controller, boolean keepLeft) {
+        this(parent, style, controller, BlueNavigationPageGraphicsConfigurator.getInstance(), keepLeft);
     }
 
     public ColumnSetNavigationPageGraphicsRenderer(Composite parent, int style, PageableController controller,
             INavigationPageGraphicsConfigurator configurator) {
+        this(parent, style, controller, configurator, false);
+    }
+
+    public ColumnSetNavigationPageGraphicsRenderer(Composite parent, int style, PageableController controller,
+            INavigationPageGraphicsConfigurator configurator, boolean keepLeft) {
         super(parent, style, controller, PageableController.DEFAULT_PAGE_SIZE, null, false);
         this.configurator = configurator;
+        this.keepLeft = keepLeft;
         createUI(this);
         refreshEnabled(controller);
     }
@@ -177,7 +187,14 @@ public class ColumnSetNavigationPageGraphicsRenderer extends AbstractPageControl
 
     public void sortChanged(String oldPopertyName, String propertyName, int oldSortDirection, int sortDirection,
             PageableController paginationController) {
-        // Do nothing
+        if (oldPopertyName != null && oldPopertyName == propertyName && oldSortDirection != sortDirection) {
+            // convert sort direction
+        } else if (SWT.UP == sortDirection) {
+            // asc case
+        } else {
+            // desc case
+        }
+        paginationController.reset();
     }
 
     private void refreshEnabled(PageableController controller) {

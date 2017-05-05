@@ -41,7 +41,6 @@ import org.eclipse.nebula.widgets.pagination.PageLoaderStrategyHelper;
 import org.eclipse.nebula.widgets.pagination.PageableController;
 import org.eclipse.nebula.widgets.pagination.collections.PageResult;
 import org.eclipse.nebula.widgets.pagination.collections.PageResultContentProvider;
-import org.eclipse.nebula.widgets.pagination.renderers.navigation.ResultAndNavigationPageGraphicsRenderer;
 import org.eclipse.nebula.widgets.pagination.table.SortTableColumnSelectionListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseEvent;
@@ -502,12 +501,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
         buttonComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
         buttonComposite.setLayout(new GridLayout());
 
-        if (withPageNumberButton) {
-            resultAndPageButtonsDecorator = new ResultAndNavigationPageGraphicsRenderer(buttonComposite, SWT.NONE, controller);
-        } else {
-            resultAndPageButtonsDecorator = new ColumnSetNavigationPageGraphicsRenderer(buttonComposite, SWT.NONE, controller);
-
-        }
+        resultAndPageButtonsDecorator = new ColumnSetNavigationPageGraphicsRenderer(buttonComposite, SWT.NONE, controller,
+                withPageNumberButton);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         resultAndPageButtonsDecorator.setLayoutData(gridData);
         controller.reset();
