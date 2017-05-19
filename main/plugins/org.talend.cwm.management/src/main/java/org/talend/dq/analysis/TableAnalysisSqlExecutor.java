@@ -429,10 +429,8 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
     private boolean executeIndicator(Indicator indicator, Connection connection) {
         // set the connection's catalog
         String catalogName = getCatalogOrSchemaName(indicator.getAnalyzedElement());
-        if (needChangeCatalog(connection)) {
-            if (catalogName != null) { // check whether null argument can be given
-                changeCatalog(catalogName, connection);
-            }
+        if (catalogName != null && needChangeCatalog(connection)) { // check whether null argument can be given
+            changeCatalog(catalogName, connection);
         }
 
         Expression query = dbms().getInstantiatedExpression(indicator);

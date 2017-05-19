@@ -598,7 +598,7 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
     /**
      * return true if the connection need to set the catalog, otherwise return false.
      * <p>
-     * The list of database connection which need not to change the catalog:
+     * The list of databases which don't need to change the catalog:
      * <p>
      * Odbc Mssql
      * <p>
