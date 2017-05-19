@@ -1146,9 +1146,11 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 continue;
             }
             // set the connection's catalog
-            String catalogName = getCatalogOrSchemaName(indicator.getAnalyzedElement());
-            if (catalogName != null) { // check whether null argument can be given
-                changeCatalog(catalogName, connection);
+            if (needChangeCatalog(connection)) {
+                String catalogName = getCatalogOrSchemaName(indicator.getAnalyzedElement());
+                if (catalogName != null) { // check whether null argument can be given
+                    changeCatalog(catalogName, connection);
+                }
             }
 
             Expression query = dbms().getInstantiatedExpression(indicator);
@@ -1469,7 +1471,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         List<Object[]> myResultSet = new ArrayList<Object[]>();
         Statement statement = null;
         try {
-            if (catalogName != null) { // check whether null argument can be given
+            if (catalogName != null && needChangeCatalog(connection)) { // check whether null argument can be given
                 changeCatalog(catalogName, connection);
             }
             // MOD xqliu 2009-02-09 bug 6237

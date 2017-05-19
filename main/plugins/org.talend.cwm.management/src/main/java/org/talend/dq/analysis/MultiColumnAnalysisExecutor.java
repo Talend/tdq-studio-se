@@ -250,7 +250,7 @@ public class MultiColumnAnalysisExecutor extends ColumnAnalysisSqlExecutor {
             for (Indicator indicator : indicators) {
                 indicator.prepare();
                 // set the connection's catalog
-                if (this.catalogOrSchema != null) { // check whether null argument can be given
+                if (this.catalogOrSchema != null && needChangeCatalog(connection)) { // check whether null argument can be given
                     changeCatalog(this.catalogOrSchema, connection);
                 }
                 Expression query = dbms().getInstantiatedExpression(indicator);

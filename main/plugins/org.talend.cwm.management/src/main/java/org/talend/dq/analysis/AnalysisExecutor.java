@@ -31,6 +31,7 @@ import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.management.i18n.Messages;
+import org.talend.daikon.exception.TalendRuntimeException;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.ExecutionInformations;
@@ -594,17 +595,57 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
         // TDQ-8202~
     }
 
-    protected boolean changeCatalog(String catalogName, java.sql.Connection connection) {
+    /**
+     * return true if the connection need to set the catalog, otherwise return false.
+     * <p>
+     * The list of database connection which need not to change the catalog:
+     * <p>
+     * Odbc Mssql
+     * <p>
+     * Odbc Oracle
+     * <p>
+     * Odbc Progress
+     * <p>
+     * Odbc Teradata
+     * <p>
+     * Exasol
+     * <p>
+     * Hive
+     * <p>
+     * Mysql: because there will generate the sql statement with fully qualified name before the table name,so no need to change
+     * the catalog of the connection here
+     * <p>
+     * 
+     * @return need to change the catalog or not
+     */
+    protected boolean needChangeCatalog(java.sql.Connection connection) {
+        boolean result = true;
         try {
             DatabaseMetaData metadata = ExtractMetaDataUtils.getInstance().getConnectionMetadata(connection);
-            if (!(ConnectionUtils.isOdbcMssql(connection) || ConnectionUtils.isOdbcOracle(connection)
+            result = !(ConnectionUtils.isOdbcMssql(connection) || ConnectionUtils.isOdbcOracle(connection)
                     || ConnectionUtils.isOdbcProgress(connection) || ConnectionUtils.isOdbcTeradata(connection)
-                    || org.talend.utils.sql.ConnectionUtils.isExasol(metadata) || ExtractMetaDataUtils.getInstance()
-                    .isHiveConnection(connection))) {
-                connection.setCatalog(catalogName);
-            }
+                    || org.talend.utils.sql.ConnectionUtils.isExasol(metadata)
+                    || ExtractMetaDataUtils.getInstance().isHiveConnection(connection) || ConnectionUtils.isMysql(connection));
+        } catch (TalendRuntimeException e) {
+            traceError(e.getMessage());
+            result = Boolean.FALSE;
+        } catch (SQLException e) {
+            traceError(e.getMessage());
+            result = Boolean.FALSE;
+        }
+        return result;
+    }
+
+    /**
+     * change the connection's catalog, need to call needChangeCatalog() before call this method
+     * 
+     * @return true if change catalog successful; false if failed to change catalog
+     */
+    protected boolean changeCatalog(String catalogName, java.sql.Connection connection) {
+        try {
+            connection.setCatalog(catalogName);
             return true;
-        } catch (RuntimeException e) {
+        } catch (TalendRuntimeException e) {
             traceError(Messages.getString("ColumnAnalysisSqlExecutor.ERRORWHENSETCATALOG", catalogName, e.getMessage()));//$NON-NLS-1$
             return Boolean.FALSE;
         } catch (SQLException e) {
@@ -612,5 +653,4 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
             return Boolean.FALSE;
         }
     }
-
 }

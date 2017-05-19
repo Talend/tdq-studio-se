@@ -331,7 +331,7 @@ public class RowMatchingAnalysisExecutor extends ColumnAnalysisSqlExecutor {
                     continue; // do not evaluate this indicator
                 }
                 // set the connection's catalog
-                if (this.catalogOrSchema != null) { // check whether null argument can be given
+                if (this.catalogOrSchema != null && needChangeCatalog(connection)) { // check whether null argument can be given
                     changeCatalog(this.catalogOrSchema, connection);
                 }
                 Expression query = dbms().getInstantiatedExpression(indicator);
