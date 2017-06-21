@@ -79,6 +79,7 @@ import org.talend.dataquality.properties.TDQPatternItem;
 import org.talend.dataquality.properties.TDQReportItem;
 import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
+import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
@@ -86,7 +87,6 @@ import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.RecycleBinRepNode;
 import org.talend.dq.nodes.ReportFileRepNode;
-import org.talend.dq.writer.EMFSharedResources;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
@@ -244,7 +244,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
 
                 ModelElement modelElement = PropertyHelper.getModelElement(repViewObj.getProperty());
                 if (modelElement.eIsProxy() && repNode != null) {
-                    modelElement = EMFSharedResources.getInstance().reloadModelElementInNode(repNode);
+                    modelElement = (ModelElement) EObjectHelper.resolveObject(modelElement);
                     item = repViewObj.getProperty().getItem();
                 }
                 if (modelElement == null || modelElement.eResource() == null) {
