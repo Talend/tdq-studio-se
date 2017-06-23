@@ -270,13 +270,13 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
      * @see org.talend.dataprofiler.core.ui.editor.analysis.AbstractAnalysisMetadataPage#checkSqlEnginIndicatorExist()
      */
     @Override
-    protected boolean checkSqlEnginIndicatorExist() {
+    protected boolean checkSqlEngineIndicatorExist() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
             if (modelElementIndicator.contains(IndicatorEnum.SqlPatternMatchingIndicatorEnum)) {
                 return true;
             }
         }
-        return super.checkSqlEnginIndicatorExist();
+        return super.checkSqlEngineIndicatorExist();
     }
 
     /**
@@ -790,7 +790,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
      * @return whether have a datePatternFreqIndicator in the "analyzed Columns"
      */
     @Override
-    protected boolean includeJavaEnginIndicator() {
+    protected boolean includeJavaEngineIndicator() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
             if (modelElementIndicator.containsAny(IndicatorEnum.getJavaIndicatorsEnum())) {
                 return true;
@@ -886,7 +886,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
         Boolean isSqlSelected = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
                 getCurrentModelElement());
         if (isRunWithSampleData) {
-            if (currentModelIsSqlEngin()) {
+            if (currentModelIsSqlEngine()) {
                 changeExecuteLanguageToJava(false);
                 if (!isSqlSelected) {
                     TaggedValueHelper.setTaggedValue(getCurrentModelElement(), TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
@@ -1016,12 +1016,12 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
                 // MOD zshen 11104 2010-01-27: when have a datePatternFreqIndicator in the
                 // "analyzed Columns",ExecutionLanguage only is Java.
                 ExecutionLanguage currentLanguage = ExecutionLanguage.get(execLang);
-                if (ExecutionLanguage.SQL.equals(currentLanguage) && includeJavaEnginIndicator()) {
+                if (ExecutionLanguage.SQL.equals(currentLanguage) && includeJavaEngineIndicator()) {
                     MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning")); //$NON-NLS-1$
                     changeExecuteLanguageToJava(false);
                     execLang = execCombo1.getText();
                     return;
-                } else if (ExecutionLanguage.JAVA.equals(currentLanguage) && checkSqlEnginIndicatorExist()) {
+                } else if (ExecutionLanguage.JAVA.equals(currentLanguage) && checkSqlEngineIndicatorExist()) {
                     if (isRunWithSampleData) {
                         MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlIndicatorExistWarning")); //$NON-NLS-1$
                     } else {

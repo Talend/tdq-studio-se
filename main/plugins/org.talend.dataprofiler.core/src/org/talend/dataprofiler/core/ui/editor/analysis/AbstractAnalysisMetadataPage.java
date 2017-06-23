@@ -927,7 +927,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
         if (this.execCombo == null) {
             return;
         }
-        if (currentModelIsSqlEngin()) {
+        if (currentModelIsSqlEngine()) {
 
             int i = 0;
             for (ExecutionLanguage language : ExecutionLanguage.VALUES) {
@@ -962,7 +962,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
         }
     }
 
-    protected boolean includeJavaEnginIndicator() {
+    protected boolean includeJavaEngineIndicator() {
         // only needed in column and column set master page
         return false;
     }
@@ -1035,28 +1035,36 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
              */
             @Override
             public void widgetSelected(SelectionEvent e) {
+                Boolean isSqlSelected = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
+                        getCurrentModelElement());
                 isRunWithSampleData = ((Button) e.getSource()).getSelection();
-                if (isRunWithSampleData && checkSqlEnginIndicatorExist()) {
+                if (isRunWithSampleData && checkSqlEngineIndicatorExist()) {
                     MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlIndicatorExistWarning")); //$NON-NLS-1$
                     runWithSampleBtn.setSelection(!isRunWithSampleData);
                     isRunWithSampleData = false;
                     return;
-                } else if (includeJavaEnginIndicator()) {
-                    MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning")); //$NON-NLS-1$
+                } else if (!isRunWithSampleData && isSqlSelected && includeJavaEngineIndicator()) {
+                    MessageUI.openWarning(getNonJavaIndicatorMessage());
                     runWithSampleBtn.setSelection(!isRunWithSampleData);
                     isRunWithSampleData = true;
                     return;
                 }
                 doCheckOption();
                 AbstractAnalysisMetadataPage.this.setDirty(true);
-
             }
-
         });
     }
 
-    protected boolean checkSqlEnginIndicatorExist() {
+    /**
+     * Get message why the status of checkbox can not be changed
+     * 
+     * @return
+     */
+    protected String getNonJavaIndicatorMessage() {
+        return DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning"); //$NON-NLS-1$
+    }
 
+    protected boolean checkSqlEngineIndicatorExist() {
         return false;
     }
 
@@ -1065,11 +1073,11 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
     }
 
     /**
-     * DOC zshen Comment method "currentIsSqlEngin".
+     * Judge current execute engine is sql mode
      * 
      * @return
      */
-    protected boolean currentModelIsSqlEngin() {
+    protected boolean currentModelIsSqlEngine() {
         return ExecutionLanguage.SQL.getLiteral().equals(this.execLang);
     }
 
@@ -1635,7 +1643,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
             return;
         }
 
-        if (!currentModelIsSqlEngin()) {
+        if (!currentModelIsSqlEngine()) {
             int i = 0;
             for (ExecutionLanguage language : ExecutionLanguage.VALUES) {
                 if (language.compareTo(ExecutionLanguage.SQL) == 0 && execCombo.getSelectionIndex() != i) {
