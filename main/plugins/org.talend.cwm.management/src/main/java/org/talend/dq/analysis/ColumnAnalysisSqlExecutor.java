@@ -39,6 +39,7 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.database.conn.ConnParameterKeys;
+import org.talend.core.hadoop.repository.HadoopRepositoryUtil;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -939,7 +940,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
 
         if (count == 0) {
             // then use 0 to fill the query
-            return dbms().fillGenericQueryWithColumnTableLimitOffset(sqlExpression.getBody(), colName, table, "0", "0", "0");
+            return dbms().fillGenericQueryWithColumnTableLimitOffset(sqlExpression.getBody(), colName, table, "0", "0", "0"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
 
         Long midleCount = getOffsetInLimit(indicator, count);
@@ -1395,7 +1396,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         Package schema = super.schemata.get(analyzedElement);
         if (schema == null) {
             if (!isSchemataProxy()) {
-                log.error(Messages.getString("ColumnAnalysisSqlExecutor.NOSCHEMAFOUNDFORCOLUMN") + " " + ((analyzedElement != null) ? analyzedElement.getName() : "Unknow column"));//$NON-NLS-1$  //$NON-NLS-2$  
+                log.error(Messages.getString("ColumnAnalysisSqlExecutor.NOSCHEMAFOUNDFORCOLUMN") + " " + ((analyzedElement != null) ? analyzedElement.getName() : "Unknow column"));//$NON-NLS-1$  //$NON-NLS-2$ //$NON-NLS-3$  
             }
             return null;
         }
@@ -1546,6 +1547,23 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 if (HiveServerVersionInfo.HIVE_SERVER_1.getKey().equals(hiveVersion)) {
                     return false;
                 }
+
+                // TDQ-13909: when run Hive on Spark not support Parallel
+                // TODO: if we have a new hive on spark envirement and test profiling run well, we can remove this part
+                String jdbcProperties = dbConn.getParameters().get(ConnParameterKeys.CONN_PARA_KEY_HIVE_JDBC_PROPERTIES);
+                List<Map<String, Object>> hiveJDBCPropertiesList = HadoopRepositoryUtil.getHadoopPropertiesList(jdbcProperties);
+                if (!hiveJDBCPropertiesList.isEmpty()) {
+                    List keyList = new ArrayList();
+                    List valueList = new ArrayList();
+                    for (Map<String, Object> propertyMap : hiveJDBCPropertiesList) {
+                        keyList.add(propertyMap.get("PROPERTY")); //$NON-NLS-1$
+                        valueList.add(propertyMap.get("VALUE")); //$NON-NLS-1$
+                    }
+                    if (keyList.contains("hive.execution.engine") && valueList.contains("spark")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        return false;
+                    }
+                }
+                // TDQ-13909~
                 return true;
             }
         } catch (SQLException e) {
