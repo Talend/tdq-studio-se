@@ -278,8 +278,8 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     protected boolean checkSqlEngineIndicatorExist() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
             if (modelElementIndicator.contains(IndicatorEnum.SqlPatternMatchingIndicatorEnum)
-                    || modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum)
-                    && searchJUDI(modelElementIndicator, false)) {
+                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && searchJUDI(
+                            modelElementIndicator, false))) {
                 return true;
             }
         }
@@ -800,8 +800,8 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     protected boolean includeJavaEngineIndicator() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
             if (modelElementIndicator.containsAny(IndicatorEnum.getJavaIndicatorsEnum())
-                    || modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum)
-                    && searchJUDI(modelElementIndicator, true)) {
+                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && searchJUDI(
+                            modelElementIndicator, true))) {
                 return true;
             }
         }
