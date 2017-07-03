@@ -67,6 +67,7 @@ import org.talend.dataprofiler.core.model.ModelElementIndicator;
 import org.talend.dataprofiler.core.model.dynamic.DynamicIndicatorModel;
 import org.talend.dataprofiler.core.ui.editor.composite.AbstractColumnDropTree;
 import org.talend.dataprofiler.core.ui.editor.composite.AnalysisColumnTreeViewer;
+import org.talend.dataprofiler.core.ui.editor.preview.IndicatorUnit;
 import org.talend.dataprofiler.core.ui.events.EventEnum;
 import org.talend.dataprofiler.core.ui.events.EventManager;
 import org.talend.dataprofiler.core.ui.pref.EditorPreferencePage;
@@ -85,6 +86,8 @@ import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.mapdb.MapDBManager;
 import org.talend.dataquality.indicators.sql.UserDefIndicator;
 import org.talend.dq.analysis.ModelElementAnalysisHandler;
+import org.talend.dq.dbms.DbmsLanguage;
+import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.UDIHelper;
@@ -121,6 +124,8 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     private UIPagination uiPagination;
 
     private int lastTimePageNumber = 1;
+
+    private boolean isExistMappingExpr = true;
 
     public ColumnAnalysisDetailsPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -270,13 +275,15 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
      * @see org.talend.dataprofiler.core.ui.editor.analysis.AbstractAnalysisMetadataPage#checkSqlEnginIndicatorExist()
      */
     @Override
-    protected boolean checkSqlEnginIndicatorExist() {
+    protected boolean checkSqlEngineIndicatorExist() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
-            if (modelElementIndicator.contains(IndicatorEnum.SqlPatternMatchingIndicatorEnum)) {
+            if (modelElementIndicator.contains(IndicatorEnum.SqlPatternMatchingIndicatorEnum)
+                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && searchJUDI(
+                            modelElementIndicator, false))) {
                 return true;
             }
         }
-        return super.checkSqlEnginIndicatorExist();
+        return super.checkSqlEngineIndicatorExist();
     }
 
     /**
@@ -785,17 +792,49 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     }
 
     /**
-     * DOC zshen Comment method "includeDatePatternFreqIndicator".
+     * Judge whether there are java indicator exist.
      * 
-     * @return whether have a datePatternFreqIndicator in the "analyzed Columns"
+     * @return whether there are java indicator exist.
      */
     @Override
-    protected boolean includeJavaEnginIndicator() {
+    protected boolean includeJavaEngineIndicator() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
-            if (modelElementIndicator.containsAny(IndicatorEnum.getJavaIndicatorsEnum())) {
+            if (modelElementIndicator.containsAny(IndicatorEnum.getJavaIndicatorsEnum())
+                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && searchJUDI(
+                            modelElementIndicator, true))) {
                 return true;
             }
         }
+        return false;
+    }
+
+    /**
+     * Judge whether there are JUDI or not
+     * 
+     * @param modelElementIndicator
+     * @return
+     */
+    private boolean searchJUDI(ModelElementIndicator modelElementIndicator, boolean isExist) {
+        isExistMappingExpr = true;
+        for (IndicatorUnit indicatorUnit : modelElementIndicator.getIndicatorUnits()) {
+            if (IndicatorEnum.UserDefinedIndicatorEnum == indicatorUnit.getType()
+                    && !UDIHelper.isJavaUDI(indicatorUnit.getIndicator()) ^ isExist) {
+                ExecutionLanguage executionLanguage = ((AnalysisEditor) this.getEditor()).getUIExecuteEngin();
+                DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(this.getCurrentModelElement(),
+                        executionLanguage);
+                if (dbmsLanguage.getExpression(indicatorUnit.getIndicator()) == null) {
+                    // case1:find JUDI exist and isExist=true no mapping sql expression find then return true
+                    // case2:find JUDI not exist and isExist=false no mapping sql expression then return false
+                    isExistMappingExpr = false;
+                    return isExist;
+                }
+                // case3:find JUDI exist and isExist=true mapping sql expression exist then return false
+                // case4:find JUDI not exist isExist=false mapping sql expression exist or not then return true
+                return !isExist;
+            }
+        }
+        // case5:find JUDI exist and isExist=false whatever mapping sql expression exist or not then return false
+        // case6:find JUDI not exist isExist=true whatever mapping sql expression exist or not then return false
         return false;
     }
 
@@ -886,7 +925,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
         Boolean isSqlSelected = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
                 getCurrentModelElement());
         if (isRunWithSampleData) {
-            if (currentModelIsSqlEngin()) {
+            if (currentModelIsSqlEngine()) {
                 changeExecuteLanguageToJava(false);
                 if (!isSqlSelected) {
                     TaggedValueHelper.setTaggedValue(getCurrentModelElement(), TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
@@ -1016,12 +1055,23 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
                 // MOD zshen 11104 2010-01-27: when have a datePatternFreqIndicator in the
                 // "analyzed Columns",ExecutionLanguage only is Java.
                 ExecutionLanguage currentLanguage = ExecutionLanguage.get(execLang);
-                if (ExecutionLanguage.SQL.equals(currentLanguage) && includeJavaEnginIndicator()) {
-                    MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning")); //$NON-NLS-1$
+                if (ExecutionLanguage.SQL.equals(currentLanguage) && includeJavaEngineIndicator()) {
+                    String dialogMessage = "";
+                    if (isExistMappingExpr) {
+                        dialogMessage = DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning");//$NON-NLS-1$
+                    } else {
+                        ExecutionLanguage executionLanguage = ((AnalysisEditor) ColumnAnalysisDetailsPage.this.getEditor())
+                                .getUIExecuteEngin();
+                        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
+                                ColumnAnalysisDetailsPage.this.getCurrentModelElement(), executionLanguage);
+                        dialogMessage = DefaultMessagesImpl.getString(
+                                "ColumnMasterDetailsPage.SqlExprssionNoExistWarning", dbmsLanguage.getDbmsName());;//$NON-NLS-1$
+                    }
+                    MessageUI.openWarning(dialogMessage);
                     changeExecuteLanguageToJava(false);
                     execLang = execCombo1.getText();
                     return;
-                } else if (ExecutionLanguage.JAVA.equals(currentLanguage) && checkSqlEnginIndicatorExist()) {
+                } else if (ExecutionLanguage.JAVA.equals(currentLanguage) && checkSqlEngineIndicatorExist()) {
                     if (isRunWithSampleData) {
                         MessageUI.openWarning(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlIndicatorExistWarning")); //$NON-NLS-1$
                     } else {

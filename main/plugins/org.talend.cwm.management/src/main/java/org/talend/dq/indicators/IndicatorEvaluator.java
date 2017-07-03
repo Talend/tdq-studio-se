@@ -410,7 +410,8 @@ public class IndicatorEvaluator extends Evaluator<String> {
             List<Indicator> indicators = elementToIndicators.get(nextCol);
             List<Indicator> needRemovedInds = new ArrayList<Indicator>();
             for (Indicator ind : indicators) {
-                if (ind instanceof UserDefIndicator && !UDIHelper.isJUDIValid(ind.getIndicatorDefinition())) {
+                if (ind instanceof UserDefIndicator && UDIHelper.isJavaUDI(ind)
+                        && !UDIHelper.isJUDIValid(ind.getIndicatorDefinition())) {
                     invalidUdiNames.add(ind.getName());
                     needRemovedInds.add(ind);
                 }

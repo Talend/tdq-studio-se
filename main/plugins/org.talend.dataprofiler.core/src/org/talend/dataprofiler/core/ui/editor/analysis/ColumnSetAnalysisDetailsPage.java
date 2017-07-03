@@ -848,13 +848,23 @@ public class ColumnSetAnalysisDetailsPage extends AbstractAnalysisMetadataPage i
      * @return
      */
     @Override
-    protected boolean includeJavaEnginIndicator() {
+    protected boolean includeJavaEngineIndicator() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
-            if (modelElementIndicator.contains(IndicatorEnum.DatePatternFreqIndicatorEnum)) {
+            if (modelElementIndicator.contains(IndicatorEnum.RegexpMatchingIndicatorEnum)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.dataprofiler.core.ui.editor.analysis.AbstractAnalysisMetadataPage#getNoNJavaIndiatorMessage()
+     */
+    @Override
+    protected String getNonJavaIndicatorMessage() {
+        return DefaultMessagesImpl.getString("PatternMouseAdapter.noSupportForSqlEngine"); //$NON-NLS-1$
     }
 
     @Override
@@ -967,7 +977,7 @@ public class ColumnSetAnalysisDetailsPage extends AbstractAnalysisMetadataPage i
         Boolean isSqlSelected = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
                 getCurrentModelElement());
         if (isRunWithSampleData) {
-            if (currentModelIsSqlEngin()) {
+            if (currentModelIsSqlEngine()) {
                 changeExecuteLanguageToJava(false);
                 if (!isSqlSelected) {
                     TaggedValueHelper.setTaggedValue(getCurrentModelElement(), TaggedValueHelper.IS_SQL_ENGIN_BEFORE_CHECK,
