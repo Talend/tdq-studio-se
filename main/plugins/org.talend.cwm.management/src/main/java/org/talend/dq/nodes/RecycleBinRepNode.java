@@ -168,10 +168,14 @@ public class RecycleBinRepNode extends DQRepositoryNode {
         DQRepositoryNode currentParentNode = parentNode;
         if (item instanceof FolderItem) {
             itemType = getFolderContentType((FolderItem) item);
-            EList<Item> childrenList = ((FolderItem) item).getChildren();
-            if (item.getState() != null && item.getState().isDeleted()) {
+            FolderItem folderItem = (FolderItem) item;
+            EList<Item> childrenList = folderItem.getChildren();
+            if (childrenList.isEmpty()) {
+                initChildren(folderItem, itemType);
+            }
+            if (folderItem.getState() != null && folderItem.getState().isDeleted()) {
                 // need to display this folder in the recycle bin.
-                Folder folder = new Folder(item.getProperty(), itemType);
+                Folder folder = new Folder(folderItem.getProperty(), itemType);
                 DQRepositoryNode folderNode = null;
                 for (DQRepositoryNode existingFolder : foldersList) {
                     if (existingFolder.getContentType() == null) {
@@ -192,21 +196,18 @@ public class RecycleBinRepNode extends DQRepositoryNode {
                     parentNode.getChildren(false).add(folderNode);
                     folderNode.setParent(parentNode);
                 }
-                if (childrenList.isEmpty()) {
-                    initChildren((FolderItem) item, itemType);
-                }
-                for (Item curItem : new ArrayList<Item>(((FolderItem) item).getChildren())) {
-                    addItemToRecycleBin(folderNode, curItem, foldersList, project);
+
+                for (Item curItem : new ArrayList<Item>(childrenList)) {
+                    if (isAviableFolderForDQ(curItem, itemType)) {
+                        addItemToRecycleBin(folderNode, curItem, foldersList, project);
+                    }
                 }
                 currentParentNode = folderNode;
             } else {
-                // TDQ-6184,When user A delete an item from FolderItem,user B should initialize(get) all children from
-                // the FolderItem in some cases.
-                if (childrenList.isEmpty()) {
-                    initChildren((FolderItem) item, itemType);
-                }
-                for (Item curItem : new ArrayList<Item>(((FolderItem) item).getChildren())) {
-                    addItemToRecycleBin(parentNode, curItem, foldersList, project);
+                for (Item curItem : new ArrayList<Item>(childrenList)) {
+                    if (isAviableFolderForDQ(curItem, itemType)) {
+                        addItemToRecycleBin(parentNode, curItem, foldersList, project);
+                    }
                 }
             }
         } else if (item.getState() != null && item.getState().isDeleted()) {
@@ -227,6 +228,29 @@ public class RecycleBinRepNode extends DQRepositoryNode {
             // }
         }
     }
+
+    /**
+     * 
+     * filter the item in metadata folder, only display some available folders on DQ side.
+     * 
+     * @param item
+     * @param parentType
+     * @return
+     */
+    private boolean isAviableFolderForDQ(Item item, ERepositoryObjectType parentType) {
+        if (item == null) {
+            return false;
+        }
+        if (parentType != ERepositoryObjectType.METADATA) {
+            return true;
+        }
+        String folderName = item.getProperty().getLabel();
+        if ("connections".equals(folderName) || "hadoop".equals(folderName) || "hadoopcluster".equals(folderName) || "fileDelimited".equals(folderName)) { //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+            return true;
+        }
+        return false;
+    }
+
 
     private ERepositoryObjectType getFolderContentType(FolderItem folderItem) {
         if (!folderItem.getType().equals(FolderType.SYSTEM_FOLDER_LITERAL)) {
