@@ -125,7 +125,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
 
     private int lastTimePageNumber = 1;
 
-    private boolean isExistMappingExpr = true;
+    private boolean isExistSqlExpr = false;
 
     public ColumnAnalysisDetailsPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -815,27 +815,26 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
      * @return
      */
     private boolean searchJUDI(ModelElementIndicator modelElementIndicator, boolean isExist) {
-        isExistMappingExpr = true;
+        isExistSqlExpr = false;
         for (IndicatorUnit indicatorUnit : modelElementIndicator.getIndicatorUnits()) {
-            if (IndicatorEnum.UserDefinedIndicatorEnum == indicatorUnit.getType()
-                    && !UDIHelper.isJavaUDI(indicatorUnit.getIndicator()) ^ isExist) {
-                ExecutionLanguage executionLanguage = ((AnalysisEditor) this.getEditor()).getUIExecuteEngin();
-                DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(this.getCurrentModelElement(),
-                        executionLanguage);
-                if (dbmsLanguage.getExpression(indicatorUnit.getIndicator()) == null) {
-                    // case1:find JUDI exist and isExist=true no mapping sql expression find then return true
-                    // case2:find JUDI not exist and isExist=false no mapping sql expression then return false
-                    isExistMappingExpr = false;
-                    return isExist;
+            if (IndicatorEnum.UserDefinedIndicatorEnum == indicatorUnit.getType()) {
+                // mean that is there exist sql expression
+                if (!isExistSqlExpr && indicatorUnit.getIndicator().getIndicatorDefinition().getSqlGenericExpression().isEmpty()) {
+                    isExistSqlExpr = true;
                 }
-                // case3:find JUDI exist and isExist=true mapping sql expression exist then return false
-                // case4:find JUDI not exist isExist=false mapping sql expression exist or not then return true
-                return !isExist;
+
+                if (isExist && UDIHelper.isJavaUDI(indicatorUnit.getIndicator())) {
+                    // case1:find JUDI exist and isExist=true then return true
+                    return true;
+                } else if (!isExist && UDIHelper.isJavaUDI(indicatorUnit.getIndicator())) {
+                    // case2:find JUDI exist and isExist=false then return false
+                    return false;
+                }
             }
         }
-        // case5:find JUDI exist and isExist=false whatever mapping sql expression exist or not then return false
-        // case6:find JUDI not exist isExist=true whatever mapping sql expression exist or not then return false
-        return false;
+        // case3:find JUDI not exist and isExist=false then return true
+        // case4:find JUDI not exist and isExist=true not then return false
+        return !isExist;
     }
 
     @Override
@@ -1036,7 +1035,6 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
         GridData data = (GridData) drillDownComposite.getLayoutData();
         data.heightHint = height;
         drillDownComposite.setLayoutData(data);
-        // analysisParamSection.setExpanded(true);
     }
 
     private void addListenerToExecuteEngine(final CCombo execCombo1, final Composite javaEnginSection) {
@@ -1056,17 +1054,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
                 // "analyzed Columns",ExecutionLanguage only is Java.
                 ExecutionLanguage currentLanguage = ExecutionLanguage.get(execLang);
                 if (ExecutionLanguage.SQL.equals(currentLanguage) && includeJavaEngineIndicator()) {
-                    String dialogMessage = "";
-                    if (isExistMappingExpr) {
-                        dialogMessage = DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning");//$NON-NLS-1$
-                    } else {
-                        ExecutionLanguage executionLanguage = ((AnalysisEditor) ColumnAnalysisDetailsPage.this.getEditor())
-                                .getUIExecuteEngin();
-                        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
-                                ColumnAnalysisDetailsPage.this.getCurrentModelElement(), executionLanguage);
-                        dialogMessage = DefaultMessagesImpl.getString(
-                                "ColumnMasterDetailsPage.SqlExprssionNoExistWarning", dbmsLanguage.getDbmsName());;//$NON-NLS-1$
-                    }
+                    String dialogMessage = getNonJavaIndicatorMessage();
                     MessageUI.openWarning(dialogMessage);
                     changeExecuteLanguageToJava(false);
                     execLang = execCombo1.getText();
@@ -1085,6 +1073,25 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
             }
 
         });
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.dataprofiler.core.ui.editor.analysis.AbstractAnalysisMetadataPage#getNonJavaIndicatorMessage()
+     */
+    @Override
+    protected String getNonJavaIndicatorMessage() {
+        String dialogMessage = ""; //$NON-NLS-1$
+        if (isExistSqlExpr) {
+            dialogMessage = DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning");//$NON-NLS-1$
+        } else {
+            DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
+                    ColumnAnalysisDetailsPage.this.getCurrentModelElement(), ExecutionLanguage.SQL);
+            dialogMessage = DefaultMessagesImpl.getString(
+                    "ColumnMasterDetailsPage.SqlExprssionNoExistWarning", dbmsLanguage.getDbmsName());;//$NON-NLS-1$
+        }
+        return dialogMessage;
     }
 
     /**
