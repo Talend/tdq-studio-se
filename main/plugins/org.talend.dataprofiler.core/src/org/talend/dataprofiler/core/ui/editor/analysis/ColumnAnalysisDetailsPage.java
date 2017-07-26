@@ -125,8 +125,6 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
 
     private int lastTimePageNumber = 1;
 
-    private boolean isExistSqlExpr = false;
-
     public ColumnAnalysisDetailsPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
         currentEditor = (AnalysisEditor) editor;
@@ -278,7 +276,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     protected boolean checkSqlEngineIndicatorExist() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
             if (modelElementIndicator.contains(IndicatorEnum.SqlPatternMatchingIndicatorEnum)
-                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && searchJUDI(
+                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && checkUDIInvalid(
                             modelElementIndicator, false))) {
                 return true;
             }
@@ -800,7 +798,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     protected boolean includeJavaEngineIndicator() {
         for (ModelElementIndicator modelElementIndicator : this.treeViewer.getModelElementIndicator()) {
             if (modelElementIndicator.containsAny(IndicatorEnum.getJavaIndicatorsEnum())
-                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && searchJUDI(
+                    || (modelElementIndicator.contains(IndicatorEnum.UserDefinedIndicatorEnum) && checkUDIInvalid(
                             modelElementIndicator, true))) {
                 return true;
             }
@@ -809,32 +807,37 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     }
 
     /**
-     * Judge whether there are JUDI or not
+     * Judge whether there are exist invalid udi
      * 
      * @param modelElementIndicator
      * @return
      */
-    private boolean searchJUDI(ModelElementIndicator modelElementIndicator, boolean isExist) {
-        isExistSqlExpr = false;
+    private boolean checkUDIInvalid(ModelElementIndicator modelElementIndicator, boolean isExist) {
         for (IndicatorUnit indicatorUnit : modelElementIndicator.getIndicatorUnits()) {
+            boolean isExistSqlExpr = false;
+            boolean sqlCaseNormal = false;
             if (IndicatorEnum.UserDefinedIndicatorEnum == indicatorUnit.getType()) {
                 // mean that is there exist sql expression
-                if (!isExistSqlExpr && indicatorUnit.getIndicator().getIndicatorDefinition().getSqlGenericExpression().isEmpty()) {
+                if (!indicatorUnit.getIndicator().getIndicatorDefinition().getSqlGenericExpression().isEmpty()) {
                     isExistSqlExpr = true;
+                    DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(this.getCurrentModelElement(),
+                            ExecutionLanguage.SQL);
+                    if (dbmsLanguage.getSqlExpression(indicatorUnit.getIndicator().getIndicatorDefinition()) != null) {
+                        sqlCaseNormal = true;
+                    }
                 }
 
-                if (isExist && UDIHelper.isJavaUDI(indicatorUnit.getIndicator())) {
+                if (isExist && !(isExistSqlExpr && sqlCaseNormal)) {
                     // case1:find JUDI exist and isExist=true then return true
                     return true;
-                } else if (!isExist && UDIHelper.isJavaUDI(indicatorUnit.getIndicator())) {
-                    // case2:find JUDI exist and isExist=false then return false
-                    return false;
+                } else if (!isExist && !UDIHelper.isJavaUDI(indicatorUnit.getIndicator())) {
+                    // case2:find JUDI is not exist and isExist=false then return true
+                    return true;
                 }
             }
         }
-        // case3:find JUDI not exist and isExist=false then return true
-        // case4:find JUDI not exist and isExist=true not then return false
-        return !isExist;
+        // other case(both valid)
+        return false;
     }
 
     @Override
@@ -1082,16 +1085,9 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
      */
     @Override
     protected String getNonJavaIndicatorMessage() {
-        String dialogMessage = ""; //$NON-NLS-1$
-        if (isExistSqlExpr) {
-            dialogMessage = DefaultMessagesImpl.getString("ColumnMasterDetailsPage.JavaIndicatorExistWarning");//$NON-NLS-1$
-        } else {
-            DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
-                    ColumnAnalysisDetailsPage.this.getCurrentModelElement(), ExecutionLanguage.SQL);
-            dialogMessage = DefaultMessagesImpl.getString(
-                    "ColumnMasterDetailsPage.SqlExprssionNoExistWarning", dbmsLanguage.getDbmsName());;//$NON-NLS-1$
-        }
-        return dialogMessage;
+        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
+                ColumnAnalysisDetailsPage.this.getCurrentModelElement(), ExecutionLanguage.SQL);
+        return DefaultMessagesImpl.getString("ColumnMasterDetailsPage.SqlExprssionNoExistWarning", dbmsLanguage.getDbmsName());//$NON-NLS-1$
     }
 
     /**
