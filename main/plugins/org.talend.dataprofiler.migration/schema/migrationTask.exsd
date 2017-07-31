@@ -164,6 +164,8 @@
                   </enumeration>
                   <enumeration value="6.5.0">
                   </enumeration>
+                  <enumeration value="6.5.1">
+                  </enumeration>
                </restriction>
             </simpleType>
          </attribute>
