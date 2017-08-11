@@ -58,6 +58,7 @@ import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParserRule;
+import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
 import org.talend.dataquality.rules.RulesFactory;
 import org.talend.dataquality.rules.RulesPackage;
 import org.talend.dataquality.rules.SpecifiedDQRule;
@@ -176,6 +177,13 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
      * @generated
      */
     private EClass defaultSurvivorshipDefinitionEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass particularDefaultSurvivorshipDefinitionsEClass = null;
 
     /**
      * <!-- begin-user-doc -->
@@ -541,6 +549,15 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EReference getMatchRuleDefinition_ParticularDefaultSurvivorshipDefinitions() {
+        return (EReference)matchRuleDefinitionEClass.getEStructuralFeatures().get(8);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getBlockKeyDefinition() {
         return blockKeyDefinitionEClass;
     }
@@ -766,6 +783,15 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getParticularDefaultSurvivorshipDefinitions() {
+        return particularDefaultSurvivorshipDefinitionsEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EDataType getTdExpressionList() {
         return tdExpressionListEDataType;
     }
@@ -831,6 +857,7 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         createEReference(matchRuleDefinitionEClass, MATCH_RULE_DEFINITION__SURVIVORSHIP_KEYS);
         createEReference(matchRuleDefinitionEClass, MATCH_RULE_DEFINITION__DEFAULT_SURVIVORSHIP_DEFINITIONS);
         createEAttribute(matchRuleDefinitionEClass, MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD);
+        createEReference(matchRuleDefinitionEClass, MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS);
 
         blockKeyDefinitionEClass = createEClass(BLOCK_KEY_DEFINITION);
         createEReference(blockKeyDefinitionEClass, BLOCK_KEY_DEFINITION__PRE_ALGORITHM);
@@ -864,6 +891,8 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         defaultSurvivorshipDefinitionEClass = createEClass(DEFAULT_SURVIVORSHIP_DEFINITION);
         createEAttribute(defaultSurvivorshipDefinitionEClass, DEFAULT_SURVIVORSHIP_DEFINITION__DATA_TYPE);
         createEReference(defaultSurvivorshipDefinitionEClass, DEFAULT_SURVIVORSHIP_DEFINITION__FUNCTION);
+
+        particularDefaultSurvivorshipDefinitionsEClass = createEClass(PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS);
 
         // Create data types
         tdExpressionListEDataType = createEDataType(TD_EXPRESSION_LIST);
@@ -916,6 +945,8 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         matchRuleEClass.getESuperTypes().add(theCorePackage.getModelElement());
         appliedBlockKeyEClass.getESuperTypes().add(this.getKeyDefinition());
         survivorshipKeyDefinitionEClass.getESuperTypes().add(this.getKeyDefinition());
+        particularDefaultSurvivorshipDefinitionsEClass.getESuperTypes().add(this.getKeyDefinition());
+        particularDefaultSurvivorshipDefinitionsEClass.getESuperTypes().add(this.getDefaultSurvivorshipDefinition());
 
         // Initialize classes and features; add operations and parameters
         initEClass(dqRuleEClass, DQRule.class, "DQRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -961,6 +992,7 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         initEReference(getMatchRuleDefinition_SurvivorshipKeys(), this.getSurvivorshipKeyDefinition(), null, "survivorshipKeys", null, 0, -1, MatchRuleDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getMatchRuleDefinition_DefaultSurvivorshipDefinitions(), this.getDefaultSurvivorshipDefinition(), null, "defaultSurvivorshipDefinitions", null, 0, -1, MatchRuleDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getMatchRuleDefinition_MatchGroupQualityThreshold(), theEcorePackage.getEDouble(), "matchGroupQualityThreshold", null, 0, 1, MatchRuleDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getMatchRuleDefinition_ParticularDefaultSurvivorshipDefinitions(), this.getParticularDefaultSurvivorshipDefinitions(), null, "particularDefaultSurvivorshipDefinitions", null, 0, -1, MatchRuleDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(blockKeyDefinitionEClass, BlockKeyDefinition.class, "BlockKeyDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getBlockKeyDefinition_PreAlgorithm(), this.getAlgorithmDefinition(), null, "preAlgorithm", null, 0, 1, BlockKeyDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -994,6 +1026,8 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         initEClass(defaultSurvivorshipDefinitionEClass, DefaultSurvivorshipDefinition.class, "DefaultSurvivorshipDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getDefaultSurvivorshipDefinition_DataType(), theEcorePackage.getEString(), "dataType", null, 0, 1, DefaultSurvivorshipDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getDefaultSurvivorshipDefinition_Function(), this.getAlgorithmDefinition(), null, "function", null, 0, 1, DefaultSurvivorshipDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        initEClass(particularDefaultSurvivorshipDefinitionsEClass, ParticularDefaultSurvivorshipDefinitions.class, "ParticularDefaultSurvivorshipDefinitions", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize data types
         initEDataType(tdExpressionListEDataType, List.class, "TdExpressionList", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS, "java.util.List<org.talend.cwm.relational.TdExpression>");

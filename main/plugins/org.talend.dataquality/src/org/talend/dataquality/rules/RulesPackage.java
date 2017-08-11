@@ -1964,13 +1964,22 @@ public interface RulesPackage extends EPackage {
     int MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD = DefinitionPackage.INDICATOR_DEFINITION_FEATURE_COUNT + 7;
 
     /**
+     * The feature id for the '<em><b>Particular Default Survivorship Definitions</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS = DefinitionPackage.INDICATOR_DEFINITION_FEATURE_COUNT + 8;
+
+    /**
      * The number of structural features of the '<em>Match Rule Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int MATCH_RULE_DEFINITION_FEATURE_COUNT = DefinitionPackage.INDICATOR_DEFINITION_FEATURE_COUNT + 8;
+    int MATCH_RULE_DEFINITION_FEATURE_COUNT = DefinitionPackage.INDICATOR_DEFINITION_FEATURE_COUNT + 9;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.rules.impl.KeyDefinitionImpl <em>Key Definition</em>}' class.
@@ -3340,6 +3349,223 @@ public interface RulesPackage extends EPackage {
     int DEFAULT_SURVIVORSHIP_DEFINITION_FEATURE_COUNT = 2;
 
     /**
+     * The meta object id for the '{@link org.talend.dataquality.rules.impl.ParticularDefaultSurvivorshipDefinitionsImpl <em>Particular Default Survivorship Definitions</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.talend.dataquality.rules.impl.ParticularDefaultSurvivorshipDefinitionsImpl
+     * @see org.talend.dataquality.rules.impl.RulesPackageImpl#getParticularDefaultSurvivorshipDefinitions()
+     * @generated
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS = 15;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__NAME = KEY_DEFINITION__NAME;
+
+    /**
+     * The feature id for the '<em><b>Visibility</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__VISIBILITY = KEY_DEFINITION__VISIBILITY;
+
+    /**
+     * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__CLIENT_DEPENDENCY = KEY_DEFINITION__CLIENT_DEPENDENCY;
+
+    /**
+     * The feature id for the '<em><b>Supplier Dependency</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__SUPPLIER_DEPENDENCY = KEY_DEFINITION__SUPPLIER_DEPENDENCY;
+
+    /**
+     * The feature id for the '<em><b>Constraint</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__CONSTRAINT = KEY_DEFINITION__CONSTRAINT;
+
+    /**
+     * The feature id for the '<em><b>Namespace</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__NAMESPACE = KEY_DEFINITION__NAMESPACE;
+
+    /**
+     * The feature id for the '<em><b>Importer</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__IMPORTER = KEY_DEFINITION__IMPORTER;
+
+    /**
+     * The feature id for the '<em><b>Stereotype</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__STEREOTYPE = KEY_DEFINITION__STEREOTYPE;
+
+    /**
+     * The feature id for the '<em><b>Tagged Value</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__TAGGED_VALUE = KEY_DEFINITION__TAGGED_VALUE;
+
+    /**
+     * The feature id for the '<em><b>Document</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__DOCUMENT = KEY_DEFINITION__DOCUMENT;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__DESCRIPTION = KEY_DEFINITION__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Responsible Party</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__RESPONSIBLE_PARTY = KEY_DEFINITION__RESPONSIBLE_PARTY;
+
+    /**
+     * The feature id for the '<em><b>Element Node</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__ELEMENT_NODE = KEY_DEFINITION__ELEMENT_NODE;
+
+    /**
+     * The feature id for the '<em><b>Set</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__SET = KEY_DEFINITION__SET;
+
+    /**
+     * The feature id for the '<em><b>Rendered Object</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__RENDERED_OBJECT = KEY_DEFINITION__RENDERED_OBJECT;
+
+    /**
+     * The feature id for the '<em><b>Vocabulary Element</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__VOCABULARY_ELEMENT = KEY_DEFINITION__VOCABULARY_ELEMENT;
+
+    /**
+     * The feature id for the '<em><b>Measurement</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__MEASUREMENT = KEY_DEFINITION__MEASUREMENT;
+
+    /**
+     * The feature id for the '<em><b>Change Request</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__CHANGE_REQUEST = KEY_DEFINITION__CHANGE_REQUEST;
+
+    /**
+     * The feature id for the '<em><b>Dasdl Property</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__DASDL_PROPERTY = KEY_DEFINITION__DASDL_PROPERTY;
+
+    /**
+     * The feature id for the '<em><b>Column</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__COLUMN = KEY_DEFINITION__COLUMN;
+
+    /**
+     * The feature id for the '<em><b>Data Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__DATA_TYPE = KEY_DEFINITION_FEATURE_COUNT + 0;
+
+    /**
+     * The feature id for the '<em><b>Function</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS__FUNCTION = KEY_DEFINITION_FEATURE_COUNT + 1;
+
+    /**
+     * The number of structural features of the '<em>Particular Default Survivorship Definitions</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS_FEATURE_COUNT = KEY_DEFINITION_FEATURE_COUNT + 2;
+
+    /**
      * The meta object id for the '<em>Td Expression List</em>' data type.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3347,7 +3573,7 @@ public interface RulesPackage extends EPackage {
      * @see org.talend.dataquality.rules.impl.RulesPackageImpl#getTdExpressionList()
      * @generated
      */
-    int TD_EXPRESSION_LIST = 15;
+    int TD_EXPRESSION_LIST = 16;
 
 
     /**
@@ -3641,6 +3867,17 @@ public interface RulesPackage extends EPackage {
     EAttribute getMatchRuleDefinition_MatchGroupQualityThreshold();
 
     /**
+     * Returns the meta object for the containment reference list '{@link org.talend.dataquality.rules.MatchRuleDefinition#getParticularDefaultSurvivorshipDefinitions <em>Particular Default Survivorship Definitions</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference list '<em>Particular Default Survivorship Definitions</em>'.
+     * @see org.talend.dataquality.rules.MatchRuleDefinition#getParticularDefaultSurvivorshipDefinitions()
+     * @see #getMatchRuleDefinition()
+     * @generated
+     */
+    EReference getMatchRuleDefinition_ParticularDefaultSurvivorshipDefinitions();
+
+    /**
      * Returns the meta object for class '{@link org.talend.dataquality.rules.BlockKeyDefinition <em>Block Key Definition</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -3908,6 +4145,16 @@ public interface RulesPackage extends EPackage {
     EReference getDefaultSurvivorshipDefinition_Function();
 
     /**
+     * Returns the meta object for class '{@link org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions <em>Particular Default Survivorship Definitions</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Particular Default Survivorship Definitions</em>'.
+     * @see org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions
+     * @generated
+     */
+    EClass getParticularDefaultSurvivorshipDefinitions();
+
+    /**
      * Returns the meta object for data type '{@link java.util.List <em>Td Expression List</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4171,6 +4418,14 @@ public interface RulesPackage extends EPackage {
         EAttribute MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD = eINSTANCE.getMatchRuleDefinition_MatchGroupQualityThreshold();
 
         /**
+         * The meta object literal for the '<em><b>Particular Default Survivorship Definitions</b></em>' containment reference list feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS = eINSTANCE.getMatchRuleDefinition_ParticularDefaultSurvivorshipDefinitions();
+
+        /**
          * The meta object literal for the '{@link org.talend.dataquality.rules.impl.BlockKeyDefinitionImpl <em>Block Key Definition</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -4385,6 +4640,16 @@ public interface RulesPackage extends EPackage {
          * @generated
          */
         EReference DEFAULT_SURVIVORSHIP_DEFINITION__FUNCTION = eINSTANCE.getDefaultSurvivorshipDefinition_Function();
+
+        /**
+         * The meta object literal for the '{@link org.talend.dataquality.rules.impl.ParticularDefaultSurvivorshipDefinitionsImpl <em>Particular Default Survivorship Definitions</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.talend.dataquality.rules.impl.ParticularDefaultSurvivorshipDefinitionsImpl
+         * @see org.talend.dataquality.rules.impl.RulesPackageImpl#getParticularDefaultSurvivorshipDefinitions()
+         * @generated
+         */
+        EClass PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS = eINSTANCE.getParticularDefaultSurvivorshipDefinitions();
 
         /**
          * The meta object literal for the '<em>Td Expression List</em>' data type.

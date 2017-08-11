@@ -93,6 +93,7 @@ public class RulesFactoryImpl extends EFactoryImpl implements RulesFactory {
             case RulesPackage.APPLIED_BLOCK_KEY: return createAppliedBlockKey();
             case RulesPackage.SURVIVORSHIP_KEY_DEFINITION: return createSurvivorshipKeyDefinition();
             case RulesPackage.DEFAULT_SURVIVORSHIP_DEFINITION: return createDefaultSurvivorshipDefinition();
+            case RulesPackage.PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS: return createParticularDefaultSurvivorshipDefinitions();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -276,6 +277,16 @@ public class RulesFactoryImpl extends EFactoryImpl implements RulesFactory {
     public DefaultSurvivorshipDefinition createDefaultSurvivorshipDefinition() {
         DefaultSurvivorshipDefinitionImpl defaultSurvivorshipDefinition = new DefaultSurvivorshipDefinitionImpl();
         return defaultSurvivorshipDefinition;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ParticularDefaultSurvivorshipDefinitions createParticularDefaultSurvivorshipDefinitions() {
+        ParticularDefaultSurvivorshipDefinitionsImpl particularDefaultSurvivorshipDefinitions = new ParticularDefaultSurvivorshipDefinitionsImpl();
+        return particularDefaultSurvivorshipDefinitions;
     }
 
     /**

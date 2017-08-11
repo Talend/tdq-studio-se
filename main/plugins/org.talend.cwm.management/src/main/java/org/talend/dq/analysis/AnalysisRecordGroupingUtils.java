@@ -22,7 +22,6 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.commons.exception.BusinessException;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
-import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.indicators.columnset.RecordMatchingIndicator;
@@ -33,8 +32,6 @@ import org.talend.dataquality.record.linkage.grouping.IRecordGrouping;
 import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorShipAlgorithmParams;
 import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorShipAlgorithmParams.SurvivorshipFunction;
 import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorshipUtils;
-import org.talend.dataquality.record.linkage.record.CombinedRecordMatcher;
-import org.talend.dataquality.record.linkage.record.IRecordMatcher;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
 import org.talend.dataquality.rules.AppliedBlockKey;
@@ -44,7 +41,7 @@ import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.RulesPackage;
-import org.talend.dataquality.rules.SurvivorshipKeyDefinition;
+import org.talend.dq.analysis.adapter.AnalysisMatchParameterAdapter;
 import org.talend.dq.helper.CustomAttributeMatcherHelper;
 
 /**
@@ -428,93 +425,8 @@ public class AnalysisRecordGroupingUtils {
     public static SurvivorShipAlgorithmParams createSurvivorShipAlgorithmParams(
             AnalysisMatchRecordGrouping analysisMatchRecordGrouping, RecordMatchingIndicator recordMatchingIndicator,
             Map<MetadataColumn, String> columnMap) {
-        SurvivorShipAlgorithmParams survivorShipAlgorithmParams = new SurvivorShipAlgorithmParams();
-
-        // Survivorship functions.
-        List<SurvivorshipKeyDefinition> survivorshipKeyDefs = recordMatchingIndicator.getBuiltInMatchRuleDefinition()
-                .getSurvivorshipKeys();
-        List<SurvivorshipFunction> survFunctions = new ArrayList<SurvivorshipFunction>();
-        for (SurvivorshipKeyDefinition survDef : survivorshipKeyDefs) {
-            SurvivorshipFunction func = survivorShipAlgorithmParams.new SurvivorshipFunction();
-            func.setSurvivorShipKey(survDef.getName());
-            func.setParameter(survDef.getFunction().getAlgorithmParameters());
-            func.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(survDef.getFunction().getAlgorithmType()));
-            survFunctions.add(func);
-        }
-        survivorShipAlgorithmParams
-                .setSurviorShipAlgos(survFunctions.toArray(new SurvivorshipFunction[survivorshipKeyDefs.size()]));
-
-        // Set default survivorship functions.
-        List<DefaultSurvivorshipDefinition> defSurvDefs = recordMatchingIndicator.getBuiltInMatchRuleDefinition()
-                .getDefaultSurvivorshipDefinitions();
-        Map<Integer, SurvivorshipFunction> defaultSurvRules = new HashMap<Integer, SurvivorshipFunction>();
-
-        for (MetadataColumn metaColumn : columnMap.keySet()) {
-            String dataTypeName = metaColumn.getTalendType();
-            for (DefaultSurvivorshipDefinition defSurvDef : defSurvDefs) {
-                // the column's data type start with id_, so need to add id_ ahead of the default survivorship's data
-                // type before judging if they are equal
-                if (StringUtils.equals(dataTypeName, "id_" + defSurvDef.getDataType()) || StringUtils.equals(defSurvDef.getDataType(), "Number") && JavaTypesManager.isNumber(dataTypeName)) { //$NON-NLS-1$
-                    putNewSurvFunc(columnMap, survivorShipAlgorithmParams, defaultSurvRules, metaColumn, defSurvDef);
-                    break;
-                }
-            }// End for: if no func defined, then the value will be taken from one of the records in a group (1st
-             // one ).
-        }
-
-        survivorShipAlgorithmParams.setDefaultSurviorshipRules(defaultSurvRules);
-
-        // Set the record matcher
-        CombinedRecordMatcher combinedRecordMatcher = analysisMatchRecordGrouping.getCombinedRecordMatcher();
-        survivorShipAlgorithmParams.setRecordMatcher(combinedRecordMatcher);
-        Map<IRecordMatcher, SurvivorshipFunction[]> survAlgos = new HashMap<IRecordMatcher, SurvivorshipFunction[]>();
-        SurvivorshipFunction[] survFuncs = survivorShipAlgorithmParams.getSurviorShipAlgos();
-        Map<Integer, SurvivorshipFunction> colIdx2DefaultSurvFunc = survivorShipAlgorithmParams.getDefaultSurviorshipRules();
-        int matchRuleIdx = -1;
-        List<List<Map<String, String>>> multiRules = analysisMatchRecordGrouping.getMultiMatchRules();
-        for (List<Map<String, String>> matchrule : multiRules) {
-            matchRuleIdx++;
-            if (matchrule == null) {
-                continue;
-            }
-
-            SurvivorshipFunction[] surFuncsInMatcher = new SurvivorshipFunction[matchrule.size()];
-            int idx = 0;
-            for (Map<String, String> mkDef : matchrule) {
-                String matcherType = mkDef.get(IRecordGrouping.MATCHING_TYPE);
-                if (AttributeMatcherType.DUMMY.name().equalsIgnoreCase(matcherType)) {
-                    // Find the func from default survivorship rule.
-                    surFuncsInMatcher[idx] = colIdx2DefaultSurvFunc.get(Integer.valueOf(mkDef.get(IRecordGrouping.COLUMN_IDX)));
-                    if (surFuncsInMatcher[idx] == null) {
-                        // Use CONCATENATE by default if not specified .
-                        surFuncsInMatcher[idx] = survivorShipAlgorithmParams.new SurvivorshipFunction();
-                        surFuncsInMatcher[idx].setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.CONCATENATE);
-                        // MOD TDQ-11774 set a default parameter
-                        surFuncsInMatcher[idx].setParameter(SurvivorshipUtils.DEFAULT_CONCATENATE_PARAMETER);
-                    }
-                } else {
-                    // Find the func from existing survivorship rule list.
-                    for (SurvivorshipFunction survFunc : survFuncs) {
-                        String keyName = mkDef.get(IRecordGrouping.MATCH_KEY_NAME);
-                        if (keyName.equals(survFunc.getSurvivorShipKey())) {
-                            surFuncsInMatcher[idx] = survFunc;
-                            break;
-                        }
-                    }
-
-                }
-                idx++;
-            }
-
-            // Add the funcs to a specific record matcher. NOTE that the index of matcher must be coincidence to the
-            // index of match rule.
-            survAlgos.put(combinedRecordMatcher.getMatchers().get(matchRuleIdx), surFuncsInMatcher);
-
-        }
-
-        survivorShipAlgorithmParams.setSurvivorshipAlgosMap(survAlgos);
-
-        return survivorShipAlgorithmParams;
+        return SurvivorshipUtils.createSurvivorShipAlgorithmParams(new AnalysisMatchParameterAdapter(analysisMatchRecordGrouping,
+                recordMatchingIndicator, columnMap));
     }
 
     /**
