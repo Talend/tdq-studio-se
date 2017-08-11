@@ -21,6 +21,7 @@ import org.talend.dataquality.rules.BlockKeyDefinition;
 import org.talend.dataquality.rules.DefaultSurvivorshipDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
+import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
 import org.talend.dataquality.rules.RulesPackage;
 import org.talend.dataquality.rules.SurvivorshipKeyDefinition;
 
@@ -38,6 +39,7 @@ import org.talend.dataquality.rules.SurvivorshipKeyDefinition;
  *   <li>{@link org.talend.dataquality.rules.impl.MatchRuleDefinitionImpl#getSurvivorshipKeys <em>Survivorship Keys</em>}</li>
  *   <li>{@link org.talend.dataquality.rules.impl.MatchRuleDefinitionImpl#getDefaultSurvivorshipDefinitions <em>Default Survivorship Definitions</em>}</li>
  *   <li>{@link org.talend.dataquality.rules.impl.MatchRuleDefinitionImpl#getMatchGroupQualityThreshold <em>Match Group Quality Threshold</em>}</li>
+ *   <li>{@link org.talend.dataquality.rules.impl.MatchRuleDefinitionImpl#getParticularDefaultSurvivorshipDefinitions <em>Particular Default Survivorship Definitions</em>}</li>
  * </ul>
  * </p>
  *
@@ -150,6 +152,16 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
      * @ordered
      */
     protected double matchGroupQualityThreshold = MATCH_GROUP_QUALITY_THRESHOLD_EDEFAULT;
+
+    /**
+     * The cached value of the '{@link #getParticularDefaultSurvivorshipDefinitions() <em>Particular Default Survivorship Definitions</em>}' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getParticularDefaultSurvivorshipDefinitions()
+     * @generated
+     * @ordered
+     */
+    protected EList<ParticularDefaultSurvivorshipDefinitions> particularDefaultSurvivorshipDefinitions;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -292,6 +304,18 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
     }
 
     /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EList<ParticularDefaultSurvivorshipDefinitions> getParticularDefaultSurvivorshipDefinitions() {
+        if (particularDefaultSurvivorshipDefinitions == null) {
+            particularDefaultSurvivorshipDefinitions = new EObjectContainmentEList<ParticularDefaultSurvivorshipDefinitions>(ParticularDefaultSurvivorshipDefinitions.class, this, RulesPackage.MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS);
+        }
+        return particularDefaultSurvivorshipDefinitions;
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
@@ -308,6 +332,8 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
                 return ((InternalEList<?>)getSurvivorshipKeys()).basicRemove(otherEnd, msgs);
             case RulesPackage.MATCH_RULE_DEFINITION__DEFAULT_SURVIVORSHIP_DEFINITIONS:
                 return ((InternalEList<?>)getDefaultSurvivorshipDefinitions()).basicRemove(otherEnd, msgs);
+            case RulesPackage.MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS:
+                return ((InternalEList<?>)getParticularDefaultSurvivorshipDefinitions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -335,6 +361,8 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
                 return getDefaultSurvivorshipDefinitions();
             case RulesPackage.MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD:
                 return getMatchGroupQualityThreshold();
+            case RulesPackage.MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS:
+                return getParticularDefaultSurvivorshipDefinitions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -376,6 +404,10 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
             case RulesPackage.MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD:
                 setMatchGroupQualityThreshold((Double)newValue);
                 return;
+            case RulesPackage.MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS:
+                getParticularDefaultSurvivorshipDefinitions().clear();
+                getParticularDefaultSurvivorshipDefinitions().addAll((Collection<? extends ParticularDefaultSurvivorshipDefinitions>)newValue);
+                return;
         }
         super.eSet(featureID, newValue);
     }
@@ -411,6 +443,9 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
             case RulesPackage.MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD:
                 setMatchGroupQualityThreshold(MATCH_GROUP_QUALITY_THRESHOLD_EDEFAULT);
                 return;
+            case RulesPackage.MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS:
+                getParticularDefaultSurvivorshipDefinitions().clear();
+                return;
         }
         super.eUnset(featureID);
     }
@@ -438,6 +473,8 @@ public class MatchRuleDefinitionImpl extends IndicatorDefinitionImpl implements 
                 return defaultSurvivorshipDefinitions != null && !defaultSurvivorshipDefinitions.isEmpty();
             case RulesPackage.MATCH_RULE_DEFINITION__MATCH_GROUP_QUALITY_THRESHOLD:
                 return matchGroupQualityThreshold != MATCH_GROUP_QUALITY_THRESHOLD_EDEFAULT;
+            case RulesPackage.MATCH_RULE_DEFINITION__PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS:
+                return particularDefaultSurvivorshipDefinitions != null && !particularDefaultSurvivorshipDefinitions.isEmpty();
         }
         return super.eIsSet(featureID);
     }

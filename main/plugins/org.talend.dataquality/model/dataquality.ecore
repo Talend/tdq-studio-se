@@ -1368,6 +1368,9 @@
           <details key="documentation" value="Threshold that indicates the quality of the group of similar records. Groups having a higher quality value are considered as matches and groups having a lower value are usually considered as suspects that need a clerical review. "/>
         </eAnnotations>
       </eStructuralFeatures>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="particularDefaultSurvivorshipDefinitions"
+          upperBound="-1" eType="#//rules/ParticularDefaultSurvivorshipDefinitions"
+          containment="true"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="BlockKeyDefinition" eSuperTypes="#//rules/KeyDefinition">
       <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -1440,6 +1443,8 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="function" eType="#//rules/AlgorithmDefinition"
           containment="true"/>
     </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ParticularDefaultSurvivorshipDefinitions"
+        eSuperTypes="#//rules/KeyDefinition #//rules/DefaultSurvivorshipDefinition"/>
   </eSubpackages>
   <eSubpackages name="properties" nsURI="http://dataquality.properties" nsPrefix="dataquality.properties">
     <eClassifiers xsi:type="ecore:EClass" name="TDQAnalysisItem" eSuperTypes="../../org.talend.model/model/properties.ecore#//TDQItem">

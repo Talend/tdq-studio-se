@@ -31,6 +31,7 @@ import org.talend.dataquality.indicators.definition.IndicatorDefinition;
  *   <li>{@link org.talend.dataquality.rules.MatchRuleDefinition#getSurvivorshipKeys <em>Survivorship Keys</em>}</li>
  *   <li>{@link org.talend.dataquality.rules.MatchRuleDefinition#getDefaultSurvivorshipDefinitions <em>Default Survivorship Definitions</em>}</li>
  *   <li>{@link org.talend.dataquality.rules.MatchRuleDefinition#getMatchGroupQualityThreshold <em>Match Group Quality Threshold</em>}</li>
+ *   <li>{@link org.talend.dataquality.rules.MatchRuleDefinition#getParticularDefaultSurvivorshipDefinitions <em>Particular Default Survivorship Definitions</em>}</li>
  * </ul>
  * </p>
  *
@@ -193,5 +194,21 @@ public interface MatchRuleDefinition extends IndicatorDefinition {
      * @generated
      */
     void setMatchGroupQualityThreshold(double value);
+
+    /**
+     * Returns the value of the '<em><b>Particular Default Survivorship Definitions</b></em>' containment reference list.
+     * The list contents are of type {@link org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions}.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Particular Default Survivorship Definitions</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Particular Default Survivorship Definitions</em>' containment reference list.
+     * @see org.talend.dataquality.rules.RulesPackage#getMatchRuleDefinition_ParticularDefaultSurvivorshipDefinitions()
+     * @model containment="true"
+     * @generated
+     */
+    EList<ParticularDefaultSurvivorshipDefinitions> getParticularDefaultSurvivorshipDefinitions();
 
 } // MatchRuleDefinition

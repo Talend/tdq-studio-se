@@ -234,6 +234,16 @@ public class RulesSwitch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case RulesPackage.PARTICULAR_DEFAULT_SURVIVORSHIP_DEFINITIONS: {
+                ParticularDefaultSurvivorshipDefinitions particularDefaultSurvivorshipDefinitions = (ParticularDefaultSurvivorshipDefinitions)theEObject;
+                T result = caseParticularDefaultSurvivorshipDefinitions(particularDefaultSurvivorshipDefinitions);
+                if (result == null) result = caseKeyDefinition(particularDefaultSurvivorshipDefinitions);
+                if (result == null) result = caseDefaultSurvivorshipDefinition(particularDefaultSurvivorshipDefinitions);
+                if (result == null) result = caseModelElement(particularDefaultSurvivorshipDefinitions);
+                if (result == null) result = caseElement(particularDefaultSurvivorshipDefinitions);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -460,6 +470,21 @@ public class RulesSwitch<T> {
      * @generated
      */
     public T caseDefaultSurvivorshipDefinition(DefaultSurvivorshipDefinition object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Particular Default Survivorship Definitions</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Particular Default Survivorship Definitions</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseParticularDefaultSurvivorshipDefinitions(ParticularDefaultSurvivorshipDefinitions object) {
         return null;
     }
 

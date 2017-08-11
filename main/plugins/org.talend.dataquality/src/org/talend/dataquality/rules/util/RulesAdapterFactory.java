@@ -148,6 +148,10 @@ public class RulesAdapterFactory extends AdapterFactoryImpl {
                 return createDefaultSurvivorshipDefinitionAdapter();
             }
             @Override
+            public Adapter caseParticularDefaultSurvivorshipDefinitions(ParticularDefaultSurvivorshipDefinitions object) {
+                return createParticularDefaultSurvivorshipDefinitionsAdapter();
+            }
+            @Override
             public Adapter caseElement(Element object) {
                 return createElementAdapter();
             }
@@ -386,6 +390,20 @@ public class RulesAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createDefaultSurvivorshipDefinitionAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions <em>Particular Default Survivorship Definitions</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions
+     * @generated
+     */
+    public Adapter createParticularDefaultSurvivorshipDefinitionsAdapter() {
         return null;
     }
 

@@ -821,6 +821,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//rules/MatchRuleDefinition/survivorshipKeys"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//rules/MatchRuleDefinition/defaultSurvivorshipDefinitions"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//rules/MatchRuleDefinition/matchGroupQualityThreshold"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//rules/MatchRuleDefinition/particularDefaultSurvivorshipDefinitions"/>
       </genClasses>
       <genClasses ecoreClass="dataquality.ecore#//rules/BlockKeyDefinition">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//rules/BlockKeyDefinition/preAlgorithm"/>
@@ -855,6 +856,7 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference dataquality.ecore#//rules/DefaultSurvivorshipDefinition/function"/>
       </genClasses>
+      <genClasses ecoreClass="dataquality.ecore#//rules/ParticularDefaultSurvivorshipDefinitions"/>
     </nestedGenPackages>
     <nestedGenPackages prefix="Properties" basePackage="org.talend.dataquality" resource="XML"
         disposableProviderFactory="true" ecorePackage="dataquality.ecore#//properties">
