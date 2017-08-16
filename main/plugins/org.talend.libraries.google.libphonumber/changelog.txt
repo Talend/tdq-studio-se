@@ -2,6 +2,10 @@ V6.5.0
 msjian 2017-07-31 
 TDQ-14152 upgrade libphonenumber from 7.3.0 to 8.7.0
 http://repo1.maven.org/maven2/com/googlecode/libphonenumber/libphonenumber/8.7.0/
+TDQ-14236 upgrade the jars related with libphonenumber
+from 2.39 to http://repo1.maven.org/maven2/com/googlecode/libphonenumber/geocoder/2.75/ 
+from 1.29 to http://repo1.maven.org/maven2/com/googlecode/libphonenumber/carrier/1.65/
+from 2.39 to http://repo1.maven.org/maven2/com/googlecode/libphonenumber/prefixmapper/2.75/ 
 
 V6.2.0 
 qiongli 2016-04-19
