@@ -89,6 +89,7 @@ import org.talend.dataquality.record.linkage.ui.section.BlockingKeySection;
 import org.talend.dataquality.record.linkage.ui.section.MatchParameterSection;
 import org.talend.dataquality.record.linkage.ui.section.MatchingKeySection;
 import org.talend.dataquality.record.linkage.ui.section.definition.DefaultSurvivorshipDefinitionSection;
+import org.talend.dataquality.record.linkage.ui.section.definition.ParticularDefSurshipDefinitionSection;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.rules.BlockKeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
@@ -131,6 +132,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
     private AnaMatchSurvivorSection matchAndSurvivorKeySection = null;
 
     private DefaultSurvivorshipDefinitionSection defaultSurvivorshipDefinitionSection = null;
+
+    private ParticularDefSurshipDefinitionSection particularDefaultSurvivorshipSection = null;
 
     private MatchingKeySection matchingKeySection;
 
@@ -198,6 +201,7 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         createMatchingKeySection();
         createMatchAndSurvivorKeySection();
         createDefaultSurvivorshipSection();
+        createParticularDefaultSurvivorshipSection();
         createMatchParameterSection();
 
         // TDQ-7781: we must do this, this will recompute the layout and scroll bars
@@ -253,6 +257,28 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         if (selectAlgorithmSection.isVSRMode()) {
             // Hide the section in case of vsr.
             defaultSurvivorshipDefinitionSection.changeSectionDisStatus(false);
+        }
+    }
+
+    /**
+     * Create section of ParticularDefaultSurvivorship table
+     */
+    private void createParticularDefaultSurvivorshipSection() {
+        particularDefaultSurvivorshipSection = new ParticularDefSurshipDefinitionSection(form, topComp, toolkit);
+        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils
+                .getRecordMatchIndicatorFromAna(getCurrentModelElement());
+        particularDefaultSurvivorshipSection.setMatchRuleDef(recordMatchingIndicator.getBuiltInMatchRuleDefinition());
+        particularDefaultSurvivorshipSection.setColumnNameInput(getAllColumnsToKeyMap());
+        particularDefaultSurvivorshipSection.createContent();
+        registerSection(particularDefaultSurvivorshipSection.getSection());
+        particularDefaultSurvivorshipSection.addPropertyChangeListener(this);
+        particularDefaultSurvivorshipSection.changeSectionDisStatus(!selectAlgorithmSection.isVSRMode());
+        particularDefaultSurvivorshipSection.getSection().setExpanded(
+                getExpandedStatus(particularDefaultSurvivorshipSection.getSection().getText()));
+        selectAlgorithmSection.setParticularDefaultSurvivorshipSection(particularDefaultSurvivorshipSection);
+        if (selectAlgorithmSection.isVSRMode()) {
+            // Hide the section in case of vsr.
+            particularDefaultSurvivorshipSection.changeSectionDisStatus(false);
         }
     }
 
@@ -938,6 +964,7 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
                     matchAndSurvivorKeySection.removeKeyFromAllTab(oldSelectNode.getLabel());
                 }
                 blockingKeySection.removeBlockingKey(oldSelectNode.getLabel());
+                this.particularDefaultSurvivorshipSection.removeParticularKey(oldSelectNode.getLabel());
             }
 
         }
@@ -982,6 +1009,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         }
         blockingKeySection.addColumn(((ColumnRepNode) selectedOne).getMetadataColumnRepositoryObject().getTdColumn(),
                 positionInNewSelectColumns);
+        this.particularDefaultSurvivorshipSection.addColumn(((ColumnRepNode) selectedOne).getMetadataColumnRepositoryObject()
+                .getTdColumn(), positionInNewSelectColumns);
     }
 
     /**

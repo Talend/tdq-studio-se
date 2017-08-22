@@ -1,0 +1,137 @@
+// ============================================================================
+//
+// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
+//
+// This source code is available under agreement available at
+// %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
+//
+// You should have received a copy of the agreement
+// along with this program; if not, write to Talend SA
+// 9 rue Pages 92150 Suresnes, France
+//
+// ============================================================================
+package org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+import org.eclipse.jface.viewers.CellEditor;
+import org.eclipse.jface.viewers.ColumnViewer;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.jface.viewers.EditingSupport;
+import org.eclipse.swt.SWT;
+import org.talend.core.model.metadata.types.JavaTypesManager;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer;
+import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
+import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
+
+/**
+ * Support dynamic load cell editor
+ */
+public class FunctionEditingSupport extends EditingSupport {
+
+    /**
+     * constructor of FunctionEditingSupport class.
+     * 
+     * @param viewer
+     */
+    public FunctionEditingSupport(ColumnViewer viewer) {
+        super(viewer);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.Object)
+     */
+    @Override
+    protected CellEditor getCellEditor(Object element) {
+        String talendDataType = ((ParticularDefaultSurvivorshipDefinitions) element).getDataType();
+        ComboBoxCellEditor comboBoxCellEditor = new ComboBoxCellEditor(
+                ((ParticularDefaultSurvivorShipTableViewer) this.getViewer()).getTable(),
+                getAllFunctionByDataTypes(talendDataType), SWT.READ_ONLY);
+        return comboBoxCellEditor;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
+     */
+    @Override
+    protected boolean canEdit(Object element) {
+        if (element != null && element instanceof ParticularDefaultSurvivorshipDefinitions) {
+            String columnName = ((ParticularDefaultSurvivorshipDefinitions) element).getColumn();
+            if (columnName == null || columnName.isEmpty()) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
+     */
+    @Override
+    protected Object getValue(Object element) {
+        String talendDataType = ((ParticularDefaultSurvivorshipDefinitions) element).getDataType();
+        String[] allShowTypes = getAllFunctionByDataTypes(talendDataType);
+        SurvivorShipAlgorithmEnum typeBySavedValue = SurvivorShipAlgorithmEnum
+                .getTypeBySavedValue(((ParticularDefaultSurvivorshipDefinitions) element).getFunction().getAlgorithmType());
+        for (int index = 0; index < allShowTypes.length; index++) {
+            if (typeBySavedValue.getValue().equals(allShowTypes[index])) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
+     */
+    @Override
+    protected void setValue(Object element, Object value) {
+        ParticularDefaultSurvivorshipDefinitions pdskd = ((ParticularDefaultSurvivorshipDefinitions) element);
+        String talendDataType = ((ParticularDefaultSurvivorshipDefinitions) element).getDataType();
+        int functionTypeIndex = Integer.valueOf(value.toString()).intValue();
+        String[] allFunctionByDataTypes = getAllFunctionByDataTypes(talendDataType);
+        SurvivorShipAlgorithmEnum valueByIndex = SurvivorShipAlgorithmEnum
+                .getTypeByValue(allFunctionByDataTypes[functionTypeIndex]);
+        if (StringUtils.equals(pdskd.getFunction().getAlgorithmType(), valueByIndex.getComponentValueName())) {
+            return;
+        }
+        pdskd.getFunction().setAlgorithmType(valueByIndex.getComponentValueName());
+        if (!(isSurvivorShipAlgorithm(pdskd, SurvivorShipAlgorithmEnum.MOST_TRUSTED_SOURCE) || isSurvivorShipAlgorithm(pdskd,
+                SurvivorShipAlgorithmEnum.CONCATENATE))) {
+            pdskd.getFunction().setAlgorithmParameters(StringUtils.EMPTY);
+            CellEditor[] cellEditors = this.getViewer().getCellEditors();
+            if (cellEditors.length == 3) {
+                cellEditors[2].setValue(StringUtils.EMPTY);
+            }
+        }
+        this.getViewer().update(element, null);
+    }
+
+    private boolean isSurvivorShipAlgorithm(ParticularDefaultSurvivorshipDefinitions pdsd, SurvivorShipAlgorithmEnum algorithm) {
+        return pdsd.getFunction().getAlgorithmType().equals(algorithm.getComponentValueName());
+    }
+
+    public static String[] getAllFunctionByDataTypes(String talendDataType) {
+        List<String> list = new ArrayList<String>();
+        for (SurvivorShipAlgorithmEnum theType : SurvivorShipAlgorithmEnum.values()) {
+            if (theType.getDataType() == null || StringUtils.equalsIgnoreCase(talendDataType, "id_" + theType.getDataType()) //$NON-NLS-1$
+                    || StringUtils.equals(theType.getDataType().getValue(), "Number") //$NON-NLS-1$
+                    && JavaTypesManager.isNumber(talendDataType)) {
+                list.add(theType.getValue());
+            }
+        }
+        return list.toArray(new String[list.size()]);
+    }
+
+}

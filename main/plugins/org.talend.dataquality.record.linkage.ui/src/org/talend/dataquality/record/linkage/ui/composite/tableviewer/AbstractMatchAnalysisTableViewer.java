@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
@@ -32,7 +33,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.analysis.Analysis;
@@ -115,29 +115,31 @@ public abstract class AbstractMatchAnalysisTableViewer<T> extends TableViewer {
 
         for (int index = 0; index < headers.size(); index++) {
             final int sortIndex = index;
-            String columnLabel = getInternationalizedLabel(headers.get(index));
+            String columnTechnologyLabel = headers.get(index);
+            String columnLabel = getInternationalizedLabel(columnTechnologyLabel);
             if (columnLabel != null) {
                 if (columnLabel.length() == 1) {
                     columnLabel = columnLabel + PluginConstant.SPACE_STRING + PluginConstant.SPACE_STRING;
                 }
                 tLayout.addColumnData(new ColumnPixelData(columnLabel.length() * getHeaderDisplayWeight(index)));
-                final TableColumn tableColumn = new TableColumn(innerTable, SWT.LEFT);
-                tableColumn.setText(columnLabel);
+                final TableViewerColumn tableColumn = new TableViewerColumn(this, SWT.LEFT);
+                tableColumn.getColumn().setText(columnLabel);
+                addEditingSupportForColumn(tableColumn, columnTechnologyLabel);
                 if (withSorter) {
                     final ViewerComparator comparator = getComparator();
-                    tableColumn.addSelectionListener(new SelectionAdapter() {
+                    tableColumn.getColumn().addSelectionListener(new SelectionAdapter() {
 
                         @Override
                         public void widgetSelected(SelectionEvent e) {
                             ((GroupStatisticsRowCompartor) comparator).setColumn(sortIndex);
                             int dir = getTable().getSortDirection();
-                            if (getTable().getSortColumn() == tableColumn) {
+                            if (getTable().getSortColumn() == tableColumn.getColumn()) {
                                 dir = dir == SWT.UP ? SWT.DOWN : SWT.UP;
                             } else {
                                 dir = SWT.DOWN;
                             }
                             getTable().setSortDirection(dir);
-                            getTable().setSortColumn(tableColumn);
+                            getTable().setSortColumn(tableColumn.getColumn());
                             refresh();
                         }
                     });
@@ -161,6 +163,16 @@ public abstract class AbstractMatchAnalysisTableViewer<T> extends TableViewer {
         tableGD.heightHint = getTableHeightHint();
         innerTable.setLayoutData(tableGD);
 
+    }
+
+    /**
+     * Add EditingSupport for current column
+     * 
+     * @param tableColumn
+     * @param columnTechnologyLabel
+     */
+    protected void addEditingSupportForColumn(TableViewerColumn tableColumn, String columnTechnologyLabel) {
+        // sub class should implement it if needed
     }
 
     private String getInternationalizedLabel(String str) {

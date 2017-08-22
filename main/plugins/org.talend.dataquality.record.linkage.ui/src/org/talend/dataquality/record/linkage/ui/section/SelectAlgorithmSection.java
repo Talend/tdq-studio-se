@@ -27,6 +27,7 @@ import org.talend.dataquality.record.linkage.constant.RecordMatcherType;
 import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataquality.record.linkage.ui.section.definition.DefaultSurvivorshipDefinitionSection;
 import org.talend.dataquality.record.linkage.ui.section.definition.MatchAndSurvivorKeySection;
+import org.talend.dataquality.record.linkage.ui.section.definition.ParticularDefSurshipDefinitionSection;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 
@@ -51,6 +52,8 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
     protected MatchAndSurvivorKeySection matchAndSurvivorKeySection = null;
 
     private DefaultSurvivorshipDefinitionSection defaultSurvivorshipDefinitionSection = null;
+
+    private ParticularDefSurshipDefinitionSection particularDefaultSurvivorshipSection = null;
 
     private String algorithmName = null;
 
@@ -177,6 +180,7 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
         }
         // survivorshipDefinitionSection.changeSectionDisStatus(!isVSRMode);
         defaultSurvivorshipDefinitionSection.changeSectionDisStatus(!isVSRMode);
+        particularDefaultSurvivorshipSection.changeSectionDisStatus(!isVSRMode);
         changeDisplayStatus();
         if (!isVSRMode) {
             updateMatchAndSurvivorSection();
@@ -272,6 +276,15 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
      */
     public void setDefaultSurvivorshipDefinitionSection(DefaultSurvivorshipDefinitionSection defaultSurvivorshipDefinitionSection) {
         this.defaultSurvivorshipDefinitionSection = defaultSurvivorshipDefinitionSection;
+    }
+
+    /**
+     * Sets the particularDefaultSurvivorshipSection.
+     * 
+     * @param particularDefaultSurvivorshipSection the particularDefaultSurvivorshipSection to set
+     */
+    public void setParticularDefaultSurvivorshipSection(ParticularDefSurshipDefinitionSection particularDefaultSurvivorshipSection) {
+        this.particularDefaultSurvivorshipSection = particularDefaultSurvivorshipSection;
     }
 
 }
