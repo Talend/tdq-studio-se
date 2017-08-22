@@ -12,8 +12,10 @@
 // ============================================================================
 package org.talend.dq.nodes;
 
+import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.dataquality.analysis.Analysis;
+import org.talend.dataquality.properties.TDQAnalysisItem;
 import org.talend.dataquality.properties.TDQReportItem;
 import org.talend.repository.model.RepositoryNode;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -25,8 +27,6 @@ public class ReportAnalysisRepNode extends DQRepositoryNode {
 
     private Report report;
 
-    private Analysis analysis;
-
     public Report getReport() {
         return this.report;
     }
@@ -36,12 +36,13 @@ public class ReportAnalysisRepNode extends DQRepositoryNode {
     }
 
     public Analysis getAnalysis() {
-        return this.analysis;
+        Property property = this.getObject().getProperty();
+        if (property != null && property.getItem() != null) {
+            return ((TDQAnalysisItem) property.getItem()).getAnalysis();
+        }
+        return null;
     }
 
-    public void setAnalysis(Analysis analysis) {
-        this.analysis = analysis;
-    }
 
     /**
      * DOC xqliu ReportAnalysisRepNode constructor comment.
