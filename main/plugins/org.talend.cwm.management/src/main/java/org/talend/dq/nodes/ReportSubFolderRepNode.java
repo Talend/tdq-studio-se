@@ -20,7 +20,7 @@ import org.eclipse.core.resources.IResource;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.model.repository.RepositoryViewObject;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.helpers.ReportHelper;
 import org.talend.dq.helper.PropertyHelper;
@@ -123,11 +123,7 @@ public class ReportSubFolderRepNode extends ReportFolderRepNode {
             Property anaEleProperty = PropertyHelper.getProperty(analysis);
             IRepositoryViewObject viewObject = null;
             if (anaEleProperty != null) {
-                try {
-                    viewObject = ProxyRepositoryFactory.getInstance().getLastVersion(anaEleProperty.getId());
-                } catch (Exception e) {
-                    log.error(e);
-                }
+                viewObject = new RepositoryViewObject(anaEleProperty);
             } else {
                 log.error("Analysis [" + analysis.getName() + "] is proxy"); //$NON-NLS-1$//$NON-NLS-2$
             }
@@ -140,7 +136,6 @@ public class ReportSubFolderRepNode extends ReportFolderRepNode {
             ReportAnalysisRepNode node = new ReportAnalysisRepNode(viewObject, this, ENodeType.TDQ_REPOSITORY_ELEMENT,
                     getProject());
             node.setReport(this.getReport());
-            node.setAnalysis(analysis);
             node.setId(this.getReport().getName() + analysis.getName());
             nodes.add(node);
         }
