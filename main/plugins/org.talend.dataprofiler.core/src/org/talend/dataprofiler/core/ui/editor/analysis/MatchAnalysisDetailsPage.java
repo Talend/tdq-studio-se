@@ -200,8 +200,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         createBlockingKeySection();
         createMatchingKeySection();
         createMatchAndSurvivorKeySection();
-        createDefaultSurvivorshipSection();
         createParticularDefaultSurvivorshipSection();
+        createDefaultSurvivorshipSection();
         createMatchParameterSection();
 
         // TDQ-7781: we must do this, this will recompute the layout and scroll bars
@@ -991,6 +991,7 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
             matchAndSurvivorKeySection.redrawnSubTableContent();
         }
         this.blockingKeySection.redrawnSubTableContent();
+        this.particularDefaultSurvivorshipSection.redrawnSubTableContent();
     }
 
     /**
@@ -1190,6 +1191,7 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         this.matchingKeySection.setColumnNameInput(colName2IdxMap);
         this.matchAndSurvivorKeySection.setColumnNameInput(colName2IdxMap);
         this.particularDefaultSurvivorshipSection.setColumnNameInput(colName2IdxMap);
+        this.particularDefaultSurvivorshipSection.redrawnSubTableContent();
         if (selectAlgorithmSection.isVSRMode()) {
             this.matchingKeySection.redrawnSubTableContent();
         } else {
