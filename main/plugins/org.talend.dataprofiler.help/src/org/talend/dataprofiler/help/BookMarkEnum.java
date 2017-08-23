@@ -27,7 +27,7 @@ public enum BookMarkEnum {
     PostgreSQLRegular("http://www.postgresql.org/docs/current/static/functions-matching.html", "PostgreSQL Regular Expressions"), //$NON-NLS-1$ //$NON-NLS-2$
     BoxPlot("http://en.wikipedia.org/wiki/Box_plot", "Box Plot Graphic"), //$NON-NLS-1$ //$NON-NLS-2$
     EclipseSQLExplorer("http://eclipsesql.sourceforge.net/index.php", "Eclipse SQL Explorer"), //$NON-NLS-1$ //$NON-NLS-2$
-    TOSDownloadPage("http://www.talend.com/download.php", "Talend.com Download Page"), //$NON-NLS-1$ //$NON-NLS-2$
+    TOSDownloadPage("http://www.talend.com/download/", "Talend.com Download Page"), //$NON-NLS-1$ //$NON-NLS-2$
     TOSForum("http://www.talendforge.org/forum/index.php", "Talend.com Forum"), //$NON-NLS-1$ //$NON-NLS-2$
     TOSBugtracker("http://jira.talendforge.org", "Talend.com Bugtracker"); //$NON-NLS-1$ //$NON-NLS-2$
 
