@@ -40,11 +40,11 @@ public class LinksToolbarItem extends ContributionItem {
 
     private static final String LEARN_URL = "<a href=\"http://www.talendforge.org/tutorials/menu.php\">Learn</a>"; //$NON-NLS-1$
 
-    private static final String ASK_URL = "<a href=\"http://www.talendforge.org/forum/\">Ask</a>"; //$NON-NLS-1$
+    private static final String ASK_URL = "<a href=\"https://community.talend.com/\">Ask</a>"; //$NON-NLS-1$
 
     // private static final String SHARE_URL = "<a href=\"http://www.talendforge.org/exchange/\">Share</a>"; //$NON-NLS-1$
 
-    private static final String UPGRADE_URL = "<a href=\"http://www.talend.com/whyupgrade.php\">Upgrade!</a>"; //$NON-NLS-1$
+    private static final String UPGRADE_URL = "<a href=\"http://www.talend.com/products/why-upgrade/\">Upgrade!</a>"; //$NON-NLS-1$
 
     @Override
     public void fill(ToolBar parent, int index) {
