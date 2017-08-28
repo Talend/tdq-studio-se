@@ -23,6 +23,7 @@ import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.swt.SWT;
 import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer;
+import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
 import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
 
@@ -125,13 +126,23 @@ public class FunctionEditingSupport extends EditingSupport {
     public static String[] getAllFunctionByDataTypes(String talendDataType) {
         List<String> list = new ArrayList<String>();
         for (SurvivorShipAlgorithmEnum theType : SurvivorShipAlgorithmEnum.values()) {
-            if (theType.getDataType() == null || StringUtils.equalsIgnoreCase(talendDataType, "id_" + theType.getDataType()) //$NON-NLS-1$
-                    || StringUtils.equals(theType.getDataType().getValue(), "Number") //$NON-NLS-1$
-                    && JavaTypesManager.isNumber(talendDataType)) {
+            DefaultSurvivorShipDataTypeEnum[] supportDataTypes = theType.getDataType();
+            if (supportDataTypes.length == 0 || isSupportDataType(supportDataTypes, talendDataType)) {
                 list.add(theType.getValue());
             }
         }
         return list.toArray(new String[list.size()]);
+    }
+
+    public static boolean isSupportDataType(DefaultSurvivorShipDataTypeEnum[] supportDataTypes, String talendDataType) {
+        for (DefaultSurvivorShipDataTypeEnum theType : supportDataTypes) {
+            if (StringUtils.equalsIgnoreCase(talendDataType, "id_" + theType) //$NON-NLS-1$
+                    || StringUtils.equals(theType.getValue(), "Number") //$NON-NLS-1$
+                    && JavaTypesManager.isNumber(talendDataType)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

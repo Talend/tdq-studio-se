@@ -92,7 +92,7 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
         for (MetadataColumn metaColumn : columnMap.keySet()) {
             String dataTypeName = metaColumn.getTalendType();
             for (ParticularDefaultSurvivorshipDefinitions pdefaultSurvivdef : particularDefaultSurvivorshipDefinitions) {
-                if (pdefaultSurvivdef.getColumn() == metaColumn.getName()) {
+                if (pdefaultSurvivdef.getColumn().equals(metaColumn.getName())) {
                     putNewSurvFunc(columnMap, defaultSurvRules, metaColumn, pdefaultSurvivdef);
                     break;
                 }

@@ -16,8 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.TableItem;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
-import org.talend.core.model.metadata.types.JavaTypesManager;
 import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorshipUtils;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
 import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
@@ -167,11 +167,9 @@ public class ParticularDefaultSurvivorShipCellModifier extends
      */
     private boolean isFunctionInvalid(ParticularDefaultSurvivorshipDefinitions pdskd, String talendType) {
         String dataType = pdskd.getDataType();
-        DefaultSurvivorShipDataTypeEnum functionDataType = SurvivorShipAlgorithmEnum.getTypeBySavedValue(
+        DefaultSurvivorShipDataTypeEnum[] functionDataType = SurvivorShipAlgorithmEnum.getTypeBySavedValue(
                 pdskd.getFunction().getAlgorithmType()).getDataType();
-        if (functionDataType == null || StringUtils.equalsIgnoreCase(dataType, "id_" + functionDataType) //$NON-NLS-1$
-                || StringUtils.equals(functionDataType.getValue(), "Number") //$NON-NLS-1$
-                && JavaTypesManager.isNumber(dataType)) {
+        if (functionDataType.length == 0 || FunctionEditingSupport.isSupportDataType(functionDataType, talendType)) {
             return false;
         }
         return true;
