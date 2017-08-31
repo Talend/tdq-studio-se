@@ -499,4 +499,9 @@ public class TopService implements ICoreService {
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
+
+    @Override
+    public void initMavenCodeProjects() {
+        throw new UnsupportedOperationException();
+    }
 }
