@@ -43,6 +43,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.core.runtime.process.ITalendProcessJavaProject;
 import org.talend.core.utils.KeywordsValidator;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.designer.core.model.utils.emf.talendfile.NodeType;
@@ -424,7 +425,7 @@ public class TopService implements ICoreService {
      * @see org.talend.core.ICoreService#synchronizeMapptingXML()
      */
     @Override
-    public void synchronizeMapptingXML() {
+    public void synchronizeMapptingXML(ITalendProcessJavaProject talendJavaProject) {
         // I do not know what the method is supposed to be doing to I do nothing.
     }
 
@@ -470,7 +471,7 @@ public class TopService implements ICoreService {
     }
 
     @Override
-    public void syncLog4jSettings() {
+    public void syncLog4jSettings(ITalendProcessJavaProject talendJavaProject) {
         throw new UnsupportedOperationException();
     }
 
