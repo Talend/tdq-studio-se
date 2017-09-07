@@ -34,6 +34,7 @@ import org.talend.dataprofiler.core.exception.ExceptionHandler;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.model.TdResourceModel;
 import org.talend.dataprofiler.core.ui.dialog.TdTaskPropertiesDialog;
+import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.RepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -65,11 +66,11 @@ public class TdAddTaskAction extends Action {
             if (navObj instanceof RepositoryNode) {
                 RepositoryNode node = (RepositoryNode) navObj;
                 modelElement = RepositoryNodeHelper.getModelElementFromRepositoryNode(node);
-
             } else {
                 modelElement = (ModelElement) navObj;
-
             }
+            modelElement = (ModelElement) EObjectHelper.resolveObject(modelElement);
+
             if (modelElement == null || modelElement.eResource() == null || modelElement.getName() == null) {
                 String fileName = ""; //$NON-NLS-1$
                 if (navObj instanceof RepositoryNode) {
@@ -78,8 +79,7 @@ public class TdAddTaskAction extends Action {
                         fileName = ((TDQItem) item).getFilename();
                     }
                 }
-                BusinessException createBusinessException = ExceptionFactory.getInstance().createBusinessException(fileName);
-                throw createBusinessException;
+                throw ExceptionFactory.getInstance().createBusinessException(fileName);
             }
             IFile file = WorkspaceUtils.getModelElementResource(modelElement);
             TdResourceModel tdResModel = new TdResourceModel(file.getFullPath(), (Workspace) file.getWorkspace(), modelElement);
