@@ -21,6 +21,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
+import org.talend.dq.helper.EObjectHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
@@ -129,7 +130,7 @@ public class DQDBFolderRepositoryNode extends DQRepositoryNode {
      * @return the item
      */
     public ConnectionItem getItem() {
-        return item;
+        return (ConnectionItem) EObjectHelper.resolveObject(item);
     }
 
     /**
