@@ -26,6 +26,7 @@ import org.talend.dataquality.record.linkage.ui.composite.MatchRuleTableComposit
 import org.talend.dataquality.record.linkage.ui.composite.definition.MatchRuleTableDefinitionComposite;
 import org.talend.dataquality.record.linkage.ui.section.MatchingKeySection;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
+import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
@@ -156,7 +157,7 @@ public class MatchKeyDefinitionSection extends MatchingKeySection {
      * .rules.MatchKeyDefinition)
      */
     @Override
-    protected boolean checkColumnNameIsEmpty(MatchKeyDefinition mdk) {
+    protected boolean checkColumnNameIsEmpty(KeyDefinition mdk) {
         return false;
     }
 }

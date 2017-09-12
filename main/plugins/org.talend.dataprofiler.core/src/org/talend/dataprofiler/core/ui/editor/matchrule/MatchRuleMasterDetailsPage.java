@@ -39,6 +39,8 @@ import org.talend.dataquality.record.linkage.ui.section.definition.BlockingKeyDe
 import org.talend.dataquality.record.linkage.ui.section.definition.DefaultSurvivorshipDefinitionSection;
 import org.talend.dataquality.record.linkage.ui.section.definition.MatchAndSurvivorKeySection;
 import org.talend.dataquality.record.linkage.ui.section.definition.MatchKeyDefinitionSection;
+import org.talend.dataquality.record.linkage.ui.section.definition.ParticularDefSurshipDefinitionSection;
+import org.talend.dataquality.record.linkage.ui.section.definition.ParticularDefSurshipMatchRuleSection;
 import org.talend.dataquality.record.linkage.ui.service.IMatchRuleChangeService;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dq.helper.EObjectHelper;
@@ -63,6 +65,8 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
     private MatchAndSurvivorKeySection matchAndSurvivorKeySection = null;
 
     private DefaultSurvivorshipDefinitionSection defaultSurvivorshipDefinitionSection = null;
+
+    private ParticularDefSurshipDefinitionSection particularDefaultSurvivorshipSection = null;
 
     protected RuleRepNode ruleRepNode;
 
@@ -116,12 +120,17 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
         ReturnCode rc = new ReturnCode(false);
         if (this.isDirty) {
             ReturnCode checkResultStatus = blockingKeyDefinitionSection.checkResultStatus();
+            String algorithmName = this.selectAlgorithmSection.getAlgorithmName();
+            boolean isTSwoosh = RecordMatcherType.T_SwooshAlgorithm.name().equals(algorithmName);
             if (checkResultStatus.isOk()) {
-                if (RecordMatcherType.T_SwooshAlgorithm.name().equals(this.selectAlgorithmSection.getAlgorithmName())) {
+                if (isTSwoosh) {
                     checkResultStatus = matchAndSurvivorKeySection.checkResultStatus();
                 } else {
                     checkResultStatus = matchingKeyDefinitionSection.checkResultStatus();
                 }
+            }
+            if (checkResultStatus.isOk() && isTSwoosh) {
+                checkResultStatus = this.particularDefaultSurvivorshipSection.checkResultStatus();
             }
             if (!checkResultStatus.isOk()) {
                 return checkResultStatus;
@@ -171,8 +180,8 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
         createMatchAndSurvivorKeySection(topComp);
         selectAlgorithmSection.setMatchAndSurvivorKeySection(matchAndSurvivorKeySection);
 
-        // createSurvivorshipSection(topComp);
-        // selectAlgorithmSection.setSurvivorshipDefinitionSection(survivorshipDefinitionSection);
+        createParticularDefaultSurvivorshipSection(topComp);
+        selectAlgorithmSection.setParticularDefaultSurvivorshipSection(particularDefaultSurvivorshipSection);
 
         createDefaultSurvivorshipSection(topComp);
         selectAlgorithmSection.setDefaultSurvivorshipDefinitionSection(defaultSurvivorshipDefinitionSection);
@@ -231,6 +240,19 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
         defaultSurvivorshipDefinitionSection.changeSectionDisStatus(!selectAlgorithmSection.isVSRMode());
         defaultSurvivorshipDefinitionSection.getSection().setExpanded(true);
         registerSection(defaultSurvivorshipDefinitionSection.getSection());
+    }
+
+    /**
+     * Create section of ParticularDefaultSurvivorship table
+     */
+    private void createParticularDefaultSurvivorshipSection(Composite mainComp) {
+        particularDefaultSurvivorshipSection = new ParticularDefSurshipMatchRuleSection(form, mainComp, toolkit);
+        particularDefaultSurvivorshipSection.setMatchRuleDef(getCurrentModelElement());
+        particularDefaultSurvivorshipSection.createContent();
+        registerSection(particularDefaultSurvivorshipSection.getSection());
+        particularDefaultSurvivorshipSection.addPropertyChangeListener(this);
+        particularDefaultSurvivorshipSection.changeSectionDisStatus(!selectAlgorithmSection.isVSRMode());
+        particularDefaultSurvivorshipSection.getSection().setExpanded(true);
     }
 
     /**

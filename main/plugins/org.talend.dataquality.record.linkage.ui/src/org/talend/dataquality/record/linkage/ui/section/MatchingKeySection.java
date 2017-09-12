@@ -937,20 +937,6 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
     }
 
     /**
-     * DOC zshen Comment method "checkColumnNameIsEmpty".
-     * 
-     * @param mdk
-     * @return
-     */
-    protected boolean checkColumnNameIsEmpty(MatchKeyDefinition mdk) {
-        String columnName = mdk.getColumn();
-        if (columnName == null || columnName.equals(StringUtils.EMPTY)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 
      * clear match rule chart.
      */

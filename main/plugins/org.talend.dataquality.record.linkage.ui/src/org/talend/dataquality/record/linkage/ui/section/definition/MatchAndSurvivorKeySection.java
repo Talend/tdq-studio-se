@@ -35,7 +35,7 @@ import org.talend.dataquality.record.linkage.ui.composite.tableviewer.definition
 import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataquality.record.linkage.ui.section.AnaMatchSurvivorSection;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
-import org.talend.dataquality.rules.MatchKeyDefinition;
+import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 
@@ -189,7 +189,7 @@ public class MatchAndSurvivorKeySection extends AnaMatchSurvivorSection {
      * For the rule editor, no column is needed.
      */
     @Override
-    protected boolean checkColumnNameIsEmpty(MatchKeyDefinition mdk) {
+    protected boolean checkColumnNameIsEmpty(KeyDefinition mdk) {
         return false;
     }
 

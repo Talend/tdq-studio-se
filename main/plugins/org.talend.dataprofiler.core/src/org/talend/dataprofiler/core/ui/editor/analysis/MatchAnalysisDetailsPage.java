@@ -254,10 +254,6 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         defaultSurvivorshipDefinitionSection.getSection().setExpanded(
                 getExpandedStatus(defaultSurvivorshipDefinitionSection.getSection().getText()));
         selectAlgorithmSection.setDefaultSurvivorshipDefinitionSection(defaultSurvivorshipDefinitionSection);
-        if (selectAlgorithmSection.isVSRMode()) {
-            // Hide the section in case of vsr.
-            defaultSurvivorshipDefinitionSection.changeSectionDisStatus(false);
-        }
     }
 
     /**
@@ -276,10 +272,6 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         particularDefaultSurvivorshipSection.getSection().setExpanded(
                 getExpandedStatus(particularDefaultSurvivorshipSection.getSection().getText()));
         selectAlgorithmSection.setParticularDefaultSurvivorshipSection(particularDefaultSurvivorshipSection);
-        if (selectAlgorithmSection.isVSRMode()) {
-            // Hide the section in case of vsr.
-            particularDefaultSurvivorshipSection.changeSectionDisStatus(false);
-        }
     }
 
     /**
@@ -1483,6 +1475,10 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
             rc.setMessage(DefaultMessagesImpl.getString("MatchMasterDetailsPage.NoMatchKey")); //$NON-NLS-1$
         }
 
+        if (rc.isOk()) {
+            rc = this.particularDefaultSurvivorshipSection.checkResultStatus();
+        }
+
         return rc;
     }
 
@@ -1598,6 +1594,7 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         } else {
             this.matchAndSurvivorKeySection.importMatchRule(matchRule, overwrite);
             this.defaultSurvivorshipDefinitionSection.importDefaultSurvivorshipFunctions(matchRule, overwrite);
+            this.particularDefaultSurvivorshipSection.importParticularSurvivorshipFunctions(matchRule, overwrite);
         }
         this.blockingKeySection.importMatchRule(matchRule, overwrite);
         this.setDirty(true);

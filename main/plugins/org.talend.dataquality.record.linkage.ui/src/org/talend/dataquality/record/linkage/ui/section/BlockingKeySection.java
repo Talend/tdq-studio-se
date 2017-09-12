@@ -435,19 +435,6 @@ public class BlockingKeySection extends AbstractMatchAnaysisTableSection {
     }
 
     /**
-     * DOC zshen Comment method "checkColumnName".
-     * 
-     * @param bdk
-     */
-    protected boolean checkColumnNameIsEmpty(BlockKeyDefinition bdk) {
-        String columnName = bdk.getColumn();
-        if (columnName == null || columnName.equals(StringUtils.EMPTY)) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 
      * clear blocking key chart.
      */
