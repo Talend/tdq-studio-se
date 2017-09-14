@@ -32,6 +32,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -109,7 +110,6 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
-
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -531,11 +531,11 @@ public class FileSystemImportWriter implements IImportWriter {
                                 } else {
                                     // remove the dependency of the object
                                     EObjectHelper.removeDependencys(PropertyHelper.getModelElement(object.getProperty()));
-                                    
+
                                     isDeleted = true;
                                     // delete the object
                                     ProxyRepositoryFactory.getInstance().deleteObjectPhysical(object);
-                                    
+
                                 }
                             }
 
@@ -552,14 +552,14 @@ public class FileSystemImportWriter implements IImportWriter {
                                         allCopiedFiles.add(desPath.toFile());
                                     }
                                     allImportItems.add(desPath);
-                                    //TDQ-12180
-                                    if(isDeleted){
-                                        AbstractSvnRepositoryService svnReposService = GlobalServiceRegister.getDefault().getSvnRepositoryService(
-                                                AbstractSvnRepositoryService.class);
-                                        if (svnReposService != null){
+                                    // TDQ-12180
+                                    if (isDeleted) {
+                                        AbstractSvnRepositoryService svnReposService = GlobalServiceRegister.getDefault()
+                                                .getSvnRepositoryService(AbstractSvnRepositoryService.class);
+                                        if (svnReposService != null) {
                                             svnReposService.addIfImportOverride(desPath);
                                         }
-                                 
+
                                     }
                                 }
 
@@ -1301,20 +1301,50 @@ public class FileSystemImportWriter implements IImportWriter {
     }
 
     private void removeInvalidDependency(ModelElement modelElement) {
-        // remove invalid client depenedences,e.g,remove some invalid analyses in connection file .
-        EList<Dependency> clientDependencys = modelElement.getSupplierDependency();
-        for (Dependency dependency : clientDependencys) {
+        // remove invalid supplier depenedences,e.g,remove some invalid analyses in connection file .
+        // remove from model
+        EList<Dependency> supplierDependencys = modelElement.getSupplierDependency();
+        for (Dependency dependency : supplierDependencys) {
             EList<ModelElement> clients = dependency.getClient();
             Iterator<ModelElement> dependencyIterator = clients.iterator();
             while (dependencyIterator.hasNext()) {
                 ModelElement client = dependencyIterator.next();
                 if (client == null || client.eIsProxy()) {
+                    // remove client here
                     dependencyIterator.remove();
                 }
             }
         }
+        // remove from resource
         Resource modEResource = modelElement.eResource();
-        if (!clientDependencys.isEmpty() && modEResource != null) {
+        Iterator<EObject> iterator = modEResource.getContents().iterator();
+        while (iterator.hasNext()) {
+            EObject eObject = iterator.next();
+            if (eObject instanceof Dependency && !supplierDependencys.contains(eObject)) {
+                iterator.remove();
+            }
+        }
+        // remove clint Dependency from model
+        Iterator<Dependency> ClientDependencyIterator = modelElement.getClientDependency().iterator();
+        while (ClientDependencyIterator.hasNext()) {
+            Dependency dependency = ClientDependencyIterator.next();
+            EList<ModelElement> suppliers = dependency.getSupplier();
+            // If dependency is empty then remove dependency directly
+            if (suppliers.isEmpty()) {
+                ClientDependencyIterator.remove();
+                continue;
+            }
+            // else remove the elemet from dependency
+            Iterator<ModelElement> suppLiterator = suppliers.iterator();
+            while (suppLiterator.hasNext()) {
+                ModelElement supplier = suppLiterator.next();
+                if (supplier == null || supplier.eIsProxy()) {
+                    suppLiterator.remove();
+                }
+            }
+        }
+
+        if (!supplierDependencys.isEmpty() && modEResource != null) {
             EMFSharedResources.getInstance().saveResource(modEResource);
         }
     }
