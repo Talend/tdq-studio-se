@@ -123,8 +123,8 @@ public class DBViewFolderRepNode extends DQDBFolderRepositoryNode implements ICo
         try {
             if (metadataObject instanceof MetadataCatalogRepositoryObject) {
                 viewObject = ((MetadataCatalogRepositoryObject) metadataObject).getViewObject();
-                item = (ConnectionItem) viewObject.getProperty().getItem();
-                setConnection(item.getConnection());
+                setItem((ConnectionItem) viewObject.getProperty().getItem());
+                setConnection(getItem().getConnection());
                 if (((MetadataCatalogRepositoryObject) metadataObject).getCatalog().eIsProxy()) {
                     // reload the connection to make sure the connection(and all it's owned elements) is not proxy
                     reloadConnectionViewObject();
@@ -143,14 +143,14 @@ public class DBViewFolderRepNode extends DQDBFolderRepositoryNode implements ICo
                         views = DqRepositoryViewService.getViews(getConnection(), catalog, null, true, true);
                     }
                     if (views != null && views.size() > 0) {
-                        ProxyRepositoryFactory.getInstance().save(item, false);
+                        ProxyRepositoryFactory.getInstance().save(getItem(), false);
                     }
                 }
 
             } else {
                 viewObject = ((MetadataSchemaRepositoryObject) metadataObject).getViewObject();
-                item = (ConnectionItem) viewObject.getProperty().getItem();
-                setConnection(item.getConnection());
+                setItem((ConnectionItem) viewObject.getProperty().getItem());
+                setConnection(getItem().getConnection());
                 if (((MetadataSchemaRepositoryObject) metadataObject).getSchema().eIsProxy()) {
                     // reload the connection to make sure the connection(and all it's owned elements) is not proxy
                     reloadConnectionViewObject();
@@ -173,7 +173,7 @@ public class DBViewFolderRepNode extends DQDBFolderRepositoryNode implements ICo
                         views = DqRepositoryViewService.getViews(getConnection(), schema, null, true, true);
                     }
                     if (views != null && views.size() > 0) {
-                        ProxyRepositoryFactory.getInstance().save(item, false);
+                        ProxyRepositoryFactory.getInstance().save(getItem(), false);
                     }
                 }
                 // ~22204
