@@ -128,11 +128,12 @@ public class DelimitedFileSQLExecutor extends SQLExecutor {
 
             long currentRecord = 0;
             while (csvReader.readNext()) {
+                // MOD msjian TDQ-14284: fix the file connection which set "CSV" can not show data.
+                currentRecord++;
                 // skip the head rows
                 if (currentRecord <= headValue) {
                     continue;
                 }
-                currentRecord++;
 
                 if (limitValue != -1 && currentRecord > limitValue) {
                     break;
