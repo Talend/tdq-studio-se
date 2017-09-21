@@ -29,7 +29,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.analysis.Analysis;
-import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorshipUtils;
 import org.talend.dataquality.record.linkage.ui.action.MatchRuleActionGroup;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.ParticularDefaultSurvivorshipLabelProvider;
@@ -145,9 +144,7 @@ public class ParticularDefaultSurvivorShipTableViewer extends
     protected ParticularDefaultSurvivorshipDefinitions createNewKeyDefinition(String columnName) {
         ParticularDefaultSurvivorshipDefinitions pskd = RulesFactory.eINSTANCE.createParticularDefaultSurvivorshipDefinitions();
         AlgorithmDefinition createAlgorithmDefinition = RulesFactory.eINSTANCE.createAlgorithmDefinition();
-        createAlgorithmDefinition.setAlgorithmType(SurvivorShipAlgorithmEnum.getTypeByIndex(0).getValue());
-        // MOD TDQ-11774 set a default value for parameter
-        createAlgorithmDefinition.setAlgorithmParameters(SurvivorshipUtils.DEFAULT_CONCATENATE_PARAMETER);
+        createAlgorithmDefinition.setAlgorithmType(SurvivorShipAlgorithmEnum.getTypeByIndex(3).getComponentValueName());
         pskd.setFunction(createAlgorithmDefinition);
         return pskd;
     }

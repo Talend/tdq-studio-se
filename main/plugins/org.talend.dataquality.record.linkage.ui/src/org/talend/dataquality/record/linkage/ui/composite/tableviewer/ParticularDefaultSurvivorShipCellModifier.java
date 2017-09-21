@@ -16,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.TableItem;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
-import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorshipUtils;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
 import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
@@ -149,13 +148,8 @@ public class ParticularDefaultSurvivorShipCellModifier extends
      * @param pdskd
      */
     private void resetFunction(ParticularDefaultSurvivorshipDefinitions pdskd) {
-        pdskd.getFunction().setAlgorithmType(SurvivorShipAlgorithmEnum.CONCATENATE.getComponentValueName());
-        pdskd.getFunction().setAlgorithmParameters(SurvivorshipUtils.DEFAULT_CONCATENATE_PARAMETER);
-        CellEditor[] cellEditors = tableViewer.getCellEditors();
-        if (cellEditors.length == 3) {
-            cellEditors[2].setValue(SurvivorshipUtils.DEFAULT_CONCATENATE_PARAMETER);
-        }
-
+        pdskd.getFunction().setAlgorithmType(SurvivorShipAlgorithmEnum.MOST_COMMON.getComponentValueName());
+        pdskd.getFunction().setAlgorithmParameters(StringUtils.EMPTY);
     }
 
     /**

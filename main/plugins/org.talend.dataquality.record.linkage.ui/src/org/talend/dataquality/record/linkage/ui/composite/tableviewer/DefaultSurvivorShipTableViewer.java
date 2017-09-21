@@ -27,7 +27,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.analysis.Analysis;
-import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorshipUtils;
 import org.talend.dataquality.record.linkage.ui.action.MatchRuleActionGroup;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.DefaultSurvivorshipLabelProvider;
 import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
@@ -139,9 +138,7 @@ public class DefaultSurvivorShipTableViewer extends AbstractMatchAnalysisTableVi
         DefaultSurvivorshipDefinition skd = RulesFactory.eINSTANCE.createDefaultSurvivorshipDefinition();
         skd.setDataType(DefaultSurvivorShipDataTypeEnum.getTypeByIndex(0).getValue());
         AlgorithmDefinition createAlgorithmDefinition = RulesFactory.eINSTANCE.createAlgorithmDefinition();
-        createAlgorithmDefinition.setAlgorithmType(SurvivorShipAlgorithmEnum.getTypeByIndex(0).getValue());
-        // MOD TDQ-11774 set a default value for parameter
-        createAlgorithmDefinition.setAlgorithmParameters(SurvivorshipUtils.DEFAULT_CONCATENATE_PARAMETER);
+        createAlgorithmDefinition.setAlgorithmType(SurvivorShipAlgorithmEnum.getTypeByIndex(3).getComponentValueName());
         skd.setFunction(createAlgorithmDefinition);
         return skd;
     }
