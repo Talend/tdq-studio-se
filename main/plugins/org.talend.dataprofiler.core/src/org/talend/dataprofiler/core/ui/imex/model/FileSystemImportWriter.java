@@ -1317,11 +1317,13 @@ public class FileSystemImportWriter implements IImportWriter {
         }
         // remove from resource
         Resource modEResource = modelElement.eResource();
-        Iterator<EObject> iterator = modEResource.getContents().iterator();
-        while (iterator.hasNext()) {
-            EObject eObject = iterator.next();
-            if (eObject instanceof Dependency && !supplierDependencys.contains(eObject)) {
-                iterator.remove();
+        if (modEResource != null) {
+            Iterator<EObject> iterator = modEResource.getContents().iterator();
+            while (iterator.hasNext()) {
+                EObject eObject = iterator.next();
+                if (eObject instanceof Dependency && !supplierDependencys.contains(eObject)) {
+                    iterator.remove();
+                }
             }
         }
         // remove clint Dependency from model
