@@ -1317,11 +1317,13 @@ public class FileSystemImportWriter implements IImportWriter {
         }
         // remove from resource
         Resource modEResource = modelElement.eResource();
-        Iterator<EObject> iterator = modEResource.getContents().iterator();
-        while (iterator.hasNext()) {
-            EObject eObject = iterator.next();
-            if (eObject instanceof Dependency && !supplierDependencys.contains(eObject)) {
-                iterator.remove();
+        if (modEResource != null) {
+            Iterator<EObject> iterator = modEResource.getContents().iterator();
+            while (iterator.hasNext()) {
+                EObject eObject = iterator.next();
+                if (eObject instanceof Dependency && !supplierDependencys.contains(eObject)) {
+                    iterator.remove();
+                }
             }
         }
         // remove clint Dependency from model
@@ -1329,12 +1331,12 @@ public class FileSystemImportWriter implements IImportWriter {
         while (ClientDependencyIterator.hasNext()) {
             Dependency dependency = ClientDependencyIterator.next();
             EList<ModelElement> suppliers = dependency.getSupplier();
-            //If dependency is empty then remove dependency directly
+            // If dependency is empty then remove dependency directly
             if (suppliers.isEmpty()) {
                 ClientDependencyIterator.remove();
                 continue;
             }
-            //else remove the elemet from dependency
+            // else remove the elemet from dependency
             Iterator<ModelElement> suppLiterator = suppliers.iterator();
             while (suppLiterator.hasNext()) {
                 ModelElement supplier = suppLiterator.next();
