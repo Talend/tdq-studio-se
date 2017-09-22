@@ -44,6 +44,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
+import org.talend.commons.emf.EMFUtil;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.LoginException;
@@ -56,6 +57,7 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.DeleteAction;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
 import org.talend.cwm.db.connection.ConnectionUtils;
+import org.talend.cwm.dependencies.DependenciesHandler;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.helper.WorkspaceResourceHelper;
@@ -493,7 +495,25 @@ public class DQDeleteAction extends DeleteAction {
             return false;
         }
 
-        nodeWithDependsMap.put(node, dependencies);
+        // ADD msjian TDQ-13165: check the dependency is paired or not
+        List<ModelElement> validDependenciesList = new ArrayList<ModelElement>();
+        ModelElement deleteModelElement = RepositoryNodeHelper.getModelElementFromRepositoryNode(node);
+        for (ModelElement mod : dependencies) {
+            if (DependenciesHandler.getInstance().checkClientDependencyExist(mod, deleteModelElement)) {
+                validDependenciesList.add(mod);
+            } else {
+                // will come to here ONLY when there have not paired dependency.
+                if (DependenciesHandler.getInstance().removeDependenciesBetweenModel(deleteModelElement, mod)) {
+                    EMFUtil.saveSingleResource(deleteModelElement.eResource());
+                }
+            }
+        }
+        if (validDependenciesList == null || validDependenciesList.isEmpty()) {
+            return false;
+        }
+        // TDQ-13165~
+
+        nodeWithDependsMap.put(node, validDependenciesList);
         return true;
     }
 

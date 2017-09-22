@@ -331,7 +331,7 @@ public final class DependenciesHandler {
      * @param supplier
      * @return
      */
-    private boolean checkClientDependencyExist(ModelElement client, ModelElement supplier) {
+    public boolean checkClientDependencyExist(ModelElement client, ModelElement supplier) {
         for (Dependency dependency : client.getClientDependency()) {
             if (dependency.getKind() != null && USAGE.compareTo(dependency.getKind()) == 0) {
                 EObject resolvedObject = ResourceHelper.resolveObject(dependency.getSupplier(), supplier);
