@@ -26,6 +26,7 @@ import org.talend.dataquality.record.linkage.ui.composite.definition.BlockingKey
 import org.talend.dataquality.record.linkage.ui.section.BlockingKeySection;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.rules.BlockKeyDefinition;
+import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 
 /**
@@ -144,7 +145,7 @@ public class BlockingKeyDefinitionSection extends BlockingKeySection {
      * .rules.BlockKeyDefinition)
      */
     @Override
-    protected boolean checkColumnNameIsEmpty(BlockKeyDefinition bdk) {
+    protected boolean checkColumnNameIsEmpty(KeyDefinition bdk) {
         return false;
     }
 

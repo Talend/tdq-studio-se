@@ -467,13 +467,23 @@ public abstract class AbstractMatchAnaysisTableSection extends AbstractSectionCo
         String columnName = StringUtils.EMPTY;
         if (this.columnMap != null) {
             for (MetadataColumn column : columnMap.keySet()) {
-                if (StringUtils.equalsIgnoreCase(getColumnName(column), keyDefinition.getName())) {
+                if (StringUtils.equalsIgnoreCase(getColumnName(column), getMappingName(keyDefinition))) {
                     columnName = column.getLabel();
                     break;
                 }
             }
         }
         keyDefinition.setColumn(columnName);
+    }
+
+    /**
+     * Get the name which mapping to real column name
+     * 
+     * @param keyDefinition
+     * @return
+     */
+    protected String getMappingName(KeyDefinition keyDefinition) {
+        return keyDefinition.getName();
     }
 
     // For the columns from file connection, the name is null
@@ -495,6 +505,19 @@ public abstract class AbstractMatchAnaysisTableSection extends AbstractSectionCo
         ReturnCode rc = new ReturnCode(true);
         return rc;
 
+    }
+
+    /**
+     * check whether column name is Null or empty
+     * 
+     * @param bdk
+     */
+    protected boolean checkColumnNameIsEmpty(KeyDefinition kd) {
+        String columnName = kd.getColumn();
+        if (columnName == null || columnName.equals(StringUtils.EMPTY)) {
+            return true;
+        }
+        return false;
     }
 
     public void resolveAnalysis() {

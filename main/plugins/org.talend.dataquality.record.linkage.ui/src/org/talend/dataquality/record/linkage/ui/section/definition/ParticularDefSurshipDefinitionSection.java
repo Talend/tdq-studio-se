@@ -32,10 +32,14 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.record.linkage.ui.composite.ParticularDefaultSurvivorshipTableComposite;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.sorter.KeyDefinitionTableViewerSorter;
+import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataquality.record.linkage.ui.section.AbstractMatchAnaysisTableSection;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
+import org.talend.dataquality.rules.BlockKeyDefinition;
+import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
+import org.talend.utils.sugars.ReturnCode;
 
 /**
  * Section of ParticularDefaultSurvivorship table
@@ -75,7 +79,7 @@ public class ParticularDefSurshipDefinitionSection extends AbstractMatchAnaysisT
         gridLayout.marginWidth = 0;
         gridLayout.marginHeight = 0;
         ruleComp.setLayout(gridLayout);
-        tableComposite = new ParticularDefaultSurvivorshipTableComposite(ruleComp, SWT.NO_FOCUS);
+        tableComposite = getTableComposite(ruleComp);
         tableComposite.addPropertyChangeListener(this);
         tableComposite.setLayout(gridLayout);
         tableComposite.setLayoutData(data);
@@ -91,6 +95,16 @@ public class ParticularDefSurshipDefinitionSection extends AbstractMatchAnaysisT
         initTableInput();
 
         return ruleComp;
+    }
+
+    /**
+     * Get table composite which contain table viewer
+     * 
+     * @param ruleComp
+     * @return
+     */
+    protected ParticularDefaultSurvivorshipTableComposite getTableComposite(Composite ruleComp) {
+        return new ParticularDefaultSurvivorshipTableComposite(ruleComp, SWT.NO_FOCUS);
     }
 
     protected void initTableInput() {
@@ -218,7 +232,7 @@ public class ParticularDefSurshipDefinitionSection extends AbstractMatchAnaysisT
      * @param overwrite
      */
     @SuppressWarnings("unchecked")
-    public void importDefaultSurvivorshipFunctions(MatchRuleDefinition matchRuleDef, boolean overwrite) {
+    public void importParticularSurvivorshipFunctions(MatchRuleDefinition matchRuleDef, boolean overwrite) {
         EList<ParticularDefaultSurvivorshipDefinitions> functions = null;
         Object input = tableComposite.getInput();
         if (input != null) {
@@ -231,9 +245,65 @@ public class ParticularDefSurshipDefinitionSection extends AbstractMatchAnaysisT
             functions.clear();
         }
         for (ParticularDefaultSurvivorshipDefinitions def : matchRuleDef.getParticularDefaultSurvivorshipDefinitions()) {
+            setColumnValueIfMatch(def);
             functions.add(EcoreUtil.copy(def));
         }
         tableComposite.setInput(functions);
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.dataquality.record.linkage.ui.section.AbstractMatchAnaysisTableSection#getMappingName(org.talend.dataquality
+     * .rules.KeyDefinition)
+     */
+    @Override
+    protected String getMappingName(KeyDefinition keyDefinition) {
+        return keyDefinition.getColumn();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.dataquality.record.linkage.ui.section.AbstractMatchAnaysisTableSection#checkResultStatus()
+     */
+    @Override
+    public ReturnCode checkResultStatus() {
+        ReturnCode returnCode = new ReturnCode(true);
+        List<String> uniqueNameList = new ArrayList<String>();
+        List<ParticularDefaultSurvivorshipDefinitions> particularDefaultSurvivorshipKeys = this
+                .getParticularDefaultSurvivorshipKeys();
+        for (ParticularDefaultSurvivorshipDefinitions pdsd : particularDefaultSurvivorshipKeys) {
+            String currentName = pdsd.getColumn();
+
+            if (uniqueNameList.contains(currentName)) {
+                returnCode.setOk(false);
+                returnCode.setMessage(DefaultMessagesImpl.getString(
+                        "BlockingKeySection.duplicateKeys.message", getSectionName() + "--" + currentName)); //$NON-NLS-1$ //$NON-NLS-2$
+                return returnCode;
+            }
+            uniqueNameList.add(currentName);
+
+            if (checkColumnNameIsEmpty(pdsd)) {
+                returnCode.setOk(false);
+                returnCode.setMessage(DefaultMessagesImpl.getString("BlockingKeySection.emptyColumn.message", getSectionName())); //$NON-NLS-1$ 
+                return returnCode;
+            }
+        }
+        return returnCode;
+    }
+
+    /**
+     * DOC zshen Comment method "checkColumnName".
+     * 
+     * @param bdk
+     */
+    protected boolean checkColumnNameIsEmpty(BlockKeyDefinition bdk) {
+        String columnName = bdk.getColumn();
+        if (columnName == null || columnName.equals(StringUtils.EMPTY)) {
+            return true;
+        }
+        return false;
+    }
 }
