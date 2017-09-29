@@ -373,6 +373,7 @@ public class PatternMasterDetailsPage extends AbstractMetadataFormPage implement
             }
         }
         TDQPatternItem patternItem = (TDQPatternItem) this.patternRepNode.getObject().getProperty().getItem();
+        patternRepNode.getObject().getProperty().setDisplayName(patternItem.getPattern().getName());
         // MOD yyi 2012-02-08 TDQ-4621:Explicitly set true for updating dependencies.
         ElementWriterFactory.getInstance().createPatternWriter().save(patternItem, true);
 

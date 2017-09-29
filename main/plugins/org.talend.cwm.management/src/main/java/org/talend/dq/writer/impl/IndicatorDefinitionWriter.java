@@ -14,6 +14,7 @@ package org.talend.dq.writer.impl;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.emf.FactoriesUtil;
@@ -31,6 +32,7 @@ import org.talend.dataquality.properties.TDQAnalysisItem;
 import org.talend.dataquality.properties.TDQIndicatorDefinitionItem;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.ProxyRepositoryManager;
+import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.writer.AElementPersistance;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.utils.sugars.ReturnCode;
@@ -73,6 +75,8 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
             protected void run() throws LoginException, PersistenceException {
                 TDQIndicatorDefinitionItem indicatorItem = (TDQIndicatorDefinitionItem) item;
                 IndicatorDefinition indiDefinition = indicatorItem.getIndicatorDefinition();
+                String oldName = indiDefinition.getLabel();
+                indiDefinition.setLabel(indiDefinition.getName());
                 // MOD yyi 2012-02-07 TDQ-4621:Update dependencies when careDependency is true.
                 if (careDependency) {
                     saveWithDependencies(indicatorItem, indiDefinition);
@@ -81,6 +85,8 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
                 }
 
                 updateDependencies(indiDefinition);
+                checkNameUpdate(oldName, item);
+
             }
         };
         repositoryWorkUnit.setAvoidUnloadResources(true);
@@ -94,6 +100,23 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
         }
 
         return rc;
+    }
+
+    /**
+     * when the udi name is changed, it will be losted in the indicator selection dialog. so need to reload(TDQ-14249)
+     * 
+     * @param oldName
+     * @param item
+     */
+    private void checkNameUpdate(String oldName, Item item) {
+        String newName = item.getProperty().getLabel();
+        if (!StringUtils.equals(newName, oldName)) {
+            IndicatorDefinition oldIndicatorDefinition = DefinitionHandler.getInstance().getIndicatorDefinition(oldName);
+            IndicatorDefinition newIndicatorDefinition = DefinitionHandler.getInstance().getIndicatorDefinition(newName);
+            if (newIndicatorDefinition == null && oldIndicatorDefinition != null) {
+                DefinitionHandler.getInstance().reloadAllUDIs();
+            }
+        }
     }
 
     @Override
@@ -165,6 +188,9 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
         Property property = PropertyHelper.getProperty(element);
         // if the indicator is the user defined indicator, no need to internationalize it.
         if (isUserDefinedIndicator((IndicatorDefinition) element)) {
+            if (property != null && !StringUtils.equals(property.getDisplayName(), element.getName())) {
+                property.setDisplayName(element.getName());
+            }
             return;
         }
         if (property != null) {

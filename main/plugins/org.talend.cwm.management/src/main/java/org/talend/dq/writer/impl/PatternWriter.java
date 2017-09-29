@@ -12,11 +12,13 @@
 // ============================================================================
 package org.talend.dq.writer.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Property;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.dataquality.domain.pattern.Pattern;
 import org.talend.dataquality.properties.TDQPatternItem;
@@ -69,6 +71,7 @@ public class PatternWriter extends AElementPersistance {
             protected void run() throws LoginException, PersistenceException {
                 TDQPatternItem patternItem = (TDQPatternItem) item;
                 Pattern pattern = patternItem.getPattern();
+                updateDisplayName(patternItem);
                 // MOD yyi 2012-02-07 TDQ-4621:Update dependencies(connection) when careDependency is true.
                 if (careDependency) {
                     saveWithDependencies(patternItem, pattern);
@@ -105,4 +108,11 @@ public class PatternWriter extends AElementPersistance {
         return new ReturnCode(true);
     }
 
+    private void updateDisplayName(TDQPatternItem patternItem) {
+        Property property = patternItem.getProperty();
+        String name = patternItem.getPattern().getName();
+        if (property != null && !StringUtils.equals(property.getDisplayName(), name)) {
+            property.setDisplayName(name);
+        }
+    }
 }
