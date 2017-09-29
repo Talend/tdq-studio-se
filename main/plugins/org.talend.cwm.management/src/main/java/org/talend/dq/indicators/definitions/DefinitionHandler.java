@@ -48,6 +48,7 @@ import org.talend.dataquality.indicators.definition.DefinitionPackage;
 import org.talend.dataquality.indicators.definition.IndicatorCategory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.definition.IndicatorsDefinitions;
+import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefinition;
 import org.talend.dataquality.indicators.definition.util.DefinitionSwitch;
 import org.talend.dataquality.indicators.util.IndicatorsSwitch;
 import org.talend.dq.dbms.DbmsLanguage;
@@ -561,6 +562,9 @@ public final class DefinitionHandler {
     public IndicatorDefinition getDefinitionById(String definitionId) {
         for (IndicatorDefinition indDef : this.getIndicatorsDefinitions()) {
             CwmResource resource = (CwmResource) indDef.eResource();
+            if (resource == null) {
+                return null;
+            }
             EObject object = resource.getEObject(definitionId);
             if (object != null && DefinitionPackage.eINSTANCE.getIndicatorDefinition().equals(object.eClass())) {
                 return (IndicatorDefinition) object;
@@ -671,7 +675,7 @@ public final class DefinitionHandler {
     }
 
     /**
-     * reload.
+     * reload. if (resource == null) { + return null; + }
      * 
      * @deprecated see {{@link #reloadIndicatorsDefinitions()}
      */
@@ -741,5 +745,23 @@ public final class DefinitionHandler {
             indiDef.getAggregatedDefinitions().addAll(updatedAggrDefinitions);
             EMFSharedResources.getInstance().saveResource(indiDef.eResource());
         }
+    }
+
+    /**
+     * reload all user defined indicators, when some udi's name is changed, this method will be needed
+     */
+    public void reloadAllUDIs() {
+        List<IndicatorDefinition> udis = new ArrayList<IndicatorDefinition>();
+        for (IndicatorDefinition indicatorDefinition : this.getIndicatorsDefinitions()) {
+            if (indicatorDefinition instanceof UDIndicatorDefinition) {
+                udis.add(indicatorDefinition);
+            }
+        }
+
+        // remove all udis
+        this.getIndicatorsDefinitions().removeAll(udis);
+
+        // reload all udis
+        this.getIndicatorsDefinitions().addAll(IndicatorResourceFileHelper.getInstance().getAllUDIs());
     }
 }

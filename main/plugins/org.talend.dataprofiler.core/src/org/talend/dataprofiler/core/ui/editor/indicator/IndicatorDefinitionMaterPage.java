@@ -91,7 +91,6 @@ import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.helper.resourcehelper.IndicatorResourceFileHelper;
 import org.talend.dq.nodes.SysIndicatorDefinitionRepNode;
 import org.talend.dq.writer.impl.ElementWriterFactory;
-import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -124,8 +123,6 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
     protected Map<CCombo, Composite> widgetMap;
 
     protected Composite expressionComp;
-
-    protected SysIndicatorDefinitionRepNode indicatorDefinitionRepNode;
 
     protected IndicatorCategory category;
 
@@ -207,14 +204,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
     }
 
     public SysIndicatorDefinitionRepNode getIndicatorDefinitionRepNode() {
-        return this.indicatorDefinitionRepNode;
-    }
-
-    private void initIndicatorDefinitionRepNode(IndicatorDefinition indicatorDefinition) {
-        RepositoryNode recursiveFind = RepositoryNodeHelper.recursiveFind(getCurrentModelElement());
-        if (recursiveFind != null && recursiveFind instanceof SysIndicatorDefinitionRepNode) {
-            this.indicatorDefinitionRepNode = (SysIndicatorDefinitionRepNode) recursiveFind;
-        }
+        return this.indicatorRepNode;
     }
 
     /**
@@ -2527,8 +2517,6 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
         // ADD xqliu 2010-03-23 feature 11201
         initTempExpressionList(getCurrentModelElement());
-
-        initIndicatorDefinitionRepNode(getCurrentModelElement());
     }
 
     /**
