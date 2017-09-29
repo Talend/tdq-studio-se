@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2017 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -373,6 +373,8 @@ public class PatternMasterDetailsPage extends AbstractMetadataFormPage implement
             }
         }
         TDQPatternItem patternItem = (TDQPatternItem) this.patternRepNode.getObject().getProperty().getItem();
+        // Added TDQ-14249 rename udi, 20170920
+        patternRepNode.getObject().getProperty().setDisplayName(patternItem.getPattern().getName());
         // MOD yyi 2012-02-08 TDQ-4621:Explicitly set true for updating dependencies.
         ElementWriterFactory.getInstance().createPatternWriter().save(patternItem, true);
 
