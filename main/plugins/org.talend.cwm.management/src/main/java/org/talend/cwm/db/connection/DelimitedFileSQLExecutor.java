@@ -104,7 +104,8 @@ public class DelimitedFileSQLExecutor extends SQLExecutor {
     private void useCsvReader(File file, DelimitedFileConnection delimitedFileconnection, List<ModelElement> analysisElementList) {
         int tableLimit = getLimit();
         int connLimit = JavaSqlFactory.getLimitValue(delimitedFileconnection);
-        int limitValue = tableLimit < connLimit ? tableLimit : connLimit;
+        // TDQ-14373: fix the "Limit" in analysis editor doesn't work
+        int limitValue = connLimit <= 0 ? tableLimit : (tableLimit < connLimit ? tableLimit : connLimit);
         int headValue = JavaSqlFactory.getHeadValue(delimitedFileconnection);
         CSVReader csvReader = null;
         try {
