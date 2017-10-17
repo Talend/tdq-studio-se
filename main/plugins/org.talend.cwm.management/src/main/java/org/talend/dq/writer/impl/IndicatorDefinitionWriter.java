@@ -85,6 +85,7 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
                 }
 
                 updateDependencies(indiDefinition);
+                checkNameUpdate(oldName, item);
             }
         };
         repositoryWorkUnit.setAvoidUnloadResources(true);
