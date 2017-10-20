@@ -1028,7 +1028,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
 
         String username = JavaSqlFactory.getUsername(getTdDataProvider());
         toolkit.createLabel(leftComp, DefaultMessagesImpl.getString("ConnectionMasterDetailsPage.connectAs")); //$NON-NLS-1$
-        toolkit.createLabel(leftComp, username == null ? PluginConstant.EMPTY_STRING : username);
+        toolkit.createLabel(leftComp, username);
 
         List<Catalog> tdCatalogs = getCatalogs();
         // TDQ-6735 get the correct numbers of schema.

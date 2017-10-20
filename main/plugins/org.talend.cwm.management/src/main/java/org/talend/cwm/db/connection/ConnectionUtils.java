@@ -235,10 +235,8 @@ public final class ConnectionUtils {
         }
         // ~
         Properties props = new Properties();
-        String userName = JavaSqlFactory.getUsername(analysisDataProvider);
-        String password = JavaSqlFactory.getPassword(analysisDataProvider);
-        props.put(TaggedValueHelper.USER, userName);
-        props.put(TaggedValueHelper.PASSWORD, password);
+        props.put(TaggedValueHelper.USER, JavaSqlFactory.getUsername(analysisDataProvider));
+        props.put(TaggedValueHelper.PASSWORD, JavaSqlFactory.getPassword(analysisDataProvider));
 
         if (analysisDataProvider instanceof DatabaseConnection) {
             // MOD qiongli TDQ-11507,for GeneralJdbc,should check connection too after validation jar and jdbc driver .

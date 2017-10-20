@@ -396,12 +396,10 @@ public class ConnectionInfoPage extends AbstractMetadataFormPage {
         if (connection == null) {
             return;
         }
-        String loginValue = JavaSqlFactory.getUsername(connection);
-        loginText.setText(loginValue == null ? PluginConstant.EMPTY_STRING : loginValue);
+        loginText.setText(JavaSqlFactory.getUsername(connection));
         loginText.setEditable(!connection.isContextMode());
         // MOD scorreia 2009-01-09 handle encrypted password
-        String passwordValue = JavaSqlFactory.getPassword(connection);
-        passwordText.setText(passwordValue == null ? PluginConstant.EMPTY_STRING : passwordValue);
+        passwordText.setText(JavaSqlFactory.getPassword(connection));
         passwordText.setEditable(!connection.isContextMode());
 
         String urlValue = JavaSqlFactory.getURL(connection);
