@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,14 +18,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.ecore.EClass;
 import org.osgi.framework.Bundle;
-import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
-import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
+import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.indicators.DatePatternFreqIndicator;
 import org.talend.dataquality.indicators.IndicatorsPackage;
 import org.talend.dataquality.indicators.mapdb.DBMap;
@@ -46,8 +45,6 @@ public class DatePatternFreqIndicatorImpl extends FrequencyIndicatorImpl impleme
     private static final String PATTERNS_FILENAME = "PatternsNameAndRegularExpressions.txt";
 
     private DatePatternRetriever dateRetriever;
-
-    private boolean isDelimtedFile = false;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -74,17 +71,27 @@ public class DatePatternFreqIndicatorImpl extends FrequencyIndicatorImpl impleme
     @Override
     public boolean prepare() {
         initDateRetriever();
-        // MOD qiongli 2011-11-15 TDQ-3864,judge if it is file connection.
-        MetadataColumn mdColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
-        if (mdColumn != null) {
-            Connection Connection = ConnectionHelper.getTdDataProvider(mdColumn);
-            if (Connection != null && SwitchHelpers.DELIMITEDFILECONNECTION_SWITCH.doSwitch(Connection) != null) {
-                isDelimtedFile = true;
-            }
-
-        }
-
         return super.prepare();
+    }
+
+    @Override
+    public boolean reset() {
+        boolean flag = super.reset();
+        // set date pattern only for delimited file
+        MetadataColumn mdColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
+        TdColumn tdColumn = SwitchHelpers.COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
+        if (tdColumn == null && mdColumn != null && "id_Date".equals(mdColumn.getTalendType())) {
+            // get date pattern from the column
+            String pattern = mdColumn.getPattern();
+            if (StringUtils.isEmpty(pattern)) {
+                pattern = "yyyy-MM-dd";
+            } else {
+                pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
+            }
+            // the datePattern only for DelimitedFile connection in DatePatternFreqIndicator.
+            this.datePattern = pattern;
+        }
+        return flag;
     }
 
     /**
@@ -120,14 +127,8 @@ public class DatePatternFreqIndicatorImpl extends FrequencyIndicatorImpl impleme
         mustStoreRow = false;
         if (data != null) {
             // MOD qiongli 2011-11-11 TDQ-3864,format the date for file connection.
-            if (data instanceof Date && isDelimtedFile) {
-                MetadataColumn mdColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
-                String pattern = mdColumn.getPattern();
-                if (pattern != null) {
-                    pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
-                    SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                    data = sdf.format((Date) data);
-                }
+            if (data instanceof Date && !StringUtils.isEmpty(this.datePattern)) {
+                data = DateFormatUtils.format((Date) data, datePattern);
             }
             List<ModelMatcher> findMatchers = dateRetriever.findMatchers(String.valueOf(data));
             for (ModelMatcher matcher : findMatchers) {
@@ -259,7 +260,12 @@ public class DatePatternFreqIndicatorImpl extends FrequencyIndicatorImpl impleme
      */
     @Override
     public void handleDrillDownData(Object masterObject, List<Object> inputRowList) {
-        List<ModelMatcher> matchers = dateRetriever.findMatchers(String.valueOf(masterObject));
+        // Only for DelimitedFile,format a date from 'Thu Jan 01 00:00:00 CST 1970' to datePattern like as '1970-01-01'
+        Object data = masterObject;
+        if (!StringUtils.isEmpty(this.datePattern)) {
+            data = DateFormatUtils.format((Date) data, datePattern);
+        }
+        List<ModelMatcher> matchers = dateRetriever.findMatchers(String.valueOf(data));
         for (ModelMatcher matcher : matchers) {
             drillDownMap = (DBMap<Object, List<Object>>) getMapDB(matcher.getModel());
             // check the size of limite
