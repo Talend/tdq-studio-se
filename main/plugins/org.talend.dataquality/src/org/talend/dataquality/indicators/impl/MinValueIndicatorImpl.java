@@ -68,6 +68,7 @@ public class MinValueIndicatorImpl extends ValueIndicatorImpl implements MinValu
             this.value = String.valueOf(data);
             if (isDateType) {
                 objValue = data;
+                this.value = formatObjValue();
             }
         }
         return ok;
@@ -89,7 +90,7 @@ public class MinValueIndicatorImpl extends ValueIndicatorImpl implements MinValu
                 }
                 if (objValue == null) {
                     objValue = data;
-                    this.value = String.valueOf(data);
+                    this.value = formatObjValue();
                     return false;
                 }
                 Date thisDate = (Date) objValue;
