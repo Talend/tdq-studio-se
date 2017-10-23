@@ -18,7 +18,7 @@ import java.util.Date;
 import org.talend.dataquality.PluginConstant;
 
 /**
- * ovririd "toString()" to format Date and Timestamp to specify pattern.
+ * override "toString()" to format Date and Timestamp to specify pattern.
  */
 public class TalendFormatDate extends Date {
 
