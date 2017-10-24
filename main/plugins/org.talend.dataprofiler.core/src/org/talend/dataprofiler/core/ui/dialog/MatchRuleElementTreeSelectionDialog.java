@@ -340,6 +340,9 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                                 matchRuleDefinition = (MatchRuleDefinition) node.getRule();
                             }
                             if (matchRuleDefinition != null) {
+                                // MatchAnalysis tmatchGroup tRecordMatching tGenKey will come here
+                                algorithmValue.setText(RecordMatcherType.valueOf(matchRuleDefinition.getRecordLinkageAlgorithm())
+                                        .getLabel());
                                 if (blockingKeysTable != null) {
                                     blockingKeysTable.setInput(getBlockingKeysFromNodes(array, true));
                                 }
@@ -359,8 +362,11 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                                             createParticularSurvivorshipRulesTableTswoosh(form);
                                             form.setWeights(new int[] { 4, 2, 2, 2 });
                                         }
-                                        particularSurvivRulesTable.setInput(getParticularRulesFromNodes(array, true));
-                                        algorithmValue.setText(RecordMatcherType.T_SwooshAlgorithm.getLabel());
+                                        // MatchAnalysis tmatchGroup tRecordMatching will come here
+                                        if (particularSurvivRulesTable != null) {
+                                            // MatchAnalysis tmatchGroup will come here
+                                            particularSurvivRulesTable.setInput(getParticularRulesFromNodes(array, true));
+                                        }
                                     } else {
                                         createSelectMatchRulesTableVsr(form);
                                         if (particularSurvivRulesTableComposite != null && dialogType == MATCHGROUP_TYPE) {
@@ -373,7 +379,6 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                                             particularSurvivRulesTableComposite = null;
                                             form.setWeights(new int[] { 5, 3, 2 });
                                         }
-                                        algorithmValue.setText(RecordMatcherType.simpleVSRMatcher.getLabel());
                                     }
                                     matchingRulesTable.setInput(getMatchRulesFromNodes(array, true));
                                     // refresh the dialog
