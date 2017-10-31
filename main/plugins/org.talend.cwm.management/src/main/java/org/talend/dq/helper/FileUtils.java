@@ -29,6 +29,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.core.runtime.Path;
+import org.talend.commons.utils.StringUtils;
+import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 
@@ -50,9 +52,9 @@ public final class FileUtils {
 
     public static final char QUOTECHAR_NOTVALID = '\0';
 
-    public static final String ROW_SEPARATOR_R = "\"\\r\""; //$NON-NLS-1$
+    public static final char ROW_SEPARATOR_R = '\r'; //$NON-NLS-1$
 
-    public static final String ROW_SEPARATOR_N = "\"\\n\""; //$NON-NLS-1$
+    public static final char ROW_SEPARATOR_N = '\n'; //$NON-NLS-1$
 
     public static final String CSV = "csv"; //$NON-NLS-1$
 
@@ -225,8 +227,13 @@ public final class FileUtils {
      */
     public static void initializeCsvReader(DelimitedFileConnection delimitedFileconnection, CSVReader csvReader) {
         String rowSep = JavaSqlFactory.getRowSeparatorValue(delimitedFileconnection);
-        if (rowSep != null && !rowSep.equals(ROW_SEPARATOR_N) && !rowSep.equals(ROW_SEPARATOR_R)) {
-            csvReader.setSeparator(ParameterUtil.trimParameter(rowSep).charAt(0));
+
+        if (rowSep != null && rowSep.length() > 0) {
+            String languageName = LanguageManager.getCurrentLanguage().getName();
+            char rowSeparator[] = ParameterUtil.trimParameter(StringUtils.loadConvert(rowSep, languageName)).toCharArray();
+            if ( rowSeparator[0] != ROW_SEPARATOR_N && rowSeparator[0] != ROW_SEPARATOR_R) {
+                csvReader.setLineEnd(ParameterUtil.trimParameter(StringUtils.loadConvert(rowSep, languageName)));
+            }
         }
 
         csvReader.setSkipEmptyRecords(true);
