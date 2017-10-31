@@ -20,6 +20,8 @@ import java.io.InputStreamReader;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.talend.commons.utils.StringUtils;
+import org.talend.core.language.LanguageManager;
 import org.talend.core.repository.model.preview.IPreview;
 import org.talend.core.repository.model.preview.IProcessDescription;
 import org.talend.core.utils.CsvArray;
@@ -138,8 +140,12 @@ public class FilePreviewProcess implements IPreview {
      */
     private void initCsvReader(CSVReader csvReader, IProcessDescription description) {
         String rowSep = description.getRowSeparator();
-        if (!rowSep.equals(FileUtils.ROW_SEPARATOR_N) && !rowSep.equals(FileUtils.ROW_SEPARATOR_R)) {
-            csvReader.setSeparator(ParameterUtil.trimParameter(rowSep).charAt(0));
+        if (rowSep != null && rowSep.length() > 0) {
+            String languageName = LanguageManager.getCurrentLanguage().getName();
+            char rowSeparator[] = ParameterUtil.trimParameter(StringUtils.loadConvert(rowSep, languageName)).toCharArray();
+            if (rowSeparator[0] != FileUtils.ROW_SEPARATOR_N && rowSeparator[0] != FileUtils.ROW_SEPARATOR_R) {
+                csvReader.setLineEnd(ParameterUtil.trimParameter(StringUtils.loadConvert(rowSep, languageName)));
+            }
         }
 
         csvReader.setSkipEmptyRecords(true);
