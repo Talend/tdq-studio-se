@@ -387,4 +387,8 @@ public class ValueIndicatorImpl extends IndicatorImpl implements ValueIndicator 
         return this.objValue;
     }
 
+	public String getDatePattern() {
+		return datePattern;
+	}
+
 } // ValueIndicatorImpl
