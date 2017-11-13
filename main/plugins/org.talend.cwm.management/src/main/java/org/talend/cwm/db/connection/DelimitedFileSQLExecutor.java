@@ -133,6 +133,8 @@ public class DelimitedFileSQLExecutor extends SQLExecutor {
                 currentRecord++;
                 // skip the head rows
                 if (currentRecord <= headValue) {
+                    // TDQ-14449: fix lost one line data when file connection use csv mode and first row as Header
+                    limitValue++;
                     continue;
                 }
 

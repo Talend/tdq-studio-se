@@ -5,8 +5,14 @@
  */
 package org.talend.dataquality.indicators.impl;
 
+import java.util.Date;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.eclipse.emf.ecore.EClass;
+import org.talend.core.model.metadata.builder.connection.MetadataColumn;
+import org.talend.cwm.helper.SwitchHelpers;
+import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.indicators.IndicatorsPackage;
 import org.talend.dataquality.indicators.PatternFreqIndicator;
 import org.talend.dataquality.indicators.TextParameters;
@@ -94,13 +100,50 @@ public class PatternFreqIndicatorImpl extends FrequencyIndicatorImpl implements 
     }
 
     @Override
+    public boolean reset() {
+        boolean flag=super.reset();
+        // set date pattern only for delimited file
+        MetadataColumn mdColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
+        TdColumn tdColumn = SwitchHelpers.COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
+        if (tdColumn == null && mdColumn != null && "id_Date".equals(mdColumn.getTalendType())) {
+                // get date pattern from the column
+                String pattern = mdColumn.getPattern();
+                if (StringUtils.isEmpty(pattern)) {
+                    pattern = "yyyy-MM-dd";
+                } else {
+                    pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
+                }
+            // the datePattern only for DelimitedFile connection in PatternFreqIndicator.
+            this.datePattern = pattern;
+        }
+        return flag;
+    }
+
+    @Override
     public boolean handle(Object data) {
         if (data == null) {
             return super.handle(data);
         } else {
+            // format the date for file connection.
+            if (!StringUtils.isEmpty(this.datePattern)) {
+                data = DateFormatUtils.format((Date) data, datePattern);
+            }
             String parsedData = convertCharacters(String.valueOf(data));
             return super.handle(parsedData);
         }
+    }
+
+
+    /**
+     * it is uesed to get mapDB name. it will be like "9999-99-99"
+     * 
+     * @param name
+     * @return
+     */
+    @Override
+    protected String getFormatName(Object name) {
+        String formatDate = DateFormatUtils.format((Date) name, datePattern);
+        return convertCharacters(formatDate);
     }
 
     /*

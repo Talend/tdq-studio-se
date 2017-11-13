@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.indicators.IndicatorValueType;
@@ -85,6 +86,11 @@ public class ValueIndicatorImpl extends IndicatorImpl implements ValueIndicator 
      * then, it is better to direct compare for date type,don't need to parse from String.
      */
     protected Object objValue = null;
+
+    /**
+     * it is only for a Date type in DelimetedFile connection
+     */
+    protected String datePattern = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -320,8 +326,36 @@ public class ValueIndicatorImpl extends IndicatorImpl implements ValueIndicator 
                             .getSqlDataType().getJavaDataType()))) {
                 return true;
             }
+            MetadataColumn metadataColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(elt);
+            if (metadataColumn != null && metadataColumn.getTalendType().equals("id_Date")) {
+                // get date pattern from the column
+                String pattern = metadataColumn.getPattern();
+                if (StringUtils.isEmpty(pattern)) {
+                    pattern = "yyyy-MM-dd";
+                } else {
+                    pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
+                }
+                // the datePattern only for DelimitedFile connection in current or sub-class indicators.
+                this.datePattern = pattern;
+                return true;
+
+            }
         }
         return false;
+    }
+
+    /**
+     * 
+     * Format the Date type 'ObjValue' based on a date pattern in DelimitedFile. format value like as 2017-10-20.
+     * 
+     * @return
+     */
+    protected String formatObjValue() {
+        if (!StringUtils.isEmpty(datePattern) && this.objValue != null) {
+            SimpleDateFormat df = new SimpleDateFormat(datePattern);
+            return df.format(objValue);
+        }
+        return objValue == null ? "" : objValue.toString();
     }
 
     /*
@@ -352,5 +386,9 @@ public class ValueIndicatorImpl extends IndicatorImpl implements ValueIndicator 
     public Object getObjValue() {
         return this.objValue;
     }
+
+	public String getDatePattern() {
+		return datePattern;
+	}
 
 } // ValueIndicatorImpl

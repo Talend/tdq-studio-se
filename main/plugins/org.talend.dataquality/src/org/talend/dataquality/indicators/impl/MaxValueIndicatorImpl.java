@@ -66,6 +66,7 @@ public class MaxValueIndicatorImpl extends ValueIndicatorImpl implements MaxValu
             this.value = String.valueOf(data);
             if (isDateType) {
                 objValue = data;
+                this.value = formatObjValue();
             }
         }
         return ok;
@@ -87,7 +88,7 @@ public class MaxValueIndicatorImpl extends ValueIndicatorImpl implements MaxValu
                 }
                 if (objValue == null) {
                     objValue = data;
-                    this.value = String.valueOf(data);
+                    this.value = formatObjValue();
                     return false;
                 }
                 Date thisDate = (Date) objValue;

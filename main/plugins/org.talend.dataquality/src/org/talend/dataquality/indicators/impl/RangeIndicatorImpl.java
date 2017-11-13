@@ -8,6 +8,7 @@ package org.talend.dataquality.indicators.impl;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -236,24 +237,32 @@ public class RangeIndicatorImpl extends CompositeIndicatorImpl implements RangeI
             } else if (Java2SqlType.isDateInSQL(upperValue.getDatatype())) {
                 Date upper = null;
                 Date lower = null;
+                // TDQ-14385 customer can define date pattern in DelimitedFile.if it is null(database),use default date
+                // pattern.
+                String customDatePattern = ((MaxValueIndicatorImpl) upperValue).getDatePattern();
+                String datePattern = StringUtils.isEmpty(customDatePattern) ? DateUtils.PATTERN_3 : customDatePattern;
+                String timePattern = StringUtils.isEmpty(customDatePattern) ? DateUtils.PATTERN_7 : customDatePattern;
+                String dateTimePattern =
+                        StringUtils.isEmpty(customDatePattern) ? DateUtils.PATTERN_2 : customDatePattern;
+
                 try {
                     // MOD qiongli 2011-11-22,avoid to parse null.
                     String upperStr = upperValue.getValue();
                     if (upperStr != null && !upperStr.equals("null")) { //$NON-NLS-1$
                         // MOD yyin 2012-05-14 TDQ-5241
                         if (Java2SqlType.isTimeSQL(upperValue.getDatatype())) {
-                            upper = DateUtils.parse(DateUtils.PATTERN_7, upperStr);
+                            upper = DateUtils.parse(timePattern, upperStr);
                         } else {
-                            upper = DateUtils.parse(DateUtils.PATTERN_3, upperStr);
+                            upper = DateUtils.parse(datePattern, upperStr);
                         }
                     }
                     String lowerStr = lowerValue.getValue();
                     if (lowerStr != null && !lowerStr.equals("null")) { //$NON-NLS-1$
                         // MOD yyin 2012-05-14 TDQ-5241
                         if (Java2SqlType.isTimeSQL(lowerValue.getDatatype())) {
-                            lower = DateUtils.parse(DateUtils.PATTERN_7, lowerStr);
+                            lower = DateUtils.parse(timePattern, lowerStr);
                         } else {
-                            lower = DateUtils.parse(DateUtils.PATTERN_3, lowerStr);
+                            lower = DateUtils.parse(datePattern, lowerStr);
                         }
                     }
                     if (upper != null && lower != null) {
@@ -263,12 +272,12 @@ public class RangeIndicatorImpl extends CompositeIndicatorImpl implements RangeI
                         if (elapseTime == 0) {
                             // MOD yyin 2012-05-14 TDQ-5241
                             if (Java2SqlType.isTimeSQL(upperValue.getDatatype())) {
-                                upper = DateUtils.parse(DateUtils.PATTERN_7, upperStr);
-                                lower = DateUtils.parse(DateUtils.PATTERN_7, lowerStr);
+                                upper = DateUtils.parse(timePattern, upperStr);
+                                lower = DateUtils.parse(timePattern, lowerStr);
                             } else {
                                 try {
-                                    upper = DateUtils.parse(DateUtils.PATTERN_2, upperStr);
-                                    lower = DateUtils.parse(DateUtils.PATTERN_2, lowerStr);
+                                    upper = DateUtils.parse(dateTimePattern, upperStr);
+                                    lower = DateUtils.parse(dateTimePattern, lowerStr);
                                 } catch (Exception e) {
                                     // when upperStr and lowerStr are formatted as yyyy-MM-dd,
                                     // upper and lower use the current value, means: hh:mm:ss is 00:00:00
