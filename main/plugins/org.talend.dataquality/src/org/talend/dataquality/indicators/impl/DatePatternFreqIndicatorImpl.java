@@ -262,11 +262,6 @@ public class DatePatternFreqIndicatorImpl extends FrequencyIndicatorImpl impleme
      */
     @Override
     public void handleDrillDownData(Object masterObject, List<Object> inputRowList) {
-        // Only for DelimitedFile,format a date from 'Thu Jan 01 00:00:00 CST 1970' to datePattern like as '1970-01-01'
-        // Object data = masterObject;
-        // if (!StringUtils.isEmpty(this.datePattern)) {
-        // data = DateFormatUtils.format((Date) data, datePattern);
-        // }
         List<ModelMatcher> matchers = dateRetriever.findMatchers(String.valueOf(masterObject));
         for (ModelMatcher matcher : matchers) {
             drillDownMap = (DBMap<Object, List<Object>>) getMapDB(matcher.getModel());
