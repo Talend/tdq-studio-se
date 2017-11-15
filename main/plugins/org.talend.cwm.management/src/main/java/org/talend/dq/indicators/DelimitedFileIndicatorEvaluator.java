@@ -14,12 +14,16 @@ package org.talend.dq.indicators;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -318,7 +322,23 @@ public class DelimitedFileIndicatorEvaluator extends IndicatorEvaluator {
                 continue;
             }
 
-            object = TalendTypeConvert.convertToObject(mColumn.getTalendType(), rowValues[position], mColumn.getPattern());
+            String datePattern = mColumn.getPattern();
+            String talendType = mColumn.getTalendType();
+            object = TalendTypeConvert.convertToObject(talendType, rowValues[position], datePattern);
+
+            // TDQ-14467: format a date from 'Thu Jan 01 00:00:00 CST 1970' to datePattern like as '1970-01-01'
+            // the follows comes from TalendTypeConvert.convertToObject
+            if (talendType.equals("id_" + Date.class.getSimpleName())) {
+                if (datePattern == null || StringUtils.EMPTY.equals(datePattern.trim())) {
+                    datePattern = "yyyy-MM-dd";
+                } else {
+                    datePattern = StringUtils.replace(datePattern, "\"", StringUtils.EMPTY);
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat(datePattern, Locale.US);
+                object = sdf.format(object);
+            }
+            // TDQ-14467~
+
             List<Indicator> indicators = getIndicators(mColumn.getLabel());
             for (Indicator indicator : indicators) {
                 if (!continueRun()) {
