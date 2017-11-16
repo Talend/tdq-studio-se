@@ -46,6 +46,7 @@ public class PatternFreqIndicatorImpl extends FrequencyIndicatorImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected PatternFreqIndicatorImpl() {
@@ -54,6 +55,7 @@ public class PatternFreqIndicatorImpl extends FrequencyIndicatorImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -101,18 +103,18 @@ public class PatternFreqIndicatorImpl extends FrequencyIndicatorImpl implements 
 
     @Override
     public boolean reset() {
-        boolean flag=super.reset();
+        boolean flag = super.reset();
         // set date pattern only for delimited file
         MetadataColumn mdColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
         TdColumn tdColumn = SwitchHelpers.COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
         if (tdColumn == null && mdColumn != null && "id_Date".equals(mdColumn.getTalendType())) {
-                // get date pattern from the column
-                String pattern = mdColumn.getPattern();
-                if (StringUtils.isEmpty(pattern)) {
-                    pattern = "yyyy-MM-dd";
-                } else {
-                    pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
-                }
+            // get date pattern from the column
+            String pattern = mdColumn.getPattern();
+            if (StringUtils.isEmpty(pattern)) {
+                pattern = "yyyy-MM-dd";
+            } else {
+                pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
+            }
             // the datePattern only for DelimitedFile connection in PatternFreqIndicator.
             this.datePattern = pattern;
         }
@@ -125,14 +127,13 @@ public class PatternFreqIndicatorImpl extends FrequencyIndicatorImpl implements 
             return super.handle(data);
         } else {
             // format the date for file connection.
-            if (!StringUtils.isEmpty(this.datePattern)) {
+            if (data instanceof Date && !StringUtils.isEmpty(this.datePattern)) {
                 data = DateFormatUtils.format((Date) data, datePattern);
             }
             String parsedData = convertCharacters(String.valueOf(data));
             return super.handle(parsedData);
         }
     }
-
 
     /**
      * it is uesed to get mapDB name. it will be like "9999-99-99"
