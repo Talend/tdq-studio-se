@@ -5,14 +5,20 @@
  */
 package org.talend.dataquality.indicators.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateFormatUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.talend.core.model.metadata.builder.connection.MetadataColumn;
+import org.talend.cwm.helper.SwitchHelpers;
+import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.domain.Domain;
 import org.talend.dataquality.domain.pattern.Pattern;
 import org.talend.dataquality.helpers.DomainHelper;
@@ -54,6 +60,7 @@ public class RegexpMatchingIndicatorImpl extends PatternMatchingIndicatorImpl im
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected RegexpMatchingIndicatorImpl() {
@@ -62,6 +69,7 @@ public class RegexpMatchingIndicatorImpl extends PatternMatchingIndicatorImpl im
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -73,6 +81,8 @@ public class RegexpMatchingIndicatorImpl extends PatternMatchingIndicatorImpl im
 
     private java.util.regex.Pattern pattern = null;
 
+    protected String datePattern = null;
+
     /*
      * (non-Javadoc)
      * 
@@ -80,6 +90,23 @@ public class RegexpMatchingIndicatorImpl extends PatternMatchingIndicatorImpl im
      */
     @Override
     public boolean prepare() {
+        // the same with in DatePatternFreqIndicatorImpl
+        // TDQ-14467: set date pattern only for delimited file.
+        MetadataColumn mdColumn = SwitchHelpers.METADATA_COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
+        TdColumn tdColumn = SwitchHelpers.COLUMN_SWITCH.doSwitch(this.getAnalyzedElement());
+        if (tdColumn == null && mdColumn != null && "id_Date".equals(mdColumn.getTalendType())) {
+            // get date pattern from the column
+            String pattern = mdColumn.getPattern();
+            if (StringUtils.isEmpty(pattern)) {
+                pattern = "yyyy-MM-dd";
+            } else {
+                pattern = StringUtils.replace(pattern, "\"", StringUtils.EMPTY);
+            }
+            // the datePattern only for DelimitedFile connection.
+            this.datePattern = pattern;
+        }
+        // TDQ-14467~
+
         this.regex = getRegex();
         if (regex == null) {
             return false;
@@ -163,6 +190,11 @@ public class RegexpMatchingIndicatorImpl extends PatternMatchingIndicatorImpl im
         this.setValidRow(false);
         this.setInValidRow(false);
         if (data != null) {
+            // ADD msjian TDQ-14467: format the date for file connection.
+            if (data instanceof Date && !StringUtils.isEmpty(datePattern)) {
+                data = DateFormatUtils.format((Date) data, datePattern);
+            }
+            // TDQ-14467~
             String body = String.valueOf(data);
             Matcher matcher = pattern.matcher(body);
             if (matcher.find()) {

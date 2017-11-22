@@ -54,8 +54,7 @@ public class DatePatternRetrieverTest {
     }
 
     /**
-     * Test method for
-     * {@link org.talend.dataquality.matching.date.pattern.DatePatternRetriever#handle(java.lang.String)}.
+     * Test method for {@link org.talend.dataquality.matching.date.pattern.DatePatternRetriever#handle(java.lang.String)}.
      * 
      * @throws URISyntaxException
      * @throws IOException
@@ -89,6 +88,8 @@ public class DatePatternRetrieverTest {
         assertEquals(dtr.findMatchers("1961-08-26 00:00:00.00").size(), 0); //$NON-NLS-1$
 
         assertEquals(dtr.findMatchers("1961-08-26 00:00:00 0").size(), 0); //$NON-NLS-1$
+
+        assertEquals(dtr.findMatchers("1873-01-30").size(), 1); //$NON-NLS-1$
 
         // ADD sizhaoliu TDQ-8139 replace the main class by junits for org.talend.dataquality.matching
         DatePatternRetriever patt = new DatePatternRetriever();

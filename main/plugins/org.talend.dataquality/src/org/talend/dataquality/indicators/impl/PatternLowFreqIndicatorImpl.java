@@ -36,6 +36,7 @@ public class PatternLowFreqIndicatorImpl extends LowFrequencyIndicatorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected PatternLowFreqIndicatorImpl() {
@@ -44,6 +45,7 @@ public class PatternLowFreqIndicatorImpl extends LowFrequencyIndicatorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -107,7 +109,7 @@ public class PatternLowFreqIndicatorImpl extends LowFrequencyIndicatorImpl imple
             return super.handle(data);
         } else {
             // format the date for file connection.
-            if (!StringUtils.isEmpty(this.datePattern)) {
+            if (data instanceof Date && !StringUtils.isEmpty(this.datePattern)) {
                 data = DateFormatUtils.format((Date) data, datePattern);
             }
             String parsedData = convertCharacters(String.valueOf(data));
