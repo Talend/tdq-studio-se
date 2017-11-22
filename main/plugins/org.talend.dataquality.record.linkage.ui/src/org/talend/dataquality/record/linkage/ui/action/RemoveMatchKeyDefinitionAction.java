@@ -25,7 +25,6 @@ import org.talend.dataquality.rules.DefaultSurvivorshipDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
-import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
 import org.talend.dataquality.rules.SurvivorshipKeyDefinition;
 
 /**
@@ -75,12 +74,10 @@ public class RemoveMatchKeyDefinitionAction<T> extends Action {
             // keyDef is BlockKeyDefiniton case
             return ((MatchRuleDefinition) ((BlockKeyDefinition) keyDef).eContainer()).getBlockKeys();
         } else if (keyDef instanceof SurvivorshipKeyDefinition) {
+            // keyDef is BlockKeyDefiniton case
             return ((MatchRuleDefinition) ((SurvivorshipKeyDefinition) keyDef).eContainer()).getSurvivorshipKeys();
-        } else if (keyDef instanceof ParticularDefaultSurvivorshipDefinitions) {
-            // TDQ-14465: fix "Delete" in Survivorship Rules for Columns did not work
-            return ((MatchRuleDefinition) ((ParticularDefaultSurvivorshipDefinitions) keyDef).eContainer())
-                    .getParticularDefaultSurvivorshipDefinitions();
         } else if (keyDef instanceof DefaultSurvivorshipDefinition) {
+            // keyDef is BlockKeyDefiniton case
             return ((MatchRuleDefinition) ((DefaultSurvivorshipDefinition) keyDef).eContainer())
                     .getDefaultSurvivorshipDefinitions();
         } else if (keyDef instanceof MatchKeyAndSurvivorDefinition) {
