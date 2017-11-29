@@ -76,7 +76,8 @@ public class ParticularDefaultSurvivorShipCellModifier extends
         } else if (MatchAnalysisConstant.FUNCTION.equalsIgnoreCase(property)) {
             return SurvivorShipAlgorithmEnum.getTypeBySavedValue(pskd.getFunction().getAlgorithmType()).getIndex();
         } else if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
-            return pskd.getFunction().getAlgorithmParameters();
+            String algorithmParameters = pskd.getFunction().getAlgorithmParameters();
+            return algorithmParameters == null ? StringUtils.EMPTY : algorithmParameters;
         }
         return null;
     }
