@@ -853,6 +853,15 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
                     return returnCode;
                 }
 
+                if ("CUSTOM".equals(mdk.getAlgorithm().getAlgorithmType()) //$NON-NLS-1$
+                        && StringUtils.EMPTY.equals(mdk.getAlgorithm().getAlgorithmParameters().trim())) {
+                    returnCode
+                            .setMessage(DefaultMessagesImpl
+                                    .getString(
+                                            "BlockingKeySection.invalidCustomAlgorithmError", getSectionName() + " , " + currentRule.getName() + " , " + currentName)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    return returnCode;
+                }
+
                 if (mdk.getConfidenceWeight() <= 0) {
                     returnCode.setMessage(DefaultMessagesImpl.getString(
                             "BlockingKeySection.invalidConfidenceWeight.message", getSectionName())); //$NON-NLS-1$
