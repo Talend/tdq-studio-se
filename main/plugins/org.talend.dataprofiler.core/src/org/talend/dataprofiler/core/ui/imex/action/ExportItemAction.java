@@ -29,13 +29,16 @@ import org.talend.repository.ui.actions.AContextualAction;
  */
 public class ExportItemAction extends AContextualAction implements IWorkbenchWindowActionDelegate {
 
+    private IStructuredSelection selection = null;
+
     public ExportItemAction() {
         setText(DefaultMessagesImpl.getString("ExportItemAction.exportItems")); //$NON-NLS-1$
         setImageDescriptor(ImageLib.getImageDescriptor(ImageLib.EXPORT));
     }
+
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
      */
     public void dispose() {
@@ -45,7 +48,7 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
      */
     public void init(IWorkbenchWindow window) {
@@ -55,11 +58,11 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     public void run(IAction action) {
-        ExportWizard wizard = new ExportWizard();
+        ExportWizard wizard = selection == null ? new ExportWizard() : new ExportWizard(null, selection.toArray());
         WizardDialog dialog = new WizardDialog(null, wizard);
         dialog.setPageSize(620, 500);
         dialog.open();
@@ -67,13 +70,12 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.ui.IActionDelegate#selectionChanged(org.eclipse.jface.action.IAction,
      * org.eclipse.jface.viewers.ISelection)
      */
     public void selectionChanged(IAction action, ISelection selection) {
         // TODO Auto-generated method stub
-
     }
 
     /*
@@ -83,8 +85,7 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
      * org.eclipse.jface.viewers.IStructuredSelection)
      */
     public void init(TreeViewer viewer, IStructuredSelection selection) {
-        // TODO Auto-generated method stub
-
+        this.selection = selection;
     }
 
     /*
@@ -95,7 +96,6 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
     @Override
     protected void doRun() {
         run(this);
-
     }
 
 }
