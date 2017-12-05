@@ -61,9 +61,12 @@ import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.ReportFileHelper;
+import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.resourcehelper.IndicatorResourceFileHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
+import org.talend.dq.nodes.DQFolderRepNode;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IRepositoryNode;
 import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -90,6 +93,8 @@ public class ExportWizardPage extends WizardPage {
 
     private CheckboxTreeViewer repositoryTree;
 
+    private Object[] intCheckedElements = null;
+
     protected Button dirBTN, archBTN;
 
     private Button browseDirBTN, browseArchBTN;
@@ -115,6 +120,11 @@ public class ExportWizardPage extends WizardPage {
         setMessage(Messages.getString("ExportWizardPage.3")); //$NON-NLS-1$
         this.specifiedPath = specifiedPath == null ? null : new Path(specifiedPath);
         this.writer = ExportWriterFactory.create(EImexType.FILE);
+    }
+
+    public ExportWizardPage(String specifiedPath, Object[] intCheckedElements) {
+        this(specifiedPath);
+        this.intCheckedElements = intCheckedElements;
     }
 
     /*
@@ -431,7 +441,30 @@ public class ExportWizardPage extends WizardPage {
         repositoryTree.expandAll();
         repositoryTree.getTree().setLayoutData(new GridData(GridData.FILL_BOTH));
 
+        // ADD msjian TDQ-14573: automatically checked the initial selected items.
+        if (intCheckedElements != null) {
+            List<ItemRecord> selectedItemRecords = new ArrayList<ItemRecord>();
+            for (Object intCheckedElement : intCheckedElements) {
+                getFileFromNode(selectedItemRecords, (IRepositoryNode) intCheckedElement);
+            }
+            repositoryTree.setCheckedElements(selectedItemRecords.toArray());
+        }
+        // TDQ-14573~
+
         createUtilityButtons(treeComposite);
+    }
+
+    private void getFileFromNode(List<ItemRecord> selectedItemRecords, IRepositoryNode node) {
+        if (node instanceof DQFolderRepNode) {
+            List<IRepositoryNode> children = node.getChildren(true);
+            for (IRepositoryNode childNode : children) {
+                getFileFromNode(selectedItemRecords, childNode);
+            }
+        } else {
+            IFile iFile = RepositoryNodeHelper.getIFile(node);
+            File file = WorkspaceUtils.ifileToFile(iFile);
+            selectedItemRecords.add(ItemRecord.findRecord(file));
+        }
     }
 
     /**

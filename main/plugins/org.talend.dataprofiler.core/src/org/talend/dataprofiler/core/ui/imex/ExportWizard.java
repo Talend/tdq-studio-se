@@ -43,8 +43,12 @@ public class ExportWizard extends Wizard {
      */
     public ExportWizard(String specifiedPath) {
         setWindowTitle("Export Item");//$NON-NLS-1$ 
-
         this.exportPage = new ExportWizardPage(specifiedPath);
+    }
+
+    public ExportWizard(String specifiedPath, Object[] selectedObj) {
+        setWindowTitle("Export Item");//$NON-NLS-1$ 
+        this.exportPage = new ExportWizardPage(null, selectedObj);
     }
 
     /*
@@ -64,7 +68,6 @@ public class ExportWizard extends Wizard {
      */
     @Override
     public boolean performFinish() {
-
         if (!exportPage.canFinish()) {
             return false;
         }
