@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.cwm.db.connection.datasource;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -55,7 +55,7 @@ public class FileSamplingDataSourceTest {
         URL fileUrl = this.getClass().getResource("simple_data.csv"); //$NON-NLS-1$
         UnitTestBuildHelper.getDefault().initFileConnection(fileUrl, fileConnection);
         fileDataSource.setDataSource(fileConnection);
-        int[] pos = { 0 };
+        int[] pos = { 0, 1, 2, 3 };
         ((FileSamplingDataSource) fileDataSource).setColumnPositions(pos);
         // CSVReader csvReader = createCsvReader(new File(getClass().getClassLoader()
         // .getResource("org/talend/cwm/db/connection/datasource/simple_data.csv").getFile()));
