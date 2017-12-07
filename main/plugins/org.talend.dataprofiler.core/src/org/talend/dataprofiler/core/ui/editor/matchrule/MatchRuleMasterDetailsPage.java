@@ -296,7 +296,7 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
         ReturnCode rc = canSave();
         if (!rc.isOk()) {
             MessageDialogWithToggle.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    DefaultMessagesImpl.getString("AbstractAnalysisMetadataPage.SaveAnalysis"), rc.getMessage()); //$NON-NLS-1$
+                    DefaultMessagesImpl.getString("MatchRuleMasterDetailsPage.saveRule"), rc.getMessage()); //$NON-NLS-1$
             return;
         }
         // handle rename before saving it
