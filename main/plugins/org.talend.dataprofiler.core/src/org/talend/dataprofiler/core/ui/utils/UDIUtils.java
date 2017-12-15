@@ -115,8 +115,8 @@ public final class UDIUtils {
      */
     public static boolean isCurrentLanguageAndVersion(TdExpression tdExp, String language, String version) {
         return tdExp.getLanguage().equals(language)
-                && ((tdExp.getVersion() == null && version == null) || (tdExp.getVersion() != null && tdExp.getVersion().equals(
-                        version)));
+                && (StringUtils.isBlank(tdExp.getVersion()) && StringUtils.isBlank(version) || StringUtils.equals(
+                        tdExp.getVersion(), version));
     }
 
     /**

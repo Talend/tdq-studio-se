@@ -12,7 +12,10 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.talend.cwm.relational.TdExpression;
@@ -52,6 +55,19 @@ public class UDIUtilsTest {
         assertFalse(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "MySQL", "5.1.2")); //$NON-NLS-1$ //$NON-NLS-2$
         assertFalse(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "Oracle", "5.0.2")); //$NON-NLS-1$ //$NON-NLS-2$
         assertFalse(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "Oracle", null)); //$NON-NLS-1$ 
+    }
+
+    /**
+     * Test version is null or empty
+     */
+    @Test
+    public void testIsCurrentLanguageAndVersionIsNull() {
+        TdExpression tdExpression = UDIUtils.createNewTdExpression("MySQL", null, "select * from test"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertTrue(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "MySQL", " ")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "MySQL", null)); //$NON-NLS-1$ //$NON-NLS-2$
+        tdExpression = UDIUtils.createNewTdExpression("MySQL", "", "select * from test");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        assertTrue(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "MySQL", "")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertTrue(UDIUtils.isCurrentLanguageAndVersion(tdExpression, "MySQL", null)); //$NON-NLS-1$ 
     }
 
     /**
