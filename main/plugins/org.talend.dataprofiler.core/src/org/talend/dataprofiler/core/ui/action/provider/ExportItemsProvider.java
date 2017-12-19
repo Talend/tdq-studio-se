@@ -13,10 +13,10 @@
 package org.talend.dataprofiler.core.ui.action.provider;
 
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.talend.dataprofiler.core.ui.imex.action.ExportItemAction;
 import org.talend.repository.model.RepositoryNode;
-
 
 public class ExportItemsProvider extends AbstractCommonActionProvider {
 
@@ -26,13 +26,15 @@ public class ExportItemsProvider extends AbstractCommonActionProvider {
 
     /*
      * (non-Javadoc)
-     *
+     * 
      * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
      */
     @Override
     public void fillContextMenu(IMenuManager menu) {
         if (isShowMenu()) {
             ExportItemAction expItemAction = new ExportItemAction();
+            IStructuredSelection selection = (IStructuredSelection) getContext().getSelection();
+            expItemAction.init(null, selection);
             menu.add(expItemAction);
         }
     }
