@@ -29,4 +29,3 @@ Import-Package: org.eclipse.ui.actions,
 Bundle-ClassPath: .,
  dist/org.talend.dataprofiler.common.ui.jar
 Bundle-Activator: org.talend.dataprofiler.common.ui.CommonUIPlogin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
