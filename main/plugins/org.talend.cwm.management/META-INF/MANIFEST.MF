@@ -74,5 +74,4 @@ Export-Package: org.talend.commons.emf,
  org.talend.dq.writer.impl
 Import-Package: org.talend.dataprofiler.service
 Service-Component: OSGI-INF/mapdb.xml
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 

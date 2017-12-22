@@ -10,4 +10,3 @@ Bundle-ClassPath: .,
  dist/org.talend.dataquality.matching.jar
 Require-Bundle: org.apache.log4j,
  org.talend.commons.runtime
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7

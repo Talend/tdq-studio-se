@@ -21,4 +21,3 @@ Import-Package: org.apache.commons.logging;version="1.1.1",
 Service-Component: OSGI-INF/TOPChart.xml
 Bundle-ClassPath: .,
  dist/org.talend.dataprofiler.top.chart.jar
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
