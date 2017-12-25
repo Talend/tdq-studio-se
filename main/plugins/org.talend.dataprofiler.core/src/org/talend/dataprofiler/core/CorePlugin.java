@@ -320,6 +320,11 @@ public class CorePlugin extends AbstractUIPlugin {
         }
     }
 
+    /**
+     * get Current the first selected node from DQRespositoryView.
+     * 
+     * @return
+     */
     public IRepositoryNode getCurrentSelectionNode() {
         DQRespositoryView repositoryView = getRepositoryView();
         if (repositoryView == null) {
@@ -333,6 +338,29 @@ public class CorePlugin extends AbstractUIPlugin {
             return null;
         }
 
+    }
+
+    /**
+     * get Current all selected nodes from DQRespositoryView.
+     * 
+     * @return
+     */
+    public IRepositoryNode[] getCurrentSelectionNodes() {
+        DQRespositoryView repositoryView = getRepositoryView();
+        if (repositoryView == null) {
+            return null;
+        }
+        TreeItem[] selectionTreeItem = repositoryView.getCommonViewer().getTree().getSelection();
+
+        if (null == selectionTreeItem || selectionTreeItem.length == 0) {
+            return null;
+        }
+
+        IRepositoryNode[] currentSelectionNodes = new IRepositoryNode[selectionTreeItem.length];
+        for (int i = 0; i < selectionTreeItem.length; i++) {
+            currentSelectionNodes[i] = (IRepositoryNode) selectionTreeItem[i].getData();
+        }
+        return currentSelectionNodes;
     }
 
     /**

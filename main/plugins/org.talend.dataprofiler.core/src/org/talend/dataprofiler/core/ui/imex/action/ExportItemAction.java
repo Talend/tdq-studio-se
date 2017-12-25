@@ -19,9 +19,11 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.imex.ExportWizard;
+import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.ui.actions.AContextualAction;
 
 /**
@@ -42,7 +44,7 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#dispose()
      */
     public void dispose() {
-        // TODO Auto-generated method stub
+        // until now do nothing
 
     }
 
@@ -52,7 +54,7 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
      * @see org.eclipse.ui.IWorkbenchWindowActionDelegate#init(org.eclipse.ui.IWorkbenchWindow)
      */
     public void init(IWorkbenchWindow window) {
-        // TODO Auto-generated method stub
+        // until now do nothing
 
     }
 
@@ -62,7 +64,20 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
      * @see org.eclipse.ui.IActionDelegate#run(org.eclipse.jface.action.IAction)
      */
     public void run(IAction action) {
-        ExportWizard wizard = selection == null ? new ExportWizard() : new ExportWizard(null, selection.toArray());
+        ExportWizard wizard = new ExportWizard();
+        if (org.eclipse.core.runtime.Platform.isRunning()) {
+            if (selection != null) {
+                // from the right menu
+                wizard = new ExportWizard(null, selection.toArray());
+            } else {
+                // from the toolbar menu
+                IRepositoryNode[] currentSelectionNodes = CorePlugin.getDefault().getCurrentSelectionNodes();
+                if (currentSelectionNodes != null) {
+                    wizard = new ExportWizard(null, currentSelectionNodes);
+                }
+            }
+        }
+
         WizardDialog dialog = new WizardDialog(null, wizard);
         dialog.setPageSize(620, 500);
         dialog.open();
@@ -75,7 +90,7 @@ public class ExportItemAction extends AContextualAction implements IWorkbenchWin
      * org.eclipse.jface.viewers.ISelection)
      */
     public void selectionChanged(IAction action, ISelection selection) {
-        // TODO Auto-generated method stub
+        // until now do nothing
     }
 
     /*
