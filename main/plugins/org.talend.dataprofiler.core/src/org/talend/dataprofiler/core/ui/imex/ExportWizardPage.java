@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -61,12 +62,15 @@ import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.ReportFileHelper;
+import org.talend.dq.helper.RepositoryNodeComparator;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.resourcehelper.IndicatorResourceFileHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.DQFolderRepNode;
+import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -356,10 +360,8 @@ public class ExportWizardPage extends WizardPage {
      * @param pathStr
      */
     public void textModified(String pathStr) {
-
         writer.setBasePath(new Path(pathStr));
         checkForErrors();
-
     }
 
     /**
@@ -449,13 +451,24 @@ public class ExportWizardPage extends WizardPage {
             }
             repositoryTree.setCheckedElements(selectedItemRecords.toArray());
         }
+
+        // show the same order with repository tree
+        repositoryTree.setComparator(new ViewerComparator() {
+
+            @Override
+            public int compare(Viewer iviewer, Object o1, Object o2) {
+                DQRepositoryNode recursiveFind = RepositoryNodeHelper.recursiveFind(((ItemRecord) o1).getElement());
+                DQRepositoryNode recursiveFind2 = RepositoryNodeHelper.recursiveFind(((ItemRecord) o2).getElement());
+                return new RepositoryNodeComparator().compare(recursiveFind, recursiveFind2);
+            }
+        });
         // TDQ-14573~
 
         createUtilityButtons(treeComposite);
     }
 
     private void getFileFromNode(List<ItemRecord> selectedItemRecords, IRepositoryNode node) {
-        if (node instanceof DQFolderRepNode) {
+        if (node instanceof DQFolderRepNode || (node.getType() != null && node.getType() == ENodeType.SYSTEM_FOLDER)) {
             List<IRepositoryNode> children = node.getChildren(true);
             for (IRepositoryNode childNode : children) {
                 getFileFromNode(selectedItemRecords, childNode);
