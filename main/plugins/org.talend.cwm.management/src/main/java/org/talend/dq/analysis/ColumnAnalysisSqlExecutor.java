@@ -50,7 +50,6 @@ import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.exception.AnalysisExecutionException;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnHelper;
-import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdColumn;
@@ -204,14 +203,13 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 traceError(Messages.getString("ColumnAnalysisSqlExecutor.PLEASEREMOVEALLPATTEN"));//$NON-NLS-1$
                 return Boolean.FALSE;
             }
-            // MOD klliu 2011-06-28 bug 22555
-            Object[] args = new Object[] {
-                    (indicator.getName() != null ? AnalysisExecutorHelper.getIndicatorName(indicator) : indicatorEclass.getName()),
-                    ResourceHelper.getUUID(indicatorDefinition) };
-            String warnInfo = Messages.getString("ColumnAnalysisSqlExecutor.UNSUPPORTEDINDICATOR", args) + Messages.getString("ColumnAnalysisSqlExecutor.ADDEXPREEIONINFOMATION", language);//$NON-NLS-1$ ////$NON-NLS-2$
-            traceError(warnInfo);
+
+            traceError(Messages
+                    .getString(
+                            "ColumnAnalysisSqlExecutor.UNSUPPORTEDINDICATOR",//$NON-NLS-1$
+                            (indicator.getName() != null ? AnalysisExecutorHelper.getIndicatorName(indicator) : indicatorEclass
+                                    .getName())));
             return Boolean.FALSE;
-            // ~
         }
 
         // --- get indicator parameters and convert them into sql expression
