@@ -131,7 +131,9 @@ public enum EResourceConstant {
 
     HADOOP_CLUSTER("hadoopcluster", "metadata/hadoop/hadoopcluster", ResourceConstant.READONLY), //$NON-NLS-1$ $NON-NLS-2$
 
-    REFERENCED_PROJECT("Referenced project", "Referenced project", ResourceConstant.READONLY); //$NON-NLS-1$ $NON-NLS-2$
+    REFERENCED_PROJECT("Referenced project", "Referenced project", ResourceConstant.READONLY), //$NON-NLS-1$ $NON-NLS-2$
+
+    CONTEXT("context", "context", ResourceConstant.READONLY); //$NON-NLS-1$ $NON-NLS-2$
 
     private String name;
 

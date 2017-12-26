@@ -230,7 +230,6 @@ public final class RepositoryNodeBuilder {
             folder.setRepositoryNode(exchangeFolder);
             parentNode.getChildren().add(exchangeFolder);
             return exchangeFolder;
-            // case REFERENCED_PROJECT:
         default:
             subFolderNode = new DQRepositoryNode(folder, parentNode, ENodeType.SYSTEM_FOLDER, inWhichProject);
             folder.setRepositoryNode(subFolderNode);

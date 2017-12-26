@@ -592,6 +592,15 @@ public final class ResourceManager {
     }
 
     /**
+     * 
+     * @param resource
+     * @return
+     */
+    public static boolean isContextFolder(IResource resource) {
+        return isOneFolder(resource, EResourceConstant.CONTEXT);
+    }
+
+    /**
      * DOC bZhou Comment method "getFolder".
      * 
      * @param name

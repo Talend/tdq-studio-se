@@ -294,6 +294,8 @@ public final class ImageLib {
 
     public static final String WARNING_PNG = "warning.png";//$NON-NLS-1$
 
+    public static final String CONTEXT = "contexts.png";//$NON-NLS-1$
+
     /**
      * DOC bzhou ImageLib constructor comment.
      */

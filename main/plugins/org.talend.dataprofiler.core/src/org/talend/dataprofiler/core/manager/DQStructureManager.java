@@ -257,6 +257,11 @@ public final class DQStructureManager {
                 ProxyRepositoryFactory.getInstance().createFolder(ERepositoryObjectType.TDQ_USERDEFINE_INDICATORS, Path.EMPTY,
                         EResourceConstant.USER_DEFINED_INDICATORS_LIB.getName());
             }
+
+            if (!project.getFolder(EResourceConstant.CONTEXT.getPath()).exists()) {
+                ProxyRepositoryFactory.getInstance().createFolder(ERepositoryObjectType.CONTEXT, Path.EMPTY,
+                        EResourceConstant.CONTEXT.getName());
+            }
             if (PluginChecker.isTDQLoaded()) {
                 if (!project.getFolder(EResourceConstant.JRXML_TEMPLATE.getPath()).exists()) {
                     ProxyRepositoryFactory.getInstance().createFolder(ERepositoryObjectType.TDQ_LIBRARIES, Path.EMPTY,

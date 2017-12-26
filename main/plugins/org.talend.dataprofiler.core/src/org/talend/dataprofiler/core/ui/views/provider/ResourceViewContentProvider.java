@@ -61,6 +61,7 @@ import org.talend.dataprofiler.core.ui.views.DQRespositoryView;
 import org.talend.dataprofiler.ecos.model.IEcosCategory;
 import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
+import org.talend.dq.nodes.ContextFolderRepNode;
 import org.talend.dq.nodes.DBCatalogRepNode;
 import org.talend.dq.nodes.DBColumnFolderRepNode;
 import org.talend.dq.nodes.DBSchemaRepNode;
@@ -250,6 +251,9 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
                 }
             }
         }
+        if (node instanceof ContextFolderRepNode) {
+            children = ((ContextFolderRepNode) node).getChildren();
+        }
 
         return sortRepositoryNode(children.toArray());
     }
@@ -298,8 +302,12 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
                     node = createNewRepNode(respositoryObjectType, inWhichProject);
                 }
                 // MOD mzhao for metadata folder
-                if (folder instanceof IFolder && ((IFolder) folder).getName().equals(EResourceConstant.METADATA.getName())) {
-                    node = createNewRepNode(ERepositoryObjectType.METADATA, inWhichProject);
+                if (folder instanceof IFolder) {
+                    if (((IFolder) folder).getName().equals(EResourceConstant.METADATA.getName())) {
+                        node = createNewRepNode(ERepositoryObjectType.METADATA, inWhichProject);
+                    } else if (((IFolder) folder).getName().equals(EResourceConstant.CONTEXT.getName())) {
+                        node = createNewRepNode(ERepositoryObjectType.CONTEXT, inWhichProject);
+                    }
                 }
                 if (node != null) {
                     folders.add(node);
@@ -403,6 +411,9 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
         }
 
         DQRepositoryNode node = new DQRepositoryNode(viewObject, null, ENodeType.SYSTEM_FOLDER, inWhichProject);
+        if (ERepositoryObjectType.CONTEXT == type) {
+            node = new ContextFolderRepNode(viewObject, null, ENodeType.SYSTEM_FOLDER, inWhichProject);
+        }
         viewObject.setRepositoryNode(node);
         return node;
     }
