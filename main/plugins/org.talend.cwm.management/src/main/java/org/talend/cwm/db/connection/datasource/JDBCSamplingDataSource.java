@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 import org.apache.log4j.Logger;
+import org.talend.dataquality.sampling.exception.DQException;
 
 /**
  * created by zhao Sampling data source regarding jdbc connection. <br>
@@ -44,14 +45,14 @@ public class JDBCSamplingDataSource extends AbstractSamplingDataSource<ResultSet
      * 
      * @see org.talend.dq.datascience.SamplingDataSource#getDatasize()
      */
-    public boolean hasNext() throws Exception {
+    public boolean hasNext() throws DQException {
         try {
             if (jdbcResultSet == null) {
                 return false;
             }
             return jdbcResultSet.next();
         } catch (SQLException e) {
-            throw new Exception(e);
+            throw new DQException(e);
         }
     }
 
@@ -60,7 +61,7 @@ public class JDBCSamplingDataSource extends AbstractSamplingDataSource<ResultSet
      * 
      * @see org.talend.dq.datascience.SamplingDataSource#getRecord()
      */
-    public Object[] getRecord() throws Exception {
+    public Object[] getRecord() throws DQException {
         try {
             Object[] oneRow = new Object[columnSize];
             // --- for each column
@@ -72,7 +73,7 @@ public class JDBCSamplingDataSource extends AbstractSamplingDataSource<ResultSet
                     if (NULLDATE.equals(jdbcResultSet.getString(i + 1))) {
                         oneRow[i] = null;
                     } else {
-                        throw new Exception(e);
+                        throw new DQException(e);
                     }
                 }
             }
@@ -90,14 +91,17 @@ public class JDBCSamplingDataSource extends AbstractSamplingDataSource<ResultSet
      * 
      * @see org.talend.dataprofiler.core.sampling.SamplingDataSource#finalizeDataSampling()
      */
-    public boolean finalizeDataSampling() throws Exception {
-        if (jdbcResultSet != null) {
-            Statement statement = jdbcResultSet.getStatement();
-            Connection connection = statement.getConnection();
-
-            jdbcResultSet.close();
-            statement.close();
-            connection.close();
+    public boolean finalizeDataSampling() throws DQException {
+        try {
+            if (jdbcResultSet != null) {
+                Statement statement = jdbcResultSet.getStatement();
+                Connection connection = statement.getConnection();
+                jdbcResultSet.close();
+                statement.close();
+                connection.close();
+            }
+        } catch (Exception e) {
+            throw new DQException(e);
         }
         return true;
     }

@@ -17,6 +17,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
+import org.talend.dataquality.sampling.exception.DQException;
 import org.talend.dq.helper.FileUtils;
 
 import com.talend.csv.CSVReader;
@@ -61,7 +62,7 @@ public class FileSamplingDataSource extends AbstractSamplingDataSource<Delimited
      * 
      * @see org.talend.dq.datascience.SamplingDataSource#getDatasize()
      */
-    public boolean hasNext() throws Exception {
+    public boolean hasNext() throws DQException {
         boolean hasNext = false;
         try {
             if (csvReader == null) {
@@ -74,7 +75,7 @@ public class FileSamplingDataSource extends AbstractSamplingDataSource<Delimited
             }
         } catch (Throwable e) {
             log.error(e.getMessage(), e);
-            throw new Exception(e);
+            throw new DQException(e);
         }
         return hasNext;
     }
@@ -100,12 +101,12 @@ public class FileSamplingDataSource extends AbstractSamplingDataSource<Delimited
      * 
      * @see org.talend.dataprofiler.core.sampling.SamplingDataSource#finalizeDataSampling()
      */
-    public boolean finalizeDataSampling() throws Exception {
+    public boolean finalizeDataSampling() throws DQException {
         if (csvReader != null) {
             try {
                 csvReader.close();
             } catch (IOException e) {
-                throw new Exception(e);
+                throw new DQException(e);
             }
         }
         return true;
