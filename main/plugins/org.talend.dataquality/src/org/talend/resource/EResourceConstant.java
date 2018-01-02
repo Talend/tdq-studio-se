@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.QualifiedName;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.DelimitedFileConnectionItem;
 import org.talend.core.model.properties.FolderItem;
@@ -47,6 +48,7 @@ import org.talend.dataquality.rules.DQRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParserRule;
 import org.talend.dataquality.rules.WhereRule;
+import org.talend.designer.business.model.business.Context;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -225,6 +227,7 @@ public enum EResourceConstant {
         constantList.add(JRXML_TEMPLATE);
         constantList.add(PATTERNS);
         constantList.add(SOURCE_FILES);
+        constantList.add(CONTEXT);
 
         return constantList;
     }
@@ -266,6 +269,8 @@ public enum EResourceConstant {
             }
         } else if (element instanceof DatabaseConnection) {
             constatnt = DB_CONNECTIONS;
+        } else if (element instanceof Context) {
+            constatnt = CONTEXT;
         }
 
         return constatnt;
@@ -298,6 +303,11 @@ public enum EResourceConstant {
             @Override
             public Object caseDelimitedFileConnectionItem(DelimitedFileConnectionItem object) {
                 return FILEDELIMITED;
+            }
+
+            @Override
+            public Object caseContextItem(ContextItem object) {
+                return CONTEXT;
             }
 
         }.doSwitch(item);

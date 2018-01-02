@@ -222,7 +222,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         } else if (refreshObject instanceof Item) {
             RepositoryNode node = RepositoryNodeHelper.recursiveFind(((Item) refreshObject).getProperty());
             CorePlugin.getDefault().refreshWorkSpace();
-            CorePlugin.getDefault().refreshDQView(node);
+            CorePlugin.getDefault().refreshDQView(node == null ? null : node.getParent());
         } else {
             this.refresh();
         }

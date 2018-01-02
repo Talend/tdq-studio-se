@@ -85,6 +85,7 @@ public class DuplicateResourceProvider extends AbstractCommonActionProvider {
         objectTypes.add(ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT);
         objectTypes.add(ERepositoryObjectType.METADATA_CONNECTIONS);
         objectTypes.add(ERepositoryObjectType.TDQ_RULES_MATCHER);
+        objectTypes.add(ERepositoryObjectType.CONTEXT);
 
         for (IRepositoryNode node : repositoryNodeList) {
             // MOD qiongli 2011-2-12.filter elements in recycle bin.
