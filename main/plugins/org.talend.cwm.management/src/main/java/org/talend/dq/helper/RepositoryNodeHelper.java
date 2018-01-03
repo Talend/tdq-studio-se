@@ -3900,7 +3900,7 @@ public final class RepositoryNodeHelper {
                             return label.substring(4, label.length());
                         } else if (label.equals(EResourceConstant.METADATA.getName())
                                 || label.equals(EResourceConstant.CONTEXT.getName())) {
-                            return label.substring(0, 1).toUpperCase() + label.substring(1);
+                            return label.substring(0, 1).toUpperCase() + label.substring(1) + "s";//$NON-NLS-1$
                         }
                     }
                 }
