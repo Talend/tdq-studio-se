@@ -31,10 +31,14 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.record.linkage.ui.composite.ParticularDefaultSurvivorshipTableComposite;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.sorter.KeyDefinitionTableViewerSorter;
 import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataquality.record.linkage.ui.section.AbstractMatchAnaysisTableSection;
+import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
+import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
+import org.talend.dataquality.rules.AlgorithmDefinition;
 import org.talend.dataquality.rules.BlockKeyDefinition;
 import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchRuleDefinition;
@@ -245,10 +249,59 @@ public class ParticularDefSurshipDefinitionSection extends AbstractMatchAnaysisT
             functions.clear();
         }
         for (ParticularDefaultSurvivorshipDefinitions def : matchRuleDef.getParticularDefaultSurvivorshipDefinitions()) {
-            setColumnValueIfMatch(def);
-            functions.add(EcoreUtil.copy(def));
+            // note that here must copy first then modify it else will impact original element
+            ParticularDefaultSurvivorshipDefinitions copyDef = EcoreUtil.copy(def);
+            setColumnValueIfMatch(copyDef);
+            boolean checkFunctionValid = checkFunctionValid(copyDef);
+            if (!checkFunctionValid) {
+                copyDef.getFunction().setAlgorithmType(SurvivorShipAlgorithmEnum.MOST_COMMON.getComponentValueName());
+                copyDef.getFunction().setAlgorithmParameters(StringUtils.EMPTY);
+            }
+            functions.add(copyDef);
         }
         tableComposite.setInput(functions);
+    }
+
+    /**
+     * Check validity of function
+     * 
+     * @param functionType the type of function
+     * @param matchedColumnName the name of column
+     * @param dataType the data type of column
+     * @return true if function is valid else false
+     */
+    private boolean checkFunctionValid(ParticularDefaultSurvivorshipDefinitions partucykarDefinition) {
+        AlgorithmDefinition algorithmDefinition = partucykarDefinition.getFunction();
+        String functionType = algorithmDefinition != null && algorithmDefinition.getAlgorithmType() != null ? algorithmDefinition
+                .getAlgorithmType() : StringUtils.EMPTY;
+        String dataType = partucykarDefinition.getDataType();
+        SurvivorShipAlgorithmEnum functionEnum = SurvivorShipAlgorithmEnum.getTypeBySavedValue(functionType);
+        DefaultSurvivorShipDataTypeEnum[] valudDataType = functionEnum.getDataType();
+        return FunctionEditingSupport.isSupportDataType(valudDataType, dataType);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.talend.dataquality.record.linkage.ui.section.AbstractMatchAnaysisTableSection#setColumnValueIfMatch(org.talend.dataquality
+     * .rules.KeyDefinition)
+     */
+    @Override
+    protected void setColumnValueIfMatch(KeyDefinition keyDefinition) {
+        String columnName = StringUtils.EMPTY;
+        String columnType = StringUtils.EMPTY;
+        if (this.columnMap != null) {
+            for (MetadataColumn column : columnMap.keySet()) {
+                if (StringUtils.equalsIgnoreCase(getColumnName(column), getMappingName(keyDefinition))) {
+                    columnName = column.getLabel();
+                    columnType = column.getTalendType();
+                    break;
+                }
+            }
+        }
+        keyDefinition.setColumn(columnName);
+        ((ParticularDefaultSurvivorshipDefinitions) keyDefinition).setDataType(columnType);
     }
 
     /*
