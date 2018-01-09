@@ -193,7 +193,7 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                             // check invalid function used
                             EList<ParticularDefaultSurvivorshipDefinitions> particularDefaultSurvivorshipDefinitions = matchRuleDef
                                     .getParticularDefaultSurvivorshipDefinitions();
-                            String warrnMessage = StringUtils.EMPTY;
+                            String warnMessage = StringUtils.EMPTY;
                             for (ParticularDefaultSurvivorshipDefinitions pdsd : particularDefaultSurvivorshipDefinitions) {
                                 AlgorithmDefinition algorithmDefinition = pdsd.getFunction();
                                 String functionType = algorithmDefinition != null
@@ -203,13 +203,13 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                                 boolean checkFunctionValid = checkFunctionValid(functionType, columnName,
                                         getParticularDataType(pdsd));
                                 if (!checkFunctionValid) {
-                                    warrnMessage += "[" + columnName + "] "; //$NON-NLS-1$ //$NON-NLS-2$
+                                    warnMessage += "[" + columnName + "] "; //$NON-NLS-1$ //$NON-NLS-2$
                                 }
                             }
-                            if (warrnMessage.length() > 0) {
+                            if (warnMessage.length() > 0) {
                                 status = new Status(IStatus.WARNING, CorePlugin.PLUGIN_ID, DefaultMessagesImpl.getString(
                                         "MatchRuleCheckedTreeSelectionDialog.invalidFunctionColumn", //$NON-NLS-1$
-                                        warrnMessage));
+                                        warnMessage));
                                 return status;
                             }
 
