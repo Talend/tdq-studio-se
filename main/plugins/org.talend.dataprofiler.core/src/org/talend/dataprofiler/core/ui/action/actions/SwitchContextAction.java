@@ -68,7 +68,7 @@ public class SwitchContextAction extends Action {
                 if (isUpdated) {
 
                     if (log.isDebugEnabled()) {
-                        log.debug(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "successful"));//$NON-NLS-1$ //$NON-NLS-2$ 
+                        log.debug(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "Succeeded"));//$NON-NLS-1$ //$NON-NLS-2$ 
                     }
 
                     // ADD msjian TDQ-8834 2014-4-10: after switch the context, update the sql explore alias
@@ -81,7 +81,7 @@ public class SwitchContextAction extends Action {
                 } else {
                     MessageDialog.openWarning(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(), "", //$NON-NLS-1$
                             DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError")); //$NON-NLS-1$
-                    log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "failed"));//$NON-NLS-1$ //$NON-NLS-2$ 
+                    log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "Failed"));//$NON-NLS-1$ //$NON-NLS-2$ 
                 }
             }
         }
