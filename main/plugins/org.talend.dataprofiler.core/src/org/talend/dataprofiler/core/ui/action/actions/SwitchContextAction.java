@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.action.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -61,27 +62,32 @@ public class SwitchContextAction extends Action {
                 // Added yyin 20120925 TDQ-5668, check this connection's editor is open or not, if open, close.
                 CorePlugin.getDefault().closeEditorIfOpened(connItem);
                 // ~
-                String chooseContext = chooseContext(connItem.getConnection());
+                Connection connection = connItem.getConnection();
+                String chooseContext = chooseContext(connection);
+                String connectionName = connection.getName();
+                if (StringUtils.isEmpty(connectionName)) {
+                    connectionName = conRepNode.getObject().getProperty().getLabel();
+                }
 
                 boolean isUpdated = SwitchContextGroupNameImpl.getInstance().updateContextGroup(connItem, chooseContext);
 
                 if (isUpdated) {
 
                     if (log.isDebugEnabled()) {
-                        log.debug(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "Succeeded"));//$NON-NLS-1$ //$NON-NLS-2$ 
+                        log.debug(DefaultMessagesImpl
+                                .getString("SwitchContextAction.saveMessage1", chooseContext, connectionName));//$NON-NLS-1$ 
                     }
 
                     // ADD msjian TDQ-8834 2014-4-10: after switch the context, update the sql explore alias
                     // information.
-                    CWMPlugin.getDefault()
-                            .updateConnetionAliasByName(connItem.getConnection(), connItem.getProperty().getLabel());
+                    CWMPlugin.getDefault().updateConnetionAliasByName(connection, connItem.getProperty().getLabel());
                     // TDQ-8834~
 
                     CorePlugin.getDefault().refreshDQView(selectedObject);
                 } else {
                     MessageDialog.openWarning(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(), "", //$NON-NLS-1$
                             DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError")); //$NON-NLS-1$
-                    log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "Failed"));//$NON-NLS-1$ //$NON-NLS-2$ 
+                    log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage2", chooseContext, connectionName));//$NON-NLS-1$ 
                 }
             }
         }
