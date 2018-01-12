@@ -13,12 +13,16 @@
 package org.talend.dataprofiler.core.service;
 
 import java.sql.Driver;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.database.IDriverService;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlStore;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.dq.CWMPlugin;
 import org.talend.dq.helper.SqlExplorerUtils;
 
 /**
@@ -44,6 +48,15 @@ public class TOPDriverService implements IDriverService {
     }
 
     public List<String> getTDQSupportDBTemplate() {
-        return Arrays.asList(SupportDBUrlStore.getInstance().getDBTypes());
+        List<String> dqList = new ArrayList<String>();
+        dqList.addAll(Arrays.asList(SupportDBUrlStore.getInstance().getDBTypes()));
+        IGenericDBService dbService = CWMPlugin.getDefault().getGenericDBService();
+        if (dbService != null) {
+            List<ERepositoryObjectType> extraTypes = dbService.getExtraTypes();
+            for (ERepositoryObjectType type : extraTypes) {
+                dqList.add(type.getLabel());
+            }
+        }
+        return dqList;
     }
 }

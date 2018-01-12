@@ -100,6 +100,7 @@ import org.talend.dataquality.rules.JoinElement;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParserRule;
 import org.talend.dataquality.rules.WhereRule;
+import org.talend.dq.CWMPlugin;
 import org.talend.dq.indicators.preview.table.WhereRuleChartDataEntity;
 import org.talend.dq.nodes.AnalysisFolderRepNode;
 import org.talend.dq.nodes.AnalysisRepNode;
@@ -3914,7 +3915,8 @@ public final class RepositoryNodeHelper {
     public static boolean isSupportedConnection(IRepositoryNode repNode) {
         ERepositoryObjectType objectType = repNode.getObjectType();
 
-        if (objectType == ERepositoryObjectType.METADATA_CONNECTIONS) {
+        if (objectType == ERepositoryObjectType.METADATA_CONNECTIONS
+                || CWMPlugin.getDefault().isTCOMPJdbc(objectType.getLabel())) {
             ConnectionItem connectionItem = null;
             try {
                 connectionItem = (ConnectionItem) repNode.getObject().getProperty().getItem();

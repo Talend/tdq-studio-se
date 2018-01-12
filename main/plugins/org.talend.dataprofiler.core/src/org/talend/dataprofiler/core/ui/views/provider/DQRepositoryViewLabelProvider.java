@@ -56,6 +56,7 @@ import org.talend.dataquality.analysis.AnalysisContext;
 import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.dataquality.rules.MatchRuleDefinition;
+import org.talend.dq.CWMPlugin;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.nodes.AnalysisRepNode;
@@ -378,7 +379,9 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
     }
 
     private boolean isNeedAddDriverConnection(IRepositoryNode repNode) {
-        if (repNode.getObjectType() == ERepositoryObjectType.METADATA_CONNECTIONS) {
+        ERepositoryObjectType objectType = repNode.getObjectType();
+        if (objectType == ERepositoryObjectType.METADATA_CONNECTIONS
+                || CWMPlugin.getDefault().isTCOMPJdbc(objectType.getLabel())) {
             ConnectionItem connectionItem = (ConnectionItem) repNode.getObject().getProperty().getItem();
             if (connectionItem.getConnection() instanceof DatabaseConnection) {
                 DatabaseConnection dbConn = (DatabaseConnection) (connectionItem.getConnection());
