@@ -828,6 +828,24 @@
                      value="org.talend.repository.model.RepositoryNode">
                </instanceof>
          </enablement>
+      </actionProvider>
+      <actionProvider
+            appearsBefore="org.talend.dataprofiler.core.ui.action.provider.DuplicateResourceProvider"
+            class="org.talend.dataprofiler.core.ui.action.provider.NewContextActionProvider"
+            id="org.talend.dataprofiler.core.ui.action.provider.NewContextActionProvider">
+         <enablement>
+            <or>
+               <instanceof
+                     value="org.talend.dq.nodes.ContextFolderRepNode">
+               </instanceof>
+               <instanceof
+                     value="org.talend.dq.nodes.ContextSubFolderRepNode">
+               </instanceof>
+               <instanceof
+                     value="org.talend.dq.nodes.ContextRepNode">
+               </instanceof>
+            </or>
+         </enablement>
       </actionProvider>       
   </extension>
     

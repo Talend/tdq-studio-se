@@ -107,6 +107,7 @@ import org.talend.dataprofiler.core.model.nodes.foldernode.ViewFolderNode;
 import org.talend.dataprofiler.core.service.GlobalServiceRegister;
 import org.talend.dataprofiler.core.service.IService;
 import org.talend.dataprofiler.core.service.IViewerFilterService;
+import org.talend.dataprofiler.core.ui.action.actions.DQEditContextAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditDFTableAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditFileDelimitedAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditHDFSConnectionAction;
@@ -129,6 +130,7 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.AnalysisRepNode;
+import org.talend.dq.nodes.ContextRepNode;
 import org.talend.dq.nodes.DBTableRepNode;
 import org.talend.dq.nodes.DBViewRepNode;
 import org.talend.dq.nodes.DFConnectionRepNode;
@@ -462,6 +464,8 @@ public class DQRespositoryView extends CommonNavigator {
                             new EditHDFSConnectionAction((IRepositoryNode) obj).run();
                         } else if (obj instanceof DFTableRepNode) {
                             new EditDFTableAction((IRepositoryNode) obj).run();
+                        } else if (obj instanceof ContextRepNode) {
+                            new DQEditContextAction((ContextRepNode) obj, false).run();
                         } else {
                             DQRepositoryNode repoNode = (DQRepositoryNode) obj;
                             if (RepositoryNodeHelper.canOpenEditor(repoNode)) {

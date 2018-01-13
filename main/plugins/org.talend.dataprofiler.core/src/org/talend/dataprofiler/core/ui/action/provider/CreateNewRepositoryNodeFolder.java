@@ -18,6 +18,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.talend.dataprofiler.core.ui.action.actions.CreateRepositoryNodeAction;
 import org.talend.dataprofiler.core.ui.exchange.ExchangeFolderRepNode;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
+import org.talend.dq.nodes.ContextFolderRepNode;
 import org.talend.dq.nodes.ReportSubFolderRepNode;
 import org.talend.dq.nodes.hadoopcluster.HDFSOfHCFolderRepNode;
 import org.talend.dq.nodes.hadoopcluster.HiveOfHCFolderRepNode;
@@ -52,7 +53,7 @@ public class CreateNewRepositoryNodeFolder extends AbstractCommonActionProvider 
         RepositoryNode node = (RepositoryNode) obj;
         RepositoryNode parent = node.getParent();
         if (!(parent instanceof ReportSubFolderRepNode)) {
-            if (parent != null) {
+            if (parent != null || node instanceof ContextFolderRepNode) {
                 IFolder folder = WorkbenchUtils.getFolder(node);
                 if (!(node instanceof ExchangeFolderRepNode) && !ResourceManager.getRulesFolder().equals(folder)
                         && !ResourceManager.getPatternFolder().equals(folder)

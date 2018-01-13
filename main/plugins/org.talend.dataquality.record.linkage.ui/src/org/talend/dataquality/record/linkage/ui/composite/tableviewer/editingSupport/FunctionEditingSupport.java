@@ -101,9 +101,7 @@ public class FunctionEditingSupport extends EditingSupport {
         ParticularDefaultSurvivorshipDefinitions pdskd = ((ParticularDefaultSurvivorshipDefinitions) element);
         String talendDataType = ((ParticularDefaultSurvivorshipDefinitions) element).getDataType();
         int functionTypeIndex = Integer.valueOf(value.toString()).intValue();
-        String[] allFunctionByDataTypes = getAllFunctionByDataTypes(talendDataType);
-        SurvivorShipAlgorithmEnum valueByIndex = SurvivorShipAlgorithmEnum
-                .getTypeByValue(allFunctionByDataTypes[functionTypeIndex]);
+        SurvivorShipAlgorithmEnum valueByIndex = findEnumValue(talendDataType, functionTypeIndex);
         if (StringUtils.equals(pdskd.getFunction().getAlgorithmType(), valueByIndex.getComponentValueName())) {
             return;
         }
@@ -117,6 +115,29 @@ public class FunctionEditingSupport extends EditingSupport {
             }
         }
         this.getViewer().update(element, null);
+    }
+
+    /**
+     * Find enum value by data type of talend and index of function
+     * 
+     * @param talendDataType like id_String or id_Boolean
+     * @param functionTypeIndex the index of function which want to choose -1 mean that no funncion be choosed
+     * 
+     * @return value of SurvivorShipAlgorithmEnum which choose else return default one(MostCommon)
+     */
+    private SurvivorShipAlgorithmEnum findEnumValue(String talendDataType, int functionTypeIndex) {
+        // One case about this issue is imported matchRule choose error functionType
+        if (functionTypeIndex == -1) {
+            return SurvivorShipAlgorithmEnum.MOST_COMMON;
+        }
+        String[] allFunctionByDataTypes = getAllFunctionByDataTypes(talendDataType);
+        if (allFunctionByDataTypes.length == 0) {
+            return SurvivorShipAlgorithmEnum.MOST_COMMON;
+        }
+        SurvivorShipAlgorithmEnum valueByIndex = SurvivorShipAlgorithmEnum
+                .getTypeByValue(allFunctionByDataTypes[functionTypeIndex]);
+        return valueByIndex;
+
     }
 
     private boolean isSurvivorShipAlgorithm(ParticularDefaultSurvivorshipDefinitions pdsd, SurvivorShipAlgorithmEnum algorithm) {

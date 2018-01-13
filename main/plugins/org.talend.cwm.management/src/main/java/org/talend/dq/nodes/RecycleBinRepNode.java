@@ -131,7 +131,7 @@ public class RecycleBinRepNode extends DQRepositoryNode {
         List<DQRepositoryNode> foldersList = new ArrayList<DQRepositoryNode>();
         List<FolderItem> folderItems = ProjectManager.getInstance().getFolders(project.getEmfProject());
         for (FolderItem folderItem : folderItems) {
-            if (isTDQOrMetadataRootFolder(folderItem)) {
+            if (isTDQOrSharedRootFolder(folderItem)) {
                 addItemToRecycleBin(this, folderItem, foldersList, project);
             }
         }
@@ -148,9 +148,15 @@ public class RecycleBinRepNode extends DQRepositoryNode {
         return super.getChildren();
     }
 
-    public boolean isTDQOrMetadataRootFolder(FolderItem folderItem) {
+    /**
+     * If it is TDQ or metadata or context root folder
+     * 
+     * @param folderItem
+     * @return
+     */
+    public boolean isTDQOrSharedRootFolder(FolderItem folderItem) {
         String path = getFullFolderPath(folderItem, PluginConstant.EMPTY_STRING);
-        if (path != null && (path.startsWith("TDQ") || path.startsWith("metadata"))) { //$NON-NLS-1$ //$NON-NLS-2$
+        if (path != null && (path.startsWith("TDQ") || path.startsWith("metadata") || path.startsWith("context"))) { //$NON-NLS-1$ //$NON-NLS-2$
             return true;
         }
         return false;

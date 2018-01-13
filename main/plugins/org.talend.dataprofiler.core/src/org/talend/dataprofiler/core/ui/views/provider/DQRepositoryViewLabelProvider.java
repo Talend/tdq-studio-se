@@ -59,6 +59,7 @@ import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.nodes.AnalysisRepNode;
+import org.talend.dq.nodes.ContextRepNode;
 import org.talend.dq.nodes.DBCatalogRepNode;
 import org.talend.dq.nodes.DBColumnFolderRepNode;
 import org.talend.dq.nodes.DBColumnRepNode;
@@ -149,6 +150,8 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                             image = ImageLib.getImage(ImageLib.EXCHANGE);
                         } else if (label.equals(EResourceConstant.HADOOP_CLUSTER.getName())) {
                             image = ImageLib.getImage(ImageLib.HADOOP_CLUSTER);
+                        } else if (label.equals(EResourceConstant.CONTEXT.getName())) {
+                            image = ImageLib.getImage(ImageLib.CONTEXT);
                         } else {
                             image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
                         }
@@ -197,6 +200,8 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                         originalImageName = ImageLib.HIVE_LINK;
                     } else if (node instanceof ExchangeCategoryRepNode || node instanceof ExchangeComponentRepNode) {
                         originalImageName = ImageLib.EXCHANGE;
+                    } else if (node instanceof ContextRepNode) {
+                        originalImageName = ImageLib.CONTEXT;
                     } else if (node instanceof RepositoryNode) {
                         // MOD qiongli 2011-1-18 get image for nodes in recycle bin
                         Image imageNode = getImageByContentType((RepositoryNode) node);
@@ -365,6 +370,8 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             return ImageLib.getImage(ImageLib.HADOOP_CLUSTER);
         } else if (type == HadoopClusterUtils.getDefault().getHDFSType()) {
             return ImageLib.getImage(ImageLib.HDFS);
+        } else if (type == ERepositoryObjectType.CONTEXT) {
+            return ImageLib.getImage(ImageLib.CONTEXT);
         }
         return null;
 

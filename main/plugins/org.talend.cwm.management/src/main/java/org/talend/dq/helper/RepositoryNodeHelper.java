@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -54,6 +55,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.metadata.builder.connection.impl.ConnectionImpl;
 import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.FolderItem;
 import org.talend.core.model.properties.FolderType;
 import org.talend.core.model.properties.Item;
@@ -102,6 +104,9 @@ import org.talend.dq.indicators.preview.table.WhereRuleChartDataEntity;
 import org.talend.dq.nodes.AnalysisFolderRepNode;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.AnalysisSubFolderRepNode;
+import org.talend.dq.nodes.ContextFolderRepNode;
+import org.talend.dq.nodes.ContextRepNode;
+import org.talend.dq.nodes.ContextSubFolderRepNode;
 import org.talend.dq.nodes.DBCatalogRepNode;
 import org.talend.dq.nodes.DBColumnFolderRepNode;
 import org.talend.dq.nodes.DBColumnRepNode;
@@ -741,7 +746,11 @@ public final class RepositoryNodeHelper {
      * @return
      */
     public static RepositoryNode recursiveFind(Property property) {
-        ModelElement resourceModelElement = getResourceModelElement(property.getItem());
+        Item item = property.getItem();
+        if (item instanceof ContextItem) {
+            return recursiveFindContext(property);
+        }
+        ModelElement resourceModelElement = getResourceModelElement(item);
         if (resourceModelElement != null) {
             return recursiveFind(resourceModelElement);
         }
@@ -1245,6 +1254,33 @@ public final class RepositoryNodeHelper {
         }
     }
 
+    /**
+     * find a ContextRepNode by contextItem and label
+     * 
+     * @param property a context node property
+     * @return
+     */
+    public static ContextRepNode recursiveFindContext(Property property) {
+        if (property == null) {
+            return null;
+        }
+        // compare the label instead of UUID. since the UUID will be same when duplicate a context
+        String label = property.getLabel();
+        if (StringUtils.isEmpty(label)) {
+            return null;
+        }
+        IRepositoryNode contextFolderNode = getContextFolderNode(property);
+        List<ContextRepNode> contextRepNodes = getContextRepNodes(contextFolderNode, true, true);
+        if (!contextRepNodes.isEmpty()) {
+            for (ContextRepNode childNode : contextRepNodes) {
+                if (label.equals(childNode.getLabel())) {
+                    return childNode;
+                }
+            }
+        }
+        return null;
+    }
+
     public static AnalysisRepNode recursiveFindAnalysis(Analysis analysis) {
         if (analysis == null) {
             return null;
@@ -1280,6 +1316,44 @@ public final class RepositoryNodeHelper {
             org.talend.core.model.general.Project project = getInWhichProject(analysis);
             return getDataProfilingFolderNode(EResourceConstant.ANALYSIS, project);
         }
+    }
+
+    private static IRepositoryNode getContextFolderNode(Property property) {
+        Project currentProject;
+        if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+            currentProject = ProjectManager.getInstance().getCurrentProject();
+        } else {
+            org.talend.core.model.properties.Project project = ProjectManager.getInstance().getProject(property);
+            currentProject = new org.talend.core.model.general.Project(project);
+        }
+        return getRootNode(ERepositoryObjectType.CONTEXT, true, currentProject);
+    }
+
+    /**
+     * 
+     * @param parrentNode
+     * @param recursiveFind
+     * @param withDeleted
+     * @return find all context repositoryNodes
+     */
+    public static List<ContextRepNode> getContextRepNodes(IRepositoryNode parrentNode, boolean recursiveFind,
+            boolean withDeleted) {
+        List<ContextRepNode> result = new ArrayList<ContextRepNode>();
+        if (parrentNode != null
+                && (parrentNode instanceof ContextFolderRepNode || parrentNode instanceof ContextSubFolderRepNode)) {
+            List<IRepositoryNode> children = parrentNode.getChildren(withDeleted);
+            if (!children.isEmpty()) {
+                for (IRepositoryNode inode : children) {
+                    if (inode instanceof ContextRepNode) {
+                        result.add((ContextRepNode) inode);
+                    } else if (recursiveFind
+                            && (inode instanceof ContextFolderRepNode || inode instanceof ContextSubFolderRepNode)) {
+                        result.addAll(getContextRepNodes(inode, recursiveFind, withDeleted));
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -2543,7 +2617,10 @@ public final class RepositoryNodeHelper {
      * @return
      */
     public static ModelElement getResourceModelElement(Item item) {
-        if (item != null && item instanceof TDQItem) {
+        if (item == null) {
+            return null;
+        }
+        if (item instanceof TDQItem) {
             if (item instanceof TDQAnalysisItem) {
                 return ((TDQAnalysisItem) item).getAnalysis();
             } else if (item instanceof TDQBusinessRuleItem) {
@@ -2557,7 +2634,7 @@ public final class RepositoryNodeHelper {
             } else if (item instanceof TDQMatchRuleItem) {
                 return ((TDQMatchRuleItem) item).getMatchRule();
             }
-        } else if (item != null && item instanceof ConnectionItem) {
+        } else if (item instanceof ConnectionItem) {
             return ((ConnectionItem) item).getConnection();
         }
         return null;
@@ -3821,8 +3898,9 @@ public final class RepositoryNodeHelper {
                         if (label.equals(EResourceConstant.DATA_PROFILING.getName())
                                 || label.equals(EResourceConstant.LIBRARIES.getName())) {
                             return label.substring(4, label.length());
-                        } else if (label.equals(EResourceConstant.METADATA.getName())) {
-                            return label.substring(0, 1).toUpperCase() + label.substring(1);
+                        } else if (label.equals(EResourceConstant.METADATA.getName())
+                                || label.equals(EResourceConstant.CONTEXT.getName())) {
+                            return label.substring(0, 1).toUpperCase() + label.substring(1) + "s";//$NON-NLS-1$
                         }
                     }
                 }

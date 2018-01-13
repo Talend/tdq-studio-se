@@ -13,13 +13,16 @@
 package org.talend.dataprofiler.core.ui.action.actions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.window.Window;
+import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.ui.dialog.MatchRuleElementTreeSelectionDialog;
 import org.talend.dataprofiler.core.ui.editor.analysis.AbstractAnalysisMetadataPage;
@@ -60,12 +63,18 @@ public class ImportMatchRuleAction extends Action {
                 MatchRuleElementTreeSelectionDialog.MATCH_ANALYSIS_TYPE);
 
         List<String> inputColumnNames = new ArrayList<String>();
+        Map<String, String> columnName2Type = new HashMap<String, String>();
         Analysis analysis = masterPage.getCurrentModelElement();
         EList<ModelElement> elements = analysis.getContext().getAnalysedElements();
         for (ModelElement me : elements) {
             inputColumnNames.add(me.getName());
+            if (me instanceof MetadataColumn) {
+                columnName2Type.put(me.getName(), ((MetadataColumn) me).getTalendType());
+
+            }
         }
         dialog.setInputColumnNames(inputColumnNames);
+        dialog.setColumnName2Type(columnName2Type);
 
         AnalysisResult anaResults = analysis.getResults();
         if (anaResults != null) {

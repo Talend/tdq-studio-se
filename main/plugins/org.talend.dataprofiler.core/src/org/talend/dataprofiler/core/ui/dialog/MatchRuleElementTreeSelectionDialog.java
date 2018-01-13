@@ -60,7 +60,10 @@ import org.talend.dataprofiler.core.ui.dialog.provider.ParticularSurvivorshipRul
 import org.talend.dataprofiler.core.ui.utils.AnalysisUtils;
 import org.talend.dataquality.record.linkage.constant.AttributeMatcherType;
 import org.talend.dataquality.record.linkage.constant.RecordMatcherType;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
+import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.HandleNullEnum;
+import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
 import org.talend.dataquality.rules.AlgorithmDefinition;
 import org.talend.dataquality.rules.BlockKeyDefinition;
 import org.talend.dataquality.rules.KeyDefinition;
@@ -84,6 +87,8 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
     private TableViewer particularSurvivRulesTable;
 
     private List<String> inputColumnNames;
+
+    private Map<String, String> columnName2Type;
 
     private List<String> currentAnaBlockKeys;
 
@@ -182,6 +187,29 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                                 status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, DefaultMessagesImpl.getString(
                                         "MatchRuleCheckedTreeSelectionDialog.duplicatedMatchKey", //$NON-NLS-1$
                                         duplicatedKeys.toString()));
+                                return status;
+                            }
+
+                            // check invalid function used
+                            EList<ParticularDefaultSurvivorshipDefinitions> particularDefaultSurvivorshipDefinitions = matchRuleDef
+                                    .getParticularDefaultSurvivorshipDefinitions();
+                            String warnMessage = StringUtils.EMPTY;
+                            for (ParticularDefaultSurvivorshipDefinitions pdsd : particularDefaultSurvivorshipDefinitions) {
+                                AlgorithmDefinition algorithmDefinition = pdsd.getFunction();
+                                String functionType = algorithmDefinition != null
+                                        && algorithmDefinition.getAlgorithmType() != null ? algorithmDefinition
+                                        .getAlgorithmType() : StringUtils.EMPTY;
+                                String columnName = pdsd.getColumn();
+                                boolean checkFunctionValid = checkFunctionValid(functionType, columnName,
+                                        getParticularDataType(pdsd));
+                                if (!checkFunctionValid) {
+                                    warnMessage += "[" + columnName + "] "; //$NON-NLS-1$ //$NON-NLS-2$
+                                }
+                            }
+                            if (warnMessage.length() > 0) {
+                                status = new Status(IStatus.WARNING, CorePlugin.PLUGIN_ID, DefaultMessagesImpl.getString(
+                                        "MatchRuleCheckedTreeSelectionDialog.invalidFunctionColumn", //$NON-NLS-1$
+                                        warnMessage));
                                 return status;
                             }
 
@@ -816,9 +844,9 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
 
                 // set survivorship function and parameter
                 AlgorithmDefinition algorithmDefinition = pdsd.getFunction();
-                pr.put(MatchRulesTableLabelProvider.SURVIVORSHIP_FUNCTION,
-                        algorithmDefinition != null && algorithmDefinition.getAlgorithmType() != null ? algorithmDefinition
-                                .getAlgorithmType() : StringUtils.EMPTY);
+                String functionType = algorithmDefinition != null && algorithmDefinition.getAlgorithmType() != null ? algorithmDefinition
+                        .getAlgorithmType() : StringUtils.EMPTY;
+                pr.put(MatchRulesTableLabelProvider.SURVIVORSHIP_FUNCTION, functionType);
                 pr.put(MatchRulesTableLabelProvider.PARAMETER,
                         algorithmDefinition != null && algorithmDefinition.getAlgorithmParameters() != null ? algorithmDefinition
                                 .getAlgorithmParameters() : StringUtils.EMPTY);
@@ -827,6 +855,32 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
             return ruleValues;
         }
         return null;
+    }
+
+    /**
+     * DOC zshen Comment method "getParticularDataType".
+     * 
+     * @param pdsd
+     * @return
+     */
+    private String getParticularDataType(ParticularDefaultSurvivorshipDefinitions pdsd) {
+        String dataType = pdsd.getDataType();
+        String dataTypeFrom = this.getColumnName2Type().get(pdsd.getColumn());
+        return dataTypeFrom == null ? dataType : dataTypeFrom;
+    }
+
+    /**
+     * Check validity of function
+     * 
+     * @param functionType the type of function
+     * @param matchedColumnName the name of column
+     * @param dataType the data type of column
+     * @return true if function is valid else false
+     */
+    private boolean checkFunctionValid(String functionType, String matchedColumnName, String dataType) {
+        SurvivorShipAlgorithmEnum functionEnum = SurvivorShipAlgorithmEnum.getTypeBySavedValue(functionType);
+        DefaultSurvivorShipDataTypeEnum[] valudDataType = functionEnum.getDataType();
+        return FunctionEditingSupport.isSupportDataType(valudDataType, dataType);
     }
 
     /**
@@ -856,6 +910,27 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
 
     public void setInputColumnNames(List<String> inputColumnNames) {
         this.inputColumnNames = inputColumnNames;
+    }
+
+    /**
+     * Getter for columnName2Type.
+     * 
+     * @return the columnName2Type
+     */
+    public Map<String, String> getColumnName2Type() {
+        if (columnName2Type == null) {
+            columnName2Type = new HashMap<String, String>();
+        }
+        return this.columnName2Type;
+    }
+
+    /**
+     * Sets the columnName2Type.
+     * 
+     * @param columnName2Type the columnName2Type to set
+     */
+    public void setColumnName2Type(Map<String, String> columnName2Type) {
+        this.columnName2Type = columnName2Type;
     }
 
     public void setAnalysisCurrentMatchKeys(List<String> matchKeys) {

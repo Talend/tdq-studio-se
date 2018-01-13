@@ -23,6 +23,7 @@ Import-Package: org.eclipse.ui.views.properties.tabbed
 Export-Package: org.talend.dataquality.record.linkage.ui.action,
  org.talend.dataquality.record.linkage.ui.composite.chart,
  org.talend.dataquality.record.linkage.ui.composite.table,
+ org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport,
  org.talend.dataquality.record.linkage.ui.composite.utils,
  org.talend.dataquality.record.linkage.ui.section,
  org.talend.dataquality.record.linkage.ui.section.definition,

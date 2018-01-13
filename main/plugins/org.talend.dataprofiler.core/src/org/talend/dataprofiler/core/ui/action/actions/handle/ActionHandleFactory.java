@@ -67,7 +67,8 @@ public final class ActionHandleFactory {
             case SOURCE_FILES:
                 handle = new SourceFileDuplicateHandle(node);
                 break;
-
+            case CONTEXT:
+                handle = new ContextDuplicateHandle(node);
             default:
                 break;
             }

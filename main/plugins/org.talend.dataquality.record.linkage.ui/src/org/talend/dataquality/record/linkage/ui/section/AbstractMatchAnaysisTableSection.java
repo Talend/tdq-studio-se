@@ -487,7 +487,7 @@ public abstract class AbstractMatchAnaysisTableSection extends AbstractSectionCo
     }
 
     // For the columns from file connection, the name is null
-    private String getColumnName(MetadataColumn column) {
+    protected String getColumnName(MetadataColumn column) {
         if (StringUtils.isBlank(column.getName())) {
             return column.getLabel();
         } else {
