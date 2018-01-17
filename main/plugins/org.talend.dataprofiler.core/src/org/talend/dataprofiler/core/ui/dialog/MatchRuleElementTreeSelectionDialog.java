@@ -96,6 +96,8 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
 
     private List<String> lookupColumnNames;
 
+    private List<String> pdsdColumnNames;
+
     private Button overwriteBTN;
 
     private boolean isOverwrite = false;
@@ -318,6 +320,14 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
                         }
                     }
                 }
+
+                // check survivorship rules for columns
+                for (ParticularDefaultSurvivorshipDefinitions pdsd : matchRuleDef.getParticularDefaultSurvivorshipDefinitions()) {
+                    if (pdsd != null && pdsdColumnNames.contains(pdsd.getColumn())) {
+                        duplicatedKeys.add(pdsd.getColumn());
+                    }
+                }
+
                 return duplicatedKeys;
             }
 
@@ -879,6 +889,10 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
      */
     private boolean checkFunctionValid(String functionType, String matchedColumnName, String dataType) {
         SurvivorShipAlgorithmEnum functionEnum = SurvivorShipAlgorithmEnum.getTypeBySavedValue(functionType);
+        // for most common, no need to check, it fixes all type.
+        if (SurvivorShipAlgorithmEnum.MOST_COMMON.equals(functionEnum)) {
+            return true;
+        }
         DefaultSurvivorShipDataTypeEnum[] valudDataType = functionEnum.getDataType();
         return FunctionEditingSupport.isSupportDataType(valudDataType, dataType);
     }
@@ -964,6 +978,10 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
      */
     public void setMatchRuleDefinitionInput(MatchRuleDefinition matchRuleDefinitionInput) {
         this.matchRuleDefinitionInput = matchRuleDefinitionInput;
+    }
+
+    public void setAnalysisCurrentParticularColumns(List<String> pdsdKeysName) {
+        pdsdColumnNames = pdsdKeysName;
     }
 
 }

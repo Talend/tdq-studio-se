@@ -1501,6 +1501,9 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
                     }
                 }
             }
+            if (checkResultStatus.isOk() && !selectAlgorithmSection.isVSRMode()) {
+                checkResultStatus = this.particularDefaultSurvivorshipSection.checkResultStatus();
+            }
 
             if (checkResultStatus.isOk()) {
                 if (TaggedValueHelper.getValueBoolean(SQLExecutor.STORE_ON_DISK_KEY, getCurrentModelElement())) {

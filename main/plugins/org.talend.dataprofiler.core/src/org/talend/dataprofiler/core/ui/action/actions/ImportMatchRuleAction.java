@@ -37,6 +37,7 @@ import org.talend.dataquality.rules.BlockKeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
+import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
 import org.talend.dq.nodes.RuleRepNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -103,6 +104,12 @@ public class ImportMatchRuleAction extends Action {
                             }
                         }
                         dialog.setAnalysisCurrentMatchKeys(matchKeysName);
+                        List<String> pdsdKeysName = new ArrayList<String>();
+                        for (ParticularDefaultSurvivorshipDefinitions pdsd : builtInMatchRuleDefinition
+                                .getParticularDefaultSurvivorshipDefinitions()) {
+                            pdsdKeysName.add(pdsd.getColumn());
+                        }
+                        dialog.setAnalysisCurrentParticularColumns(pdsdKeysName);
                     }
                 }
             }
