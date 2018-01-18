@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.lang3.StringUtils;
 import org.talend.commons.exception.BusinessException;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.indicators.columnset.BlockKeyIndicator;
@@ -39,6 +38,8 @@ import org.talend.utils.sugars.TypedReturnCode;
  * 
  */
 public class ExecuteMatchRuleHandler {
+
+    private Map<String, String> colName2IndexMap = new HashMap<String, String>();
 
     public TypedReturnCode<MatchGroupResultConsumer> execute(Map<MetadataColumn, String> columnMap,
             RecordMatchingIndicator recordMatchingIndicator, List<Object[]> matchRows, BlockKeyIndicator blockKeyIndicator,
@@ -111,7 +112,7 @@ public class ExecuteMatchRuleHandler {
     private Map<String, List<String[]>> computeBlockingKey(Map<MetadataColumn, String> columnMap, List<Object[]> matchRows,
             RecordMatchingIndicator recordMatchingIndicator) {
         List<Map<String, String>> blockKeySchema = AnalysisRecordGroupingUtils.getBlockKeySchema(recordMatchingIndicator);
-        Map<String, String> colName2IndexMap = new HashMap<String, String>();
+
         for (MetadataColumn metaCol : columnMap.keySet()) {
             if(metaCol.getName()==null){
                 colName2IndexMap.put(metaCol.getLabel(), columnMap.get(metaCol));
@@ -121,6 +122,11 @@ public class ExecuteMatchRuleHandler {
         }
         BlockingKeyHandler blockKeyHandler = new BlockingKeyHandler(blockKeySchema, colName2IndexMap);
         blockKeyHandler.setInputData(matchRows);
+
+        // Added TDQ-14276: need to add the column date pattern map (for most recent/ancient function)
+        Map<String, String> patternMap = AnalysisRecordGroupingUtils.createColumnDatePatternMap(columnMap, colName2IndexMap);
+        blockKeyHandler.setColumnDatePatternMap(patternMap);
+
         blockKeyHandler.run();
         Map<String, List<String[]>> resultData = blockKeyHandler.getResultDatas();
 
@@ -152,6 +158,9 @@ public class ExecuteMatchRuleHandler {
         try {
 
             AnalysisRecordGroupingUtils.initialMatchGrouping(columnMap, recordMatchingIndicator, analysisMatchRecordGrouping);
+            // TDQ-14276 set the Map<columnName, dataPattern>
+            Map<String, String> patternMap = AnalysisRecordGroupingUtils.createColumnDatePatternMap(columnMap, colName2IndexMap);
+            analysisMatchRecordGrouping.setColumnDatePatternMap(patternMap);
 
             analysisMatchRecordGrouping.run();
         } catch (InstantiationException e1) {
