@@ -411,6 +411,24 @@ public class AnalysisRecordGroupingUtils {
         }
     }
 
+    public static Map<String, String> createColumnDatePatternMap(Map<MetadataColumn, String> columnMap,
+            Map<String, String> colName2IndexMap) {
+        Map<String, String> patternMap = new HashMap<String, String>();
+        int columnIndex = 0;
+
+        for (MetadataColumn key : columnMap.keySet()) {
+            if ("id_Date".equals(key.getTalendType())) {
+                String pattern = key.getPattern();
+                if (StringUtils.isEmpty(pattern)) {
+                    pattern = "yyyy-MM-dd HH:mm:ss.SSS";
+                }
+                patternMap.put(colName2IndexMap.get(key.getId()), pattern);
+            }
+            columnIndex++;
+        }
+        return patternMap;
+    }
+
     /**
      * 
      * DOC zshen Comment method "createSurvivorShipAlgorithmParams".

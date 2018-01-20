@@ -33,7 +33,6 @@ import org.talend.core.ITDQRepositoryService;
 import org.talend.cwm.exception.AnalysisExecutionException;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
-import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.SchemaHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.management.i18n.Messages;
@@ -147,7 +146,7 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
                     .getString(
                             "ColumnAnalysisSqlExecutor.UNSUPPORTEDINDICATOR",//$NON-NLS-1$
                             (indicator.getName() != null ? AnalysisExecutorHelper.getIndicatorName(indicator) : indicatorEclass
-                                    .getName()), ResourceHelper.getUUID(indicator.getIndicatorDefinition())));
+                                    .getName())));
             return false;
         } else {
             return true;
