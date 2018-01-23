@@ -13,12 +13,17 @@
 package org.talend.dq;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
+import org.talend.core.GlobalServiceRegister;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.librariesmanager.prefs.LibrariesManagerUtils;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
@@ -134,6 +139,28 @@ public class CWMPlugin extends Plugin {
             }
         }
         return false;
+    }
+
+    public boolean isTCOMPJdbc(String dbType) {
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = getGenericDBService();
+        if (dbService != null) {
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        for (ERepositoryObjectType type : extraTypes) {
+            if (type.getType().equals(dbType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public IGenericDBService getGenericDBService() {
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+        }
+        return dbService;
     }
 
 }
