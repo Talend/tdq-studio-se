@@ -320,6 +320,52 @@ public final class ConnectionUtils {
     /**
      * if the DriverClassName is empty or Jar File Path is invalid return false.
      * 
+     * @param dbConn a General JDBC database connection
+     * @return
+     * @throws MalformedURLException
+     * @deprecated replace it with checkJdbcJarFilePathDriverClassName(DatabaseConnection)
+     */
+    public static ReturnCode checkGeneralJdbcJarFilePathDriverClassName(DatabaseConnection dbConn)
+            throws MalformedURLException {
+        ReturnCode returnCode = new ReturnCode();
+        String driverClass = JavaSqlFactory.getDriverClass(dbConn);
+        String driverJarPath = JavaSqlFactory.getDriverJarPath(dbConn);
+        if (driverClass == null || driverClass.trim().equals("")) { //$NON-NLS-1$
+            returnCode.setOk(false);
+            returnCode.setMessage(Messages.getString("ConnectionUtils.DriverClassEmpty")); //$NON-NLS-1$
+        } else {
+            if (driverJarPath == null || driverJarPath.trim().equals("")) { //$NON-NLS-1$
+                returnCode.setOk(false);
+                returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileEmpty")); //$NON-NLS-1$
+            } else {
+                List<String> driverJarNameList = new ArrayList<String>();
+                String[] splits = driverJarPath.split(";"); //$NON-NLS-1$
+                for (String str : splits) {
+                    if (!StringUtils.isBlank(str)) {
+                        driverJarNameList.add(str);
+                    }
+                }
+                LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
+                if (driverJarRealPaths.isEmpty()) {
+                    returnCode.setOk(false);
+                    returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
+                }
+                for (String str : driverJarRealPaths) {
+                    File jarFile = new File(str);
+                    if (!jarFile.exists() || jarFile.isDirectory()) {
+                        returnCode.setOk(false);
+                        returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileInvalid")); //$NON-NLS-1$
+                        break;
+                    }
+                }
+            }
+        }
+        return returnCode;
+    }
+
+    /**
+     * if the DriverClassName is empty or Jar File Path is invalid return false.
+     * 
      * @param dbConn a General JDBC or TCOMP JDBC connection
      * @return
      * @throws MalformedURLException
