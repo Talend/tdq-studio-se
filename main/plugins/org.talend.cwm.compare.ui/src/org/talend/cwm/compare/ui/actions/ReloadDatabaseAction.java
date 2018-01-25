@@ -143,7 +143,7 @@ public class ReloadDatabaseAction extends Action {
         if (!(dependencyClients == null || dependencyClients.isEmpty())) {
             int isOk = DeleteModelElementConfirmDialog.showElementImpactConfirmDialog(null, new ModelElement[] { conn },
                     DefaultMessagesImpl.getString("TOPRepositoryService.dependcyTile"), //$NON-NLS-1$
-                    DefaultMessagesImpl.getString("TOPRepositoryService.dependcyMessage", getConnectionLabel(conn))); //$NON-NLS-1$
+                    DefaultMessagesImpl.getString("TOPRepositoryService.dependcyMessage", conn.getLabel())); //$NON-NLS-1$
             if (isOk != Dialog.OK) {
                 returnCode.setReturnCode("The user canceled the operation!", false); //$NON-NLS-1$
                 return;
@@ -254,19 +254,6 @@ public class ReloadDatabaseAction extends Action {
             conn = (Connection) selectedObject;
         }
         return conn;
-    }
-
-    private String getConnectionLabel(Connection connection) {
-        boolean isTCOMPJdbc = CWMPlugin.getDefault().isTCOMPJdbc(connection.getConnectionTypeName());
-        if (isTCOMPJdbc) {
-            if (selectedObject == null) {
-                return ""; //$NON-NLS-1$
-            }
-            if (selectedObject instanceof RepositoryNode) {
-                return ((RepositoryNode) selectedObject).getLabel();
-            }
-        }
-        return connection.getLabel();
     }
 
 }
