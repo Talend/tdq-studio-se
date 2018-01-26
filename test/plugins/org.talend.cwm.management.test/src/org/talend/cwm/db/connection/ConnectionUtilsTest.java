@@ -70,7 +70,7 @@ public class ConnectionUtilsTest {
         createDatabaseConnection.setDriverClass(driverClass);
         createDatabaseConnection.setDriverJarPath(driverName);
         try {
-            ReturnCode rc = ConnectionUtils.checkGeneralJdbcJarFilePathDriverClassName(createDatabaseConnection);
+            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
             Assert.assertTrue("The driver " + driverName + " of conection can not be find", rc.isOk()); //$NON-NLS-1$
         } catch (MalformedURLException e) {
@@ -94,7 +94,7 @@ public class ConnectionUtilsTest {
         createDatabaseConnection.setDriverJarPath(driverName);
         try {
             // driver class is empty case
-            ReturnCode rc = ConnectionUtils.checkGeneralJdbcJarFilePathDriverClassName(createDatabaseConnection);
+            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
             Assert.assertFalse("The driver of conection is empty so that should not be found", rc.isOk()); //$NON-NLS-1$
             Assert.assertEquals(Messages.getString("ConnectionUtils.DriverClassEmpty"), rc.getMessage()); //$NON-NLS-1$
@@ -102,7 +102,7 @@ public class ConnectionUtilsTest {
             // driver class is Null case
             driverClass = null;
             createDatabaseConnection.setDriverClass(driverClass);
-            rc = ConnectionUtils.checkGeneralJdbcJarFilePathDriverClassName(createDatabaseConnection);
+            rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
             Assert.assertFalse("The driver of conection is Null so that should not be found", rc.isOk()); //$NON-NLS-1$
             Assert.assertEquals(Messages.getString("ConnectionUtils.DriverClassEmpty"), rc.getMessage()); //$NON-NLS-1$
@@ -128,7 +128,7 @@ public class ConnectionUtilsTest {
         createDatabaseConnection.setDriverJarPath(driverName);
         try {
             // driver name is empty case
-            ReturnCode rc = ConnectionUtils.checkGeneralJdbcJarFilePathDriverClassName(createDatabaseConnection);
+            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
             Assert.assertFalse("The class of driver is empty so that should not be found", rc.isOk()); //$NON-NLS-1$
             Assert.assertEquals(Messages.getString("ConnectionUtils.DriverJarFileEmpty"), rc.getMessage()); //$NON-NLS-1$
@@ -136,7 +136,7 @@ public class ConnectionUtilsTest {
             // driver name is Null case
             driverClass = null;
             createDatabaseConnection.setDriverJarPath(driverName);
-            rc = ConnectionUtils.checkGeneralJdbcJarFilePathDriverClassName(createDatabaseConnection);
+            rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
             Assert.assertFalse("The class of driver is Null so that should not be found", rc.isOk()); //$NON-NLS-1$
             Assert.assertEquals(Messages.getString("ConnectionUtils.DriverJarFileEmpty"), rc.getMessage()); //$NON-NLS-1$
@@ -161,7 +161,7 @@ public class ConnectionUtilsTest {
         createDatabaseConnection.setDriverClass(driverClass);
         createDatabaseConnection.setDriverJarPath(driverName);
         try {
-            ReturnCode rc = ConnectionUtils.checkGeneralJdbcJarFilePathDriverClassName(createDatabaseConnection);
+            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
             Assert.assertFalse("The driver is not exist so that should not be found", rc.isOk()); //$NON-NLS-1$
             Assert.assertEquals(Messages.getString("ConnectionUtils.JarFileCanNotBeFound"), rc.getMessage()); //$NON-NLS-1$

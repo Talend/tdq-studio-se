@@ -240,14 +240,13 @@ public final class ConnectionUtils {
 
         if (analysisDataProvider instanceof DatabaseConnection) {
             // MOD qiongli TDQ-11507,for GeneralJdbc,should check connection too after validation jar and jdbc driver .
-            if (isGeneralJdbc(analysisDataProvider)) {
+            if (isTcompJdbc(analysisDataProvider) || isGeneralJdbc(analysisDataProvider)) {
                 try {
-                    ReturnCode rcJdbc = checkGeneralJdbcJarFilePathDriverClassName((DatabaseConnection) analysisDataProvider);
+                    ReturnCode rcJdbc = checkJdbcJarFilePathDriverClassName((DatabaseConnection) analysisDataProvider);
                     if (!rcJdbc.isOk()) {
                         return rcJdbc;
                     }
                 } catch (MalformedURLException e) {
-                    return new ReturnCode(e.getMessage(), false);
                 }
             }
             // MOD qiongli 2014-5-14 in order to check and connect a dbConnection by a correct driver,replace
@@ -322,8 +321,10 @@ public final class ConnectionUtils {
      * @param dbConn a General JDBC database connection
      * @return
      * @throws MalformedURLException
+     * @deprecated replace it with checkJdbcJarFilePathDriverClassName(DatabaseConnection)
      */
-    public static ReturnCode checkGeneralJdbcJarFilePathDriverClassName(DatabaseConnection dbConn) throws MalformedURLException {
+    public static ReturnCode checkGeneralJdbcJarFilePathDriverClassName(DatabaseConnection dbConn)
+            throws MalformedURLException {
         ReturnCode returnCode = new ReturnCode();
         String driverClass = JavaSqlFactory.getDriverClass(dbConn);
         String driverJarPath = JavaSqlFactory.getDriverJarPath(dbConn);
@@ -342,6 +343,68 @@ public final class ConnectionUtils {
                         driverJarNameList.add(str);
                     }
                 }
+                LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
+                if (driverJarRealPaths.isEmpty()) {
+                    returnCode.setOk(false);
+                    returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
+                }
+                for (String str : driverJarRealPaths) {
+                    File jarFile = new File(str);
+                    if (!jarFile.exists() || jarFile.isDirectory()) {
+                        returnCode.setOk(false);
+                        returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileInvalid")); //$NON-NLS-1$
+                        break;
+                    }
+                }
+            }
+        }
+        return returnCode;
+    }
+
+    /**
+     * if the DriverClassName is empty or Jar File Path is invalid return false.
+     * 
+     * @param dbConn a General JDBC or TCOMP JDBC connection
+     * @return
+     * @throws MalformedURLException
+     */
+    public static ReturnCode checkJdbcJarFilePathDriverClassName(DatabaseConnection dbConn)
+            throws MalformedURLException {
+        ReturnCode returnCode = new ReturnCode();
+        String driverClass = JavaSqlFactory.getDriverClass(dbConn);
+        String driverJarPath = JavaSqlFactory.getDriverJarPath(dbConn);
+        if (StringUtils.isBlank(driverClass)) { //$NON-NLS-1$
+            returnCode.setOk(false);
+            returnCode.setMessage(Messages.getString("ConnectionUtils.DriverClassEmpty")); //$NON-NLS-1$
+            return returnCode;
+        } else if (StringUtils.isBlank(driverJarPath)) { //$NON-NLS-1$
+            returnCode.setOk(false);
+            returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileEmpty")); //$NON-NLS-1$
+        }
+        if (returnCode.isOk()) {
+            List<String> driverJarNameList = new ArrayList<String>();
+            String slashStr = "/";
+            String semicolonStr = ";";
+            if (driverJarPath.contains(slashStr)) {
+                if (driverJarPath.contains(semicolonStr)) {
+                    String jars[] = driverJarPath.split(semicolonStr);
+                    for (String jar : jars) {
+                        String jarName = jar.split(slashStr)[1] + ".jar";
+                        driverJarNameList.add(jarName);
+                    }
+                } else {
+                    String jarName = driverJarPath.split(slashStr)[1] + ".jar";
+                    driverJarNameList.add(jarName);
+                }
+            } else {
+                String[] splits = driverJarPath.split(semicolonStr); //$NON-NLS-1$
+                for (String str : splits) {
+                    if (!StringUtils.isBlank(str)) {
+                        driverJarNameList.add(str);
+                    }
+                }
+            }
+            if (!driverJarNameList.isEmpty()) {
                 LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
                 if (driverJarRealPaths.isEmpty()) {
                     returnCode.setOk(false);
@@ -1330,5 +1393,20 @@ public final class ConnectionUtils {
         }
 
         return linkedList;
+    }
+
+    /**
+     * judge if it is a Tcomp Jdbc connection according data type String
+     * 
+     * @param conn
+     * @return
+     */
+    public static boolean isTcompJdbc(Connection conn) {
+        boolean jdbc = false;
+        if (conn instanceof DatabaseConnection) {
+            DatabaseConnection dbConn = (DatabaseConnection) conn;
+            jdbc = "JDBC".equals(dbConn.getDatabaseType());
+        }
+        return jdbc;
     }
 }
