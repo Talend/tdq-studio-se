@@ -240,9 +240,7 @@ public final class ConnectionUtils {
 
         if (analysisDataProvider instanceof DatabaseConnection) {
             // MOD qiongli TDQ-11507,for GeneralJdbc,should check connection too after validation jar and jdbc driver .
-            boolean isTCOMP =
-                    CWMPlugin.getDefault().isTCOMPJdbc(((DatabaseConnection) analysisDataProvider).getDatabaseType());
-            if (isTCOMP || isGeneralJdbc(analysisDataProvider)) {
+            if (isTcompJdbc(analysisDataProvider) || isGeneralJdbc(analysisDataProvider)) {
                 try {
                     ReturnCode rcJdbc = checkJdbcJarFilePathDriverClassName((DatabaseConnection) analysisDataProvider);
                     if (!rcJdbc.isOk()) {
@@ -1395,5 +1393,20 @@ public final class ConnectionUtils {
         }
 
         return linkedList;
+    }
+
+    /**
+     * judge if it is a Tcomp Jdbc connection according data type String
+     * 
+     * @param conn
+     * @return
+     */
+    public static boolean isTcompJdbc(Connection conn) {
+        boolean jdbc = false;
+        if (conn instanceof DatabaseConnection) {
+            DatabaseConnection dbConn = (DatabaseConnection) conn;
+            jdbc = "JDBC".equals(dbConn.getDatabaseType());
+        }
+        return jdbc;
     }
 }
