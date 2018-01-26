@@ -341,7 +341,8 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
         }
         if (type == ERepositoryObjectType.TDQ_ANALYSIS_ELEMENT) {
             return ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
-        } else if (type == ERepositoryObjectType.METADATA_CONNECTIONS) {
+        } else if (type == ERepositoryObjectType.METADATA_CONNECTIONS
+                || CWMPlugin.getDefault().isTCOMPJdbc(type.getLabel())) {
             return ImageLib.getImage(ImageLib.TD_DATAPROVIDER);
         } else if (type == ERepositoryObjectType.METADATA_FILE_DELIMITED) {
             return ImageLib.getImage(ImageLib.FILE_DELIMITED);
