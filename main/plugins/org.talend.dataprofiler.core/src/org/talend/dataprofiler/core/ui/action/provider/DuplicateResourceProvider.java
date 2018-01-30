@@ -93,7 +93,8 @@ public class DuplicateResourceProvider extends AbstractCommonActionProvider {
                 return false;
             }
             ERepositoryObjectType contentType = node.getObjectType();
-            if (!objectTypes.contains(contentType)) {
+            // TCOM JDBC should be true
+            if (!objectTypes.contains(contentType) && !"JDBC".equals(contentType.getLabel())) {
                 return false;
             }
             RepositoryNode parent = node.getParent();

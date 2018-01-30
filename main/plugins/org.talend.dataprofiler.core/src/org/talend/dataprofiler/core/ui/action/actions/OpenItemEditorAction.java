@@ -79,6 +79,7 @@ import org.talend.dataquality.properties.TDQPatternItem;
 import org.talend.dataquality.properties.TDQReportItem;
 import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
+import org.talend.dq.CWMPlugin;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.RepositoryNodeHelper;
@@ -251,7 +252,8 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     throw ExceptionFactory.getInstance().createBusinessException(((TDQItem) item).getFilename());
                 }
             }
-            if (ERepositoryObjectType.METADATA_CONNECTIONS.getKey().equals(key)) {
+            if (ERepositoryObjectType.METADATA_CONNECTIONS.getKey().equals(key)
+                    || CWMPlugin.getDefault().isTCOMPJdbc(key)) {
                 result = new ConnectionItemEditorInput(repNode);
                 Connection connection = ((ConnectionItem) item).getConnection();
                 if (connection == null || connection.getDataPackage().size() == 0) {
