@@ -258,14 +258,14 @@ public final class DQStructureManager {
                         EResourceConstant.USER_DEFINED_INDICATORS_LIB.getName());
             }
 
-            if (!project.getFolder(EResourceConstant.CONTEXT.getPath()).exists()) {
-                ProxyRepositoryFactory.getInstance().createFolder(ERepositoryObjectType.CONTEXT, Path.EMPTY,
-                        EResourceConstant.CONTEXT.getName());
-            }
             if (PluginChecker.isTDQLoaded()) {
                 if (!project.getFolder(EResourceConstant.JRXML_TEMPLATE.getPath()).exists()) {
                     ProxyRepositoryFactory.getInstance().createFolder(ERepositoryObjectType.TDQ_LIBRARIES, Path.EMPTY,
                             EResourceConstant.JRXML_TEMPLATE.getName());
+                }
+                if (!project.getFolder(EResourceConstant.CONTEXT.getPath()).exists()) {
+                    ProxyRepositoryFactory.getInstance().createFolder(ERepositoryObjectType.CONTEXT, Path.EMPTY,
+                            EResourceConstant.CONTEXT.getName());
                 }
             }
             Folder patternRegexFoler = null;
