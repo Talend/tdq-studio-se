@@ -3899,8 +3899,9 @@ public final class RepositoryNodeHelper {
                         if (label.equals(EResourceConstant.DATA_PROFILING.getName())
                                 || label.equals(EResourceConstant.LIBRARIES.getName())) {
                             return label.substring(4, label.length());
-                        } else if (label.equals(EResourceConstant.METADATA.getName())
-                                || label.equals(EResourceConstant.CONTEXT.getName())) {
+                        } else if (label.equals(EResourceConstant.METADATA.getName())) {
+                            return label.substring(0, 1).toUpperCase() + label.substring(1);
+                        } else if (label.equals(EResourceConstant.CONTEXT.getName())) {// same display name with DI side
                             return label.substring(0, 1).toUpperCase() + label.substring(1) + "s";//$NON-NLS-1$
                         }
                     }
