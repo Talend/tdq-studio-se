@@ -44,6 +44,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IReferencedProjectService;
+import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.PluginConstant;
@@ -56,7 +57,6 @@ import org.talend.dataquality.analysis.AnalysisContext;
 import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.dataquality.rules.MatchRuleDefinition;
-import org.talend.dq.CWMPlugin;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.nodes.AnalysisRepNode;
@@ -341,7 +341,7 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
         }
         if (type == ERepositoryObjectType.TDQ_ANALYSIS_ELEMENT) {
             return ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
-        } else if (type == ERepositoryObjectType.METADATA_CONNECTIONS) {
+        } else if (type == ERepositoryObjectType.METADATA_CONNECTIONS || ConnectionUtils.isTcompJdbc(type.getLabel())) {
             return ImageLib.getImage(ImageLib.TD_DATAPROVIDER);
         } else if (type == ERepositoryObjectType.METADATA_FILE_DELIMITED) {
             return ImageLib.getImage(ImageLib.FILE_DELIMITED);
@@ -381,7 +381,7 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
     private boolean isNeedAddDriverConnection(IRepositoryNode repNode) {
         ERepositoryObjectType objectType = repNode.getObjectType();
         if (objectType == ERepositoryObjectType.METADATA_CONNECTIONS
-                || CWMPlugin.getDefault().isTCOMPJdbc(objectType.getLabel())) {
+                || ConnectionUtils.isTcompJdbc(objectType.getLabel())) {
             ConnectionItem connectionItem = (ConnectionItem) repNode.getObject().getProperty().getItem();
             if (connectionItem.getConnection() instanceof DatabaseConnection) {
                 DatabaseConnection dbConn = (DatabaseConnection) (connectionItem.getConnection());

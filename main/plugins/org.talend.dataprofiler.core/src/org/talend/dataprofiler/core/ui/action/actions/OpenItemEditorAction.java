@@ -44,6 +44,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.i18n.Messages;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.relational.TdColumn;
@@ -251,7 +252,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     throw ExceptionFactory.getInstance().createBusinessException(((TDQItem) item).getFilename());
                 }
             }
-            if (ERepositoryObjectType.METADATA_CONNECTIONS.getKey().equals(key)) {
+            if (ERepositoryObjectType.METADATA_CONNECTIONS.getKey().equals(key) || ConnectionUtils.isTcompJdbc(key)) {
                 result = new ConnectionItemEditorInput(repNode);
                 Connection connection = ((ConnectionItem) item).getConnection();
                 if (connection == null || connection.getDataPackage().size() == 0) {

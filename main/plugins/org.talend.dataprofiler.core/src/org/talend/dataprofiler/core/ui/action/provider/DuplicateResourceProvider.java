@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.dataprofiler.core.ui.action.actions.DuplicateAction;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.AnalysisRepNode;
@@ -93,7 +94,7 @@ public class DuplicateResourceProvider extends AbstractCommonActionProvider {
                 return false;
             }
             ERepositoryObjectType contentType = node.getObjectType();
-            if (!objectTypes.contains(contentType)) {
+            if (!objectTypes.contains(contentType) && !ConnectionUtils.isTcompJdbc(contentType.getLabel())) {
                 return false;
             }
             RepositoryNode parent = node.getParent();

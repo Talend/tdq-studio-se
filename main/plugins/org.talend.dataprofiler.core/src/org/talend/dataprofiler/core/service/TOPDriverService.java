@@ -22,7 +22,7 @@ import org.talend.core.model.metadata.builder.database.IDriverService;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlStore;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.runtime.services.IGenericDBService;
-import org.talend.dq.CWMPlugin;
+import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.dq.helper.SqlExplorerUtils;
 
 /**
@@ -50,7 +50,7 @@ public class TOPDriverService implements IDriverService {
     public List<String> getTDQSupportDBTemplate() {
         List<String> dqList = new ArrayList<String>();
         dqList.addAll(Arrays.asList(SupportDBUrlStore.getInstance().getDBTypes()));
-        IGenericDBService dbService = CWMPlugin.getDefault().getGenericDBService();
+        IGenericDBService dbService = ConnectionUtils.getGenericDBService();
         if (dbService != null) {
             List<ERepositoryObjectType> extraTypes = dbService.getExtraTypes();
             for (ERepositoryObjectType type : extraTypes) {

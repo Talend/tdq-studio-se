@@ -72,6 +72,7 @@ import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositor
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.TdTableRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.TdViewRepositoryObject;
+import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
@@ -100,7 +101,6 @@ import org.talend.dataquality.rules.JoinElement;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParserRule;
 import org.talend.dataquality.rules.WhereRule;
-import org.talend.dq.CWMPlugin;
 import org.talend.dq.indicators.preview.table.WhereRuleChartDataEntity;
 import org.talend.dq.nodes.AnalysisFolderRepNode;
 import org.talend.dq.nodes.AnalysisRepNode;
@@ -3916,7 +3916,7 @@ public final class RepositoryNodeHelper {
         ERepositoryObjectType objectType = repNode.getObjectType();
 
         if (objectType == ERepositoryObjectType.METADATA_CONNECTIONS
-                || CWMPlugin.getDefault().isTCOMPJdbc(objectType.getLabel())) {
+                || ConnectionUtils.isTcompJdbc(objectType.getLabel())) {
             ConnectionItem connectionItem = null;
             try {
                 connectionItem = (ConnectionItem) repNode.getObject().getProperty().getItem();

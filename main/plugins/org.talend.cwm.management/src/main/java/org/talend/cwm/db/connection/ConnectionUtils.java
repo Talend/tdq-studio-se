@@ -59,10 +59,12 @@ import org.talend.core.model.metadata.connection.hive.HiveModeInfo;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.CloneConnectionUtils;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.cwm.constants.DevelopmentStatus;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
@@ -406,7 +408,8 @@ public final class ConnectionUtils {
             }
             if (!driverJarNameList.isEmpty()) {
                 LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
-                if (driverJarRealPaths.isEmpty()) {
+                // only check the real path for Platform running
+                if (!Platform.isRunning() && driverJarRealPaths.isEmpty()) {
                     returnCode.setOk(false);
                     returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
                 }
@@ -1362,8 +1365,12 @@ public final class ConnectionUtils {
      */
     public static LinkedList<String> getDriverJarRealPaths(List<String> driverJarNameList) throws MalformedURLException {
         LinkedList<String> linkedList = new LinkedList<String>();
-        boolean jarNotFound = false;
+        // no check the real jar path for None-Platform-Running
+        if (!Platform.isRunning()) {
+            return linkedList;
+        }
 
+        boolean jarNotFound = false;
         for (String jarName : driverJarNameList) {
             String tempLibPath = ExtractMetaDataUtils.getInstance().getJavaLibPath();
             File tempFolder = new File(tempLibPath);
@@ -1387,6 +1394,7 @@ public final class ConnectionUtils {
                 jarNotFound = true;
             }
         }
+
         // if has one jar file not be found,return a empty list
         if (jarNotFound) {
             linkedList.clear();
@@ -1402,11 +1410,45 @@ public final class ConnectionUtils {
      * @return
      */
     public static boolean isTcompJdbc(Connection conn) {
-        boolean jdbc = false;
         if (conn instanceof DatabaseConnection) {
             DatabaseConnection dbConn = (DatabaseConnection) conn;
-            jdbc = "JDBC".equals(dbConn.getDatabaseType());
+            return isTcompJdbc(dbConn.getDatabaseType());
         }
-        return jdbc;
+        return false;
+    }
+
+    /**
+     * 
+     * @param dbType
+     * @return
+     */
+    public static boolean isTcompJdbc(String dbType) {
+        if (!Platform.isRunning()) {
+            return "JDBC".equals(dbType);
+        }
+        List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
+        IGenericDBService dbService = getGenericDBService();
+        if (dbService != null) {
+            extraTypes.addAll(dbService.getExtraTypes());
+        }
+        for (ERepositoryObjectType type : extraTypes) {
+            if (type.getType().equals(dbType)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 
+     * @return
+     */
+    public static IGenericDBService getGenericDBService() {
+        IGenericDBService dbService = null;
+        if (GlobalServiceRegister.getDefault().isServiceRegistered(IGenericDBService.class)) {
+            dbService = (IGenericDBService) GlobalServiceRegister.getDefault().getService(IGenericDBService.class);
+        }
+        return dbService;
     }
 }
