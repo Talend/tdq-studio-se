@@ -409,7 +409,7 @@ public final class ConnectionUtils {
             if (!driverJarNameList.isEmpty()) {
                 LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
                 // only check the real path for Platform running
-                if (!Platform.isRunning() && driverJarRealPaths.isEmpty()) {
+                if (Platform.isRunning() && driverJarRealPaths.isEmpty()) {
                     returnCode.setOk(false);
                     returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
                 }
@@ -1404,7 +1404,7 @@ public final class ConnectionUtils {
     }
 
     /**
-     * judge if it is a Tcomp Jdbc connection according data type String
+     * judge if the Connection is a TCOMP JDBC connection
      * 
      * @param conn
      * @return
@@ -1418,6 +1418,7 @@ public final class ConnectionUtils {
     }
 
     /**
+     * judge if it is a TCOMP JDBC connection according to data type String
      * 
      * @param dbType
      * @return
