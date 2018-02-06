@@ -163,7 +163,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
             "org.eclipse.jdt.ui.actions.GoToPackage", "org.eclipse.jdt.ui.actions.GoToType", //$NON-NLS-1$ //$NON-NLS-2$
             "org.eclipse.jdt.ui.actions.OpenExternalJavaDoc", "org.eclipse.jdt.ui.actions.OpenSuperImplementation", //$NON-NLS-1$ //$NON-NLS-2$
             "org.eclipse.jdt.ui.actions.CopyQualifiedName", "org.eclipse.jdt.ui.actions.Open", //$NON-NLS-1$ //$NON-NLS-2$
-            "org.eclipse.jdt.ui.actions.OpenTypeHierarchy", "org.eclipse.jdt.ui.actions.OpenCallHierarchy" }; //$NON-NLS-1$ //$NON-NLS-2$
+            "org.eclipse.jdt.ui.actions.OpenTypeHierarchy", "org.eclipse.jdt.ui.actions.OpenCallHierarchy", "org.talend.repository.bootTalendActionSet" }; //$NON-NLS-1$ //$NON-NLS-2$
 
     private void beforefillMenuBar() {
         this.removeAction();
@@ -182,7 +182,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
                 reg.removeExtension(ext, new Object[] { actionSet });
             }
         }
-
     }
 
     /*
