@@ -303,9 +303,10 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
                 }
                 // MOD mzhao for metadata folder
                 if (folder instanceof IFolder) {
-                    if (((IFolder) folder).getName().equals(EResourceConstant.METADATA.getName())) {
+                    String folderName = ((IFolder) folder).getName();
+                    if (EResourceConstant.METADATA.getName().equals(folderName)) {
                         node = createNewRepNode(ERepositoryObjectType.METADATA, inWhichProject);
-                    } else if (((IFolder) folder).getName().equals(EResourceConstant.CONTEXT.getName())) {
+                    } else if (PluginChecker.isTDQLoaded() && EResourceConstant.CONTEXT.getName().equals(folderName)) {
                         node = createNewRepNode(ERepositoryObjectType.CONTEXT, inWhichProject);
                     }
                 }
