@@ -18,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.emf.FactoriesUtil;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.ui.imex.model.ItemRecord;
@@ -72,6 +73,9 @@ public class FileTreeLabelProvider extends LabelProvider {
                     case HADOOP_CLUSTER:
                         image = ImageLib.getImage(ImageLib.HADOOP_CLUSTER);
                         break;
+                    case CONTEXT:
+                        image = ImageLib.getImage(ImageLib.CONTEXT);
+                        break;
                     default:
                         break;
                     }
@@ -92,8 +96,10 @@ public class FileTreeLabelProvider extends LabelProvider {
                 } else if (fileName.endsWith(FactoriesUtil.ITEM_EXTENSION)) {
                     if (record.getElement() instanceof DelimitedFileConnection) {
                         image = ImageLib.getImage(ImageLib.FILE_DELIMITED);
-                    } else {
+                    } else if (record.getElement() instanceof DatabaseConnection) {
                         image = ImageLib.getImage(ImageLib.TD_DATAPROVIDER);
+                    } else {
+                        image = ImageLib.getImage(ImageLib.CONTEXT);
                     }
                 } else if (fileName.endsWith(FactoriesUtil.DEFINITION)) {
                     image = ImageLib.getImage(ImageLib.IND_DEFINITION);

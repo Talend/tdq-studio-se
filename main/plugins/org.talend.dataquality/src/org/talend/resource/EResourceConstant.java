@@ -417,6 +417,11 @@ public enum EResourceConstant {
         return new EResourceConstant[] { DATA_PROFILING, LIBRARIES, METADATA };
     }
 
+    public static EResourceConstant[] getTdqConstants() {
+        return new EResourceConstant[] { DATA_PROFILING, LIBRARIES, METADATA, CONTEXT };
+    }
+
+
     /**
      * DOC bZhou Comment method "getTopConstantIndexFromPath".
      * 

@@ -270,7 +270,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 List<IRepositoryViewObject> allObjects = ProxyRepositoryFactory.getInstance().getAll(itemType, true);
                 for (IRepositoryViewObject object : allObjects) {
                     if (isConflict(property, object.getProperty())) {
-                        if (!isIndicator) {
+                        if (!isIndicator && itemType != ERepositoryObjectType.CONTEXT) {
                             List<IRepositoryViewObject> supplierDependency = DependenciesHandler.getInstance()
                                     .getSupplierDependency(object);
                             for (IRepositoryViewObject supplierViewObject : supplierDependency) {
@@ -1293,10 +1293,14 @@ public class FileSystemImportWriter implements IImportWriter {
      */
     private void removeInvalidDependency(Property property) {
         ModelElement modelElement = PropertyHelper.getModelElement(property);
-        if (modelElement != null) {
-            removeInvalidDependency(modelElement);
-        } else {
-            log.info(DefaultMessagesImpl.getString("FileSystemImproWriter.modelElementIsNull")); //$NON-NLS-1$
+        // no client dependency between Connection and Context.
+        ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(property.getItem());
+        if (itemType != ERepositoryObjectType.CONTEXT) {
+            if (modelElement != null) {
+                removeInvalidDependency(modelElement);
+            } else {
+                log.info(DefaultMessagesImpl.getString("FileSystemImproWriter.modelElementIsNull")); //$NON-NLS-1$
+            }
         }
     }
 

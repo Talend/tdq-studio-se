@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -35,9 +36,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.emf.FactoriesUtil.EElementEName;
+import org.talend.commons.utils.WorkspaceUtils;
+import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.cwm.dependencies.DependenciesHandler;
 import org.talend.cwm.helper.ModelElementHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.management.i18n.InternationalizationUtil;
@@ -257,6 +261,10 @@ public class ItemRecord {
                 }
             }
         } else if (mElement != null) {
+            if (mElement instanceof Connection) {
+                includeContextDependency((Connection) mElement);
+                return;
+            }
             List<File> dependencyFile = getClintDependencyForExport(mElement);
             for (File df : dependencyFile) {
                 ModelElement modelElement = getElement(df);
@@ -270,7 +278,8 @@ public class ItemRecord {
                         if (modelElement instanceof UDIndicatorDefinition) {
                             includeJUDIDependencies((IndicatorDefinition) modelElement);
                         } else {
-                            for (IndicatorDefinition definition : ((IndicatorDefinition) modelElement).getAggregatedDefinitions()) {
+                            for (IndicatorDefinition definition : ((IndicatorDefinition) modelElement)
+                                    .getAggregatedDefinitions()) {
                                 includeAggregatedDependencies(definition);
                             }
                         }
@@ -281,10 +290,12 @@ public class ItemRecord {
             if (mElement instanceof TdReport) {
                 TdReport rep = (TdReport) mElement;
                 for (AnalysisMap anaMap : rep.getAnalysisMap()) {
-                    ReportType reportType = ReportHelper.ReportType.getReportType(anaMap.getAnalysis(), anaMap.getReportType());
+                    ReportType reportType =
+                            ReportHelper.ReportType.getReportType(anaMap.getAnalysis(), anaMap.getReportType());
                     boolean isUserMade = ReportHelper.ReportType.USER_MADE.equals(reportType);
                     if (isUserMade) {
-                        traverseFolderAndAddJrxmlDependencies(getJrxmlFolderFromReport(rep, ResourceManager.getJRXMLFolder()));
+                        traverseFolderAndAddJrxmlDependencies(getJrxmlFolderFromReport(rep,
+                                ResourceManager.getJRXMLFolder()));
                     }
                 }
             } else if (mElement instanceof IndicatorDefinition) { // MOD sizhaoliu 2013-04-13 TDQ-7082
@@ -304,6 +315,23 @@ public class ItemRecord {
             } else if (mElement instanceof Analysis
                     && AnalysisType.MATCH_ANALYSIS == AnalysisHelper.getAnalysisType((Analysis) mElement)) {
                 includeCustomMatcherJarDependencies((Analysis) mElement);
+            }
+        }
+    }
+
+    /**
+     * include dependency context
+     * 
+     * @param connection
+     */
+    private void includeContextDependency(Connection connection) {
+        List<IRepositoryViewObject> repositoryObjects =
+                DependenciesHandler.getInstance().getDependContextByConnection(connection);
+        for (IRepositoryViewObject repViewObj : repositoryObjects) {
+            Property contProperty = repViewObj.getProperty();
+            IFile ifile = PropertyHelper.getItemFile(contProperty);
+            if (ifile != null) {
+                this.dependencySet.add(WorkspaceUtils.ifileToFile(ifile));
             }
         }
     }
@@ -404,7 +432,11 @@ public class ItemRecord {
         for (File depFile : getClintDependency(mElement)) {
             ModelElement me = getElement(depFile);
             if (me != null) {
-                returnList.addAll(iterateClientDependencies(me));
+                if (me instanceof Connection) {
+                    includeContextDependency((Connection) me);
+                } else {
+                    returnList.addAll(iterateClientDependencies(me));
+                }
             }
             returnList.add(depFile);
         }
@@ -707,7 +739,7 @@ public class ItemRecord {
             IPath filePath = new Path(f.getAbsolutePath());
             String pathStr = filePath.toPortableString();
 
-            for (EResourceConstant constant : EResourceConstant.getTopConstants()) {
+            for (EResourceConstant constant : EResourceConstant.getTdqConstants()) {
                 if (filePath.toString().indexOf(constant.getPath()) > 0) {
                     String lastSeg = filePath.lastSegment();
                     if (constant == EResourceConstant.METADATA) {
