@@ -51,8 +51,8 @@ public class DuplicateResourceProvider extends AbstractCommonActionProvider {
         Object[] objs = selection.toArray();
         if (shouldShowMenu(objs)) {
             List<IRepositoryNode> repositoryNodeList = RepositoryNodeHelper.getRepositoryNodeList(objs);
-            DuplicateAction duplicate = new DuplicateAction(repositoryNodeList.toArray(new IRepositoryNode[repositoryNodeList
-                    .size()]));
+            DuplicateAction duplicate =
+                    new DuplicateAction(repositoryNodeList.toArray(new IRepositoryNode[repositoryNodeList.size()]));
             menu.add(duplicate);
         }
     }
@@ -94,7 +94,8 @@ public class DuplicateResourceProvider extends AbstractCommonActionProvider {
                 return false;
             }
             ERepositoryObjectType contentType = node.getObjectType();
-            if (!objectTypes.contains(contentType) && !ConnectionUtils.isTcompJdbc(contentType.getLabel())) {
+            if (contentType == null
+                    || (!objectTypes.contains(contentType) && !ConnectionUtils.isTcompJdbc(contentType.getLabel()))) {
                 return false;
             }
             RepositoryNode parent = node.getParent();
