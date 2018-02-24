@@ -475,8 +475,10 @@ public class ExportWizardPage extends WizardPage {
             }
         } else {
             IFile iFile = RepositoryNodeHelper.getIFile(node);
-            File file = WorkspaceUtils.ifileToFile(iFile);
-            selectedItemRecords.add(ItemRecord.findRecord(file));
+            if (iFile != null) {
+                File file = WorkspaceUtils.ifileToFile(iFile);
+                selectedItemRecords.add(ItemRecord.findRecord(file));
+            }
         }
     }
 

@@ -3593,7 +3593,7 @@ public final class RepositoryNodeHelper {
                         platformString = uri.toFileString();
                     }
                     file = root.getFile(new Path(platformString));
-                } else {
+                } else if (node.getObject() != null) {
                     // TDQFileItem
                     Property property = node.getObject().getProperty();
                     // when the node is force deleted
