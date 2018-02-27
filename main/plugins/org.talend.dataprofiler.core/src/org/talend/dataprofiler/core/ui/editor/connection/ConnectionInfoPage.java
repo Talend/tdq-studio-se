@@ -230,7 +230,7 @@ public class ConnectionInfoPage extends AbstractMetadataFormPage {
         if (node != null) {
             IWizard wizard = new DatabaseWizard(PlatformUI.getWorkbench(), false, node, null);
             WizardDialog dialog = new WizardDialog(null, wizard);
-            dialog.setPageSize(550, 550);
+            dialog.setPageSize(780, 550);
             wizard.setContainer(dialog);
             dialog.open();
         }
