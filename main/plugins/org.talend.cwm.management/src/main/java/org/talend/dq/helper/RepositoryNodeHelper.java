@@ -3623,7 +3623,8 @@ public final class RepositoryNodeHelper {
      * @return
      */
     private static String getTDQFileItemExtension(Item item) {
-        String result = ""; //$NON-NLS-1$
+        // set default file extension '.item'. of course it adpts to context node.
+        String result = FactoriesUtil.ITEM_EXTENSION; //$NON-NLS-1$
         if (item instanceof TDQSourceFileItem) {
             result = FactoriesUtil.SQL;
         } else if (item instanceof TDQJrxmlItem) {
