@@ -369,9 +369,13 @@ public final class RepositoryNodeHelper {
     private static final List<?> PATTERN_REGEX_TEXT_UUIDS = Arrays.asList(PATTERN_TEXT_UUIDS);
 
     private static final String[] PATTERN_REGEX_FOLDER_NAMES = {
-            "address", "code", "color", "customer", "date", "internet", "number", "phone", "text" }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+ Messages.getString("RepositoryNodeHelper.pattern.address"),
+            Messages.getString("RepositoryNodeHelper.pattern.code"), Messages.getString("RepositoryNodeHelper.pattern.customer"),
+            Messages.getString("RepositoryNodeHelper.pattern.date"), Messages.getString("RepositoryNodeHelper.pattern.internet"),
+            Messages.getString("RepositoryNodeHelper.pattern.number"), Messages.getString("RepositoryNodeHelper.pattern.phone"),
+            Messages.getString("RepositoryNodeHelper.pattern.text") }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
 
-    private static final String[] PATTERN_SQL_FOLDER_NAMES = { "internet" }; //$NON-NLS-1$
+    private static final String[] PATTERN_SQL_FOLDER_NAMES = { Messages.getString("RepositoryNodeHelper.sql.internet"), }; //$NON-NLS-1$
 
     private static final List<String> PATTERN_REGEX_FOLDER_NAMES_LIST = Arrays.asList(PATTERN_REGEX_FOLDER_NAMES);
 
@@ -3897,14 +3901,7 @@ public final class RepositoryNodeHelper {
                 if (type != null && type == ENodeType.SYSTEM_FOLDER) {
                     String label = node.getObject().getLabel();
                     if (label != null) {
-                        if (label.equals(EResourceConstant.DATA_PROFILING.getName())
-                                || label.equals(EResourceConstant.LIBRARIES.getName())) {
-                            return label.substring(4, label.length());
-                        } else if (label.equals(EResourceConstant.METADATA.getName())) {
-                            return label.substring(0, 1).toUpperCase() + label.substring(1);
-                        } else if (label.equals(EResourceConstant.CONTEXT.getName())) {// same display name with DI side
-                            return label.substring(0, 1).toUpperCase() + label.substring(1) + "s";//$NON-NLS-1$
-                        }
+                        return Messages.getString("RepositoryNodeHelper." + label.replaceAll(" ", "_"));
                     }
                 }
             }
