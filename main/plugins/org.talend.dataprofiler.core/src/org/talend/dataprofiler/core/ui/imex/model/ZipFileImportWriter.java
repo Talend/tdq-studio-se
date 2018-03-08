@@ -15,6 +15,7 @@ package org.talend.dataprofiler.core.ui.imex.model;
 import java.io.File;
 import java.io.IOException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
@@ -25,6 +26,8 @@ import org.talend.utils.io.FilesUtils;
  * DOC bZhou class global comment. Detailled comment
  */
 public class ZipFileImportWriter extends FileSystemImportWriter {
+
+    private static Logger log = Logger.getLogger(ZipFileImportWriter.class);
 
     private IPath sourcePath;
 
@@ -39,14 +42,14 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
         sourcePath = path.removeFileExtension();
 
         try {
-            FilesUtils.createFolder(sourcePath.toFile());
+            FilesUtils.createFolder(getSourceFile());
 
-            FilesUtils.unzip(path.toOSString(), sourcePath.toOSString());
+            FilesUtils.unzip(path.toOSString(), getSourceFile().toString());
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e, e);
         }
 
-        File libFolder = DqFileUtils.getFile(sourcePath.toFile(), EResourceConstant.LIBRARIES.getName(), true);
+        File libFolder = DqFileUtils.getFile(getSourceFile(), EResourceConstant.LIBRARIES.getName(), true);
 
         if (libFolder != null && libFolder.exists()) {
             IPath projectPath = new Path(libFolder.getParentFile().getAbsolutePath());
@@ -76,8 +79,13 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
     @Override
     public void postFinish() throws IOException {
         super.postFinish();
-        if (sourcePath != null && sourcePath.toFile().exists()) {
-            FilesUtils.removeFolder(sourcePath.toFile(), true);
+        if (sourcePath != null && getSourceFile().exists()) {
+            FilesUtils.removeFolder(getSourceFile(), true);
         }
+    }
+
+    private File getSourceFile() {
+        // TDQ-14949: fix cannot import the items when the source path like "XX .zip".
+        return new File(sourcePath.toFile().getPath().trim());
     }
 }
