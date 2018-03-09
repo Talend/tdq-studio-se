@@ -120,8 +120,9 @@ public final class ConnectionUtils {
             if (service == null) {
                 timeout = true;
             } else {
-                timeout = service.getBoolean(CWMPlugin.getDefault().getBundle().getSymbolicName(),
-                        PluginConstant.CONNECTION_TIMEOUT, false, null);
+                timeout =
+                        service.getBoolean(CWMPlugin.getDefault().getBundle().getSymbolicName(),
+                                PluginConstant.CONNECTION_TIMEOUT, false, null);
             }
         }
         return timeout;
@@ -182,24 +183,20 @@ public final class ConnectionUtils {
                     }
                     HiveConnectionManager.getInstance().checkConnection(metadataConnection);
                     returnCode.setOk(true);
-                    return returnCode;
                 } catch (ClassNotFoundException e) {
                     returnCode.setOk(false);
                     returnCode.setMessage(e.toString());
-                    return returnCode;
                 } catch (InstantiationException e) {
                     returnCode.setOk(false);
                     returnCode.setMessage(e.toString());
-                    return returnCode;
                 } catch (IllegalAccessException e) {
                     returnCode.setOk(false);
                     returnCode.setMessage(e.toString());
-                    return returnCode;
                 } catch (SQLException e) {
                     returnCode.setOk(false);
                     returnCode.setMessage(e.toString());
-                    return returnCode;
                 }
+                return returnCode;
             }
         }
 
@@ -216,24 +213,22 @@ public final class ConnectionUtils {
             // TDQ-4559 ~
             String filePath = fileConn.getFilePath();
             try {
-                BufferedReader filePathAvalible = FilesUtils.isFilePathAvailable(filePath, fileConn);
-                if (filePathAvalible != null) {
-                    returnCode.setOk(true);
-                    return returnCode;
+                BufferedReader filePathAvailable = FilesUtils.isFilePathAvailable(filePath, fileConn);
+                if (filePathAvailable == null) {
+                    returnCode.setOk(false);
+                    returnCode.setMessage(Messages.getString("ConnectionUtils.checkConnFailTitle") + " " + filePath); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             } catch (UnsupportedEncodingException e) {
                 returnCode.setOk(false);
-                returnCode.setMessage(filePath);
-                return returnCode;
+                returnCode.setMessage(e.toString());
             } catch (FileNotFoundException e) {
                 returnCode.setOk(false);
-                returnCode.setMessage(filePath);
-                return returnCode;
+                returnCode.setMessage(e.toString());
             } catch (IOException e) {
                 returnCode.setOk(false);
-                returnCode.setMessage(filePath);
-                return returnCode;
+                returnCode.setMessage(e.toString());
             }
+            return returnCode;
         }
         // ~
         Properties props = new Properties();
@@ -243,22 +238,16 @@ public final class ConnectionUtils {
         if (analysisDataProvider instanceof DatabaseConnection) {
             // MOD qiongli TDQ-11507,for GeneralJdbc,should check connection too after validation jar and jdbc driver .
             if (isTcompJdbc(analysisDataProvider) || isGeneralJdbc(analysisDataProvider)) {
-                try {
-                    ReturnCode rcJdbc = checkJdbcJarFilePathDriverClassName((DatabaseConnection) analysisDataProvider);
-                    if (!rcJdbc.isOk()) {
-                        return rcJdbc;
-                    }
-                } catch (MalformedURLException e) {
+                ReturnCode rcJdbc = checkJdbcJarFilePathDriverClassName((DatabaseConnection) analysisDataProvider);
+                if (!rcJdbc.isOk()) {
+                    return rcJdbc;
                 }
             }
             // MOD qiongli 2014-5-14 in order to check and connect a dbConnection by a correct driver,replace
             // 'ConnectionUtils.checkConnection(...)' with 'managerConn.check(metadataConnection)'.
             ManagerConnection managerConn = new ManagerConnection();
-            boolean check = managerConn.check(metadataConnection);
-            returnCode.setOk(check);
-            if (!check) {
-                returnCode.setMessage(managerConn.getMessageException());
-            }
+            returnCode.setOk(managerConn.check(metadataConnection));
+            returnCode.setMessage(managerConn.getMessageException());
         }
         return returnCode;
     }
@@ -274,8 +263,8 @@ public final class ConnectionUtils {
             return false;
         }
         // MOD 20130313 TDQ-6524 avoid popup context select dialog when running analysis,yyin
-        IMetadataConnection metadataConnection = ConvertionHelper.convert(analysisDataProvider, false,
-                analysisDataProvider.getContextName());
+        IMetadataConnection metadataConnection =
+                ConvertionHelper.convert(analysisDataProvider, false, analysisDataProvider.getContextName());
         return isHiveEmbedded(metadataConnection);
     }
 
@@ -370,36 +359,35 @@ public final class ConnectionUtils {
      * @return
      * @throws MalformedURLException
      */
-    public static ReturnCode checkJdbcJarFilePathDriverClassName(DatabaseConnection dbConn)
-            throws MalformedURLException {
+    public static ReturnCode checkJdbcJarFilePathDriverClassName(DatabaseConnection dbConn) {
         ReturnCode returnCode = new ReturnCode();
         String driverClass = JavaSqlFactory.getDriverClass(dbConn);
         String driverJarPath = JavaSqlFactory.getDriverJarPath(dbConn);
-        if (StringUtils.isBlank(driverClass)) { //$NON-NLS-1$
+        if (StringUtils.isBlank(driverClass)) {
             returnCode.setOk(false);
             returnCode.setMessage(Messages.getString("ConnectionUtils.DriverClassEmpty")); //$NON-NLS-1$
             return returnCode;
-        } else if (StringUtils.isBlank(driverJarPath)) { //$NON-NLS-1$
+        } else if (StringUtils.isBlank(driverJarPath)) {
             returnCode.setOk(false);
             returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileEmpty")); //$NON-NLS-1$
         }
         if (returnCode.isOk()) {
             List<String> driverJarNameList = new ArrayList<String>();
-            String slashStr = "/";
-            String semicolonStr = ";";
+            String slashStr = "/"; //$NON-NLS-1$
+            String semicolonStr = ";"; //$NON-NLS-1$
             if (driverJarPath.contains(slashStr)) {
                 if (driverJarPath.contains(semicolonStr)) {
                     String jars[] = driverJarPath.split(semicolonStr);
                     for (String jar : jars) {
-                        String jarName = jar.split(slashStr)[1] + ".jar";
+                        String jarName = jar.split(slashStr)[1] + ".jar"; //$NON-NLS-1$
                         driverJarNameList.add(jarName);
                     }
                 } else {
-                    String jarName = driverJarPath.split(slashStr)[1] + ".jar";
+                    String jarName = driverJarPath.split(slashStr)[1] + ".jar"; //$NON-NLS-1$
                     driverJarNameList.add(jarName);
                 }
             } else {
-                String[] splits = driverJarPath.split(semicolonStr); //$NON-NLS-1$
+                String[] splits = driverJarPath.split(semicolonStr);
                 for (String str : splits) {
                     if (!StringUtils.isBlank(str)) {
                         driverJarNameList.add(str);
@@ -407,19 +395,25 @@ public final class ConnectionUtils {
                 }
             }
             if (!driverJarNameList.isEmpty()) {
-                LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
-                // only check the real path for Platform running
-                if (Platform.isRunning() && driverJarRealPaths.isEmpty()) {
-                    returnCode.setOk(false);
-                    returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
-                }
-                for (String str : driverJarRealPaths) {
-                    File jarFile = new File(str);
-                    if (!jarFile.exists() || jarFile.isDirectory()) {
+                try {
+                    LinkedList<String> driverJarRealPaths;
+                    driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
+                    // only check the real path for Platform running
+                    if (Platform.isRunning() && driverJarRealPaths.isEmpty()) {
                         returnCode.setOk(false);
-                        returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileInvalid")); //$NON-NLS-1$
-                        break;
+                        returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
                     }
+                    for (String str : driverJarRealPaths) {
+                        File jarFile = new File(str);
+                        if (!jarFile.exists() || jarFile.isDirectory()) {
+                            returnCode.setOk(false);
+                            returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileInvalid")); //$NON-NLS-1$
+                            break;
+                        }
+                    }
+                } catch (MalformedURLException e) {
+                    returnCode.setOk(false);
+                    returnCode.setMessage(e.getMessage());
                 }
             }
         }
@@ -472,7 +466,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().toLowerCase().startsWith(DatabaseConstant.ODBC_DRIVER_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.ODBC_PROGRESS_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.ODBC_PROGRESS_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -487,8 +484,9 @@ public final class ConnectionUtils {
     public static boolean isTeradata(Connection connection) {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             return EDatabaseTypeName.TERADATA.getXmlName().equalsIgnoreCase(databaseType);
         }
         return false;
@@ -522,8 +520,9 @@ public final class ConnectionUtils {
     public static boolean isIngres(Connection connection) throws SQLException {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             return EDatabaseTypeName.INGRES.getXmlName().equalsIgnoreCase(databaseType);
         }
         return false;
@@ -538,8 +537,9 @@ public final class ConnectionUtils {
     public static boolean isInformix(Connection connection) throws SQLException {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             return EDatabaseTypeName.INFORMIX.getXmlName().equalsIgnoreCase(databaseType);
         }
         return false;
@@ -554,8 +554,9 @@ public final class ConnectionUtils {
     public static boolean isDB2(Connection connection) throws SQLException {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             // databaseType: IBM DB2, but DBKey is DB2
             return databaseType.contains(EDatabaseTypeName.IBMDB2.getXmlName());
         }
@@ -586,8 +587,9 @@ public final class ConnectionUtils {
     public static boolean isMssql(Connection connection) {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             return EDatabaseTypeName.MSSQL.getXmlName().equalsIgnoreCase(databaseType);
         }
         return false;
@@ -606,7 +608,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().toLowerCase().startsWith(DatabaseConstant.MYSQL_PRODUCT_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.MYSQL_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.MYSQL_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -621,8 +626,9 @@ public final class ConnectionUtils {
     public static boolean isAs400(Connection connection) {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             return EDatabaseTypeName.AS400.getDisplayName().equalsIgnoreCase(databaseType);
         }
         return false;
@@ -705,8 +711,9 @@ public final class ConnectionUtils {
     public static boolean isPostgresql(Connection connection) {
         DatabaseConnection dbConn = SwitchHelpers.DATABASECONNECTION_SWITCH.doSwitch(connection);
         if (dbConn != null) {
-            String databaseType = dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
-                    .getDatabaseType();
+            String databaseType =
+                    dbConn.getDatabaseType() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : dbConn
+                            .getDatabaseType();
             return EDatabaseTypeName.PSQL.getXmlName().equalsIgnoreCase(databaseType);
         }
         return false;
@@ -733,7 +740,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().toLowerCase().startsWith(DatabaseConstant.ODBC_DRIVER_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.POSTGRESQL_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.POSTGRESQL_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -752,7 +762,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().toLowerCase().startsWith(DatabaseConstant.ODBC_DRIVER_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.ODBC_ORACLE_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.ODBC_ORACLE_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -772,7 +785,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().toLowerCase().startsWith(DatabaseConstant.ODBC_DRIVER_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.ODBC_TERADATA_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.ODBC_TERADATA_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -791,7 +807,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().toLowerCase().startsWith(DatabaseConstant.ODBC_DRIVER_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.INGRES_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.INGRES_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -810,7 +829,10 @@ public final class ConnectionUtils {
         if (connectionMetadata.getDriverName() != null
                 && connectionMetadata.getDriverName().equals(DatabaseConstant.JDBC_INGRES_DEIVER_NAME)
                 && connectionMetadata.getDatabaseProductName() != null
-                && connectionMetadata.getDatabaseProductName().toLowerCase().indexOf(DatabaseConstant.INGRES_PRODUCT_NAME) > -1) {
+                && connectionMetadata
+                        .getDatabaseProductName()
+                        .toLowerCase()
+                        .indexOf(DatabaseConstant.INGRES_PRODUCT_NAME) > -1) {
             return true;
         }
         return false;
@@ -946,11 +968,13 @@ public final class ConnectionUtils {
         // fill metadata
         MetadataHelper.setAuthor(conn, property.getAuthor().getLogin());
         MetadataHelper.setDescription(property.getDescription(), conn);
-        String statusCode = property.getStatusCode() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : property
-                .getStatusCode();
-        MetadataHelper.setDevStatus(conn,
-                org.talend.dataquality.PluginConstant.EMPTY_STRING.equals(statusCode) ? DevelopmentStatus.DRAFT.getLiteral()
-                        : statusCode);
+        String statusCode =
+                property.getStatusCode() == null ? org.talend.dataquality.PluginConstant.EMPTY_STRING : property
+                        .getStatusCode();
+        MetadataHelper.setDevStatus(
+                conn,
+                org.talend.dataquality.PluginConstant.EMPTY_STRING.equals(statusCode) ? DevelopmentStatus.DRAFT
+                        .getLiteral() : statusCode);
         MetadataHelper.setPurpose(property.getPurpose(), conn);
         MetadataHelper.setVersion(property.getVersion(), conn);
         String retrieveAllMetadataStr = MetadataHelper.getRetrieveAllMetadata(conn);
@@ -1004,10 +1028,10 @@ public final class ConnectionUtils {
                             TdColumn tdColumn = colobj;
 
                             try {
-                                List<TdSqlDataType> newDataTypeList = getDataType(
-                                        ConnectionUtils.getName(CatalogHelper.getParentCatalog(tdTable)),
-                                        ConnectionUtils.getName(SchemaHelper.getParentSchema(tdTable)), tdTable.getName(),
-                                        tdColumn.getName(), connection);
+                                List<TdSqlDataType> newDataTypeList =
+                                        getDataType(ConnectionUtils.getName(CatalogHelper.getParentCatalog(tdTable)),
+                                                ConnectionUtils.getName(SchemaHelper.getParentSchema(tdTable)),
+                                                tdTable.getName(), tdColumn.getName(), connection);
                                 if (newDataTypeList.size() > 0) {
                                     tdColumn.setSqlDataType(newDataTypeList.get(0));
                                 }
@@ -1073,8 +1097,10 @@ public final class ConnectionUtils {
         if (connectionParam == null) {
             return false;
         } else {
-            return connectionParam.getSqlTypeName().equalsIgnoreCase(SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL.getDBKey())
-                    || connectionParam.getSqlTypeName().equalsIgnoreCase(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDBKey());
+            return connectionParam.getSqlTypeName().equalsIgnoreCase(
+                    SupportDBUrlType.ORACLEWITHSERVICENAMEDEFAULTURL.getDBKey())
+                    || connectionParam.getSqlTypeName().equalsIgnoreCase(
+                            SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getDBKey());
         }
     }
 
@@ -1113,8 +1139,9 @@ public final class ConnectionUtils {
             String columnPattern, java.sql.Connection connection) throws SQLException {
         List<TdSqlDataType> sqlDatatypes = new ArrayList<TdSqlDataType>();
         @SuppressWarnings("deprecation")
-        ResultSet columns = org.talend.utils.sql.ConnectionUtils.getConnectionMetadata(connection).getColumns(catalogName,
-                schemaPattern, tablePattern, columnPattern);
+        ResultSet columns =
+                org.talend.utils.sql.ConnectionUtils.getConnectionMetadata(connection).getColumns(catalogName,
+                        schemaPattern, tablePattern, columnPattern);
         while (columns.next()) {
             sqlDatatypes.add(createDataType(columns));
         }
@@ -1156,8 +1183,8 @@ public final class ConnectionUtils {
                 String sid = JavaSqlFactory.getSID(dbConn);
                 if (sid != null && !"".equals(sid.trim())) { //$NON-NLS-1$
                     // MOD klliu bug 22900
-                    TaggedValue taggedValue = TaggedValueHelper.getTaggedValue(TaggedValueHelper.RETRIEVE_ALL,
-                            element.getTaggedValue());
+                    TaggedValue taggedValue =
+                            TaggedValueHelper.getTaggedValue(TaggedValueHelper.RETRIEVE_ALL, element.getTaggedValue());
                     // if connection is created by 4.2 or 5.0 ,the tagedValue(RETRIEVE_ALL) has been removed.
                     if (taggedValue != null) {
                         String value = taggedValue.getValue();
@@ -1260,15 +1287,17 @@ public final class ConnectionUtils {
      */
     public static synchronized void updataTaggedValueForConnectionItem(Connection dataProvider) {
         if (dataProvider instanceof DatabaseConnection
-                && StringUtils.isBlank(TaggedValueHelper.getValueString(TaggedValueHelper.DB_PRODUCT_NAME, dataProvider))) {
+                && StringUtils.isBlank(TaggedValueHelper
+                        .getValueString(TaggedValueHelper.DB_PRODUCT_NAME, dataProvider))) {
             Property property = PropertyHelper.getProperty(dataProvider);
             if (property != null) {
                 Item item = property.getItem();
                 if (item != null) {
                     DatabaseConnection dbConn = (DatabaseConnection) dataProvider;
                     IMetadataConnection metaConnection = ConvertionHelper.convert(dbConn);
-                    dbConn = (DatabaseConnection) MetadataFillFactory.getDBInstance(dataProvider).fillUIConnParams(
-                            metaConnection, dbConn);
+                    dbConn =
+                            (DatabaseConnection) MetadataFillFactory.getDBInstance(dataProvider).fillUIConnParams(
+                                    metaConnection, dbConn);
                     if (dbConn != null && Platform.isRunning()) {
                         try {
                             ProxyRepositoryFactory.getInstance().save(item);
@@ -1303,9 +1332,10 @@ public final class ConnectionUtils {
 
         java.sql.Connection createConnection = null;
         try {
-            List list = ExtractMetaDataUtils.getInstance().connect(dbType, connection.getUrl(), userName, password,
-                    connection.getDriverClass(), connection.getDriverJarPath(), connection.getDbVersionString(),
-                    connection.getAdditionalParams());
+            List list =
+                    ExtractMetaDataUtils.getInstance().connect(dbType, connection.getUrl(), userName, password,
+                            connection.getDriverClass(), connection.getDriverJarPath(),
+                            connection.getDbVersionString(), connection.getAdditionalParams());
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i) instanceof java.sql.Connection) {
                     createConnection = (java.sql.Connection) list.get(i);
@@ -1320,8 +1350,10 @@ public final class ConnectionUtils {
                     }
 
                     if (version == null) {
-                        version = ProductVersion.fromString(createConnection.getMetaData().getDatabaseMajorVersion() + "." //$NON-NLS-1$
-                                + createConnection.getMetaData().getDatabaseMinorVersion() + ".0"); //$NON-NLS-1$
+                        version =
+                                ProductVersion.fromString(createConnection.getMetaData().getDatabaseMajorVersion()
+                                        + "." //$NON-NLS-1$
+                                        + createConnection.getMetaData().getDatabaseMinorVersion() + ".0"); //$NON-NLS-1$
                     }
                 }
             }
@@ -1382,8 +1414,9 @@ public final class ConnectionUtils {
                 }
             }
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibraryManagerService.class)) {
-                ILibraryManagerService libManagerServic = (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
-                        ILibraryManagerService.class);
+                ILibraryManagerService libManagerServic =
+                        (ILibraryManagerService) GlobalServiceRegister.getDefault().getService(
+                                ILibraryManagerService.class);
                 String libPath = libManagerServic.getJarPath(jarName);
                 if (libPath == null) {
                     jarNotFound = true;
@@ -1425,7 +1458,7 @@ public final class ConnectionUtils {
      */
     public static boolean isTcompJdbc(String dbType) {
         if (!Platform.isRunning()) {
-            return "JDBC".equals(dbType);
+            return "JDBC".equals(dbType); //$NON-NLS-1$
         }
         List<ERepositoryObjectType> extraTypes = new ArrayList<ERepositoryObjectType>();
         IGenericDBService dbService = getGenericDBService();

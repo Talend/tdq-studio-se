@@ -14,7 +14,6 @@ package org.talend.cwm.db.connection;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -51,8 +50,9 @@ public class ConnectionUtilsTest {
         DatabaseConnection createDatabaseConnection = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
         EDatabaseTypeName generalJdbcType = EDatabaseTypeName.GENERAL_JDBC;
         createDatabaseConnection.setDatabaseType(generalJdbcType.getDisplayName());
-        Assert.assertTrue(
-                "Current DatabaseType of connection should be " + EDatabaseTypeName.GENERAL_JDBC.getDisplayName(), ConnectionUtils.isGeneralJdbc(createDatabaseConnection)); //$NON-NLS-1$
+        Assert
+                .assertTrue(
+                        "Current DatabaseType of connection should be " + EDatabaseTypeName.GENERAL_JDBC.getDisplayName(), ConnectionUtils.isGeneralJdbc(createDatabaseConnection)); //$NON-NLS-1$
     }
 
     /**
@@ -69,13 +69,8 @@ public class ConnectionUtilsTest {
         DatabaseConnection createDatabaseConnection = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
         createDatabaseConnection.setDriverClass(driverClass);
         createDatabaseConnection.setDriverJarPath(driverName);
-        try {
-            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
-
-            Assert.assertTrue("The driver " + driverName + " of conection can not be find", rc.isOk()); //$NON-NLS-1$
-        } catch (MalformedURLException e) {
-            Assert.fail(e.getMessage());
-        }
+        ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
+        Assert.assertTrue("The driver " + driverName + " of conection can not be find", rc.isOk()); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -92,24 +87,19 @@ public class ConnectionUtilsTest {
         DatabaseConnection createDatabaseConnection = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
         createDatabaseConnection.setDriverClass(driverClass);
         createDatabaseConnection.setDriverJarPath(driverName);
-        try {
-            // driver class is empty case
-            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
+        // driver class is empty case
+        ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
-            Assert.assertFalse("The driver of conection is empty so that should not be found", rc.isOk()); //$NON-NLS-1$
-            Assert.assertEquals(Messages.getString("ConnectionUtils.DriverClassEmpty"), rc.getMessage()); //$NON-NLS-1$
+        Assert.assertFalse("The driver of conection is empty so that should not be found", rc.isOk()); //$NON-NLS-1$
+        Assert.assertEquals(Messages.getString("ConnectionUtils.DriverClassEmpty"), rc.getMessage()); //$NON-NLS-1$
 
-            // driver class is Null case
-            driverClass = null;
-            createDatabaseConnection.setDriverClass(driverClass);
-            rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
+        // driver class is Null case
+        driverClass = null;
+        createDatabaseConnection.setDriverClass(driverClass);
+        rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
-            Assert.assertFalse("The driver of conection is Null so that should not be found", rc.isOk()); //$NON-NLS-1$
-            Assert.assertEquals(Messages.getString("ConnectionUtils.DriverClassEmpty"), rc.getMessage()); //$NON-NLS-1$
-
-        } catch (MalformedURLException e) {
-            Assert.fail(e.getMessage());
-        }
+        Assert.assertFalse("The driver of conection is Null so that should not be found", rc.isOk()); //$NON-NLS-1$
+        Assert.assertEquals(Messages.getString("ConnectionUtils.DriverClassEmpty"), rc.getMessage()); //$NON-NLS-1$
     }
 
     /**
@@ -126,24 +116,19 @@ public class ConnectionUtilsTest {
         DatabaseConnection createDatabaseConnection = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
         createDatabaseConnection.setDriverClass(driverClass);
         createDatabaseConnection.setDriverJarPath(driverName);
-        try {
-            // driver name is empty case
-            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
+        // driver name is empty case
+        ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
-            Assert.assertFalse("The class of driver is empty so that should not be found", rc.isOk()); //$NON-NLS-1$
-            Assert.assertEquals(Messages.getString("ConnectionUtils.DriverJarFileEmpty"), rc.getMessage()); //$NON-NLS-1$
+        Assert.assertFalse("The class of driver is empty so that should not be found", rc.isOk()); //$NON-NLS-1$
+        Assert.assertEquals(Messages.getString("ConnectionUtils.DriverJarFileEmpty"), rc.getMessage()); //$NON-NLS-1$
 
-            // driver name is Null case
-            driverClass = null;
-            createDatabaseConnection.setDriverJarPath(driverName);
-            rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
+        // driver name is Null case
+        driverClass = null;
+        createDatabaseConnection.setDriverJarPath(driverName);
+        rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
-            Assert.assertFalse("The class of driver is Null so that should not be found", rc.isOk()); //$NON-NLS-1$
-            Assert.assertEquals(Messages.getString("ConnectionUtils.DriverJarFileEmpty"), rc.getMessage()); //$NON-NLS-1$
-
-        } catch (MalformedURLException e) {
-            Assert.fail(e.getMessage());
-        }
+        Assert.assertFalse("The class of driver is Null so that should not be found", rc.isOk()); //$NON-NLS-1$
+        Assert.assertEquals(Messages.getString("ConnectionUtils.DriverJarFileEmpty"), rc.getMessage()); //$NON-NLS-1$
     }
 
     /**
@@ -160,14 +145,10 @@ public class ConnectionUtilsTest {
         DatabaseConnection createDatabaseConnection = ConnectionFactoryImpl.eINSTANCE.createDatabaseConnection();
         createDatabaseConnection.setDriverClass(driverClass);
         createDatabaseConnection.setDriverJarPath(driverName);
-        try {
-            ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
+        ReturnCode rc = ConnectionUtils.checkJdbcJarFilePathDriverClassName(createDatabaseConnection);
 
-            Assert.assertFalse("The driver is not exist so that should not be found", rc.isOk()); //$NON-NLS-1$
-            Assert.assertEquals(Messages.getString("ConnectionUtils.JarFileCanNotBeFound"), rc.getMessage()); //$NON-NLS-1$
-        } catch (MalformedURLException e) {
-            Assert.fail(e.getMessage());
-        }
+        Assert.assertFalse("The driver is not exist so that should not be found", rc.isOk()); //$NON-NLS-1$
+        Assert.assertEquals(Messages.getString("ConnectionUtils.JarFileCanNotBeFound"), rc.getMessage()); //$NON-NLS-1$
     }
 
     /**
@@ -180,8 +161,11 @@ public class ConnectionUtilsTest {
             File sourceFile = null;
             URL fileURL = null;
             try {
-                URL resource = CWMPlugin.getDefault().getBundle()
-                        .getResource("jdbc" + Path.SEPARATOR + "mysql-connector-java-5.1.12-bin.jar"); //$NON-NLS-1$ //$NON-NLS-2$
+                URL resource =
+                        CWMPlugin
+                                .getDefault()
+                                .getBundle()
+                                .getResource("jdbc" + Path.SEPARATOR + "mysql-connector-java-5.1.12-bin.jar"); //$NON-NLS-1$ //$NON-NLS-2$
                 fileURL = FileLocator.toFileURL(resource);
                 URI uri = fileURL.toURI();
                 sourceFile = new File(uri);
@@ -240,6 +224,5 @@ public class ConnectionUtilsTest {
 
         ReturnCode ret = ConnectionUtils.isConnectionAvailable(createDatabaseConnection);
         Assert.assertFalse(ret.isOk());
-
     }
 }
