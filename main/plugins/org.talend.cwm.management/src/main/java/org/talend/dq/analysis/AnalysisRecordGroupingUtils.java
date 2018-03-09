@@ -421,6 +421,8 @@ public class AnalysisRecordGroupingUtils {
                 String pattern = key.getPattern();
                 if (StringUtils.isEmpty(pattern)) {
                     pattern = "yyyy-MM-dd HH:mm:ss.SSS";
+                } else if (pattern.startsWith("\"")) {// TDQ-14964
+                    pattern = pattern.substring(1, pattern.length() - 1);
                 }
                 patternMap.put(colName2IndexMap.get(key.getId()), pattern);
             }
