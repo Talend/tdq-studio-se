@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.dialogs.ContainerCheckedTreeViewer;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.model.properties.Property;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.PluginConstant;
@@ -238,8 +239,15 @@ public class ImportWizardPage extends WizardPage {
                         }
                     } else {
                         ModelElement element = record.getElement();
+                        List<ModelElement> dependencyClients;
                         if (element != null) {
-                            List<ModelElement> dependencyClients = EObjectHelper.getDependencyClients(element);
+                            dependencyClients = EObjectHelper.getDependencyClients(element);
+                            ImportAndExportUtils.iterateUncheckClientDependency(dependencyClients, repositoryTree);
+                        } else {// for context, the dependency should include related Connection
+                            Property property = record.getProperty();
+                            dependencyClients = ImportAndExportUtils.getContextClientDepend(property.getId());
+                        }
+                        if (!dependencyClients.isEmpty()) {
                             ImportAndExportUtils.iterateUncheckClientDependency(dependencyClients, repositoryTree);
                         }
                     }

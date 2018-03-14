@@ -24,7 +24,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.talend.commons.emf.FactoriesUtil;
-import org.talend.commons.exception.ExceptionHandler;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.properties.Item;
@@ -53,7 +52,6 @@ import org.talend.dq.helper.FileUtils;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.writer.AElementPersistance;
 import org.talend.dq.writer.impl.ElementWriterFactory;
-import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.sugars.ReturnCode;
@@ -725,32 +723,6 @@ public final class DependenciesHandler {
             writer.save(item, true);
         }
 
-    }
-
-    /**
-     * Find dependency Context by Connection
-     * 
-     * @param connection
-     * @return
-     */
-    public List<IRepositoryViewObject> getDependContextByConnection(Connection connection) {
-        List<IRepositoryViewObject> repositoryObjects = new ArrayList<IRepositoryViewObject>();
-        if (connection == null || !connection.isContextMode()) {
-            return repositoryObjects;
-        }
-        try {
-            String id = connection.getContextId();
-            if (!StringUtils.isBlank(id)) {
-                IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
-                IRepositoryViewObject object = factory.getLastVersion(id);
-                if (object != null) {
-                    repositoryObjects.add(object);
-                }
-            }
-        } catch (PersistenceException et) {
-            ExceptionHandler.process(et);
-        }
-        return repositoryObjects;
     }
 
 }

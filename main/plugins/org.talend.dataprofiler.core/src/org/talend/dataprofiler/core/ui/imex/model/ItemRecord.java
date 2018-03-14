@@ -23,7 +23,6 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -36,12 +35,12 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.emf.FactoriesUtil.EElementEName;
-import org.talend.commons.utils.WorkspaceUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.cwm.dependencies.DependenciesHandler;
 import org.talend.cwm.helper.ModelElementHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.management.i18n.InternationalizationUtil;
@@ -320,18 +319,21 @@ public class ItemRecord {
     }
 
     /**
-     * include dependency context
+     * include dependency context for Connection
      * 
      * @param connection
      */
     private void includeContextDependency(Connection connection) {
-        List<IRepositoryViewObject> repositoryObjects =
-                DependenciesHandler.getInstance().getDependContextByConnection(connection);
-        for (IRepositoryViewObject repViewObj : repositoryObjects) {
-            Property contProperty = repViewObj.getProperty();
-            IFile ifile = PropertyHelper.getItemFile(contProperty);
-            if (ifile != null) {
-                this.dependencySet.add(WorkspaceUtils.ifileToFile(ifile));
+        String contextId = connection.getContextId();
+        if (connection.isContextMode() && !StringUtils.isEmpty(contextId)) {
+            for (ItemRecord record : allItemRecords) {
+                Property property2 = record.getProperty();
+                if (property2 != null) {
+                    Item item = property2.getItem();
+                    if (item instanceof ContextItem && contextId.equals(property2.getId())) {
+                        dependencySet.add(record.getFile());
+                    }
+                }
             }
         }
     }
