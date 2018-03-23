@@ -18,7 +18,6 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.wizard.AbstractWizard;
 import org.talend.dq.analysis.parameters.ConnectionParameter;
@@ -107,7 +106,6 @@ public class MetaDataFilterWizard extends AbstractWizard {
 
     private void initPackageFilterDescription() {
         setWindowTitle(DefaultMessagesImpl.getString("MetaDataFilterWizard.PackageFilter")); //$NON-NLS-1$
-        setDefaultPageImageDescriptor(ImageLib.getImageDescriptor(ImageLib.RUN_IMAGE));
         this.metaDataFilterWizardPage = new MetaDataFilterWizardPage(this);
         this.metaDataFilterWizardPage.setTitle(DefaultMessagesImpl.getString("MetaDataFilterWizard.PackageFilter")); //$NON-NLS-1$
         this.metaDataFilterWizardPage.setDescription(DefaultMessagesImpl.getString("MetaDataFilterWizard.PackageFilterDesc")); //$NON-NLS-1$

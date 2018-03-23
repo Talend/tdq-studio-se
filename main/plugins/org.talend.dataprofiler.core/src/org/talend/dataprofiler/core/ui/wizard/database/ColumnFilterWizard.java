@@ -22,7 +22,6 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.wizard.AbstractWizard;
 import org.talend.dq.analysis.parameters.ConnectionParameter;
@@ -103,7 +102,6 @@ public class ColumnFilterWizard extends AbstractWizard {
 
     private void initColumnFilterDescription() {
         setWindowTitle(DefaultMessagesImpl.getString("MetaDataFilterWizard.columnFilter")); //$NON-NLS-1$
-        setDefaultPageImageDescriptor(ImageLib.getImageDescriptor(ImageLib.RUN_IMAGE));
         this.columnFilterWizardPage = new ColumnFilterWizardPage(this);
         this.columnFilterWizardPage.setTitle(DefaultMessagesImpl.getString("MetaDataFilterWizard.columnFilter")); //$NON-NLS-1$
         this.columnFilterWizardPage.setDescription(DefaultMessagesImpl.getString("MetaDataFilterWizard.columnFilterDesc")); //$NON-NLS-1$

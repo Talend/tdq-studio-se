@@ -62,7 +62,7 @@ public class MetaDataFilterWizardPage extends AbstractWizardPage {
 
         GridData gd = new GridData();
         gd.widthHint = 280;
-        gd.heightHint = 15;
+        gd.heightHint = 22;
 
         Label l1 = new Label(comp, SWT.NONE);
         l1.setText(DefaultMessagesImpl.getString("MetaDataFilterWizardPage.conn")); //$NON-NLS-1$

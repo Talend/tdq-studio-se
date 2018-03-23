@@ -21,7 +21,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
-import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.wizard.AbstractWizard;
 import org.talend.dq.analysis.parameters.ConnectionParameter;
@@ -137,8 +136,6 @@ public class TableViewFilterWizard extends AbstractWizard {
     @Override
     public void addPages() {
         setWindowTitle(DefaultMessagesImpl.getString("TableViewFilterWizard.tableViewFilter")); //$NON-NLS-1$
-        setDefaultPageImageDescriptor(ImageLib.getImageDescriptor(ImageLib.RUN_IMAGE));
-
         tableViewFilterWizardPage = new TableViewFilterWizardPage(this);
         tableViewFilterWizardPage.setTitle(DefaultMessagesImpl.getString("TableViewFilterWizard.tableViewFilter")); //$NON-NLS-1$
         tableViewFilterWizardPage.setDescription(DefaultMessagesImpl.getString("TableViewFilterWizard.tableViewFilterDesc")); //$NON-NLS-1$
