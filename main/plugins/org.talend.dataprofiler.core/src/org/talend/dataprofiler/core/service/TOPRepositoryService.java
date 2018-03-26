@@ -53,7 +53,6 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
-import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
@@ -138,11 +137,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         for (Item item : items) {
             if (item instanceof ConnectionItem) {
                 Connection connection = ((ConnectionItem) item).getConnection();
-                // MOD xqliu TDQ-5853 2012-07-25 SqlExplorer don't support the connection which has empty username
-                String username = JavaSqlFactory.getUsername(connection);
-                if (username != null && !"".equals(username.trim())) { //$NON-NLS-1$
-                    CWMPlugin.getDefault().addConnetionAliasToSQLPlugin(connection);
-                }
+                CWMPlugin.getDefault().addConnetionAliasToSQLPlugin(connection);
             }
         }
     }
@@ -266,16 +261,21 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
         TaggedValueHelper.setValidStatus(true, parserRule);
         for (HashMap<String, Object> expression : values) {
-            parserRule.addExpression(expression.get(RULE_NAME).toString(),
-                    expression.get(RULE_TYPE) instanceof Integer ? Integer.toString((Integer) expression.get(RULE_TYPE))
-                            : expression.get(RULE_TYPE).toString(), expression.get(RULE_VALUE).toString());
+            parserRule
+                    .addExpression(
+                            expression.get(RULE_NAME).toString(),
+                            expression.get(RULE_TYPE) instanceof Integer ? Integer.toString((Integer) expression
+                                    .get(RULE_TYPE)) : expression.get(RULE_TYPE).toString(), expression
+                                    .get(RULE_VALUE)
+                                    .toString());
         }
         IndicatorCategory ruleIndicatorCategory = DefinitionHandler.getInstance().getDQRuleIndicatorCategory();
         if (ruleIndicatorCategory != null && !parserRule.getCategories().contains(ruleIndicatorCategory)) {
             parserRule.getCategories().add(ruleIndicatorCategory);
         }
         IFolder folder = ResourceManager.getRulesParserFolder();
-        TypedReturnCode<Object> returnObject = ElementWriterFactory.getInstance().createdRuleWriter().create(parserRule, folder);
+        TypedReturnCode<Object> returnObject =
+                ElementWriterFactory.getInstance().createdRuleWriter().create(parserRule, folder);
         Object object = returnObject.getObject();
 
         RuleRepNode parserRuleNode = RepositoryNodeHelper.recursiveFindRuleParser(parserRule);
@@ -331,9 +331,13 @@ public class TOPRepositoryService implements ITDQRepositoryService {
             if (conn instanceof DatabaseConnection) {
                 List<ModelElement> dependencyClients = EObjectHelper.getDependencyClients(conn);
                 if (!(dependencyClients == null || dependencyClients.isEmpty())) {
-                    int isOk = DeleteModelElementConfirmDialog.showElementImpactConfirmDialog(null, new ModelElement[] { conn },
-                            DefaultMessagesImpl.getString("TOPRepositoryService.dependcyTile"), //$NON-NLS-1$
-                            DefaultMessagesImpl.getString("TOPRepositoryService.dependcyMessage", conn.getLabel())); //$NON-NLS-1$
+                    int isOk =
+                            DeleteModelElementConfirmDialog.showElementImpactConfirmDialog(
+                                    null,
+                                    new ModelElement[] { conn },
+                                    DefaultMessagesImpl.getString("TOPRepositoryService.dependcyTile"), //$NON-NLS-1$
+                                    DefaultMessagesImpl.getString(
+                                            "TOPRepositoryService.dependcyMessage", conn.getLabel())); //$NON-NLS-1$
                     if (isOk != Dialog.OK) {
                         retCode.setOk(Boolean.FALSE);
                         retCode.setMessage("The user canceled the operation!"); //$NON-NLS-1$
@@ -431,7 +435,8 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         Property deleteProperty = deleteObject.getProperty();
         ModelElement deleteModelElement = PropertyHelper.getModelElement(deleteProperty);
         List<ModelElement> dependencyElements = EObjectHelper.getDependencyClients(deleteObject);
-        String lable = deleteProperty.getDisplayName() == null ? PluginConstant.EMPTY_STRING : deleteProperty.getDisplayName();
+        String lable =
+                deleteProperty.getDisplayName() == null ? PluginConstant.EMPTY_STRING : deleteProperty.getDisplayName();
         String dialogTitle = DefaultMessagesImpl.getString("DeleteModelElementConfirmDialog.confirmResourceDelete");//$NON-NLS-1$
         String dialogMessage = DefaultMessagesImpl.getString("DQDeleteAction.dependencyByOther", lable);//$NON-NLS-1$
         return DeleteModelElementConfirmDialog.showConfirmDialog(workbenchShell, deleteModelElement,
@@ -448,33 +453,41 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         Shell parentShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         String dialogTitle = DefaultMessagesImpl.getString("TOPRepositoryService.InputDialog.Title");//$NON-NLS-1$
         String dialogMessage = DefaultMessagesImpl.getString("TOPRepositoryService.InputDialog.Message");//$NON-NLS-1$
-        final InputDialog inputDialog = new InputDialog(parentShell, dialogTitle, dialogMessage, newItem.getProperty().getLabel()
-                + DateUtils.formatTimeStamp(DateUtils.PATTERN_6, System.currentTimeMillis()), new IInputValidator() {
+        final InputDialog inputDialog =
+                new InputDialog(parentShell, dialogTitle, dialogMessage, newItem.getProperty().getLabel()
+                        + DateUtils.formatTimeStamp(DateUtils.PATTERN_6, System.currentTimeMillis()),
+                        new IInputValidator() {
 
-            public String isValid(String newText) {
-                String returnStr = null;
-                Item item = newItem;
-                ERepositoryObjectType type = ERepositoryObjectType.getItemType(item);
-                // String pattern = RepositoryConstants.getPattern(type);
-                String pattern = "[_A-Za-z0-9-][a-zA-Z0-9\\\\.\\\\-_(), ]*";//$NON-NLS-1$
-                boolean matches = Pattern.matches(pattern, newText);
-                boolean nameAvailable = false;
-                try {
-                    List<IRepositoryViewObject> listExistingObjects = ProxyRepositoryFactory.getInstance().getAll(type, true,
-                            false);
-                    nameAvailable = ProxyRepositoryFactory.getInstance().isNameAvailable(item, newText, listExistingObjects);
-                } catch (PersistenceException e) {
-                    log.error(e, e);
-                    return e.getMessage();
-                }
-                if (!matches) {
-                    returnStr = DefaultMessagesImpl.getString("TOPRepositoryService.InputDialog.ErrorMessage1");//$NON-NLS-1$
-                } else if (!nameAvailable) {
-                    returnStr = DefaultMessagesImpl.getString("TOPRepositoryService.InputDialog.ErrorMessage2");//$NON-NLS-1$
-                }
-                return returnStr;
-            }
-        });
+                            public String isValid(String newText) {
+                                String returnStr = null;
+                                Item item = newItem;
+                                ERepositoryObjectType type = ERepositoryObjectType.getItemType(item);
+                                // String pattern = RepositoryConstants.getPattern(type);
+                                String pattern = "[_A-Za-z0-9-][a-zA-Z0-9\\\\.\\\\-_(), ]*";//$NON-NLS-1$
+                                boolean matches = Pattern.matches(pattern, newText);
+                                boolean nameAvailable = false;
+                                try {
+                                    List<IRepositoryViewObject> listExistingObjects =
+                                            ProxyRepositoryFactory.getInstance().getAll(type, true, false);
+                                    nameAvailable =
+                                            ProxyRepositoryFactory.getInstance().isNameAvailable(item, newText,
+                                                    listExistingObjects);
+                                } catch (PersistenceException e) {
+                                    log.error(e, e);
+                                    return e.getMessage();
+                                }
+                                if (!matches) {
+                                    returnStr =
+                                            DefaultMessagesImpl
+                                                    .getString("TOPRepositoryService.InputDialog.ErrorMessage1");//$NON-NLS-1$
+                                } else if (!nameAvailable) {
+                                    returnStr =
+                                            DefaultMessagesImpl
+                                                    .getString("TOPRepositoryService.InputDialog.ErrorMessage2");//$NON-NLS-1$
+                                }
+                                return returnStr;
+                            }
+                        });
         return inputDialog;
     }
 
@@ -570,10 +583,12 @@ public class TOPRepositoryService implements ITDQRepositoryService {
 
     public java.sql.Connection createHiveConnection(IMetadataConnection metadataConnection) {
         java.sql.Connection connection = null;
-        if (metadataConnection != null && EDatabaseTypeName.HIVE.getXmlName().equalsIgnoreCase(metadataConnection.getDbType())) {
+        if (metadataConnection != null
+                && EDatabaseTypeName.HIVE.getXmlName().equalsIgnoreCase(metadataConnection.getDbType())) {
             try {
 
-                HiveConnectionHandler hiveConnHandler = HiveConnectionManager.getInstance().createHandler(metadataConnection);
+                HiveConnectionHandler hiveConnHandler =
+                        HiveConnectionManager.getInstance().createHandler(metadataConnection);
                 connection = hiveConnHandler.createHiveConnection();
             } catch (ClassNotFoundException e) {
                 log.error(e);
@@ -609,8 +624,8 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      */
     public void addSoftwareSystemUpdateListener() {
         EventReceiver softwareSystemUpdateEventReceiver = new SoftwareSystemUpdateEventReceiver();
-        EventManager.getInstance().register(EventEnum.DQ_SOFTWARESYSTEM_UPDATE.name(), EventEnum.DQ_SOFTWARESYSTEM_UPDATE,
-                softwareSystemUpdateEventReceiver);
+        EventManager.getInstance().register(EventEnum.DQ_SOFTWARESYSTEM_UPDATE.name(),
+                EventEnum.DQ_SOFTWARESYSTEM_UPDATE, softwareSystemUpdateEventReceiver);
     }
 
     /*
@@ -619,8 +634,8 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @see org.talend.core.ITDQRepositoryService#publishSoftwareSystemUpdateEvent()
      */
     public void publishSoftwareSystemUpdateEvent(DatabaseConnection databaseConnection) {
-        EventManager.getInstance().publish(EventEnum.DQ_SOFTWARESYSTEM_UPDATE.name(), EventEnum.DQ_SOFTWARESYSTEM_UPDATE,
-                databaseConnection);
+        EventManager.getInstance().publish(EventEnum.DQ_SOFTWARESYSTEM_UPDATE.name(),
+                EventEnum.DQ_SOFTWARESYSTEM_UPDATE, databaseConnection);
     }
 
     public void setIsOpenConnectionEditorAfterCreate(boolean noNeedToOpenConnectionEditor) {
@@ -664,7 +679,8 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         Item item = DQStructureManager.getInstance().createSourceFileItem(content, path, label, extension);
         // Added TDQ-7532, 20130719 yyin: to lock the editor when creating the sql file from "preview table"
         ProxyRepositoryFactory.getInstance().isEditableAndLockIfPossible(item);// ~
-        CorePlugin.getDefault().refreshDQView(RepositoryNodeHelper.getLibrariesFolderNode(EResourceConstant.SOURCE_FILES));
+        CorePlugin.getDefault().refreshDQView(
+                RepositoryNodeHelper.getLibrariesFolderNode(EResourceConstant.SOURCE_FILES));
         return item;
     }
 
