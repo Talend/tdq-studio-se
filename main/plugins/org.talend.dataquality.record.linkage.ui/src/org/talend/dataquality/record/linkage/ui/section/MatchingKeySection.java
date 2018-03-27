@@ -202,8 +202,6 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
         ruleFolder.setRenderer(new MatchRuleCTabFolderRenderer(ruleFolder));
         ruleFolder.setMaximizeVisible(false);
         ruleFolder.setMinimizeVisible(false);
-        // set higher than before, because add a edit button.
-        ruleFolder.setTabHeight(36);
         ruleFolder.setSimple(false);
         ruleFolder.setDragDetect(true);
 
