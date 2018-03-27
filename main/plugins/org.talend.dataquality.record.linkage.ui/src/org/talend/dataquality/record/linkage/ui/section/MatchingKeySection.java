@@ -96,7 +96,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
      * @param style
      * @param toolkit
      */
-    public MatchingKeySection(final ScrolledForm form, Composite parent, int style, FormToolkit toolkit, Analysis analysis) {
+    public MatchingKeySection(final ScrolledForm form, Composite parent, int style, FormToolkit toolkit,
+            Analysis analysis) {
         super(form, parent, style, toolkit, analysis);
     }
 
@@ -180,8 +181,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 List<MatchRule> matchRuleList = getMatchRuleList();
-                EditSortMatchRuleNamesDialog dialog = new EditSortMatchRuleNamesDialog(Display.getCurrent().getActiveShell(),
-                        matchRuleList);
+                EditSortMatchRuleNamesDialog dialog =
+                        new EditSortMatchRuleNamesDialog(Display.getCurrent().getActiveShell(), matchRuleList);
                 if (dialog.open() == Window.OK) {
                     matchRuleList.clear();
                     matchRuleList.addAll(dialog.getResultMatchRuleList());
@@ -202,8 +203,6 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
         ruleFolder.setRenderer(new MatchRuleCTabFolderRenderer(ruleFolder));
         ruleFolder.setMaximizeVisible(false);
         ruleFolder.setMinimizeVisible(false);
-        // set higher than before, because add a edit button.
-        ruleFolder.setTabHeight(36);
         ruleFolder.setSimple(false);
         ruleFolder.setDragDetect(true);
 
@@ -262,7 +261,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
         Composite groupQualityThresholdComposite = new Composite(parent, SWT.NONE);
         groupQualityThresholdComposite.setLayout(new GridLayout(2, Boolean.TRUE));
         Label groupQualityTresholdLabel = new Label(groupQualityThresholdComposite, SWT.NONE);
-        groupQualityTresholdLabel.setText(DefaultMessagesImpl.getString("MatchRuleTableComposite.GROUP_QUALITY_THRESHOLD")); //$NON-NLS-1$
+        groupQualityTresholdLabel.setText(DefaultMessagesImpl
+                .getString("MatchRuleTableComposite.GROUP_QUALITY_THRESHOLD")); //$NON-NLS-1$
         final MatchRuleDefinition ruleDefinition = getMatchRuleDefinition();
         groupQualityThresholdText = new Text(groupQualityThresholdComposite, SWT.BORDER);
         GridData layoutData = new GridData();
@@ -346,7 +346,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
     }
 
     protected MatchRuleDefinition getMatchRuleDefinition() {
-        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(analysis);
+        RecordMatchingIndicator recordMatchingIndicator =
+                MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(analysis);
         return recordMatchingIndicator.getBuiltInMatchRuleDefinition();
     }
 
@@ -394,7 +395,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
      * @return
      */
     public AbsMatchAnalysisTableComposite<?> getMatchRuleComposite(CTabItem currentTabItem) {
-        return (AbsMatchAnalysisTableComposite<?>) currentTabItem.getData(MatchAnalysisConstant.MATCH_RULE_TABLE_COMPOSITE);
+        return (AbsMatchAnalysisTableComposite<?>) currentTabItem
+                .getData(MatchAnalysisConstant.MATCH_RULE_TABLE_COMPOSITE);
     }
 
     /**
@@ -533,8 +535,9 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
         }
         ReturnCode checkResultStatus = checkResultStatus();
         if (!checkResultStatus.isOk()) {
-            MessageDialogWithToggle.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    DefaultMessagesImpl.getString("BlockingKeySection.RefreshChartError"), checkResultStatus.getMessage()); //$NON-NLS-1$
+            MessageDialogWithToggle
+                    .openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), DefaultMessagesImpl
+                            .getString("BlockingKeySection.RefreshChartError"), checkResultStatus.getMessage()); //$NON-NLS-1$
             return;
         }
         listeners.firePropertyChange(MatchAnalysisConstant.NEED_REFRESH_DATA, true, false);
@@ -544,9 +547,12 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
             TypedReturnCode<RecordMatchingIndicator> computeMatchResult = computeMatchResult();
 
             if (!computeMatchResult.isOk()) {
-                if (computeMatchResult.getMessage() != null && !computeMatchResult.getMessage().equals(StringUtils.EMPTY)) {
-                    MessageDialogWithToggle.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                            DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"), computeMatchResult.getMessage()); //$NON-NLS-1$
+                if (computeMatchResult.getMessage() != null
+                        && !computeMatchResult.getMessage().equals(StringUtils.EMPTY)) {
+                    MessageDialogWithToggle
+                            .openError(
+                                    PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                                    DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"), computeMatchResult.getMessage()); //$NON-NLS-1$
                 }
                 return;
             }
@@ -554,7 +560,9 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
             matchRuleChartComp.refresh(recordMatchingIndicator.getGroupSize2groupFrequency());
 
             // sort the result before refresh
-            results = MatchRuleAnlaysisUtils.sortResultByGID(recordMatchingIndicator.getMatchRowSchema(), this.getTableResult());
+            results =
+                    MatchRuleAnlaysisUtils.sortResultByGID(recordMatchingIndicator.getMatchRowSchema(),
+                            this.getTableResult());
         } else {// for "hide group" , get the result from the last "chart" directly.
             matchRuleChartComp.refresh(getChartResult());
             results = getTableResult();
@@ -568,7 +576,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
     }
 
     public void hideGroups() {
-        RecordMatchingIndicator recordMatchingIndicator = (RecordMatchingIndicator) analysis.getResults().getIndicators().get(1);
+        RecordMatchingIndicator recordMatchingIndicator =
+                (RecordMatchingIndicator) analysis.getResults().getIndicators().get(1);
         matchRuleChartComp.refresh(recordMatchingIndicator.getGroupSize2groupFrequency());
 
     }
@@ -672,7 +681,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
             List<?> currentElements = getCurrentTabDefinitions();
             List<?> blockKeyDefinitionlist = ((StructuredSelection) selectItems).toList();
             for (int index = blockKeyDefinitionlist.size() - 1; 0 <= index; index--) {
-                if (!isSameWithCurrentModel(currentElements.get(currentElements.size() - blockKeyDefinitionlist.size() + index),
+                if (!isSameWithCurrentModel(
+                        currentElements.get(currentElements.size() - blockKeyDefinitionlist.size() + index),
                         blockKeyDefinitionlist.get(index))) {
                     continue;
                 }
@@ -848,8 +858,10 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
                 uniqueNameList.add(currentName);
 
                 if (checkColumnNameIsEmpty(mdk)) {
-                    returnCode.setMessage(DefaultMessagesImpl.getString(
-                            "BlockingKeySection.emptyColumn.message", getSectionName() + " , " + currentRule.getName())); //$NON-NLS-1$ //$NON-NLS-2$
+                    returnCode
+                            .setMessage(DefaultMessagesImpl
+                                    .getString(
+                                            "BlockingKeySection.emptyColumn.message", getSectionName() + " , " + currentRule.getName())); //$NON-NLS-1$ //$NON-NLS-2$
                     return returnCode;
                 }
 
@@ -870,7 +882,8 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
 
                 ReturnCode checkSurvivorshipFunction = checkSurvivorshipFunction(mdk, this.getMatchRuleDefinition());
                 if (!checkSurvivorshipFunction.isOk()) {
-                    returnCode.setMessage(DefaultMessagesImpl.getString("MatchingKeySection.invalidSurvivorshipFunction", //$NON-NLS-1$
+                    returnCode.setMessage(DefaultMessagesImpl.getString(
+                            "MatchingKeySection.invalidSurvivorshipFunction", //$NON-NLS-1$
                             getSectionName(), checkSurvivorshipFunction.getMessage()));
                     return returnCode;
                 }
