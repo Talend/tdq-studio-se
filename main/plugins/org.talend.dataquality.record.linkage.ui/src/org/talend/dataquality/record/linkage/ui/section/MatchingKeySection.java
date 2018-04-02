@@ -131,6 +131,9 @@ public class MatchingKeySection extends AbstractMatchKeyWithChartTableSection {
         // ADD msjian TDQ-8090: add a edit button
         Composite com = toolkit.createComposite(ruleFolder);
         GridLayout comTableLayout = new GridLayout(2, Boolean.TRUE);
+        comTableLayout.marginBottom = 0;
+        comTableLayout.marginHeight = 0;
+        comTableLayout.marginWidth = 0;
         com.setLayout(comTableLayout);
 
         createEditButton(com);
