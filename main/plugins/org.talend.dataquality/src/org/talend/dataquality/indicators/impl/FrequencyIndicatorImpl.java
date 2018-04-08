@@ -851,7 +851,7 @@ public class FrequencyIndicatorImpl extends IndicatorImpl implements FrequencyIn
      */
     protected static String replaceCharacters(final String s, final String charsToReplace, final String replacementChars) {
         StringBuffer sb = new StringBuffer();
-        int n = s.length();
+        int n = s.codePointCount(0, s.length());
         for (int i = 0; i < n; i++) {
             char c = s.charAt(i);
             int pos = charsToReplace.indexOf(c);

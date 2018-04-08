@@ -62,7 +62,7 @@ public class AvgLengthWithBlankIndicatorImpl extends AverageLengthIndicatorImpl 
             // blank strings count as zero length strings
             if (((String) data).trim().length() > 0) {
                 String str = (String) data;
-                sumLength += str.length();
+                sumLength += str.codePointCount(0, str.length());
             }
         }
         return true;
