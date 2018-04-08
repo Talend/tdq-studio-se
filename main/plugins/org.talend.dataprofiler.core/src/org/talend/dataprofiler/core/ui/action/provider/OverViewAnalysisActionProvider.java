@@ -15,6 +15,7 @@ package org.talend.dataprofiler.core.ui.action.provider;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -43,16 +44,30 @@ public class OverViewAnalysisActionProvider extends AbstractCommonActionProvider
         List list = currentSelection.toList();
         // DOC MOD klliu 2010-12-14 feature 15750 for overview catalog or schema analysis.
         List<IRepositoryNode> packageList = new ArrayList<IRepositoryNode>();
+        // check if the selected nodes are different type, or from different db, should not show menu
+        String connName = null;
+        String objectType = null;
+
         for (Object obj : list) {
             Connection conn = getConnection(obj);
             if (!MetadataConnectionUtils.isTDQSupportDBTemplate(conn)) {
                 return;
             }
+            if (connName == null) {
+                connName = conn.getName();
+            } else if (!StringUtils.equals(connName, conn.getName())) {
+                // can not select nodes from different connections.
+                return;
+            }
             IRepositoryNode node = (IRepositoryNode) obj;
+            if (objectType == null) {
+                objectType = node.getObjectType().getType();
+            } else if (!objectType.equals(node.getObjectType().getType())) {
+                return;
+            }
             packageList.add(node);
-
         }
-        if (packageList.size() > 0) {
+        if (!packageList.isEmpty()) {
             OverviewAnalysisAction overviewAnalysisAction = new OverviewAnalysisAction(packageList);
             menu.add(overviewAnalysisAction);
         }
