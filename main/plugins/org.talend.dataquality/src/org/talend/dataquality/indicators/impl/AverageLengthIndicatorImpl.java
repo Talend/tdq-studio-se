@@ -183,7 +183,7 @@ public class AverageLengthIndicatorImpl extends LengthIndicatorImpl implements A
         } else {
             count++; // count only the non null values
             String str = (String) data;
-            sumLength += str.length();
+            sumLength += str.codePointCount(0, str.length());
         }
         return true;
     }

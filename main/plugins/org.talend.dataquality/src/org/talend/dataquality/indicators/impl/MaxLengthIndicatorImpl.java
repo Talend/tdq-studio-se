@@ -47,7 +47,7 @@ public class MaxLengthIndicatorImpl extends LengthIndicatorImpl implements MaxLe
         boolean ok = super.handle(data);
         if (data != null) {
             String str = (String) data;
-            final int strLength = str.length();
+            final int strLength = str.codePointCount(0, str.length());
             if (strLength > 0) {
                 if ((length == LENGTH_EDEFAULT || length.intValue() == strLength)) {
                     length = Long.valueOf(strLength);

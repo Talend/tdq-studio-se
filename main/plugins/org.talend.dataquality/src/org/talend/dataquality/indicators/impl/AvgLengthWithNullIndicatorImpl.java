@@ -57,7 +57,7 @@ public class AvgLengthWithNullIndicatorImpl extends AverageLengthIndicatorImpl i
             String str = (String) data;
             // MOD qiongli 2011-8-8,TDQ-2474.if it is blank,don't contain this.
             if (str.trim().length() > 0) {
-                sumLength += str.length();
+                sumLength += str.codePointCount(0, str.length());
                 count++; // count all rows
             }
         }

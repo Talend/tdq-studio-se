@@ -310,9 +310,10 @@ public class DefValueCountIndicatorImpl extends IndicatorImpl implements DefValu
         String defTemp = defValue.toString();
         defTemp = StringUtils.removeEnd(defTemp, PluginConstant.ENTER_STRING);
         try {
-            if (Java2SqlType.isTextInSQL(tdColumn.getSqlDataType().getJavaDataType()) && defTemp.length() > 1
+            int defTempCount = defTemp.codePointCount(0, defTemp.length());
+            if (Java2SqlType.isTextInSQL(tdColumn.getSqlDataType().getJavaDataType()) && defTempCount > 1
                     && (defTemp.startsWith(PluginConstant.SINGLE_QUOTE) && defTemp.endsWith(PluginConstant.SINGLE_QUOTE))) {
-                defValue = defTemp.substring(1, defTemp.length() - 1);
+                defValue = defTemp.substring(1, defTempCount - 1);
             } else if (Java2SqlType.isDateInSQL(tdColumn.getSqlDataType().getJavaDataType()) && defTemp.startsWith("to_date(")) {//$NON-NLS-1$
                 String[] array = StringUtils.split(defTemp, PluginConstant.SINGLE_QUOTE);
                 if (array.length > 3) {
