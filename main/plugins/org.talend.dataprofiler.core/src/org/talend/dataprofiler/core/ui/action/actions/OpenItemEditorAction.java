@@ -24,6 +24,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -123,20 +124,20 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
         if (repNodes != null) {
             RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("Open an DQ editor") {//$NON-NLS-1$
 
-                @Override
-                protected void run() {
-                    try {
-                        for (IRepositoryNode repNode : repNodes) {
-                            setImageDescriptor(ImageLib.getImageDescriptorByRepositoryNode(repNode));
-                            duRun(repNode);
+                        @Override
+                        protected void run() {
+                            try {
+                                for (IRepositoryNode repNode : repNodes) {
+                                    setImageDescriptor(ImageLib.getImageDescriptorByRepositoryNode(repNode));
+                                    duRun(repNode);
+                                }
+                            } catch (BusinessException e) {
+                                org.talend.dataprofiler.core.exception.ExceptionHandler.process(e, Level.FATAL);
+                            } catch (Throwable e) {
+                                log.error(e, e);
+                            }
                         }
-                    } catch (BusinessException e) {
-                        org.talend.dataprofiler.core.exception.ExceptionHandler.process(e, Level.FATAL);
-                    } catch (Throwable e) {
-                        log.error(e, e);
-                    }
-                }
-            };
+                    };
             workUnit.setAvoidUnloadResources(true);
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
         }
@@ -177,8 +178,10 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     ReportFileRepNode reportFileNode = (ReportFileRepNode) repNode;
                     IPath location = Path.fromOSString(reportFileNode.getResource().getRawLocation().toOSString());
                     // TDQ-5458 sizhaoliu 2012-07-17 add "." before the full name to make sure it is ignored by SVN.
-                    IFile latestRepIFile = ResourceManager.getRootProject().getFile(
-                            PluginConstant.DOT_STRING + location.lastSegment());
+                    IFile latestRepIFile =
+                            ResourceManager
+                                    .getRootProject()
+                                    .getFile(PluginConstant.DOT_STRING + location.lastSegment());
                     try {
                         // TDQ-5458 sizhaoliu 2012-07-17 the link creation should be after report generation, but not at
                         // the openning.
@@ -199,7 +202,6 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                 IPath append = WorkbenchUtils.getFilePath(repNode.getObject().getRepositoryNode());
                 DQRepositoryNode node = (DQRepositoryNode) repNode.getObject().getRepositoryNode();
                 file = ResourceManager.getRoot().getProject(node.getProject().getTechnicalLabel()).getFile(append);
-
                 if (!file.exists()) {
                     throw ExceptionFactory.getInstance().createBusinessException(repNode.getObject());
                 }
@@ -220,7 +222,8 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
      * @return IEditorInput
      * @throws PersistenceException
      */
-    public IEditorInput computeEditorInput(IRepositoryNode repNode, boolean isOpenItemEditorAction) throws BusinessException {
+    public IEditorInput computeEditorInput(IRepositoryNode repNode, boolean isOpenItemEditorAction)
+            throws BusinessException {
         // TDQ-12499 msjian add : when click the node under recyclebin, no need to find a EditorInput
         if (repNode != null && !isOpenItemEditorAction) {
             IRepositoryNode currentNode = repNode;
@@ -347,11 +350,20 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                 if (!file.exists()) {
                     throw ExceptionFactory.getInstance().createBusinessException(repViewObj);
                 }
-                if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)) {
-                    editorID = SqlExplorerUtils.SQLEDITOR_ID;
+
+                // TDQ-14934 msjian: fix can use the studio associate application to open file
+                IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
+                if (desc != null) {
+                    editorID = desc.getId();
                 } else {
-                    editorID = TDQFileEditorInput.DEFAULT_EDITOR_ID;
+                    if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)) {
+                        editorID = SqlExplorerUtils.SQLEDITOR_ID;
+                    } else {
+                        editorID = TDQFileEditorInput.DEFAULT_EDITOR_ID;
+                    }
                 }
+                // TDQ-14934~
+
                 result = new TDQFileEditorInput(file);
                 // Added TDQ-7143 yyin 20130531
                 ((TDQFileEditorInput) result).setFileItem(item);
