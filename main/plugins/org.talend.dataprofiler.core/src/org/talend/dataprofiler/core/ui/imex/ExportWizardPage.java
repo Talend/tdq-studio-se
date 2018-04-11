@@ -324,8 +324,8 @@ public class ExportWizardPage extends WizardPage {
                     boolean checked = item.getChecked();
                     if (checked) {
                         for (File file : record.getDependencySet()) {
-                            // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items, we
-                            // ignore it(means not export it).
+                            // ADD msjian TDQ-12245: for the reference project file which is depended on by the main
+                            // items, we ignore it(means not export it).
                             if (!DqFileUtils.isLocalProjectFile(file)) {
                                 continue;
                             }
@@ -353,7 +353,8 @@ public class ExportWizardPage extends WizardPage {
                     }
                 }
 
-                repositoryTree.refresh();
+                // TDQ-14946: comment the refresh to fix the slow show issue when select any nodes.
+                // repositoryTree.refresh();
 
                 checkForErrors();
             }
@@ -408,8 +409,10 @@ public class ExportWizardPage extends WizardPage {
                     // MOD qiongli 2012-12-13 TDQ-5356 use itself file name for jrxml
                     boolean isJrxmlDepFile = depFile.getName().endsWith(FactoriesUtil.JRXML);
                     // MOD msjian TDQ-5909: modify to displayName
-                    String dptLabel = element != null && !isJrxmlDepFile && PropertyHelper.getProperty(element) != null ? PropertyHelper
-                            .getProperty(element).getDisplayName() : depFile.getName();
+                    String dptLabel =
+                            element != null && !isJrxmlDepFile && PropertyHelper.getProperty(element) != null ? PropertyHelper
+                                    .getProperty(element)
+                                    .getDisplayName() : depFile.getName();
                     // TDQ-5909~
                     errors.add("\"" + record.getName() + "\" miss dependency : " + dptLabel);//$NON-NLS-1$ //$NON-NLS-2$ 
                 }
@@ -460,13 +463,14 @@ public class ExportWizardPage extends WizardPage {
         }
 
         // show the same order with repository tree
+        final RepositoryNodeComparator repositoryNodeComparator = new RepositoryNodeComparator();
         repositoryTree.setComparator(new ViewerComparator() {
 
             @Override
             public int compare(Viewer iviewer, Object o1, Object o2) {
                 DQRepositoryNode recursiveFind = RepositoryNodeHelper.recursiveFind(((ItemRecord) o1).getElement());
                 DQRepositoryNode recursiveFind2 = RepositoryNodeHelper.recursiveFind(((ItemRecord) o2).getElement());
-                return new RepositoryNodeComparator().compare(recursiveFind, recursiveFind2);
+                return repositoryNodeComparator.compare(recursiveFind, recursiveFind2);
             }
         });
         // TDQ-14573~
@@ -581,8 +585,8 @@ public class ExportWizardPage extends WizardPage {
                 ItemRecord[] records = getElements();
                 for (ItemRecord record : records) {
                     for (File depFile : record.getDependencySet()) {
-                        // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items, we
-                        // ignore it(means not export it).
+                        // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items,
+                        // we ignore it(means not export it).
                         if (!DqFileUtils.isLocalProjectFile(depFile)) {
                             continue;
                         }
@@ -688,10 +692,11 @@ public class ExportWizardPage extends WizardPage {
                         ModelElement element = record.getElement();
                         if (element != null && element instanceof IndicatorDefinition
                                 && meanIndicatorUuid.equals(ResourceHelper.getUUID(element))) {
-                            IndicatorDefinition sumIndicator = DefinitionHandler.getInstance().getIndicatorDefinition(
-                                    sumIndicatorLabel);
+                            IndicatorDefinition sumIndicator =
+                                    DefinitionHandler.getInstance().getIndicatorDefinition(sumIndicatorLabel);
                             if (sumIndicator != null) {
-                                IFile sumIndicatorIFile = IndicatorResourceFileHelper.findCorrespondingFile(sumIndicator);
+                                IFile sumIndicatorIFile =
+                                        IndicatorResourceFileHelper.findCorrespondingFile(sumIndicator);
                                 if (sumIndicatorIFile != null) {
                                     File sumIndicatorFile = WorkspaceUtils.ifileToFile(sumIndicatorIFile);
                                     if (sumIndicatorFile != null) {
@@ -748,8 +753,10 @@ public class ExportWizardPage extends WizardPage {
             return;
         }
         String version = record.getProperty().getVersion();
-        String nameWithoutVersion = file.getName().replaceAll(underlineStr + version, PluginConstant.EMPTY_STRING)
-                .replaceAll(PluginConstant.DOT_STRING + FactoriesUtil.JRXML, PluginConstant.EMPTY_STRING);
+        String nameWithoutVersion =
+                file.getName()
+                        .replaceAll(underlineStr + version, PluginConstant.EMPTY_STRING)
+                        .replaceAll(PluginConstant.DOT_STRING + FactoriesUtil.JRXML, PluginConstant.EMPTY_STRING);
         IFile iFile = ResourceManager.getJRXMLFolder().getFile(subrepName);
         File subRepFolder = WorkspaceUtils.ifileToFile(iFile);
         if (subRepFolder == null || !subRepFolder.exists()) {
