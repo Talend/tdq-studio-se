@@ -41,6 +41,10 @@ import org.talend.dataquality.indicators.BinFrequencyIndicator;
 import org.talend.dataquality.indicators.BinLowFrequencyIndicator;
 import org.talend.dataquality.indicators.BlankCountIndicator;
 import org.talend.dataquality.indicators.BoxIndicator;
+import org.talend.dataquality.indicators.CIWordPatternFreqIndicator;
+import org.talend.dataquality.indicators.CIWordPatternLowFreqIndicator;
+import org.talend.dataquality.indicators.CSWordPatternFreqIndicator;
+import org.talend.dataquality.indicators.CSWordPatternLowFreqIndicator;
 import org.talend.dataquality.indicators.CompositeIndicator;
 import org.talend.dataquality.indicators.CountsIndicator;
 import org.talend.dataquality.indicators.DataminingType;
@@ -625,6 +629,34 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
      * @generated
      */
     private EClass eastAsiaPatternLowFreqIndicatorEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass csWordPatternFreqIndicatorEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass csWordPatternLowFreqIndicatorEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass ciWordPatternFreqIndicatorEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    private EClass ciWordPatternLowFreqIndicatorEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -2265,6 +2297,42 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
     }
 
     /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCSWordPatternFreqIndicator() {
+        return csWordPatternFreqIndicatorEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCSWordPatternLowFreqIndicator() {
+        return csWordPatternLowFreqIndicatorEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCIWordPatternFreqIndicator() {
+        return ciWordPatternFreqIndicatorEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EClass getCIWordPatternLowFreqIndicator() {
+        return ciWordPatternLowFreqIndicatorEClass;
+    }
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      * @generated
      */
@@ -2607,6 +2675,14 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
 
         eastAsiaPatternLowFreqIndicatorEClass = createEClass(EAST_ASIA_PATTERN_LOW_FREQ_INDICATOR);
 
+        csWordPatternFreqIndicatorEClass = createEClass(CS_WORD_PATTERN_FREQ_INDICATOR);
+
+        csWordPatternLowFreqIndicatorEClass = createEClass(CS_WORD_PATTERN_LOW_FREQ_INDICATOR);
+
+        ciWordPatternFreqIndicatorEClass = createEClass(CI_WORD_PATTERN_FREQ_INDICATOR);
+
+        ciWordPatternLowFreqIndicatorEClass = createEClass(CI_WORD_PATTERN_LOW_FREQ_INDICATOR);
+
         // Create enums
         enumStatisticsEEnum = createEEnum(ENUM_STATISTICS);
         dataminingTypeEEnum = createEEnum(DATAMINING_TYPE);
@@ -2735,6 +2811,10 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
         benfordLawFrequencyIndicatorEClass.getESuperTypes().add(this.getFrequencyIndicator());
         eastAsiaPatternFreqIndicatorEClass.getESuperTypes().add(this.getPatternFreqIndicator());
         eastAsiaPatternLowFreqIndicatorEClass.getESuperTypes().add(this.getPatternLowFreqIndicator());
+        csWordPatternFreqIndicatorEClass.getESuperTypes().add(this.getFrequencyIndicator());
+        csWordPatternLowFreqIndicatorEClass.getESuperTypes().add(this.getFrequencyIndicator());
+        ciWordPatternFreqIndicatorEClass.getESuperTypes().add(this.getFrequencyIndicator());
+        ciWordPatternLowFreqIndicatorEClass.getESuperTypes().add(this.getFrequencyIndicator());
 
         // Initialize classes and features; add operations and parameters
         initEClass(indicatorEClass, Indicator.class, "Indicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3071,6 +3151,14 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
         initEClass(eastAsiaPatternFreqIndicatorEClass, EastAsiaPatternFreqIndicator.class, "EastAsiaPatternFreqIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         initEClass(eastAsiaPatternLowFreqIndicatorEClass, EastAsiaPatternLowFreqIndicator.class, "EastAsiaPatternLowFreqIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(csWordPatternFreqIndicatorEClass, CSWordPatternFreqIndicator.class, "CSWordPatternFreqIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(csWordPatternLowFreqIndicatorEClass, CSWordPatternLowFreqIndicator.class, "CSWordPatternLowFreqIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(ciWordPatternFreqIndicatorEClass, CIWordPatternFreqIndicator.class, "CIWordPatternFreqIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+        initEClass(ciWordPatternLowFreqIndicatorEClass, CIWordPatternLowFreqIndicator.class, "CIWordPatternLowFreqIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
         // Initialize enums and add enum literals
         initEEnum(enumStatisticsEEnum, EnumStatistics.class, "EnumStatistics");

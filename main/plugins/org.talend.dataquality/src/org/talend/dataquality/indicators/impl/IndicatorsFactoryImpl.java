@@ -212,6 +212,10 @@ public class IndicatorsFactoryImpl extends EFactoryImpl implements IndicatorsFac
             case IndicatorsPackage.BENFORD_LAW_FREQUENCY_INDICATOR: return createBenfordLawFrequencyIndicator();
             case IndicatorsPackage.EAST_ASIA_PATTERN_FREQ_INDICATOR: return createEastAsiaPatternFreqIndicator();
             case IndicatorsPackage.EAST_ASIA_PATTERN_LOW_FREQ_INDICATOR: return createEastAsiaPatternLowFreqIndicator();
+            case IndicatorsPackage.CS_WORD_PATTERN_FREQ_INDICATOR: return createCSWordPatternFreqIndicator();
+            case IndicatorsPackage.CS_WORD_PATTERN_LOW_FREQ_INDICATOR: return createCSWordPatternLowFreqIndicator();
+            case IndicatorsPackage.CI_WORD_PATTERN_FREQ_INDICATOR: return createCIWordPatternFreqIndicator();
+            case IndicatorsPackage.CI_WORD_PATTERN_LOW_FREQ_INDICATOR: return createCIWordPatternLowFreqIndicator();
             default:
                 throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -997,6 +1001,46 @@ public class IndicatorsFactoryImpl extends EFactoryImpl implements IndicatorsFac
     public EastAsiaPatternLowFreqIndicator createEastAsiaPatternLowFreqIndicator() {
         EastAsiaPatternLowFreqIndicatorImpl eastAsiaPatternLowFreqIndicator = new EastAsiaPatternLowFreqIndicatorImpl();
         return eastAsiaPatternLowFreqIndicator;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public CSWordPatternFreqIndicator createCSWordPatternFreqIndicator() {
+        CSWordPatternFreqIndicatorImpl csWordPatternFreqIndicator = new CSWordPatternFreqIndicatorImpl();
+        return csWordPatternFreqIndicator;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public CSWordPatternLowFreqIndicator createCSWordPatternLowFreqIndicator() {
+        CSWordPatternLowFreqIndicatorImpl csWordPatternLowFreqIndicator = new CSWordPatternLowFreqIndicatorImpl();
+        return csWordPatternLowFreqIndicator;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public CIWordPatternFreqIndicator createCIWordPatternFreqIndicator() {
+        CIWordPatternFreqIndicatorImpl ciWordPatternFreqIndicator = new CIWordPatternFreqIndicatorImpl();
+        return ciWordPatternFreqIndicator;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public CIWordPatternLowFreqIndicator createCIWordPatternLowFreqIndicator() {
+        CIWordPatternLowFreqIndicatorImpl ciWordPatternLowFreqIndicator = new CIWordPatternLowFreqIndicatorImpl();
+        return ciWordPatternLowFreqIndicator;
     }
 
     /**
