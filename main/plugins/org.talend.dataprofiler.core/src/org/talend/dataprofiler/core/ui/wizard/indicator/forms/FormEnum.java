@@ -178,6 +178,10 @@ public enum FormEnum {
         case EastAsiaPatternFreqIndicatorEnum:
         case EastAsiaPatternLowFreqIndicatorEnum:
         case DatePatternFreqIndicatorEnum:
+        case CSWordPatternFreqIndicatorEnum:
+        case CSWordPatternLowFreqIndicatorEnum:
+        case CIWordPatternFreqIndicatorEnum:
+        case CIWordPatternLowFreqIndicatorEnum:
             forms = getFormsForFreqencyIndicators(sqlType, dataminingType, indicatorType, isJavaEngine);
             break;
         case ModeIndicatorEnum:
@@ -280,7 +284,11 @@ public enum FormEnum {
             // TDQ-11265: for East Asia Pattern Frequency table indicators, both java and sql engine only have
             // "Text Parameters" without the ignore case option
             if (indicatorType == IndicatorEnum.EastAsiaPatternFreqIndicatorEnum
-                    || indicatorType == IndicatorEnum.EastAsiaPatternLowFreqIndicatorEnum) {
+                    || indicatorType == IndicatorEnum.EastAsiaPatternLowFreqIndicatorEnum
+                    || indicatorType == IndicatorEnum.CSWordPatternFreqIndicatorEnum
+                    || indicatorType == IndicatorEnum.CSWordPatternLowFreqIndicatorEnum
+                    || indicatorType == IndicatorEnum.CIWordPatternFreqIndicatorEnum
+                    || indicatorType == IndicatorEnum.CIWordPatternLowFreqIndicatorEnum) {
                 return new FormEnum[] { TextParametersWithoutOptionsForm };
             }
             // TDQ-11265~

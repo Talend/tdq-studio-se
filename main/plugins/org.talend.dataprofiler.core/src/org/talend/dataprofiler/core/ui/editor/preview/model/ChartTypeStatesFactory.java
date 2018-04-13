@@ -74,12 +74,16 @@ public final class ChartTypeStatesFactory {
             return new ModeStatisticsState(units);
 
         case FREQUENCE_STATISTICS:
+        case CS_WORD_PATTERN_FREQUENCY_TABLE:
+        case CI_WORD_PATTERN_FREQUENCY_TABLE:
             return new FrequencyStatisticsState(units);
 
         case UDI_FREQUENCY:
             return new UDIFrequencyStatisticsState(units);
 
         case LOW_FREQUENCE_STATISTICS:
+        case CS_WORD_PATTERN_LOW_FREQUENCY_TABLE:
+        case CI_WORD_PATTERN_LOW_FREQUENCY_TABLE:
             return new LowFrequencyStatisticsState(units);
             // MOD klliu 2010-08-06 bug 14695
         case BIN_FREQUENCE_STATISTICS:

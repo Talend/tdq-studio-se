@@ -1746,6 +1746,12 @@
            name="Add character map for hive and impala in PatternFrequency and LowFrequency Indicators"
            version="6.3.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.AddWordBasePatternFrequencyIndicator"
+           id="org.talend.dataprofiler.core.migration.impl.AddWordBasePatternFrequencyIndicator"
+           name="Add Word Base Pattern Frequency Indicator"
+           version="7.1.0">
+     </workspacetask>
   </extension>
   
   <extension

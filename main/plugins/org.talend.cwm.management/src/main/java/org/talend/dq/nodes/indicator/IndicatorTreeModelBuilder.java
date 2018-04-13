@@ -105,6 +105,8 @@ public final class IndicatorTreeModelBuilder {
         // build Pattern Frequency Statistics categoryNode
         IndicatorEnum[] patternFinderEnums = new IndicatorEnum[] { IndicatorEnum.PatternFreqIndicatorEnum,
                 IndicatorEnum.PatternLowFreqIndicatorEnum, IndicatorEnum.EastAsiaPatternFreqIndicatorEnum,
+                        IndicatorEnum.CSWordPatternFreqIndicatorEnum, IndicatorEnum.CSWordPatternLowFreqIndicatorEnum,
+                        IndicatorEnum.CIWordPatternFreqIndicatorEnum, IndicatorEnum.CIWordPatternLowFreqIndicatorEnum,
                 IndicatorEnum.EastAsiaPatternLowFreqIndicatorEnum, IndicatorEnum.DatePatternFreqIndicatorEnum };
         IndicatorCategoryNode patternFinderCategoryNode = new IndicatorCategoryNode(PATTERN_LABEL, patternFinderEnums);
 

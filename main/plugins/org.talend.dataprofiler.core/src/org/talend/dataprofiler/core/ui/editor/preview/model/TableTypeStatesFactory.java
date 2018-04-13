@@ -83,12 +83,16 @@ public class TableTypeStatesFactory {
             return new ModeStatisticsTableState(units);
 
         case FREQUENCE_STATISTICS:
+        case CS_WORD_PATTERN_FREQUENCY_TABLE:
+        case CI_WORD_PATTERN_FREQUENCY_TABLE:
             return new FrequencyStatisticsTableState(units);
 
         case UDI_FREQUENCY:
             return new UDIFrequencyStatisticsTableState(units);
 
         case LOW_FREQUENCE_STATISTICS:
+        case CS_WORD_PATTERN_LOW_FREQUENCY_TABLE:
+        case CI_WORD_PATTERN_LOW_FREQUENCY_TABLE:
             return new LowFrequencyStatisticsTableState(units);
 
         case BIN_FREQUENCE_STATISTICS:

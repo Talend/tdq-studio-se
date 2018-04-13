@@ -892,6 +892,46 @@ public class IndicatorsSwitch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case IndicatorsPackage.CS_WORD_PATTERN_FREQ_INDICATOR: {
+                CSWordPatternFreqIndicator csWordPatternFreqIndicator = (CSWordPatternFreqIndicator)theEObject;
+                T result = caseCSWordPatternFreqIndicator(csWordPatternFreqIndicator);
+                if (result == null) result = caseFrequencyIndicator(csWordPatternFreqIndicator);
+                if (result == null) result = caseIndicator(csWordPatternFreqIndicator);
+                if (result == null) result = caseModelElement(csWordPatternFreqIndicator);
+                if (result == null) result = caseElement(csWordPatternFreqIndicator);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case IndicatorsPackage.CS_WORD_PATTERN_LOW_FREQ_INDICATOR: {
+                CSWordPatternLowFreqIndicator csWordPatternLowFreqIndicator = (CSWordPatternLowFreqIndicator)theEObject;
+                T result = caseCSWordPatternLowFreqIndicator(csWordPatternLowFreqIndicator);
+                if (result == null) result = caseFrequencyIndicator(csWordPatternLowFreqIndicator);
+                if (result == null) result = caseIndicator(csWordPatternLowFreqIndicator);
+                if (result == null) result = caseModelElement(csWordPatternLowFreqIndicator);
+                if (result == null) result = caseElement(csWordPatternLowFreqIndicator);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case IndicatorsPackage.CI_WORD_PATTERN_FREQ_INDICATOR: {
+                CIWordPatternFreqIndicator ciWordPatternFreqIndicator = (CIWordPatternFreqIndicator)theEObject;
+                T result = caseCIWordPatternFreqIndicator(ciWordPatternFreqIndicator);
+                if (result == null) result = caseFrequencyIndicator(ciWordPatternFreqIndicator);
+                if (result == null) result = caseIndicator(ciWordPatternFreqIndicator);
+                if (result == null) result = caseModelElement(ciWordPatternFreqIndicator);
+                if (result == null) result = caseElement(ciWordPatternFreqIndicator);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
+            case IndicatorsPackage.CI_WORD_PATTERN_LOW_FREQ_INDICATOR: {
+                CIWordPatternLowFreqIndicator ciWordPatternLowFreqIndicator = (CIWordPatternLowFreqIndicator)theEObject;
+                T result = caseCIWordPatternLowFreqIndicator(ciWordPatternLowFreqIndicator);
+                if (result == null) result = caseFrequencyIndicator(ciWordPatternLowFreqIndicator);
+                if (result == null) result = caseIndicator(ciWordPatternLowFreqIndicator);
+                if (result == null) result = caseModelElement(ciWordPatternLowFreqIndicator);
+                if (result == null) result = caseElement(ciWordPatternLowFreqIndicator);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             default: return defaultCase(theEObject);
         }
     }
@@ -1776,6 +1816,66 @@ public class IndicatorsSwitch<T> {
      * @generated
      */
     public T caseEastAsiaPatternLowFreqIndicator(EastAsiaPatternLowFreqIndicator object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>CS Word Pattern Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>CS Word Pattern Freq Indicator</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCSWordPatternFreqIndicator(CSWordPatternFreqIndicator object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>CS Word Pattern Low Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>CS Word Pattern Low Freq Indicator</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCSWordPatternLowFreqIndicator(CSWordPatternLowFreqIndicator object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>CI Word Pattern Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>CI Word Pattern Freq Indicator</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCIWordPatternFreqIndicator(CIWordPatternFreqIndicator object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>CI Word Pattern Low Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>CI Word Pattern Low Freq Indicator</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseCIWordPatternLowFreqIndicator(CIWordPatternLowFreqIndicator object) {
         return null;
     }
 

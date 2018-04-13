@@ -820,6 +820,10 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="EastAsiaPatternFreqIndicator" eSuperTypes="#//indicators/PatternFreqIndicator"/>
     <eClassifiers xsi:type="ecore:EClass" name="EastAsiaPatternLowFreqIndicator" eSuperTypes="#//indicators/PatternLowFreqIndicator"/>
+    <eClassifiers xsi:type="ecore:EClass" name="CSWordPatternFreqIndicator" eSuperTypes="#//indicators/FrequencyIndicator"/>
+    <eClassifiers xsi:type="ecore:EClass" name="CSWordPatternLowFreqIndicator" eSuperTypes="#//indicators/FrequencyIndicator"/>
+    <eClassifiers xsi:type="ecore:EClass" name="CIWordPatternFreqIndicator" eSuperTypes="#//indicators/FrequencyIndicator"/>
+    <eClassifiers xsi:type="ecore:EClass" name="CIWordPatternLowFreqIndicator" eSuperTypes="#//indicators/FrequencyIndicator"/>
     <eSubpackages name="schema" nsURI="http://dataquality.indicators.schema" nsPrefix="dataquality.indicators.schema">
       <eClassifiers xsi:type="ecore:EClass" name="SchemaIndicator" eSuperTypes="#//indicators/CompositeIndicator">
         <eOperations name="addTableIndicator" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">

@@ -440,6 +440,22 @@ public class IndicatorsAdapterFactory extends AdapterFactoryImpl {
                 return createEastAsiaPatternLowFreqIndicatorAdapter();
             }
             @Override
+            public Adapter caseCSWordPatternFreqIndicator(CSWordPatternFreqIndicator object) {
+                return createCSWordPatternFreqIndicatorAdapter();
+            }
+            @Override
+            public Adapter caseCSWordPatternLowFreqIndicator(CSWordPatternLowFreqIndicator object) {
+                return createCSWordPatternLowFreqIndicatorAdapter();
+            }
+            @Override
+            public Adapter caseCIWordPatternFreqIndicator(CIWordPatternFreqIndicator object) {
+                return createCIWordPatternFreqIndicatorAdapter();
+            }
+            @Override
+            public Adapter caseCIWordPatternLowFreqIndicator(CIWordPatternLowFreqIndicator object) {
+                return createCIWordPatternLowFreqIndicatorAdapter();
+            }
+            @Override
             public Adapter caseElement(Element object) {
                 return createElementAdapter();
             }
@@ -1500,6 +1516,62 @@ public class IndicatorsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createEastAsiaPatternLowFreqIndicatorAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.dataquality.indicators.CSWordPatternFreqIndicator <em>CS Word Pattern Freq Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.dataquality.indicators.CSWordPatternFreqIndicator
+     * @generated
+     */
+    public Adapter createCSWordPatternFreqIndicatorAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.dataquality.indicators.CSWordPatternLowFreqIndicator <em>CS Word Pattern Low Freq Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.dataquality.indicators.CSWordPatternLowFreqIndicator
+     * @generated
+     */
+    public Adapter createCSWordPatternLowFreqIndicatorAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.dataquality.indicators.CIWordPatternFreqIndicator <em>CI Word Pattern Freq Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.dataquality.indicators.CIWordPatternFreqIndicator
+     * @generated
+     */
+    public Adapter createCIWordPatternFreqIndicatorAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.dataquality.indicators.CIWordPatternLowFreqIndicator <em>CI Word Pattern Low Freq Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.dataquality.indicators.CIWordPatternLowFreqIndicator
+     * @generated
+     */
+    public Adapter createCIWordPatternLowFreqIndicatorAdapter() {
         return null;
     }
 

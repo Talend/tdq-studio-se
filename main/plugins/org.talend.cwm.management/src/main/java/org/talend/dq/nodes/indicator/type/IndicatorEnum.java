@@ -435,6 +435,30 @@ public enum IndicatorEnum {
             "Benford Law Frequency", //$NON-NLS-1$
             true,
             null),
+    CSWordPatternFreqIndicatorEnum(
+            IndicatorsPackage.CS_WORD_PATTERN_FREQ_INDICATOR,
+            IndicatorsPackage.Literals.CS_WORD_PATTERN_FREQ_INDICATOR,
+            "CS Word Pattern Frequency", //$NON-NLS-1$
+            true,
+            null),
+    CSWordPatternLowFreqIndicatorEnum(
+            IndicatorsPackage.CS_WORD_PATTERN_LOW_FREQ_INDICATOR,
+            IndicatorsPackage.Literals.CS_WORD_PATTERN_LOW_FREQ_INDICATOR,
+            "CS Word Pattern Low Frequency", //$NON-NLS-1$
+            true,
+            null),
+    CIWordPatternFreqIndicatorEnum(
+            IndicatorsPackage.CI_WORD_PATTERN_FREQ_INDICATOR,
+            IndicatorsPackage.Literals.CI_WORD_PATTERN_FREQ_INDICATOR,
+            "CI Word Pattern Frequency", //$NON-NLS-1$
+            true,
+            null),
+    CIWordPatternLowFreqIndicatorEnum(
+            IndicatorsPackage.CI_WORD_PATTERN_LOW_FREQ_INDICATOR,
+            IndicatorsPackage.Literals.CI_WORD_PATTERN_LOW_FREQ_INDICATOR,
+            "CI Word Pattern Low Frequency", //$NON-NLS-1$
+            true,
+            null),
 
     PatternIndicatorEnum(
             IndicatorsPackage.PATTERN_MATCHING_INDICATOR,
@@ -682,6 +706,14 @@ public enum IndicatorEnum {
             returnEnum = FormatFreqPieIndictorEnum;
         } else if (indicatorType == BenfordLawFrequencyIndicatorEnum.getIndicatorType()) {
             returnEnum = BenfordLawFrequencyIndicatorEnum;
+        } else if (indicatorType == CSWordPatternFreqIndicatorEnum.getIndicatorType()) {
+            returnEnum = CSWordPatternFreqIndicatorEnum;
+        } else if (indicatorType == CSWordPatternLowFreqIndicatorEnum.getIndicatorType()) {
+            returnEnum = CSWordPatternLowFreqIndicatorEnum;
+        } else if (indicatorType == CIWordPatternFreqIndicatorEnum.getIndicatorType()) {
+            returnEnum = CIWordPatternFreqIndicatorEnum;
+        } else if (indicatorType == CIWordPatternLowFreqIndicatorEnum.getIndicatorType()) {
+            returnEnum = CIWordPatternLowFreqIndicatorEnum;
         }
 
         return returnEnum;

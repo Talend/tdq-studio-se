@@ -22,6 +22,10 @@ import org.talend.dataquality.indicators.BinFrequencyIndicator;
 import org.talend.dataquality.indicators.BinLowFrequencyIndicator;
 import org.talend.dataquality.indicators.BlankCountIndicator;
 import org.talend.dataquality.indicators.BoxIndicator;
+import org.talend.dataquality.indicators.CIWordPatternFreqIndicator;
+import org.talend.dataquality.indicators.CIWordPatternLowFreqIndicator;
+import org.talend.dataquality.indicators.CSWordPatternFreqIndicator;
+import org.talend.dataquality.indicators.CSWordPatternLowFreqIndicator;
 import org.talend.dataquality.indicators.CountsIndicator;
 import org.talend.dataquality.indicators.DateFrequencyIndicator;
 import org.talend.dataquality.indicators.DateLowFrequencyIndicator;
@@ -638,6 +642,25 @@ class IndcatorSwitchImp extends IndicatorsSwitch<Boolean> {
         return setIndicatorDefinition(object, IndicatorEnum.BenfordLawFrequencyIndicatorEnum.getLabel());
     }
 
+    @Override
+    public Boolean caseCSWordPatternFreqIndicator(CSWordPatternFreqIndicator object) {
+        return setIndicatorDefinition(object, IndicatorEnum.CSWordPatternFreqIndicatorEnum.getLabel());
+    }
+
+    @Override
+    public Boolean caseCSWordPatternLowFreqIndicator(CSWordPatternLowFreqIndicator object) {
+        return setIndicatorDefinition(object, IndicatorEnum.CSWordPatternLowFreqIndicatorEnum.getLabel());
+    }
+
+    @Override
+    public Boolean caseCIWordPatternFreqIndicator(CIWordPatternFreqIndicator object) {
+        return setIndicatorDefinition(object, IndicatorEnum.CIWordPatternFreqIndicatorEnum.getLabel());
+    }
+
+    @Override
+    public Boolean caseCIWordPatternLowFreqIndicator(CIWordPatternLowFreqIndicator object) {
+        return setIndicatorDefinition(object, IndicatorEnum.CIWordPatternLowFreqIndicatorEnum.getLabel());
+    }
     /*
      * (non-Javadoc)
      * 

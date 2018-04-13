@@ -197,6 +197,10 @@ public final class IndicatorCommonUtil {
                     case SoundexIndicatorEnum:
                     case SoundexLowIndicatorEnum:
                     case BenfordLawFrequencyIndicatorEnum:
+                    case CSWordPatternFreqIndicatorEnum:
+                    case CSWordPatternLowFreqIndicatorEnum:
+                    case CIWordPatternFreqIndicatorEnum:
+                    case CIWordPatternLowFreqIndicatorEnum:
                         value = handleFrequency(indicator);
                         break;
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_UhvbED1SEeieEt49TD3y_Q" name="CS Word Pattern Frequency" label="CS Word Pattern Frequency">
+  <taggedValue xmi:id="_UhvbEz1SEeieEt49TD3y_Q" tag="Purpose" value="evaluates the most frequent word patterns"/>
+  <taggedValue xmi:id="_UhvbFD1SEeieEt49TD3y_Q" tag="Description" value="counts the number of record for each distinct pattern. Patterns focus on words and are case sensitive. [Word] represents a word starting with an uppercase character and composed of lowercase characters. [wORD] represents a word starting with a lowercase character and composed of uppercase characters. [WORD] : represents a word with uppercase characters. [word] represents a word with lowercase characters. [Char] represents a single uppercase character. [char] represents a single lowercase character."/>
+  <categories href="../../../.Talend.definition#_0n3BsJR-Ed2XO-JvLwVAwg"/>
+</dataquality.indicators.definition:IndicatorDefinition>

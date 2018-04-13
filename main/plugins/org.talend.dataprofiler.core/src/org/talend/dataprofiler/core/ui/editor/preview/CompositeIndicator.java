@@ -45,7 +45,8 @@ public final class CompositeIndicator {
             soundexLowFrequencyList, patternFrequencylist, patternLowFrequencyList, eastAsiaPatternFrequencylist,
             eastAsiaPatternLowFrequencyList, datePatternFrequencyList, summaryList, patternList, sqlPatternList,
             modelIndicatorList, udiCountList, udiFrequencyList, udiMatchingList, udiRealValueList, dateFrequencyList,
-            dateLowFrequencyList, simpleTextList, phoneNumbList, formatFreqList;
+            dateLowFrequencyList, simpleTextList, phoneNumbList, formatFreqList, csWordPatternFreqList,
+            csWordPatternLowFreqList, ciWordPatternFreqList, ciWordPatternLowFreqList;
 
     private List<TableIndicatorUnit> tableSimpleList, tableWhereRuleList;
 
@@ -119,6 +120,10 @@ public final class CompositeIndicator {
         phoneNumbList = new ArrayList<IndicatorUnit>();
         formatFreqList = new ArrayList<IndicatorUnit>();
         fraudList = new ArrayList<IndicatorUnit>();
+        csWordPatternFreqList = new ArrayList<IndicatorUnit>();
+        csWordPatternLowFreqList = new ArrayList<IndicatorUnit>();
+        ciWordPatternFreqList = new ArrayList<IndicatorUnit>();
+        ciWordPatternLowFreqList = new ArrayList<IndicatorUnit>();
     }
 
     private void clear() {
@@ -165,6 +170,10 @@ public final class CompositeIndicator {
         phoneNumbList.clear();
         formatFreqList.clear();
         fraudList.clear();
+        csWordPatternFreqList.clear();
+        csWordPatternLowFreqList.clear();
+        ciWordPatternFreqList.clear();
+        ciWordPatternLowFreqList.clear();
 
     }
 
@@ -335,6 +344,18 @@ public final class CompositeIndicator {
             case BenfordLawFrequencyIndicatorEnum:
                 fraudList.add(one);
                 break;
+            case CSWordPatternFreqIndicatorEnum:
+                csWordPatternFreqList.add(one);
+                break;
+            case CSWordPatternLowFreqIndicatorEnum:
+                csWordPatternLowFreqList.add(one);
+                break;
+            case CIWordPatternFreqIndicatorEnum:
+                ciWordPatternFreqList.add(one);
+                break;
+            case CIWordPatternLowFreqIndicatorEnum:
+                ciWordPatternLowFreqList.add(one);
+                break;
             default:
             }
         }
@@ -378,6 +399,10 @@ public final class CompositeIndicator {
         separatedMap.put(EIndicatorChartType.PHONE_NUMBER_STATISTICS, phoneNumbList);
         separatedMap.put(EIndicatorChartType.FORMAT_FREQ_PIE_STATISTICS, formatFreqList);
         separatedMap.put(EIndicatorChartType.BENFORD_LAW_STATISTICS, fraudList);
+        separatedMap.put(EIndicatorChartType.CS_WORD_PATTERN_FREQUENCY_TABLE, csWordPatternFreqList);
+        separatedMap.put(EIndicatorChartType.CS_WORD_PATTERN_LOW_FREQUENCY_TABLE, csWordPatternLowFreqList);
+        separatedMap.put(EIndicatorChartType.CI_WORD_PATTERN_FREQUENCY_TABLE, ciWordPatternFreqList);
+        separatedMap.put(EIndicatorChartType.CI_WORD_PATTERN_LOW_FREQUENCY_TABLE, ciWordPatternLowFreqList);
 
         return separatedMap;
     }

@@ -291,6 +291,10 @@ public final class ModelElementIndicatorRule {
         case WellFormNationalPhoneCountIndicatorEnum:
         case PhoneNumbStatisticsIndicatorEnum:
         case FormatFreqPieIndictorEnum:
+        case CSWordPatternFreqIndicatorEnum:
+        case CSWordPatternLowFreqIndicatorEnum:
+        case CIWordPatternFreqIndicatorEnum:
+        case CIWordPatternLowFreqIndicatorEnum:
             if (isJavaEngine && (dataminingType == DataminingType.NOMINAL || dataminingType == DataminingType.INTERVAL)) {
                 return true;
             }

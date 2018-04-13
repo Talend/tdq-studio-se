@@ -674,6 +674,42 @@ public interface IndicatorsFactory extends EFactory {
     EastAsiaPatternLowFreqIndicator createEastAsiaPatternLowFreqIndicator();
 
     /**
+     * Returns a new object of class '<em>CS Word Pattern Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>CS Word Pattern Freq Indicator</em>'.
+     * @generated
+     */
+    CSWordPatternFreqIndicator createCSWordPatternFreqIndicator();
+
+    /**
+     * Returns a new object of class '<em>CS Word Pattern Low Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>CS Word Pattern Low Freq Indicator</em>'.
+     * @generated
+     */
+    CSWordPatternLowFreqIndicator createCSWordPatternLowFreqIndicator();
+
+    /**
+     * Returns a new object of class '<em>CI Word Pattern Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>CI Word Pattern Freq Indicator</em>'.
+     * @generated
+     */
+    CIWordPatternFreqIndicator createCIWordPatternFreqIndicator();
+
+    /**
+     * Returns a new object of class '<em>CI Word Pattern Low Freq Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>CI Word Pattern Low Freq Indicator</em>'.
+     * @generated
+     */
+    CIWordPatternLowFreqIndicator createCIWordPatternLowFreqIndicator();
+
+    /**
      * Returns the package supported by this factory.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

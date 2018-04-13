@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_kvvTsT1SEeieEt49TD3y_Q" name="CI Word Pattern Low Frequency" label="CI Word Pattern Low Frequency">
+  <taggedValue xmi:id="_kvvTtD1SEeieEt49TD3y_Q" tag="Purpose" value="evaluates the least frequent word patterns"/>
+  <taggedValue xmi:id="_kvvTtT1SEeieEt49TD3y_Q" tag="Description" value="counts the number of record for each distinct pattern. Patterns focus on words and are case insensitive. [word] represents a word, [char] represents a single lowercase character, [alnum] represents an alphanumeric word, [digit] represents a single digit, [number] represents a sequence of digits."/>
+  <categories href="../../../.Talend.definition#_0n3BsJR-Ed2XO-JvLwVAwg"/>
+</dataquality.indicators.definition:IndicatorDefinition>

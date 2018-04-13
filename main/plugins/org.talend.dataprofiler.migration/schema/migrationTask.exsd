@@ -168,6 +168,8 @@
                   </enumeration>
                   <enumeration value="7.0.1">
                   </enumeration>
+                  <enumeration value="7.1.0">
+                  </enumeration>
                </restriction>
             </simpleType>
          </attribute>

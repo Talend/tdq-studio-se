@@ -88,7 +88,18 @@ public enum EIndicatorChartType {
 
     FORMAT_FREQ_PIE_STATISTICS(Messages.getString("EIndicatorChartType.FormatFreqPieStatistics"), null), //$NON-NLS-1$
 
-    BENFORD_LAW_STATISTICS(Messages.getString("EIndicatorChartType.BenfordLawStatistics"), new BenfordLawFrequencyExplorer()); //$NON-NLS-1$
+    BENFORD_LAW_STATISTICS(
+            Messages.getString("EIndicatorChartType.BenfordLawStatistics"), new BenfordLawFrequencyExplorer()), //$NON-NLS-1$
+
+    CS_WORD_PATTERN_FREQUENCY_TABLE(
+            Messages.getString("EIndicatorChartType.CSWordPatternFrequencyTable"), new FunctionFrequencyStatExplorer()), //$NON-NLS-1$
+
+    CS_WORD_PATTERN_LOW_FREQUENCY_TABLE(
+            Messages.getString("EIndicatorChartType.CSWordPatternLowFrequencyTable"), new FunctionFrequencyStatExplorer()), //$NON-NLS-1$
+    CI_WORD_PATTERN_FREQUENCY_TABLE(
+            Messages.getString("EIndicatorChartType.CIWordPatternFrequencyTable"), new FunctionFrequencyStatExplorer()), //$NON-NLS-1$
+    CI_WORD_PATTERN_LOW_FREQUENCY_TABLE(
+            Messages.getString("EIndicatorChartType.CIWordPatternLowFrequencyTable"), new FunctionFrequencyStatExplorer()); //$NON-NLS-1$
 
     private String literal;
 
