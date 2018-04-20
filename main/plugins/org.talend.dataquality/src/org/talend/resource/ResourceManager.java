@@ -382,7 +382,7 @@ public final class ResourceManager {
     }
 
     /**
-     * DOC bZhou Comment method "getConnectionFolder".
+     * Get Context Folder
      * 
      * @return
      */
