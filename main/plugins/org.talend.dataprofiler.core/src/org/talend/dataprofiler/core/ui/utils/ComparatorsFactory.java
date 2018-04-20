@@ -22,9 +22,12 @@ import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IResource;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.dataprofiler.core.ui.editor.preview.IndicatorUnit;
+import org.talend.dataprofiler.core.ui.imex.model.ItemRecord;
 import org.talend.dq.factory.ModelElementFileFactory;
+import org.talend.dq.helper.EMainNodesTreeType;
 import org.talend.dq.helper.RepositoryNodeComparator;
 import org.talend.dq.indicators.ext.FrequencyExt;
+import org.talend.repository.model.IRepositoryNode;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -58,6 +61,11 @@ public final class ComparatorsFactory {
 
     // ADDED yyin 2012-08-28 TDQ_5076
     public static final int BENFORDLAW_FREQUENCY_COMPARATOR_ID = 11;
+
+    // zshen TDQ-15133
+    public static final int ROOT_NODES_COMPARATOR_ID = 12;
+
+    public static final int ITEM_RECORD_COMPARATOR_ID = 13;
 
     /**
      * DOC zqin Comment method "sort".
@@ -117,6 +125,10 @@ public final class ComparatorsFactory {
             return new RepositoryNodeComparator();
         case BENFORDLAW_FREQUENCY_COMPARATOR_ID:// ADDED yyin 2012-08-28 TDQ_5076
             return new BenfordLawIndicatorComparator();
+        case ROOT_NODES_COMPARATOR_ID:
+            return new RootNodesComparator();
+        case ITEM_RECORD_COMPARATOR_ID:
+            return new ItemRecordComparator();
         default:
             return new ModelElementComparator();
         }
@@ -271,6 +283,41 @@ public final class ComparatorsFactory {
             return -1;
         }
     }// ~
+
+    static class RootNodesComparator implements Comparator<IRepositoryNode> {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
+        public int compare(IRepositoryNode o1, IRepositoryNode o2) {
+            if (o1 == null || o2 == null) {
+                return 0;
+            }
+            EMainNodesTreeType orderType1 = EMainNodesTreeType.findByType(o1.getContentType());
+            EMainNodesTreeType orderType2 = EMainNodesTreeType.findByType(o2.getContentType());
+            return orderType1.ordinal() - orderType2.ordinal();
+        }
+
+    }
+
+    static class ItemRecordComparator implements Comparator<ItemRecord> {
+
+        /*
+         * (non-Javadoc)
+         * 
+         * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+         */
+        public int compare(ItemRecord o1, ItemRecord o2) {
+            if (o1 == null || o2 == null) {
+                return 0;
+            }
+            EMainNodesTreeType orderType1 = EMainNodesTreeType.findByFile(o1.getFile());
+            EMainNodesTreeType orderType2 = EMainNodesTreeType.findByFile(o2.getFile());
+            return orderType1.ordinal() - orderType2.ordinal();
+        }
+    }
 
     /**
      * DOC Zqin ComparatorsFactory class global comment. Detailled comment

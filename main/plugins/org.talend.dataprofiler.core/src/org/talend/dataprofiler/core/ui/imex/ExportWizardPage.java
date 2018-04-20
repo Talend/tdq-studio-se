@@ -27,7 +27,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.viewers.CheckboxTreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -63,12 +62,10 @@ import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.ReportFileHelper;
-import org.talend.dq.helper.RepositoryNodeComparator;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.resourcehelper.IndicatorResourceFileHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.DQFolderRepNode;
-import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
@@ -461,20 +458,6 @@ public class ExportWizardPage extends WizardPage {
             }
             repositoryTree.setCheckedElements(selectedItemRecords.toArray());
         }
-
-        // show the same order with repository tree
-        final RepositoryNodeComparator repositoryNodeComparator = new RepositoryNodeComparator();
-        repositoryTree.setComparator(new ViewerComparator() {
-
-            @Override
-            public int compare(Viewer iviewer, Object o1, Object o2) {
-                DQRepositoryNode recursiveFind = RepositoryNodeHelper.recursiveFind(((ItemRecord) o1).getElement());
-                DQRepositoryNode recursiveFind2 = RepositoryNodeHelper.recursiveFind(((ItemRecord) o2).getElement());
-                return repositoryNodeComparator.compare(recursiveFind, recursiveFind2);
-            }
-        });
-        // TDQ-14573~
-
         createUtilityButtons(treeComposite);
     }
 
@@ -802,7 +785,7 @@ public class ExportWizardPage extends WizardPage {
         }
         ProjectManager pManager = ProjectManager.getInstance();
         Project project = pManager.getCurrentProject().getEmfProject();
-        File outputDir = new File(lastPath + File.separator + project.getTechnicalLabel()); //$NON-NLS-1$
+        File outputDir = new File(lastPath + File.separator + project.getTechnicalLabel());
         // if the file exists,pop an dialog to ask that it will override the old file.
         if ((dirBTN.getSelection() && outputDir.exists())
                 || (archBTN.getSelection() && new File(archTxt.getText().trim()).exists())) {

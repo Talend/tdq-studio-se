@@ -109,8 +109,9 @@ public final class ResourceManager {
     public static IPath getTempMapDBFolder() {
         IPath worskpacePath = getWorskpacePath();
 
-        IPath TempMapDBFolder = worskpacePath.append(ReponsitoryContextBridge.getProjectName()).append(
-                EResourceConstant.TEMP_MAPDB.getPath());
+        IPath TempMapDBFolder =
+                worskpacePath.append(ReponsitoryContextBridge.getProjectName()).append(
+                        EResourceConstant.TEMP_MAPDB.getPath());
         if (!Platform.isRunning()) {
             return TempMapDBFolder.append("jobApplication");//$NON-NLS-1$
         }
@@ -122,8 +123,8 @@ public final class ResourceManager {
             return getRootFolderLocation();
         } else {
             String talendProjctPathFromReportApplication = System.getProperty("talend.project.path");//$NON-NLS-1$
-            return talendProjctPathFromReportApplication == null ? new Path("") : new Path(talendProjctPathFromReportApplication)
-                    .removeLastSegments(1);
+            return talendProjctPathFromReportApplication == null ? new Path("") : new Path(
+                    talendProjctPathFromReportApplication).removeLastSegments(1);
         }
     }
 
@@ -189,22 +190,28 @@ public final class ResourceManager {
             analysisUUID = ResourceHelper.getUUID(analysis);
             if (AnalysisType.MULTIPLE_COLUMN.equals(analysis.getParameters().getAnalysisType())) {
                 modelElementName = indicator.getAnalyzedElement().getName();
-                //TDQ-12795, only for file delimited connection, the name of the column maybe null, but the label always has value.
-                if(modelElementName==null){
-                    if(indicator.getAnalyzedElement() instanceof MetadataColumn){
-                        if(indicator.getAnalyzedElement().eIsProxy()){
-                            modelElementName =Path.EMPTY.toString();
-                        }else{
-                            modelElementName = ((MetadataColumn)indicator.getAnalyzedElement()).getLabel();
+                // TDQ-12795, only for file delimited connection, the name of the column maybe null, but the label
+                // always has value.
+                if (modelElementName == null) {
+                    if (indicator.getAnalyzedElement() instanceof MetadataColumn) {
+                        if (indicator.getAnalyzedElement().eIsProxy()) {
+                            modelElementName = Path.EMPTY.toString();
+                        } else {
+                            modelElementName = ((MetadataColumn) indicator.getAnalyzedElement()).getLabel();
                         }
-                    }else{
-                        modelElementName =Path.EMPTY.toString();
+                    } else {
+                        modelElementName = Path.EMPTY.toString();
                         log.error(Messages.getString("ResourceManager.CanNotGetColunName"));
                     }
                 }
             }
         }
-        return getTempMapDBFolder().append(analysisUUID).append(modelElementName).append(indicatorUUID).append("_").toString();
+        return getTempMapDBFolder()
+                .append(analysisUUID)
+                .append(modelElementName)
+                .append(indicatorUUID)
+                .append("_")
+                .toString();
     }
 
     /**
@@ -372,6 +379,15 @@ public final class ResourceManager {
      */
     public static IFolder getConnectionFolder() {
         return getOneFolder(EResourceConstant.DB_CONNECTIONS);
+    }
+
+    /**
+     * DOC bZhou Comment method "getConnectionFolder".
+     * 
+     * @return
+     */
+    public static IFolder getContextFolder() {
+        return getOneFolder(EResourceConstant.CONTEXT);
     }
 
     /**

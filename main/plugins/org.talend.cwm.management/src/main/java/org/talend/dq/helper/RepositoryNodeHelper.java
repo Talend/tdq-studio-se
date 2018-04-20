@@ -184,7 +184,8 @@ public final class RepositoryNodeHelper {
 
     public static final String DQRESPOSITORYVIEW = "org.talend.dataprofiler.core.ui.views.DQRespositoryView"; //$NON-NLS-1$
 
-    public static final String DQRESPOSITORY_DETAIL_VIEW = "org.talend.dataprofiler.core.ui.views.RespositoryDetailView"; //$NON-NLS-1$
+    public static final String DQRESPOSITORY_DETAIL_VIEW =
+            "org.talend.dataprofiler.core.ui.views.RespositoryDetailView"; //$NON-NLS-1$
 
     public static final String DI_REPOSITORY_NAME = "Repository"; //$NON-NLS-1$
 
@@ -319,10 +320,12 @@ public final class RepositoryNodeHelper {
      * UK Phone Number.pattern <br>
      * US_Phone_Number.pattern
      */
-    private static final String[] PATTERN_PHONE_UUIDS = { "_QbsC8IyeEd6Dle_8xC0lwg", "_CnD1cIyeEd6Dle_8xC0lwg", //$NON-NLS-1$ //$NON-NLS-2$
-            "_SPiUIPbKEd2c5L1gaJyUtQ", "_9LBjMIygEd6Dle_8xC0lwg", "_DqoD4IyhEd6Dle_8xC0lwg", "_W6xUUIygEd6Dle_8xC0lwg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "_NW0R0IygEd6Dle_8xC0lwg", "_eVNsoIygEd6Dle_8xC0lwg", "_Is95MIydEd6Dle_8xC0lwg", "__RSB4IycEd6Dle_8xC0lwg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "_mRzFgIycEd6Dle_8xC0lwg", "_S7m6oIyhEd6Dle_8xC0lwg", "_IIVOAD4XEd24WPpU35gV1A", "_bdjpwLr8Ed2z8Ya9pb9seQ" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    private static final String[] PATTERN_PHONE_UUIDS =
+            {
+                    "_QbsC8IyeEd6Dle_8xC0lwg", "_CnD1cIyeEd6Dle_8xC0lwg", //$NON-NLS-1$ //$NON-NLS-2$
+                    "_SPiUIPbKEd2c5L1gaJyUtQ", "_9LBjMIygEd6Dle_8xC0lwg", "_DqoD4IyhEd6Dle_8xC0lwg", "_W6xUUIygEd6Dle_8xC0lwg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    "_NW0R0IygEd6Dle_8xC0lwg", "_eVNsoIygEd6Dle_8xC0lwg", "_Is95MIydEd6Dle_8xC0lwg", "__RSB4IycEd6Dle_8xC0lwg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    "_mRzFgIycEd6Dle_8xC0lwg", "_S7m6oIyhEd6Dle_8xC0lwg", "_IIVOAD4XEd24WPpU35gV1A", "_bdjpwLr8Ed2z8Ya9pb9seQ" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     /**
      * the follows' uuids<br>
@@ -338,9 +341,11 @@ public final class RepositoryNodeHelper {
      * Starts_with_uppercase.pattern <br>
      * Uppercased_Single_Word.pattern
      */
-    private static final String[] PATTERN_TEXT_UUIDS = { "_N7yi0Gk3Ed2I1bT57-sHUw", "_vZ6_IGk6Ed2I1bT57-sHUw", //$NON-NLS-1$ //$NON-NLS-2$
-            "_e4vUoYyZEd6Dle_8xC0lwg", "_IqpTEIyfEd6Dle_8xC0lwg", "_6rm3QIycEd6Dle_8xC0lwg", "_gDqDcP9eEd2mwaQf90ozSg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            "_18GtIIyaEd6Dle_8xC0lwg", "_scYqYIyaEd6Dle_8xC0lwg", "_53rX8AMvEeKk6OZDw5mXOQ", "_FyTwIHnTEd2weu9skTiCqA" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    private static final String[] PATTERN_TEXT_UUIDS =
+            {
+                    "_N7yi0Gk3Ed2I1bT57-sHUw", "_vZ6_IGk6Ed2I1bT57-sHUw", //$NON-NLS-1$ //$NON-NLS-2$
+                    "_e4vUoYyZEd6Dle_8xC0lwg", "_IqpTEIyfEd6Dle_8xC0lwg", "_6rm3QIycEd6Dle_8xC0lwg", "_gDqDcP9eEd2mwaQf90ozSg", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    "_18GtIIyaEd6Dle_8xC0lwg", "_scYqYIyaEd6Dle_8xC0lwg", "_53rX8AMvEeKk6OZDw5mXOQ", "_FyTwIHnTEd2weu9skTiCqA" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
     /**
      * the follows' uuids<br>
@@ -369,13 +374,17 @@ public final class RepositoryNodeHelper {
     private static final List<?> PATTERN_REGEX_TEXT_UUIDS = Arrays.asList(PATTERN_TEXT_UUIDS);
 
     private static final String[] PATTERN_REGEX_FOLDER_NAMES = {
- Messages.getString("RepositoryNodeHelper.pattern.address"),
-            Messages.getString("RepositoryNodeHelper.pattern.code"), Messages.getString("RepositoryNodeHelper.pattern.customer"),
-            Messages.getString("RepositoryNodeHelper.pattern.date"), Messages.getString("RepositoryNodeHelper.pattern.internet"),
-            Messages.getString("RepositoryNodeHelper.pattern.number"), Messages.getString("RepositoryNodeHelper.pattern.phone"),
-            Messages.getString("RepositoryNodeHelper.pattern.text") }; //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
+            Messages.getString("RepositoryNodeHelper.pattern.address"),
+            Messages.getString("RepositoryNodeHelper.pattern.code"),
+            Messages.getString("RepositoryNodeHelper.pattern.customer"),
+            Messages.getString("RepositoryNodeHelper.pattern.date"),
+            Messages.getString("RepositoryNodeHelper.pattern.internet"),
+            Messages.getString("RepositoryNodeHelper.pattern.number"),
+            Messages.getString("RepositoryNodeHelper.pattern.phone"),
+            Messages.getString("RepositoryNodeHelper.pattern.text") }; //$NON-NLS-1$
 
-    private static final String[] PATTERN_SQL_FOLDER_NAMES = { Messages.getString("RepositoryNodeHelper.sql.internet"), }; //$NON-NLS-1$
+    private static final String[] PATTERN_SQL_FOLDER_NAMES =
+            { Messages.getString("RepositoryNodeHelper.sql.internet"), }; //$NON-NLS-1$
 
     private static final List<String> PATTERN_REGEX_FOLDER_NAMES_LIST = Arrays.asList(PATTERN_REGEX_FOLDER_NAMES);
 
@@ -445,6 +454,13 @@ public final class RepositoryNodeHelper {
     private RepositoryNodeHelper() {
     }
 
+    /**
+     * 
+     * Get the path of current node
+     * 
+     * @param node
+     * @return
+     */
     public static IPath getPath(IRepositoryNode node) {
         if (node == null) {
             return null;
@@ -476,6 +492,36 @@ public final class RepositoryNodeHelper {
         default:
         }
         return getPath(node.getParent());
+    }
+
+    /**
+     * 
+     * Get the first system path of current node
+     * 
+     * @param node
+     * @return
+     */
+    public static IPath getFirstSystemPath(IRepositoryNode node) {
+        if (node == null) {
+            return null;
+        }
+        if (node.isBin()) {
+            return new Path(PluginConstant.EMPTY_STRING);
+        }
+        if (node.getType() == null) {
+            return null;
+        }
+        switch (node.getType()) {
+        case SYSTEM_FOLDER:
+            ERepositoryObjectType contentType = node.getContentType();
+            if (contentType == null) {
+                Item item = node.getObject().getProperty().getItem();
+                contentType = ERepositoryObjectType.getItemType(item);
+            }
+            return new Path(ERepositoryObjectType.getFolderName(contentType));
+        default:
+            return getFirstSystemPath(node.getParent());
+        }
     }
 
     public static ERepositoryObjectType retrieveRepObjectTypeByPath(String path) {
@@ -561,37 +607,56 @@ public final class RepositoryNodeHelper {
      * @return
      */
     public static ERepositoryObjectType getSystemIndicatorFolderRepositoryType(String label) {
-        if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_ADVANCED_STATISTICS).endsWith(label)) {
-            return ERepositoryObjectType.SYSTEM_INDICATORS_ADVANCED_STATISTICS;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_BUSINESS_RULES).endsWith(label)) {
-            return ERepositoryObjectType.SYSTEM_INDICATORS_BUSINESS_RULES;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_CORRELATION).endsWith(label)) {
-            return ERepositoryObjectType.SYSTEM_INDICATORS_CORRELATION;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_FUNCTIONAL_DEPENDENCY).endsWith(
+        if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_ADVANCED_STATISTICS).endsWith(
                 label)) {
-            return ERepositoryObjectType.SYSTEM_INDICATORS_FUNCTIONAL_DEPENDENCY;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_OVERVIEW).endsWith(label)) {
-            return ERepositoryObjectType.SYSTEM_INDICATORS_OVERVIEW;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS)
+            return ERepositoryObjectType.SYSTEM_INDICATORS_ADVANCED_STATISTICS;
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_BUSINESS_RULES)
                 .endsWith(label)) {
+            return ERepositoryObjectType.SYSTEM_INDICATORS_BUSINESS_RULES;
+        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_CORRELATION).endsWith(
+                label)) {
+            return ERepositoryObjectType.SYSTEM_INDICATORS_CORRELATION;
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_FUNCTIONAL_DEPENDENCY)
+                .endsWith(label)) {
+            return ERepositoryObjectType.SYSTEM_INDICATORS_FUNCTIONAL_DEPENDENCY;
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_OVERVIEW)
+                .endsWith(label)) {
+            return ERepositoryObjectType.SYSTEM_INDICATORS_OVERVIEW;
+        } else if (ERepositoryObjectType.getFolderName(
+                ERepositoryObjectType.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS).endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_PATTERN_MATCHING).endsWith(label)) {
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_PATTERN_MATCHING)
+                .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_PATTERN_MATCHING;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_ROW_COMPARISON).endsWith(label)) {
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_ROW_COMPARISON)
+                .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_ROW_COMPARISON;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_SIMPLE_STATISTICS).endsWith(label)) {
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_SIMPLE_STATISTICS)
+                .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_SIMPLE_STATISTICS;
         } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_SOUNDEX).endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_SOUNDEX;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_SUMMARY_STATISTICS)
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_SUMMARY_STATISTICS)
                 .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_SUMMARY_STATISTICS;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_TEXT_STATISTICS).endsWith(label)) {
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_TEXT_STATISTICS)
+                .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_TEXT_STATISTICS;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS).endsWith(
-                label)) {
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS)
+                .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS;
-        } else if (ERepositoryObjectType.getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_FRAUDDETECTION).endsWith(label)) {
+        } else if (ERepositoryObjectType
+                .getFolderName(ERepositoryObjectType.SYSTEM_INDICATORS_FRAUDDETECTION)
+                .endsWith(label)) {
             return ERepositoryObjectType.SYSTEM_INDICATORS_FRAUDDETECTION;
         }
         return null;
@@ -874,7 +939,8 @@ public final class RepositoryNodeHelper {
         TdViewRepositoryObject tdViewRepositoryObject = new TdViewRepositoryObject(lastVersion, findModelElement);
         tdViewRepositoryObject.setId(findModelElement.getName());
         tdViewRepositoryObject.setLabel(findModelElement.getName());
-        DBViewRepNode dbViewRepNode = new DBViewRepNode(tdViewRepositoryObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT, null);
+        DBViewRepNode dbViewRepNode =
+                new DBViewRepNode(tdViewRepositoryObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT, null);
         dbViewRepNode.setProperties(EProperties.LABEL, ERepositoryObjectType.METADATA_CON_COLUMN);
         dbViewRepNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_CON_COLUMN);
         tdViewRepositoryObject.setRepositoryNode(dbViewRepNode);
@@ -891,7 +957,8 @@ public final class RepositoryNodeHelper {
         TdTableRepositoryObject tdTableRepositoryObject = new TdTableRepositoryObject(lastVersion, findModelElement);
         tdTableRepositoryObject.setId(findModelElement.getName());
         tdTableRepositoryObject.setLabel(findModelElement.getName());
-        DBTableRepNode dbTableRepNode = new DBTableRepNode(tdTableRepositoryObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT, null);
+        DBTableRepNode dbTableRepNode =
+                new DBTableRepNode(tdTableRepositoryObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT, null);
         dbTableRepNode.setProperties(EProperties.LABEL, ERepositoryObjectType.METADATA_CON_COLUMN);
         dbTableRepNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_CON_COLUMN);
         tdTableRepositoryObject.setRepositoryNode(dbTableRepNode);
@@ -940,11 +1007,23 @@ public final class RepositoryNodeHelper {
 
                 String childNodeFileName = PluginConstant.EMPTY_STRING;
                 if (childNode instanceof JrxmlTempleteRepNode) {
-                    childNodeFileName = childNode.getObject().getProperty().eResource().getURI().lastSegment()
-                            .replaceAll(PluginConstant.PROPERTIES_STRING, PluginConstant.JRXML_STRING);
+                    childNodeFileName =
+                            childNode
+                                    .getObject()
+                                    .getProperty()
+                                    .eResource()
+                                    .getURI()
+                                    .lastSegment()
+                                    .replaceAll(PluginConstant.PROPERTIES_STRING, PluginConstant.JRXML_STRING);
                 } else if (childNode instanceof SourceFileRepNode) {
-                    childNodeFileName = childNode.getObject().getProperty().eResource().getURI().lastSegment()
-                            .replaceAll(PluginConstant.PROPERTIES_STRING, PluginConstant.SQL_STRING);
+                    childNodeFileName =
+                            childNode
+                                    .getObject()
+                                    .getProperty()
+                                    .eResource()
+                                    .getURI()
+                                    .lastSegment()
+                                    .replaceAll(PluginConstant.PROPERTIES_STRING, PluginConstant.SQL_STRING);
                 }
                 if (fileName.equals(childNodeFileName)) {
                     return childNode;
@@ -1047,7 +1126,8 @@ public final class RepositoryNodeHelper {
                 for (IRepositoryNode inode : children) {
                     if (inode instanceof DBConnectionRepNode) {
                         result.add((DBConnectionRepNode) inode);
-                    } else if (inode instanceof DBConnectionFolderRepNode || inode instanceof DBConnectionSubFolderRepNode) {
+                    } else if (inode instanceof DBConnectionFolderRepNode
+                            || inode instanceof DBConnectionSubFolderRepNode) {
                         if (recursiveFind) {
                             result.addAll(getDBConnectionRepNodes(inode, recursiveFind, withDeleted));
                         }
@@ -1068,7 +1148,8 @@ public final class RepositoryNodeHelper {
                 for (IRepositoryNode inode : children) {
                     if (inode instanceof DFConnectionRepNode) {
                         result.add((DFConnectionRepNode) inode);
-                    } else if (inode instanceof DFConnectionFolderRepNode || inode instanceof DFConnectionSubFolderRepNode) {
+                    } else if (inode instanceof DFConnectionFolderRepNode
+                            || inode instanceof DFConnectionSubFolderRepNode) {
                         if (recursiveFind) {
                             result.addAll(getDFConnectionRepNodes(inode, recursiveFind, withDeleted));
                         }
@@ -1101,9 +1182,11 @@ public final class RepositoryNodeHelper {
         return result;
     }
 
-    public static List<ReportRepNode> getReportRepNodes(IRepositoryNode parrentNode, boolean recursiveFind, boolean withDeleted) {
+    public static List<ReportRepNode> getReportRepNodes(IRepositoryNode parrentNode, boolean recursiveFind,
+            boolean withDeleted) {
         List<ReportRepNode> result = new ArrayList<ReportRepNode>();
-        if (parrentNode != null && (parrentNode instanceof ReportFolderRepNode || parrentNode instanceof ReportSubFolderRepNode)) {
+        if (parrentNode != null
+                && (parrentNode instanceof ReportFolderRepNode || parrentNode instanceof ReportSubFolderRepNode)) {
             List<IRepositoryNode> children = parrentNode.getChildren(withDeleted);
             if (children.size() > 0) {
                 for (IRepositoryNode inode : children) {
@@ -1124,13 +1207,15 @@ public final class RepositoryNodeHelper {
             boolean recursiveFind, boolean withDeleted) {
         List<SysIndicatorDefinitionRepNode> result = new ArrayList<SysIndicatorDefinitionRepNode>();
         if (parrentNode != null
-                && (parrentNode instanceof SysIndicatorFolderRepNode || parrentNode instanceof UserDefIndicatorFolderRepNode || parrentNode instanceof UserDefIndicatorSubFolderRepNode)) {
+                && (parrentNode instanceof SysIndicatorFolderRepNode
+                        || parrentNode instanceof UserDefIndicatorFolderRepNode || parrentNode instanceof UserDefIndicatorSubFolderRepNode)) {
             List<IRepositoryNode> children = parrentNode.getChildren(withDeleted);
             if (children.size() > 0) {
                 for (IRepositoryNode inode : children) {
                     if (inode instanceof SysIndicatorDefinitionRepNode) {
                         result.add((SysIndicatorDefinitionRepNode) inode);
-                    } else if (inode instanceof SysIndicatorFolderRepNode || inode instanceof UserDefIndicatorFolderRepNode
+                    } else if (inode instanceof SysIndicatorFolderRepNode
+                            || inode instanceof UserDefIndicatorFolderRepNode
                             || inode instanceof UserDefIndicatorSubFolderRepNode) {
                         if (recursiveFind) {
                             result.addAll(getIndicatorDefinitionRepNodes(inode, recursiveFind, withDeleted));
@@ -1142,17 +1227,20 @@ public final class RepositoryNodeHelper {
         return result;
     }
 
-    public static List<PatternRepNode> getPatternRepNodes(IRepositoryNode parrentNode, boolean recursiveFind, boolean withDeleted) {
+    public static List<PatternRepNode> getPatternRepNodes(IRepositoryNode parrentNode, boolean recursiveFind,
+            boolean withDeleted) {
         List<PatternRepNode> result = new ArrayList<PatternRepNode>();
         if (parrentNode != null
-                && (parrentNode instanceof PatternRegexFolderRepNode || parrentNode instanceof PatternRegexSubFolderRepNode
+                && (parrentNode instanceof PatternRegexFolderRepNode
+                        || parrentNode instanceof PatternRegexSubFolderRepNode
                         || parrentNode instanceof PatternSqlFolderRepNode || parrentNode instanceof PatternSqlSubFolderRepNode)) {
             List<IRepositoryNode> children = parrentNode.getChildren(withDeleted);
             if (children.size() > 0) {
                 for (IRepositoryNode inode : children) {
                     if (inode instanceof PatternRepNode) {
                         result.add((PatternRepNode) inode);
-                    } else if (inode instanceof PatternRegexFolderRepNode || inode instanceof PatternRegexSubFolderRepNode
+                    } else if (inode instanceof PatternRegexFolderRepNode
+                            || inode instanceof PatternRegexSubFolderRepNode
                             || inode instanceof PatternSqlFolderRepNode || inode instanceof PatternSqlSubFolderRepNode) {
                         if (recursiveFind) {
                             result.addAll(getPatternRepNodes(inode, recursiveFind, withDeleted));
@@ -1164,11 +1252,13 @@ public final class RepositoryNodeHelper {
         return result;
     }
 
-    public static List<RuleRepNode> getRuleRepNodes(IRepositoryNode parrentNode, boolean recursiveFind, boolean withDeleted) {
+    public static List<RuleRepNode> getRuleRepNodes(IRepositoryNode parrentNode, boolean recursiveFind,
+            boolean withDeleted) {
         List<RuleRepNode> result = new ArrayList<RuleRepNode>();
         if (parrentNode != null
                 && (parrentNode instanceof RulesSQLFolderRepNode || parrentNode instanceof RulesSQLSubFolderRepNode
-                        || parrentNode instanceof RulesParserSubFolderRepNode || parrentNode instanceof RulesParserFolderRepNode
+                        || parrentNode instanceof RulesParserSubFolderRepNode
+                        || parrentNode instanceof RulesParserFolderRepNode
                         || parrentNode instanceof RulesMatcherSubFolderRepNode || parrentNode instanceof RulesMatcherFolderRepNode)) {
             List<IRepositoryNode> children = parrentNode.getChildren(withDeleted);
             if (children.size() > 0) {
@@ -1176,7 +1266,8 @@ public final class RepositoryNodeHelper {
                     if (inode instanceof RuleRepNode) {
                         result.add((RuleRepNode) inode);
                     } else if (inode instanceof RulesSQLFolderRepNode || inode instanceof RulesSQLSubFolderRepNode
-                            || inode instanceof RulesParserSubFolderRepNode || inode instanceof RulesMatcherSubFolderRepNode) {
+                            || inode instanceof RulesParserSubFolderRepNode
+                            || inode instanceof RulesMatcherSubFolderRepNode) {
                         if (recursiveFind) {
                             result.addAll(getRuleRepNodes(inode, recursiveFind, withDeleted));
                         }
@@ -1197,7 +1288,8 @@ public final class RepositoryNodeHelper {
         }
 
         IRepositoryNode MetadataDBConnectionFolderNode = getMetadataDBConnectionFolderNode(dbConn);
-        List<DBConnectionRepNode> dbConnectionRepNodes = getDBConnectionRepNodes(MetadataDBConnectionFolderNode, true, true);
+        List<DBConnectionRepNode> dbConnectionRepNodes =
+                getDBConnectionRepNodes(MetadataDBConnectionFolderNode, true, true);
         if (dbConnectionRepNodes.size() > 0) {
             for (DBConnectionRepNode childNode : dbConnectionRepNodes) {
                 if (uuid.equals(getUUID(childNode.getDatabaseConnection()))) {
@@ -1233,7 +1325,8 @@ public final class RepositoryNodeHelper {
         }
 
         IRepositoryNode MetadataFileDelimitedFolderNode = getMetadataFileDelimitedFolderNode(dfConn);
-        List<DFConnectionRepNode> dfConnectionRepNodes = getDFConnectionRepNodes(MetadataFileDelimitedFolderNode, true, true);
+        List<DFConnectionRepNode> dfConnectionRepNodes =
+                getDFConnectionRepNodes(MetadataFileDelimitedFolderNode, true, true);
         if (dfConnectionRepNodes.size() > 0) {
             for (DFConnectionRepNode childNode : dfConnectionRepNodes) {
                 if (uuid.equals(getUUID(childNode.getDfConnection()))) {
@@ -1433,14 +1526,16 @@ public final class RepositoryNodeHelper {
 
         List<SysIndicatorDefinitionRepNode> indicatorDefinitionRepNodes;
         if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-            indicatorDefinitionRepNodes = getIndicatorDefinitionRepNodes(
-                    getLibrariesFolderNode(EResourceConstant.SYSTEM_INDICATORS), true, true);
+            indicatorDefinitionRepNodes =
+                    getIndicatorDefinitionRepNodes(getLibrariesFolderNode(EResourceConstant.SYSTEM_INDICATORS), true,
+                            true);
             indicatorDefinitionRepNodes.addAll(getIndicatorDefinitionRepNodes(
                     getLibrariesFolderNode(EResourceConstant.USER_DEFINED_INDICATORS), true, true));
         } else {
             Project inWhichProject = getInWhichProject(indDef);
-            indicatorDefinitionRepNodes = getIndicatorDefinitionRepNodes(
-                    getLibrariesFolderNode(EResourceConstant.SYSTEM_INDICATORS, inWhichProject), true, true);
+            indicatorDefinitionRepNodes =
+                    getIndicatorDefinitionRepNodes(
+                            getLibrariesFolderNode(EResourceConstant.SYSTEM_INDICATORS, inWhichProject), true, true);
             indicatorDefinitionRepNodes.addAll(getIndicatorDefinitionRepNodes(
                     getLibrariesFolderNode(EResourceConstant.USER_DEFINED_INDICATORS, inWhichProject), true, true));
         }
@@ -1467,13 +1562,15 @@ public final class RepositoryNodeHelper {
         List<PatternRepNode> patternRepNodes;
         if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
             patternRepNodes = getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX), true, true);
-            patternRepNodes.addAll(getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_SQL), true, true));
+            patternRepNodes
+                    .addAll(getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_SQL), true, true));
         } else {
             Project inWhichProject = getInWhichProject(pattern);
-            patternRepNodes = getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX, inWhichProject), true,
-                    true);
-            patternRepNodes.addAll(getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_SQL, inWhichProject),
-                    true, true));
+            patternRepNodes =
+                    getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX, inWhichProject), true,
+                            true);
+            patternRepNodes.addAll(getPatternRepNodes(
+                    getLibrariesFolderNode(EResourceConstant.PATTERN_SQL, inWhichProject), true, true));
         }
 
         if (patternRepNodes.size() > 0) {
@@ -2086,7 +2183,8 @@ public final class RepositoryNodeHelper {
      * @param isContainFileConnections, if true, will contain the file connections
      * @return
      */
-    public static List<IRepositoryNode> getConnectionRepositoryNodes(boolean withDeleted, boolean isContainFileConnections) {
+    public static List<IRepositoryNode> getConnectionRepositoryNodes(boolean withDeleted,
+            boolean isContainFileConnections) {
         List<IRepositoryNode> connNodes = new ArrayList<IRepositoryNode>();
 
         if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
@@ -2239,7 +2337,8 @@ public final class RepositoryNodeHelper {
                 if (EResourceConstant.PATTERNS.getName().equals((subNode.getObject().getLabel()))) {
                     List<IRepositoryNode> subChildren = subNode.getChildren();
                     for (IRepositoryNode patternsNode : subChildren) {
-                        if (patternsNode instanceof PatternRegexFolderRepNode || patternsNode instanceof PatternSqlFolderRepNode) {
+                        if (patternsNode instanceof PatternRegexFolderRepNode
+                                || patternsNode instanceof PatternSqlFolderRepNode) {
                             patternsNodes.addAll(getModelElementFromFolder(patternsNode, withDeleted));
                         }
                     }
@@ -2417,7 +2516,8 @@ public final class RepositoryNodeHelper {
      * @param folderItem
      * @return boolean
      */
-    private static boolean isNodeMatch(org.talend.core.model.general.Project project, DQRepositoryNode node, FolderItem folderItem) {
+    private static boolean isNodeMatch(org.talend.core.model.general.Project project, DQRepositoryNode node,
+            FolderItem folderItem) {
         // MOD qiongli 2011-2-16,bug 18642.filter recycle bin node.
         if (node.isBin()) {
             return false;
@@ -2426,8 +2526,9 @@ public final class RepositoryNodeHelper {
         if (folderItem != null) {
             // sometimes the systemFolderItem will be recreate so we compare label attribute instead of compare
             // id(for example, SvnBaseRepositoryFactory#updateProject() line:1277)
-            boolean isSysFolder = ENodeType.SYSTEM_FOLDER == node.getType()
-                    || FolderType.SYSTEM_FOLDER_LITERAL == folderItem.getType();
+            boolean isSysFolder =
+                    ENodeType.SYSTEM_FOLDER == node.getType()
+                            || FolderType.SYSTEM_FOLDER_LITERAL == folderItem.getType();
             if (isSysFolder) {
                 String viewFolderLabel = folderItem.getProperty().getLabel();
                 String folderLabel = node.getObject().getProperty().getLabel();
@@ -2545,10 +2646,12 @@ public final class RepositoryNodeHelper {
     }
 
     public static boolean canOpenEditor(IRepositoryNode node) {
-        return node instanceof AnalysisRepNode || node instanceof SysIndicatorDefinitionRepNode || node instanceof PatternRepNode
-                || node instanceof JrxmlTempleteRepNode || node instanceof SourceFileRepNode || node instanceof RuleRepNode
-                || node instanceof DBConnectionRepNode || node instanceof ReportRepNode || node instanceof ReportFileRepNode
-                || node instanceof ReportAnalysisRepNode || node instanceof HiveOfHCConnectionNode;
+        return node instanceof AnalysisRepNode || node instanceof SysIndicatorDefinitionRepNode
+                || node instanceof PatternRepNode || node instanceof JrxmlTempleteRepNode
+                || node instanceof SourceFileRepNode || node instanceof RuleRepNode
+                || node instanceof DBConnectionRepNode || node instanceof ReportRepNode
+                || node instanceof ReportFileRepNode || node instanceof ReportAnalysisRepNode
+                || node instanceof HiveOfHCConnectionNode;
     }
 
     public static List<IRepositoryNode> getNamedColumnSetNodes(IRepositoryNode node) {
@@ -2786,10 +2889,11 @@ public final class RepositoryNodeHelper {
         boolean result = true;
         String exchangeFolderClassName = "org.talend.dataprofiler.core.ui.exchange.ExchangeFolderRepNode";//$NON-NLS-1$
         if (node instanceof AnalysisRepNode || node instanceof ReportRepNode
-                || exchangeFolderClassName.equals(node.getClass().getName()) || node instanceof SysIndicatorDefinitionRepNode
-                || node instanceof PatternRepNode || node instanceof RuleRepNode || node instanceof SourceFileFolderRepNode
-                || node instanceof RecycleBinRepNode || node instanceof DBColumnRepNode || node instanceof DFColumnRepNode
-                || node instanceof JrxmlTempFolderRepNode) {
+                || exchangeFolderClassName.equals(node.getClass().getName())
+                || node instanceof SysIndicatorDefinitionRepNode || node instanceof PatternRepNode
+                || node instanceof RuleRepNode || node instanceof SourceFileFolderRepNode
+                || node instanceof RecycleBinRepNode || node instanceof DBColumnRepNode
+                || node instanceof DFColumnRepNode || node instanceof JrxmlTempFolderRepNode) {
             result = false;
         }
         return result;
@@ -3202,7 +3306,8 @@ public final class RepositoryNodeHelper {
         return ret.toArray(new String[ret.size()]);
     }
 
-    private static <T extends NamedColumnSet> List<NamedColumnSet> filterMatchingColumnSets(List<T> columnSets, String[] patterns) {
+    private static <T extends NamedColumnSet> List<NamedColumnSet> filterMatchingColumnSets(List<T> columnSets,
+            String[] patterns) {
         List<NamedColumnSet> retColumnSets = new ArrayList<NamedColumnSet>();
         int size = 0;
         for (NamedColumnSet t : columnSets) {
@@ -3361,7 +3466,8 @@ public final class RepositoryNodeHelper {
                     return iNode;
                 }
             }
-            if ((iNode instanceof DFColumnRepNode) && iNode.getLabel().toLowerCase().contains(DQRepositoryNode.getFilterStr())) {
+            if ((iNode instanceof DFColumnRepNode)
+                    && iNode.getLabel().toLowerCase().contains(DQRepositoryNode.getFilterStr())) {
                 return iNode;
             }
         }
@@ -3388,7 +3494,8 @@ public final class RepositoryNodeHelper {
         // for the reference project NOT merge mode
         Project currentProject = ProjectManager.getInstance().getCurrentProject();
         List<Project> allReferencedProjects = ProjectManager.getInstance().getAllReferencedProjects();
-        if (org.talend.core.PluginChecker.isRefProjectLoaded() && currentProject != null && allReferencedProjects.size() > 0) {
+        if (org.talend.core.PluginChecker.isRefProjectLoaded() && currentProject != null
+                && allReferencedProjects.size() > 0) {
             if (!ProxyRepositoryManager.getInstance().isMergeRefProject()) {
                 for (Project refProject : allReferencedProjects) {
                     list.add(getRootNode(ERepositoryObjectType.TDQ_DATA_PROFILING, true, refProject));
@@ -3483,8 +3590,9 @@ public final class RepositoryNodeHelper {
             Collection<IRepositoryNode> shownNodes) {
         if (needToDeleteNodes.size() != shownNodes.size()) {
             // If some nodes is filtered out, ask the user whether to continue to delete.
-            boolean openQuestion = MessageDialog.openQuestion(null, Messages.getString("RepositoryNodeHelper.delete.title"),//$NON-NLS-1$
-                    Messages.getString("RepositoryNodeHelper.ContainsFilteredNodes"));//$NON-NLS-1$
+            boolean openQuestion =
+                    MessageDialog.openQuestion(null, Messages.getString("RepositoryNodeHelper.delete.title"),//$NON-NLS-1$
+                            Messages.getString("RepositoryNodeHelper.ContainsFilteredNodes"));//$NON-NLS-1$
             return openQuestion;
         } else {
             // Haven't filtered out nodes , continue to empty Recycle Bin .
@@ -3571,7 +3679,10 @@ public final class RepositoryNodeHelper {
             IRepositoryViewObject object = node.getObject();
             if (object instanceof Folder) {
                 IPath path = getPath(node);
-                folder = root.getFolder(new Path(currentProject.getTechnicalLabel() + IPath.SEPARATOR + path.toString()));
+                folder =
+                        root
+                                .getFolder(new Path(currentProject.getTechnicalLabel() + IPath.SEPARATOR
+                                        + path.toString()));
             }
         }
         return folder;
@@ -3609,7 +3720,8 @@ public final class RepositoryNodeHelper {
                             propPathStr = uri.toFileString();
                         }
                         int lastIndexOf = propPathStr.lastIndexOf("."); //$NON-NLS-1$
-                        String itemPathStr = propPathStr.substring(0, lastIndexOf) + "." + getTDQFileItemExtension(item); //$NON-NLS-1$
+                        String itemPathStr =
+                                propPathStr.substring(0, lastIndexOf) + "." + getTDQFileItemExtension(item); //$NON-NLS-1$
                         file = root.getFile(new Path(itemPathStr));
                     }
                 }
@@ -3628,7 +3740,7 @@ public final class RepositoryNodeHelper {
      */
     private static String getTDQFileItemExtension(Item item) {
         // set default file extension '.item'. of course it adpts to context node.
-        String result = FactoriesUtil.ITEM_EXTENSION; //$NON-NLS-1$
+        String result = FactoriesUtil.ITEM_EXTENSION;
         if (item instanceof TDQSourceFileItem) {
             result = FactoriesUtil.SQL;
         } else if (item instanceof TDQJrxmlItem) {
@@ -3657,8 +3769,9 @@ public final class RepositoryNodeHelper {
         connItem.setConnection(createConnection);
         try {
 
-            FolderItem folderItem = ProxyRepositoryFactory.getInstance().getFolderItem(
-                    ProjectManager.getInstance().getCurrentProject(), itemType, Path.EMPTY);
+            FolderItem folderItem =
+                    ProxyRepositoryFactory.getInstance().getFolderItem(
+                            ProjectManager.getInstance().getCurrentProject(), itemType, Path.EMPTY);
             Object refreshFolderItem = refreshFolderItem(folderItem, property);
             if (refreshFolderItem == null) {
                 log.debug("Can not replace the connection from it's FolderItem : " + connItem.eResource().getURI()); //$NON-NLS-1$
@@ -3973,7 +4086,8 @@ public final class RepositoryNodeHelper {
         if (firstElement instanceof IRepositoryNode) {
             IRepositoryNode repNode = (IRepositoryNode) firstElement;
             IRepositoryViewObject repViewObject = repNode.getObject();
-            if (repViewObject instanceof MetadataColumnRepositoryObject || repViewObject instanceof MetadataXmlElementType) {
+            if (repViewObject instanceof MetadataColumnRepositoryObject
+                    || repViewObject instanceof MetadataXmlElementType) {
                 IRepositoryNode[] column = new IRepositoryNode[selectedNodes.length];
                 for (int i = 0; i < selectedNodes.length; i++) {
                     column[i] = (IRepositoryNode) selectedNodes[i];
@@ -3999,7 +4113,8 @@ public final class RepositoryNodeHelper {
             return list.toArray(new IRepositoryNode[list.size()]);
         } else if (firstElement instanceof WhereRuleChartDataEntity) {
             // ADD msjian 2012-2-9 TDQ-4470: get columns from the join conditions
-            EList<JoinElement> joinConditions = ((WhereRuleChartDataEntity) firstElement).getIndicator().getJoinConditions();
+            EList<JoinElement> joinConditions =
+                    ((WhereRuleChartDataEntity) firstElement).getIndicator().getJoinConditions();
             if (joinConditions != null && joinConditions.size() > 0) {
                 JoinElement joinElement = joinConditions.get(0);
                 list.add(RepositoryNodeHelper.recursiveFind(joinElement.getColA()));

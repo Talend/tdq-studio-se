@@ -13,6 +13,7 @@
 package org.talend.dataprofiler.core.ui.action.actions;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
@@ -22,7 +23,6 @@ import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.metadata.managment.ui.wizard.context.ContextWizard;
 import org.talend.repository.model.RepositoryNode;
-
 
 /**
  * 
@@ -40,7 +40,7 @@ public class DQCreateContextAction extends Action implements ICheatSheetAction {
      */
     public DQCreateContextAction(RepositoryNode node) {
         this.node = node;
-        setImageDescriptor(ImageLib.getImageDescriptor(ImageLib.CONTEXT));
+        setImageDescriptor(ImageLib.createAddedIcon(ImageLib.CONTEXT, IDecoration.TOP_RIGHT));
         setText(DefaultMessagesImpl.getString("DQCreateContextAction.createContext"));
     }
 

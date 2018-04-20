@@ -58,6 +58,7 @@ import org.talend.dq.helper.resourcehelper.RepResourceFileHelper;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.AnalysisSubFolderRepNode;
 import org.talend.dq.nodes.ConnectionRepNode;
+import org.talend.dq.nodes.ContextRepNode;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.JrxmlTempSubFolderNode;
 import org.talend.dq.nodes.JrxmlTempleteRepNode;
@@ -139,7 +140,10 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         IPath targetPath = RepositoryNodeHelper.getPath(targetNode);
         int sourceCount = sourcePath.segmentCount();
         int targetCount = targetPath.segmentCount();
-        if (sourceCount == 1 || targetCount == 1) {
+        ERepositoryObjectType sourceType = sourceNode.getContentType();
+        ERepositoryObjectType targetentType = targetNode.getContentType();
+        // there is a special case if target and source both are context then it is ok
+        if ((sourceCount == 1 || targetCount == 1) && !allBeContextNode(sourceType, targetentType)) {
             return false;
         }
 
@@ -154,7 +158,7 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         // MOD klliu Bug TDQ-4444 2012-01-09
         // This need check the object type of source node is sub type of targetNode's
         // if it is,that is not allowed to drop.
-        if (isSubTypeOfTargetNode(sourceNode, targetNode)) {
+        if (isSubTypeOfTargetNode(sourceType, targetentType)) {
             return false;
         }
         // ~
@@ -175,7 +179,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         }
 
         // when move the parent to child node,can not do drag
-        if (targetNode.getParent().equals(sourceNode)) {
+        RepositoryNode parentNode = targetNode.getParent();
+        if (parentNode != null && parentNode.equals(sourceNode)) {
             return false;
         }
 
@@ -187,6 +192,20 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         }
 
         return true;
+    }
+
+    /**
+     * Judge whether both source and target nodes are context type
+     * 
+     * @param sourceNode
+     * @param targetNode
+     * @return
+     */
+    private boolean allBeContextNode(ERepositoryObjectType sourceType, ERepositoryObjectType targetentType) {
+        if (ERepositoryObjectType.CONTEXT == sourceType && ERepositoryObjectType.CONTEXT == targetentType) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -266,9 +285,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      * @param targetNode
      * @return
      */
-    private boolean isSubTypeOfTargetNode(IRepositoryNode sourceNode, IRepositoryNode targetNode) {
-        ERepositoryObjectType sourceObjectType = sourceNode.getContentType();
-        ERepositoryObjectType targetObjectType = targetNode.getContentType();
+    private boolean
+            isSubTypeOfTargetNode(ERepositoryObjectType sourceObjectType, ERepositoryObjectType targetObjectType) {
         List<ERepositoryObjectType> targetNodeChildTypes = getTargetNodeChildTypes(targetObjectType);
         return targetNodeChildTypes.contains(sourceObjectType);
     }
@@ -331,15 +349,18 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
     private boolean isForbidNode(IRepositoryNode sourceNode) {
         ENodeType type = sourceNode.getType();
         // MOD xqliu 2012-05-22 TDQ-4831 allow user to drag Jrxml file
-        boolean flag = (type != null && type == ENodeType.SYSTEM_FOLDER) || sourceNode instanceof ReportFileRepNode
-                || sourceNode instanceof ReportAnalysisRepNode;
+        boolean flag =
+                (type != null && type == ENodeType.SYSTEM_FOLDER) || sourceNode instanceof ReportFileRepNode
+                        || sourceNode instanceof ReportAnalysisRepNode;
         // ~ TDQ-4831
         if (!flag) {
             RepositoryNode parent = sourceNode.getParent();
             if (parent != null) {
-                flag = parent instanceof AnalysisRepNode
-                        || parent instanceof ReportRepNode
-                        || (parent instanceof AnalysisSubFolderRepNode && ((AnalysisSubFolderRepNode) parent).getObject() == null);
+                flag =
+                        parent instanceof AnalysisRepNode
+                                || parent instanceof ReportRepNode
+                                || (parent instanceof AnalysisSubFolderRepNode && ((AnalysisSubFolderRepNode) parent)
+                                        .getObject() == null);
             }
         }
         return flag;
@@ -368,8 +389,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
             // MOD gdbu 2011-11-17 TDQ-3969 : after move folder or items re-filter the tree , to create a new list .
             if (DQRepositoryNode.isOnFilterring()) {
                 RepositoryNodeHelper.fillTreeList(null);
-                RepositoryNodeHelper.setFilteredNode(RepositoryNodeHelper.getRootNode(ERepositoryObjectType.TDQ_DATA_PROFILING,
-                        true));
+                RepositoryNodeHelper.setFilteredNode(RepositoryNodeHelper.getRootNode(
+                        ERepositoryObjectType.TDQ_DATA_PROFILING, true));
             }
             isHandleOK = Boolean.TRUE;
 
@@ -394,7 +415,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      * @param targetNode
      * @throws PersistenceException
      */
-    private void moveRepositoryNodes(IRepositoryNode[] repositoryNodes, IRepositoryNode targetNode) throws PersistenceException {
+    private void moveRepositoryNodes(IRepositoryNode[] repositoryNodes, IRepositoryNode targetNode)
+            throws PersistenceException {
         if (repositoryNodes != null) {
             for (IRepositoryNode sourceNode : repositoryNodes) {
                 if (sourceNode.getType() == ENodeType.REPOSITORY_ELEMENT) {
@@ -402,6 +424,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
                         moveAnaConNode(sourceNode, targetNode);
                     } else if (sourceNode instanceof ReportRepNode) {
                         moveReportRepNode(sourceNode, targetNode);
+                    } else if (sourceNode instanceof ContextRepNode) {
+                        moveContextNode(sourceNode, targetNode);
                     } else {
                         IPath makeRelativeTo = getMakeRelativeTo(sourceNode);
                         IPath removeLastSegments = makeRelativeTo.removeLastSegments(1);
@@ -461,6 +485,16 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      * @param targetNode
      */
     private void moveAnaConNode(IRepositoryNode sourceNode, IRepositoryNode targetNode) {
+        moveDQNode(sourceNode, targetNode);
+    }
+
+    /**
+     * when move Analysis, Connection, Context node, use this method.
+     * 
+     * @param sourceNode
+     * @param targetNode
+     */
+    protected void moveDQNode(IRepositoryNode sourceNode, IRepositoryNode targetNode) {
         // MOD yyin 20121127, TDQ-6302, when back from DI's expanded Metadata, can not move the connections.
         final IRepositoryNode finalSourceNode = sourceNode;
         final IRepositoryNode finalTargetNode = targetNode;
@@ -469,6 +503,16 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         } else if (finalTargetNode.getType() == ENodeType.SYSTEM_FOLDER) {
             moveObject(finalSourceNode, finalTargetNode, Path.EMPTY);
         }
+    }
+
+    /**
+     * when move Context node, use this method.
+     * 
+     * @param sourceNode
+     * @param targetNode
+     */
+    private void moveContextNode(IRepositoryNode sourceNode, IRepositoryNode targetNode) {
+        moveDQNode(sourceNode, targetNode);
     }
 
     /**
@@ -525,8 +569,12 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
             reportType = ReportHelper.ReportType.getReportType(anaMap.getAnalysis(), anaMap.getReportType());
             // Relocate the jrxml template path for user define type.
             if (ReportHelper.ReportType.USER_MADE.equals(reportType)) {
-                jrxmlPath = RepResourceFileHelper.findCorrespondingFile(rep).getParent().getLocation()
-                        .append(anaMap.getJrxmlSource());
+                jrxmlPath =
+                        RepResourceFileHelper
+                                .findCorrespondingFile(rep)
+                                .getParent()
+                                .getLocation()
+                                .append(anaMap.getJrxmlSource());
                 relativePath = jrxmlPath.makeRelativeTo(targetFolder.getLocation().append("/")); //$NON-NLS-1$
                 anaMap.setJrxmlSource(relativePath.toString());
             }
@@ -601,12 +649,16 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
             for (JrxmlTempleteRepNode jrxml : jrxmlFileRepNodes) {
                 // check it there some sub folder under the source node
                 IPath relativeTo = RepositoryNodeHelper.getPath(jrxml.getParent()).makeRelativeTo(oldPath);
-                IPath tempPath = newPath.append(RepNodeUtils.getSeparator()).append(sourceNode.getLabel())
-                        .append(RepNodeUtils.getSeparator());
+                IPath tempPath =
+                        newPath.append(RepNodeUtils.getSeparator())
+                                .append(sourceNode.getLabel())
+                                .append(RepNodeUtils.getSeparator());
                 if (relativeTo.segmentCount() > 0) {// if there are some sub folder under the source node
                     tempPath = tempPath.append(relativeTo).append(RepNodeUtils.getSeparator());
                 }
-                jrxmlFileNamesAfterMove.add(tempPath.append(RepositoryNodeHelper.getFileNameOfTheNode(jrxml)).toOSString());
+                jrxmlFileNamesAfterMove.add(tempPath
+                        .append(RepositoryNodeHelper.getFileNameOfTheNode(jrxml))
+                        .toOSString());
             }
             // update the depended reports
             RepNodeUtils.updateJrxmlRelatedReport(jrxmlFileNames, jrxmlFileNamesAfterMove);
@@ -632,12 +684,10 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         // ~
 
         // check root node
-        IPath sourcePath = RepositoryNodeHelper.getPath(sourceNode);
-        IPath targetPath = RepositoryNodeHelper.getPath(targetNode);
-        int sourceCount = sourcePath.segmentCount();
-        int targetCount = targetPath.segmentCount();
-        String sourceString = sourcePath.removeLastSegments(sourceCount - 2).toOSString();
-        String targetString = targetPath.removeLastSegments(targetCount - 2).toOSString();
+        IPath sourcePath = RepositoryNodeHelper.getFirstSystemPath(sourceNode);
+        IPath targetPath = RepositoryNodeHelper.getFirstSystemPath(targetNode);
+        String sourceString = sourcePath.toOSString();
+        String targetString = targetPath.toOSString();
         return sourceString.equals(targetString);
     }
 
@@ -673,6 +723,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
             fullPath = ResourceManager.getRulesParserFolder().getFullPath();
         } else if (objectType == ERepositoryObjectType.TDQ_RULES_MATCHER) {
             fullPath = ResourceManager.getRulesMatcherFolder().getFullPath();
+        } else if (objectType == ERepositoryObjectType.CONTEXT) {
+            fullPath = ResourceManager.getContextFolder().getFullPath();
         }
         return fullPath;
     }
@@ -684,37 +736,39 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      * @param targetNode
      * @throws PersistenceException
      */
-    private void moveFolder(final IRepositoryNode sourceNode, final IRepositoryNode targetNode) throws PersistenceException {
+    private void moveFolder(final IRepositoryNode sourceNode, final IRepositoryNode targetNode)
+            throws PersistenceException {
         IPath sourcePath = RepositoryNodeHelper.getPath(sourceNode);
         IPath targetPath = RepositoryNodeHelper.getPath(targetNode);
         IPath makeRelativeTo = getMakeRelativeTo(targetNode);
         final IPath sourceMakeRelativeTo = sourcePath.makeRelativeTo(makeRelativeTo);
         final IPath targetMakeRelativeTo = targetPath.makeRelativeTo(makeRelativeTo);
-        RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>(
-                DefaultMessagesImpl.getString("LocalRepositoryObjectCRUD.MOVE_FOLDER") //$NON-NLS-1$
+        RepositoryWorkUnit<Object> workUnit =
+                new RepositoryWorkUnit<Object>(DefaultMessagesImpl.getString("LocalRepositoryObjectCRUD.MOVE_FOLDER") //$NON-NLS-1$
                         + sourceNode.getObject().getProperty().getDisplayName()) {
 
-            @Override
-            protected void run() {
+                    @Override
+                    protected void run() {
 
-                IWorkspace workspace = ResourcesPlugin.getWorkspace();
-                IWorkspaceRunnable operation = new IWorkspaceRunnable() {
+                        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+                        IWorkspaceRunnable operation = new IWorkspaceRunnable() {
 
-                    public void run(IProgressMonitor monitor) throws CoreException {
+                            public void run(IProgressMonitor monitor) throws CoreException {
+                                try {
+                                    factory.moveFolder(targetNode.getContentType(), sourceMakeRelativeTo,
+                                            targetMakeRelativeTo);
+                                } catch (PersistenceException e) {
+                                    log.error(e.getMessage(), e);
+                                }
+                            }
+                        };
                         try {
-                            factory.moveFolder(targetNode.getContentType(), sourceMakeRelativeTo, targetMakeRelativeTo);
-                        } catch (PersistenceException e) {
-                            log.error(e.getMessage(), e);
+                            workspace.run(operation, new NullProgressMonitor());
+                        } catch (CoreException e) {
+                            log.error(e, e);
                         }
                     }
                 };
-                try {
-                    workspace.run(operation, new NullProgressMonitor());
-                } catch (CoreException e) {
-                    log.error(e, e);
-                }
-            }
-        };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
     }
@@ -729,37 +783,37 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      */
     private void moveObject(final IRepositoryNode sourceNode, final IRepositoryNode targetNode, final IPath basePath) {
         final IPath targetPath = RepositoryNodeHelper.getPath(targetNode);
-        RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>(
-                DefaultMessagesImpl.getString("LocalRepositoryObjectCRUD.MOVE_ITEM") //$NON-NLS-1$
+        RepositoryWorkUnit<Object> workUnit =
+                new RepositoryWorkUnit<Object>(DefaultMessagesImpl.getString("LocalRepositoryObjectCRUD.MOVE_ITEM") //$NON-NLS-1$
                         + sourceNode.getObject().getProperty().getDisplayName()) {
 
-            @Override
-            protected void run() {
+                    @Override
+                    protected void run() {
 
-                IWorkspace workspace = ResourcesPlugin.getWorkspace();
-                IWorkspaceRunnable operation = new IWorkspaceRunnable() {
+                        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+                        IWorkspaceRunnable operation = new IWorkspaceRunnable() {
 
-                    public void run(IProgressMonitor monitor) throws CoreException {
-                        IPath makeRelativeTo = Path.EMPTY;
-                        if (!basePath.isEmpty()) {
-                            makeRelativeTo = targetPath.makeRelativeTo(basePath);
-                        }
+                            public void run(IProgressMonitor monitor) throws CoreException {
+                                IPath makeRelativeTo = Path.EMPTY;
+                                if (!basePath.isEmpty()) {
+                                    makeRelativeTo = targetPath.makeRelativeTo(basePath);
+                                }
+                                try {
+                                    factory.moveObject(sourceNode.getObject(), makeRelativeTo, Path.EMPTY);
+                                } catch (PersistenceException e) {
+                                    log.error(sourceNode, e);
+                                } catch (BusinessException e) {
+                                    log.error(sourceNode, e);
+                                }
+                            }
+                        };
                         try {
-                            factory.moveObject(sourceNode.getObject(), makeRelativeTo, Path.EMPTY);
-                        } catch (PersistenceException e) {
-                            log.error(sourceNode, e);
-                        } catch (BusinessException e) {
-                            log.error(sourceNode, e);
+                            workspace.run(operation, new NullProgressMonitor());
+                        } catch (CoreException e) {
+                            log.error(e, e);
                         }
                     }
                 };
-                try {
-                    workspace.run(operation, new NullProgressMonitor());
-                } catch (CoreException e) {
-                    log.error(e, e);
-                }
-            }
-        };
         workUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
 
@@ -770,7 +824,9 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
         // ~ TDQ-4831
         // Added yyin 20120712 TDQ-5721 when rename the sql file folder with file opening, should inform
         if (repositoryNode instanceof SourceFileSubFolderNode) {
-            ReturnCode rc = WorkspaceResourceHelper.checkSourceFileSubFolderNodeOpening((SourceFileSubFolderNode) repositoryNode);
+            ReturnCode rc =
+                    WorkspaceResourceHelper
+                            .checkSourceFileSubFolderNodeOpening((SourceFileSubFolderNode) repositoryNode);
             if (rc.isOk()) {
                 WorkspaceResourceHelper.showSourceFilesOpeningWarnMessages(rc.getMessage());
                 return Boolean.TRUE;
@@ -807,7 +863,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      * refresh Workspace and DQView.
      */
     protected void refreshWorkspaceDQView() {
-        IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
+        IWorkbenchPart activePart =
+                PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
         if (activePart instanceof DQRespositoryView) {
             ((DQRespositoryView) activePart).refresh();
         }
