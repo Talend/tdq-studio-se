@@ -258,7 +258,8 @@ public class LengthIndicatorImpl extends IndicatorImpl implements LengthIndicato
         } else if (StringUtils.EMPTY.equals(inputData)) {
             inputDataLength = 0;
         } else {
-            inputDataLength = inputData.toString().length();
+            String inputStr = inputData.toString();
+            inputDataLength = inputStr.codePointCount(0, inputStr.length());
         }
         return this.getName() + inputDataLength;
     }
