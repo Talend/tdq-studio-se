@@ -13,6 +13,7 @@
 package org.talend.dataprofiler.core.ui.action.actions;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
@@ -22,9 +23,8 @@ import org.talend.dataprofiler.core.ui.action.AbstractMetadataCreationAction;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.repository.ui.wizards.metadata.connection.files.delimited.DelimitedFileWizard;
 
-
 /**
- * DOC bZhou  class global comment. Detailled comment
+ * DOC bZhou class global comment. Detailled comment
  */
 public class CreateDFConnectionAction extends AbstractMetadataCreationAction {
 
@@ -34,13 +34,16 @@ public class CreateDFConnectionAction extends AbstractMetadataCreationAction {
 
     /**
      * DOC bZhou CreateDFConnectionAction constructor comment.
+     * 
      * @param node
      */
     public CreateDFConnectionAction(RepositoryNode node) {
         super(node);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.dataprofiler.core.ui.action.AbstractMetadataCreationAction#createWizard()
      */
     @Override
@@ -58,15 +61,19 @@ public class CreateDFConnectionAction extends AbstractMetadataCreationAction {
         dialog.setPageSize(WIZARD_WIDTH, WIZARD_HEIGHT);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.dataprofiler.core.ui.action.AbstractMetadataCreationAction#getActionImage()
      */
     @Override
     protected ImageDescriptor getActionImage() {
-        return ImageLib.createAddedIcon(ImageLib.FILE_DELIMITED);
+        return ImageLib.createAddedIcon(ImageLib.FILE_DELIMITED, IDecoration.TOP_RIGHT);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.dataprofiler.core.ui.action.AbstractMetadataCreationAction#getActionLabel()
      */
     @Override

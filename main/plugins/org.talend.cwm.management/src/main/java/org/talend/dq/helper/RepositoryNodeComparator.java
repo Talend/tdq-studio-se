@@ -32,7 +32,7 @@ public class RepositoryNodeComparator implements Comparator<IRepositoryNode> {
         if ("".equals(label1) || "".equals(label2)) { //$NON-NLS-1$ //$NON-NLS-2$
             return 0;
         }
-        return label1.compareTo(label2);
+        return label1.toUpperCase().compareTo(label2.toUpperCase());
     }
 
 }

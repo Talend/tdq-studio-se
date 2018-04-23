@@ -46,6 +46,7 @@ import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.management.i18n.InternationalizationUtil;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
+import org.talend.dataprofiler.core.ui.utils.ComparatorsFactory;
 import org.talend.dataprofiler.core.ui.utils.UDIUtils;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
@@ -147,7 +148,8 @@ public class ItemRecord {
         try {
             initialize();
         } catch (Exception e) {
-            String errorMessage = DefaultMessagesImpl.getString("ItemRecord.cantInitializeElement", getName(), e.getMessage()); //$NON-NLS-1$
+            String errorMessage =
+                    DefaultMessagesImpl.getString("ItemRecord.cantInitializeElement", getName(), e.getMessage()); //$NON-NLS-1$
             addError(errorMessage);
             log.error(errorMessage);
         }
@@ -167,8 +169,9 @@ public class ItemRecord {
 
                 if (!file.getName().endsWith(PluginConstant.JASPER_STRING)) {
                     Resource resource = resourceSet.getResource(propURI, true);
-                    property = (Property) EcoreUtil.getObjectByType(resource.getContents(),
-                            PropertiesPackage.eINSTANCE.getProperty());
+                    property =
+                            (Property) EcoreUtil.getObjectByType(resource.getContents(),
+                                    PropertiesPackage.eINSTANCE.getProperty());
 
                     if (property != null) {
                         element = PropertyHelper.getModelElement(property);
@@ -245,7 +248,8 @@ public class ItemRecord {
      */
     private void computeDependencies(ModelElement mElement) {
         if (isJRXml()) {
-            Collection<TdReport> allReports = (Collection<TdReport>) RepResourceFileHelper.getInstance().getAllElement();
+            Collection<TdReport> allReports =
+                    (Collection<TdReport>) RepResourceFileHelper.getInstance().getAllElement();
             for (TdReport report : allReports) {
                 // MOD yyi 2012-02-20 TDQ-4545 TDQ-4701: Change to relative path comparing.
                 IPath pathRepFile = RepResourceFileHelper.findCorrespondingFile(report).getLocation();
@@ -458,7 +462,8 @@ public class ItemRecord {
                     File libFolder = getUDILibFolderFile();
                     if (libFolder.exists()) {
                         for (File udiJarFile : UDIUtils.getLibJarFileList(libFolder)) {
-                            for (String str : CustomAttributeMatcherHelper.splitJarPath(matchKeyDefinition.getAlgorithm()
+                            for (String str : CustomAttributeMatcherHelper.splitJarPath(matchKeyDefinition
+                                    .getAlgorithm()
                                     .getAlgorithmParameters())) {
                                 if (udiJarFile.getName().equals(str)) {
                                     this.dependencySet.add(udiJarFile);
@@ -491,7 +496,8 @@ public class ItemRecord {
      * @param matchAnalysis
      */
     private void includeCustomMatcherJarDependencies(Analysis matchAnalysis) {
-        RecordMatchingIndicator recordMatchIndicatorFromAna = AnalysisHelper.getRecordMatchIndicatorFromAna(matchAnalysis);
+        RecordMatchingIndicator recordMatchIndicatorFromAna =
+                AnalysisHelper.getRecordMatchIndicatorFromAna(matchAnalysis);
         MatchRuleDefinition builtInMatchRuleDefinition = recordMatchIndicatorFromAna.getBuiltInMatchRuleDefinition();
         includeCustomMatcherJarDependencies(builtInMatchRuleDefinition);
     }
@@ -512,8 +518,12 @@ public class ItemRecord {
             jrxmlFolderFile = folder.getLocation().toFile();
         } else {
             String jrxmlFolderString = folder.getLocation().toFile().getAbsolutePath();
-            jrxmlFolderFile = new File(StringUtils.replace(jrxmlFolderString, projectString,
-                    repFileString.substring(0, repFileString.indexOf(EResourceConstant.DATA_PROFILING.getPath()) - 1), 1));
+            jrxmlFolderFile =
+                    new File(StringUtils.replace(
+                            jrxmlFolderString,
+                            projectString,
+                            repFileString.substring(0,
+                                    repFileString.indexOf(EResourceConstant.DATA_PROFILING.getPath()) - 1), 1));
         }
         return jrxmlFolderFile;
     }
@@ -673,7 +683,7 @@ public class ItemRecord {
 
             childern = recordList.toArray(new ItemRecord[recordList.size()]);
         }
-
+        ComparatorsFactory.sort(childern, ComparatorsFactory.ITEM_RECORD_COMPARATOR_ID);
         return this.childern;
     }
 
@@ -726,7 +736,8 @@ public class ItemRecord {
             return false;
         }
 
-        return FactoriesUtil.JAR.equals(path.getFileExtension()) || propPath.toFile().exists() && !propPath.equals(path);
+        return FactoriesUtil.JAR.equals(path.getFileExtension()) || propPath.toFile().exists()
+                && !propPath.equals(path);
     }
 
     /**
@@ -745,7 +756,8 @@ public class ItemRecord {
                 if (filePath.toString().indexOf(constant.getPath()) > 0) {
                     String lastSeg = filePath.lastSegment();
                     if (constant == EResourceConstant.METADATA) {
-                        return lastSeg.equals(constant.getName()) || pathStr.contains(EResourceConstant.DB_CONNECTIONS.getPath())
+                        return lastSeg.equals(constant.getName())
+                                || pathStr.contains(EResourceConstant.DB_CONNECTIONS.getPath())
                                 || pathStr.contains(EResourceConstant.FILEDELIMITED.getPath());
                     }
 

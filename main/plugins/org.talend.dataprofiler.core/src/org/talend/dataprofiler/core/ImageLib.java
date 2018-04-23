@@ -447,7 +447,7 @@ public final class ImageLib {
      * @param originalImg
      * @param decorateImg
      * @return
-     * @deprecated use getOverlayIcon(String originalImgName, String overImgName) and avoid to create image ervery time.
+     * @deprecated please use {@code ImageLib#createIcon(Image, ImageDescriptor, int)} instead of it
      */
     @Deprecated
     public static ImageDescriptor createIcon(ImageDescriptor originalImg, ImageDescriptor decorateImg) {
@@ -462,7 +462,9 @@ public final class ImageLib {
      * @param originalName
      * @param overImgName
      * @return the ImageDescriptor
+     * @deprecated {@code ImageLib#getOverlayIcon(String, String, int)} instead of it
      */
+    @Deprecated
     public static ImageDescriptor getOverlayIconDes(String originalName, String overImgName) {
         if (getOverlayIcon(originalName, overImgName) != null) {
             String orininal_over_name = originalName + PluginConstant.UNDER_LINE + overImgName;
@@ -480,8 +482,78 @@ public final class ImageLib {
      * 
      * @param originalName
      * @param overImgName
+     * @param position position A value which from IDecoration and point out the position Where is the add icon should
+     * be putting
      * @return the image
      */
+    public static Image getOverlayIcon(String originalName, String overImgName, int position) {
+        String original_over_name = originalName + PluginConstant.UNDER_LINE + overImgName + position;
+        if (imageRegistry == null) {
+            initialize();
+        }
+        Image originalOverImg = imageRegistry.get(original_over_name);
+        ImageDescriptor descriptor = imageRegistry.getDescriptor(original_over_name);
+        if (originalOverImg == null || descriptor == null) {
+            ImageDescriptor orignalImgDes = getImageDescriptor(originalName);
+            ImageDescriptor overImgDes = getImageDescriptor(overImgName);
+            if (orignalImgDes != null && overImgDes != null) {
+                ImageDescriptor originalOverImgDes = createIcon(orignalImgDes.createImage(), overImgDes, position);
+                imageRegistry.put(original_over_name, originalOverImgDes);
+                originalOverImg = imageRegistry.get(original_over_name);
+            }
+        }
+        if (originalOverImg != null && originalOverImg.isDisposed() && descriptor != null) {
+            descriptor = imageRegistry.getDescriptor(original_over_name);
+            originalOverImg = descriptor.createImage();
+        }
+        return originalOverImg;
+
+    }
+
+    /**
+     * Create a new icon by special name
+     * 
+     * @param originalImg
+     * @param decorateImg
+     * @param position position A value which from IDecoration and point out the position Where is the add icon should
+     * be putting
+     * @return
+     */
+    public static ImageDescriptor createIcon(Image originalImg, ImageDescriptor decorateImg, int position) {
+        return new DecorationOverlayIcon(originalImg, decorateImg, position);
+    }
+
+    /**
+     * 
+     * make the original image name and overlay image name as a key, find the image from ImageLib.imageRegistry by this
+     * key. if not found,create a new Overlay image and put it's ImageDescriptor into imageRegistry.
+     * 
+     * @param originalName
+     * @param overImgName
+     * @param position A value which from IDecoration and point out the position Where is the add icon should be putting
+     * @return the ImageDescriptor
+     */
+    public static ImageDescriptor getOverlayIconDes(String originalName, String overImgName, int position) {
+        if (getOverlayIcon(originalName, overImgName, position) != null) {
+            String orininal_over_name = originalName + PluginConstant.UNDER_LINE + overImgName + position;
+            return imageRegistry.getDescriptor(orininal_over_name);
+        } else {
+            return null;
+        }
+
+    }
+
+    /**
+     * 
+     * make the original image name and overlay image name as a key, find the image from ImageLib.imageRegistry by this
+     * key. if not found,create a new Overlay image and put it's ImageDescriptor into imageRegistry.
+     * 
+     * @param originalName
+     * @param overImgName
+     * @return the image
+     * @deprecated please use {@code ImageLib#getOverlayIcon(String, String, int)} instead of it
+     */
+    @Deprecated
     public static Image getOverlayIcon(String originalName, String overImgName) {
         String orininal_over_name = originalName + PluginConstant.UNDER_LINE + overImgName;
         if (imageRegistry == null) {
@@ -512,7 +584,9 @@ public final class ImageLib {
      * @param originalImg
      * @param decorateImg
      * @return
+     * @deprecated please use {@code ImageLib#createIcon(Image, ImageDescriptor, int)} instead of it
      */
+    @Deprecated
     public static ImageDescriptor createIcon(Image originalImg, ImageDescriptor decorateImg) {
         return new DecorationOverlayIcon(originalImg, decorateImg, IDecoration.BOTTOM_RIGHT);
     }
@@ -580,19 +654,33 @@ public final class ImageLib {
         return originalImg != null ? createIcon(originalImg, lockImg) : null;
     }
 
-    /*
-     * DOC qiongli Comment method "createAddedIcon".
+    /**
+     * 
+     * Create a new icon with add icon
      * 
      * @param originalImgName
-     * 
      * @return
+     * @deprecated use {@code ImageLib#createAddedIcon(String, int) } instead of it
      */
+    @Deprecated
     public static ImageDescriptor createAddedIcon(String originalImgName) {
         return getOverlayIconDes(originalImgName, ICON_ADD_VAR);
     }
 
     /**
-     * DOC qiongli Comment method "createAddedIcon".
+     * 
+     * Create a new icon with add icon
+     * 
+     * @param originalImgName The name of original image
+     * @param position A value which from IDecoration and point out the position Where is the add icon should be putting
+     * @return a imageDescriptor which take add icon
+     */
+    public static ImageDescriptor createAddedIcon(String originalImgName, int position) {
+        return getOverlayIconDes(originalImgName, ICON_ADD_VAR, position);
+    }
+
+    /**
+     * Create a new icon with add icon
      * 
      * @param originalImg
      * @return
@@ -601,7 +689,8 @@ public final class ImageLib {
     @Deprecated
     public static ImageDescriptor createAddedIcon(ImageDescriptor originalImg) {
         ImageDescriptor addImg = getImageDescriptor(ICON_ADD_VAR);
-        return originalImg != null ? new DecorationOverlayIcon(originalImg.createImage(), addImg, IDecoration.TOP_RIGHT) : null;
+        return originalImg != null ? new DecorationOverlayIcon(originalImg.createImage(), addImg, IDecoration.TOP_RIGHT)
+                : null;
     }
 
     public static Image createLockedByOtherIcon(String originalImgName) {
