@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.cwm.compare;
 
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.eclipse.emf.common.util.Monitor;
@@ -139,7 +140,7 @@ public class ModelElementMatchEngine extends DefaultMatchEngine {
         if (origin != null) {
             originEObjects = Iterators.concat(Iterators.singletonIterator(origin), scope.getCoveredEObjects(origin.eResource()));
         } else {
-            originEObjects = Iterators.emptyIterator();
+            originEObjects = Collections.emptyIterator();
         }
 
         getEObjectMatcher().createMatches(comparison, leftEObjects, rightEObjects, originEObjects, monitor);
