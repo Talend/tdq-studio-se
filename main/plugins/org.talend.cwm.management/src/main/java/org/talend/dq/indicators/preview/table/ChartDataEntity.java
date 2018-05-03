@@ -336,7 +336,11 @@ public class ChartDataEntity {
                     || indicatorEnum == IndicatorEnum.SoundexIndicatorEnum
                     || indicatorEnum == IndicatorEnum.SoundexLowIndicatorEnum
                     || indicatorEnum == IndicatorEnum.EastAsiaPatternLowFreqIndicatorEnum
-                    || indicatorEnum == IndicatorEnum.EastAsiaPatternFreqIndicatorEnum) {
+                    || indicatorEnum == IndicatorEnum.EastAsiaPatternFreqIndicatorEnum
+                    || indicatorEnum == IndicatorEnum.CSWordPatternFreqIndicatorEnum
+                    || indicatorEnum == IndicatorEnum.CSWordPatternLowFreqIndicatorEnum
+                    || indicatorEnum == IndicatorEnum.CIWordPatternFreqIndicatorEnum
+                    || indicatorEnum == IndicatorEnum.CIWordPatternLowFreqIndicatorEnum) {
                 if (key != null && key.toString().length() > 30) {
                     msg.append(key.toString().length() > 200 ? key.toString().substring(0, 200)
                             + "...(" + key.toString().length() + " characters)" : key.toString()); //$NON-NLS-1$ //$NON-NLS-2$
