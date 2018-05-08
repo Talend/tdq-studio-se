@@ -9,6 +9,6 @@
     <expression xmi:id="_scZRcYyaEd6Dle_8xC0lwg" body="'^[[:space:]]'" language="SQL"/>
   </components>
   <components xsi:type="dataquality.domain.pattern:RegularExpression" xmi:id="_FiBWYFOXEeC54K6QJdblnQ" expressionType="REGEXP">
-    <expression xmi:id="_FiBWYVOXEeC54K6QJdblnQ" body="'^[\n|\t|\v|\f]+[^(\n|\t|\v|\f)]*$'" language="Java"/>
+    <expression xmi:id="_FiBWYVOXEeC54K6QJdblnQ" body="'^[ \t\n\v\f\r]+.*$'" language="Java"/>
   </components>
 </dataquality.domain.pattern:Pattern>
