@@ -9,6 +9,6 @@
     <expression xmi:id="_BpSRwj15Ed2p44yVAaDvbQ" body="'^([[:digit:]]{3}[ -][[:digit:]]{2}[ -][[:digit:]]{4}|[[:digit:]]{9})$'" language="SQL"/>
   </components>
   <components xsi:type="dataquality.domain.pattern:RegularExpression" xmi:id="_5jSDwFOnEeC9zOx-BAHRkg" expressionType="REGEXP">
-    <expression xmi:id="_5jSDwVOnEeC9zOx-BAHRkg" body="'^[\d]{3}[-][\d]{2}[-][\d]{4}|[\d]{9}$'" language="Java"/>
+    <expression xmi:id="_5jSDwVOnEeC9zOx-BAHRkg" body="'^\d{3}([ -]?)\d{2}\1\d{4}$'" language="Java"/>
   </components>
 </dataquality.domain.pattern:Pattern>
