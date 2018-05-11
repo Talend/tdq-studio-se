@@ -269,6 +269,7 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
                 generalMappingFileText.setText(dialog.getSelectId());
             }
         });
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
     }
 

@@ -30,6 +30,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.internal.HeapStatus;
 import org.talend.commons.ui.swt.preferences.CheckBoxFieldEditor;
+import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dq.analysis.memory.AnalysisThreadMemoryChangeNotifier;
@@ -154,6 +155,7 @@ public class AnalysisTuningPreferencePage extends PreferencePage implements IWor
         label2.setText(DefaultMessagesImpl.getString("AnalysisTuningPreferencePage.JvmWarning")); //$NON-NLS-1$
         label2.setImage(ImageLib.getImage(ImageLib.RED_WARNING_PNG));
 
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
     }
 
