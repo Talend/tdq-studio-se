@@ -168,6 +168,8 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
             }
 
         });
+
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
 
     }

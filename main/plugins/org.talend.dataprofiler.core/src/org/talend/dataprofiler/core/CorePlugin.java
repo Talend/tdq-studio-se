@@ -30,6 +30,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.help.internal.base.BaseHelpSystem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.service.datalocation.Location;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TreeItem;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -89,6 +90,7 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.ProjectManager;
+import org.talend.repository.model.IProxyRepositoryFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.resource.ResourceManager;
@@ -695,6 +697,19 @@ public class CorePlugin extends AbstractUIPlugin {
         System.out.println("Service was unset. Why did you do this to me?");
         if (this.service == service) {
             this.service = null;
+        }
+    }
+
+    /**
+     * 
+     * When the user is read only for current project then setting composite is disable
+     * 
+     * @param mainComposite
+     */
+    public void handleUserReadOnlyStatus(Composite mainComposite) {
+        IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
+        if (factory.isUserReadOnlyOnCurrentProject()) {
+            mainComposite.setEnabled(false);
         }
     }
 }

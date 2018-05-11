@@ -64,6 +64,7 @@ public class WebBrowserPreferencePage extends PreferencePage implements IWorkben
             }
         });
 
+        CorePlugin.getDefault().handleUserReadOnlyStatus(top);
         return top;
     }
 

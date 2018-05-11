@@ -505,7 +505,7 @@ public class EditorPreferencePage extends PreferencePage implements IWorkbenchPr
         // MOD xqliu 2010-03-10 feature 10834
         createPageSizeComp(mainComposite);
         // ~10834
-
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
     }
 

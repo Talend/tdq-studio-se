@@ -84,6 +84,7 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
         setPreferenceStore(store);
     }
 
+    @Override
     public void init(IWorkbench workbench) {
         // TODO Auto-generated method stub
 
@@ -126,12 +127,14 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
 
         allUpdate.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 // import all update from Babili
                 String language = LocalToLanguageEnum.findEnglishLocale(execCombo.getText());
                 runProgressMonitorDialog(false, language);
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // Nothing to do
             }
@@ -139,18 +142,21 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
 
         validatedUpdate.addSelectionListener(new SelectionListener() {
 
+            @Override
             public void widgetSelected(SelectionEvent e) {
                 // import validated update from Babili
                 String language = LocalToLanguageEnum.findEnglishLocale(execCombo.getText());
                 runProgressMonitorDialog(true, language);
             }
 
+            @Override
             public void widgetDefaultSelected(SelectionEvent e) {
                 // Nothing to do
             }
 
         });
 
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
     }
 
@@ -169,6 +175,7 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
         ProgressMonitorDialog progressDialog = new ProgressMonitorDialog(mainComposite.getShell());
         IRunnableWithProgress runnable = new IRunnableWithProgress() {
 
+            @Override
             public void run(IProgressMonitor monitor) {
                 try {
 
@@ -210,6 +217,7 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
         if (updateCompleted) {
             Display.getDefault().asyncExec(new Runnable() {
 
+                @Override
                 public void run() {
                     MessageDialog.openInformation(Display.getDefault().getActiveShell(),
                             DefaultMessagesImpl.getString("I18nPreferencePage.title"), //$NON-NLS-1$
