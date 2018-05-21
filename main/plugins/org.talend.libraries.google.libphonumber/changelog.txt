@@ -1,3 +1,11 @@
+V7.1.1 
+msjian 2018-05-21
+TDQ-14221 upgrade google libphonenumber jars as follows:
+phonenumbers;version="8.7.0",-->8.9.6
+geocoding;version="2.75",-->2.95
+carrier 1.65-->1.85
+prefixmapper;version="2.75"-->2.95
+
 V6.5.0  
 msjian 2017-07-31 
 TDQ-14152 upgrade libphonenumber from 7.3.0 to 8.7.0
