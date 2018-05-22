@@ -11,6 +11,6 @@ Bundle-ClassPath: .,
  lib/prefixmapper-2.95.jar
 Require-Bundle: org.junit;bundle-version="3.8.2";resolution:=optional
 Bundle-ActivationPolicy: lazy
-Export-Package: com.google.i18n.phonenumbers,
- com.google.i18n.phonenumbers.geocoding,
- com.google.i18n.phonenumbers.prefixmapper
+Export-Package: com.google.i18n.phonenumbers;version="8.9.6",
+ com.google.i18n.phonenumbers.geocoding;version="2.95",
+ com.google.i18n.phonenumbers.prefixmapper;version="2.95"
