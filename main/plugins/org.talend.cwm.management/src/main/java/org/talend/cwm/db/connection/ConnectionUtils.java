@@ -1,6 +1,6 @@
 // ============================================================================
 //
-// Copyright (C) 2006-2018 Talend Inc. - www.talend.com
+// Copyright (C) 2006-2016 Talend Inc. - www.talend.com
 //
 // This source code is available under agreement available at
 // %InstallDIR%\features\org.talend.rcp.branding.%PRODUCTNAME%\%PRODUCTNAME%license.txt
@@ -344,17 +344,20 @@ public final class ConnectionUtils {
                         driverJarNameList.add(str);
                     }
                 }
-                LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
-                if (driverJarRealPaths.isEmpty()) {
-                    returnCode.setOk(false);
-                    returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
-                }
-                for (String str : driverJarRealPaths) {
-                    File jarFile = new File(str);
-                    if (!jarFile.exists() || jarFile.isDirectory()) {
+                // only check the real path for Platform running
+                if (Platform.isRunning()) {
+                    LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
+                    if (driverJarRealPaths.isEmpty()) {
                         returnCode.setOk(false);
-                        returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileInvalid")); //$NON-NLS-1$
-                        break;
+                        returnCode.setMessage(Messages.getString("ConnectionUtils.JarFileCanNotBeFound")); //$NON-NLS-1$
+                    }
+                    for (String str : driverJarRealPaths) {
+                        File jarFile = new File(str);
+                        if (!jarFile.exists() || jarFile.isDirectory()) {
+                            returnCode.setOk(false);
+                            returnCode.setMessage(Messages.getString("ConnectionUtils.DriverJarFileInvalid")); //$NON-NLS-1$
+                            break;
+                        }
                     }
                 }
             }
@@ -1301,8 +1304,10 @@ public final class ConnectionUtils {
      */
     public static LinkedList<String> getDriverJarRealPaths(List<String> driverJarNameList) throws MalformedURLException {
         LinkedList<String> linkedList = new LinkedList<String>();
+        if (!Platform.isRunning()) {
+            return linkedList;
+        }
         boolean jarNotFound = false;
-
         for (String jarName : driverJarNameList) {
             String tempLibPath = ExtractMetaDataUtils.getInstance().getJavaLibPath();
             File tempFolder = new File(tempLibPath);
