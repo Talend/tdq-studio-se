@@ -47,6 +47,7 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -54,6 +55,7 @@ import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
@@ -70,6 +72,7 @@ import org.talend.cwm.management.api.SoftwareSystemManager;
 import org.talend.cwm.relational.TdExpression;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.PluginConstant;
+import org.talend.dataprofiler.core.helper.ContextViewHelper;
 import org.talend.dataprofiler.core.helper.WorkspaceResourceHelper;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.manager.DQStructureManager;
@@ -736,6 +739,14 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         } catch (CoreException e) {
             log.error(e, e);
         }
+    }
+
+    /**
+     * Go through every analysis and reports, to find if it imported the current context, and update the context value
+     * in it
+     */
+    public void updateAllContextInAnalysisAndReport(ContextItem contextItem, JobContextManager contextManager) {
+        ContextViewHelper.updateAllContextInAnalysisAndReport(contextItem, contextManager);
     }
 
 }
