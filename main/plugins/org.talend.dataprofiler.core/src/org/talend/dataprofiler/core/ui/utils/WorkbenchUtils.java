@@ -72,6 +72,7 @@ import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.analysis.MatchAnalysisEditor;
 import org.talend.dataprofiler.core.ui.editor.connection.ConnectionEditor;
+import org.talend.dataprofiler.core.ui.editor.report.ReportItemEditorInput;
 import org.talend.dataprofiler.core.ui.events.EventEnum;
 import org.talend.dataprofiler.core.ui.events.EventManager;
 import org.talend.dataprofiler.core.ui.views.DQRespositoryView;
@@ -373,6 +374,35 @@ public final class WorkbenchUtils {
         closeAndOpenEditor(iEditorReference);
     }
 
+    public static void refreshCurrentReportEditor(String reportName) {
+        List<IEditorReference> iEditorReference = getReportIEditorReference(reportName);
+        closeAndOpenEditor(iEditorReference);
+    }
+
+    private static List<IEditorReference> getReportIEditorReference(String reportName) {
+        List<IEditorReference> returnCode = new ArrayList<IEditorReference>();
+        IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+        IEditorReference[] editors = activePage.getEditorReferences();
+        if (editors != null) {
+            for (IEditorReference editorRef : editors) {
+                IEditorInput editorInput;
+                try {
+                    editorInput = editorRef.getEditorInput();
+                    if (editorInput instanceof ReportItemEditorInput) {
+                        ReportItemEditorInput repItemEditorInput = (ReportItemEditorInput) editorInput;
+                        if (StringUtils.equals(reportName, repItemEditorInput.getModel().getName())) {
+                            returnCode.add(editorRef);
+                        }
+                    }
+                } catch (PartInitException e) {
+                    log.error(e, e);
+                }
+            }
+
+        }
+        return returnCode;
+    }
+    
     public static void nodifyDependedAnalysis(ConnectionItem connectionItem) {
         // Added TDQ-8360 20140410 yyin: notify each depended analysis
         EList<Dependency> clientDependencies = connectionItem.getConnection().getSupplierDependency();

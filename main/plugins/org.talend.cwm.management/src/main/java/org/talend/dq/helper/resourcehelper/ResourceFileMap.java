@@ -192,7 +192,7 @@ public abstract class ResourceFileMap {
         return writer.save(element);
     }
 
-    private List<IFile> searchAllIFiles(IFolder folder) throws CoreException {
+    protected List<IFile> searchAllIFiles(IFolder folder) throws CoreException {
         List<IFile> fileList = new ArrayList<IFile>();
 
         for (IResource resource : folder.members()) {

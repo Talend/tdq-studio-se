@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
@@ -35,6 +36,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.emf.FactoriesUtil.EElementEName;
+import org.talend.commons.utils.WorkspaceUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
@@ -45,6 +47,7 @@ import org.talend.cwm.helper.ModelElementHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.management.i18n.InternationalizationUtil;
 import org.talend.dataprofiler.core.PluginConstant;
+import org.talend.dataprofiler.core.helper.ContextViewHelper;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.utils.ComparatorsFactory;
 import org.talend.dataprofiler.core.ui.utils.UDIUtils;
@@ -67,9 +70,11 @@ import org.talend.dataquality.reports.TdReport;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.dq.helper.CustomAttributeMatcherHelper;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
+import org.talend.dq.helper.resourcehelper.ContextResourceFileHelper;
 import org.talend.dq.helper.resourcehelper.RepResourceFileHelper;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
@@ -301,6 +306,7 @@ public class ItemRecord {
                                 ResourceManager.getJRXMLFolder()));
                     }
                 }
+                this.dependencySet.addAll(includeImportedContext(mElement));
             } else if (mElement instanceof IndicatorDefinition) { // MOD sizhaoliu 2013-04-13 TDQ-7082
                 IndicatorDefinition definition = (IndicatorDefinition) mElement;
                 if (definition instanceof UDIndicatorDefinition) {
@@ -315,9 +321,12 @@ public class ItemRecord {
                 if (mElement instanceof MatchRuleDefinition) {
                     includeCustomMatcherJarDependencies((MatchRuleDefinition) mElement);
                 }
-            } else if (mElement instanceof Analysis
-                    && AnalysisType.MATCH_ANALYSIS == AnalysisHelper.getAnalysisType((Analysis) mElement)) {
-                includeCustomMatcherJarDependencies((Analysis) mElement);
+            } else if (mElement instanceof Analysis) {
+                this.dependencySet.addAll(includeImportedContext(mElement));
+
+                if (AnalysisType.MATCH_ANALYSIS == AnalysisHelper.getAnalysisType((Analysis) mElement)) {
+                    includeCustomMatcherJarDependencies((Analysis) mElement);
+                }
             }
         }
     }
@@ -340,6 +349,40 @@ public class ItemRecord {
                 }
             }
         }
+    }
+
+    /**
+     * include imported contexts for analysis/report
+     */
+    private List<File> includeImportedContext(ModelElement mElement) {
+        List<File> result = new ArrayList<File>();
+        if (mElement instanceof Analysis) {
+            result.addAll(getAllImportedContext(((Analysis) mElement).getContextType()));
+        } else if (mElement instanceof TdReport) {
+            result.addAll(getAllImportedContext(((TdReport) mElement).getContext()));
+        }
+        return result;
+    }
+
+    private List<File> getAllImportedContext(EList<ContextType> contextTypes) {
+        List<File> result = new ArrayList<File>();
+        if (contextTypes.isEmpty()) {
+            return result;
+        }
+        List<String> importedContextName = ContextViewHelper.getImportedListContextNames(contextTypes);
+        if (importedContextName.isEmpty()) {
+            return result;
+        }
+        List<IFile> contextList = ContextResourceFileHelper.getInstance().getAllContexts();
+        for (IFile contextFile : contextList) {
+            String name = contextFile.getName().substring(0, contextFile.getName().lastIndexOf("_"));
+            if (importedContextName.contains(name)) {
+                // FILE_ELEMENT_MAP.put(depFile, element);
+                result.add(WorkspaceUtils.ifileToFile(contextFile));
+            }
+        }
+
+        return result;
     }
 
     /**

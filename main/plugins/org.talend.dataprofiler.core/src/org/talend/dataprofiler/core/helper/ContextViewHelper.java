@@ -123,6 +123,8 @@ public final class ContextViewHelper {
                 EList<ContextType> contextList = ((TdReport) repNode.getReport()).getContext();
                 if (findAndUpdateContext(contextList, contextItem, contextManager)) {
                     ElementWriterFactory.getInstance().createReportWriter().save(repNode.getReport());
+                    // refresh the report
+                    WorkbenchUtils.refreshCurrentReportEditor(repNode.getReport().getName());
                 }
             }
         }
@@ -223,5 +225,26 @@ public final class ContextViewHelper {
                 }
             }
         }
+    }
+    
+    public static List<String> getImportedListContextNames(List<ContextType> importContextList){
+        List<String> importNames = new ArrayList<String>();
+        List<String> importIds = new ArrayList<String>();
+        for(ContextType importContext : importContextList){
+            EList<ContextParameterType> contextParameters = importContext.getContextParameter();
+
+            for (ContextParameterType contextParam : contextParameters) {
+                if (contextParam.getRepositoryContextId() == null) {
+                    continue;
+                } else if(!importIds.contains(contextParam.getRepositoryContextId())){
+                    importIds.add(contextParam.getRepositoryContextId());
+                    ContextItem contextItem = ContextUtils.getContextItemById2(contextParam.getRepositoryContextId());
+                    if(contextItem!=null){
+                        importNames.add(contextItem.getProperty().getLabel());
+                    }
+                }
+            }
+        }
+        return importNames;
     }
 }
