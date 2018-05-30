@@ -46,9 +46,11 @@ import org.talend.resource.EResourceConstant;
 
 public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchPreferencePage {
 
-    public static final String FREQUENCY_TABLE_RESULT_LIMIT_KEY = "org.talend.dataprofiler.core.ui.pref.FrequencyResultLimit"; //$NON-NLS-1$
+    public static final String FREQUENCY_TABLE_RESULT_LIMIT_KEY =
+            "org.talend.dataprofiler.core.ui.pref.FrequencyResultLimit"; //$NON-NLS-1$
 
-    public static final String LOW_FREQUENCY_TABLE_RESULT_LIMIT_KEY = "org.talend.dataprofiler.core.ui.pref.LowFrequencyResultLimit"; //$NON-NLS-1$
+    public static final String LOW_FREQUENCY_TABLE_RESULT_LIMIT_KEY =
+            "org.talend.dataprofiler.core.ui.pref.LowFrequencyResultLimit"; //$NON-NLS-1$
 
     private int freResultLimit = 10;
 
@@ -211,18 +213,21 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
      * DOC qzhang Comment method "openAnalysesSelectionDialog".
      */
     protected void openAnalysesSelectionDialog(boolean isLowCase) {
-        SpecialLimitFrequencyAnalysisFilter limitFilter = new SpecialLimitFrequencyAnalysisFilter(isLowCase ? 0 : freResultLimit,
-                isLowCase ? lowFreResultLimit : 0);
-        CheckedTreeSelectionDialog checkedTreeSelectionDialog = new CheckedTreeSelectionDialog(this.getShell(),
-                new DQRepositoryViewLabelProviderWithFilter(limitFilter), new ResourceViewContentProvider());
-        checkedTreeSelectionDialog.setTitle(DefaultMessagesImpl.getString("IndicatorSettingsPage.analysisSelectDialog.title")); //$NON-NLS-1$
-        checkedTreeSelectionDialog
-                .setMessage(DefaultMessagesImpl.getString("IndicatorSettingsPage.analysisSelectDialog.message")); //$NON-NLS-1$
+        SpecialLimitFrequencyAnalysisFilter limitFilter =
+                new SpecialLimitFrequencyAnalysisFilter(isLowCase ? 0 : freResultLimit, isLowCase ? lowFreResultLimit
+                        : 0);
+        CheckedTreeSelectionDialog checkedTreeSelectionDialog =
+                new CheckedTreeSelectionDialog(this.getShell(),
+                        new DQRepositoryViewLabelProviderWithFilter(limitFilter), new ResourceViewContentProvider());
+        checkedTreeSelectionDialog.setTitle(DefaultMessagesImpl
+                .getString("IndicatorSettingsPage.analysisSelectDialog.title")); //$NON-NLS-1$
+        checkedTreeSelectionDialog.setMessage(DefaultMessagesImpl
+                .getString("IndicatorSettingsPage.analysisSelectDialog.message")); //$NON-NLS-1$
         checkedTreeSelectionDialog.setContainerMode(true);
         checkedTreeSelectionDialog.addFilter(new SelectAnalysisDialogNodeFilter());
         checkedTreeSelectionDialog.addFilter(limitFilter);
-        DQRepositoryNode analysisSelectDialogInputData = AnalysisUtils
-                .getAnalysisSelectDialogInputDataWithoutRef(EResourceConstant.ANALYSIS);
+        DQRepositoryNode analysisSelectDialogInputData =
+                AnalysisUtils.getAnalysisSelectDialogInputDataWithoutRef(EResourceConstant.ANALYSIS);
         checkedTreeSelectionDialog.setInput(analysisSelectDialogInputData);
         if (checkedTreeSelectionDialog.open() == Dialog.OK) {
             Object[] result = checkedTreeSelectionDialog.getResult();
@@ -303,6 +308,17 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
         return CorePlugin.getDefault().getPreferenceStore();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
     }
 
 }

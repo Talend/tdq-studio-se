@@ -105,8 +105,9 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
         for (LocalToLanguageEnum oneEnum : LocalToLanguageEnum.values()) {
             execCombo.add(oneEnum.getLocale());
         }
-        String language = Platform.getPreferencesService().getString(CorePlugin.PLUGIN_ID, PluginConstant.LANGUAGE_SELECTOR,
-                LocalToLanguageEnum.ENGLISH.getShortOfLocale(), null);
+        String language =
+                Platform.getPreferencesService().getString(CorePlugin.PLUGIN_ID, PluginConstant.LANGUAGE_SELECTOR,
+                        LocalToLanguageEnum.ENGLISH.getShortOfLocale(), null);
         LocalToLanguageEnum languageType = LocalToLanguageEnum.findLocalByShort(language);
         execCombo.setText(language == null ? LocalToLanguageEnum.ENGLISH.getLocale() : languageType.getLocale());
         GridData d = new GridData(GridData.HORIZONTAL_ALIGN_FILL);
@@ -238,7 +239,8 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
     public boolean performOk() {
         boolean ok = super.performOk();
         LocalToLanguageEnum language = LocalToLanguageEnum.findLocal(execCombo.getText());
-        InstanceScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).put(PluginConstant.LANGUAGE_SELECTOR, language.getShortOfLocale());
+        InstanceScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).put(PluginConstant.LANGUAGE_SELECTOR,
+                language.getShortOfLocale());
         try {
             InstanceScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).flush();
         } catch (BackingStoreException e) {
@@ -263,8 +265,9 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
             File iniFile = new File(url.getFile(), "config.ini"); //$NON-NLS-1$
             fin = new FileInputStream(iniFile);
             p.load(fin);
-            String languageType = Platform.getPreferencesService().getString(CorePlugin.PLUGIN_ID,
-                    PluginConstant.LANGUAGE_SELECTOR, LocalToLanguageEnum.ENGLISH.getShortOfLocale(), null);
+            String languageType =
+                    Platform.getPreferencesService().getString(CorePlugin.PLUGIN_ID, PluginConstant.LANGUAGE_SELECTOR,
+                            LocalToLanguageEnum.ENGLISH.getShortOfLocale(), null);
 
             if (languageType == null || languageType.equals(p.getProperty(EclipseStarter.PROP_NL))) {
                 return;
@@ -344,10 +347,14 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
                 .getLanguage()),
         ENGLISH(Locale.ENGLISH.getDisplayLanguage(), Locale.CHINESE.getDisplayLanguage(Locale.ENGLISH), Locale.ENGLISH
                 .getLanguage()),
-        FRENCH(Locale.FRENCH.getDisplayLanguage(), Locale.FRENCH.getDisplayLanguage(Locale.ENGLISH), Locale.FRENCH.getLanguage()),
-        GERMAN(Locale.GERMAN.getDisplayLanguage(), Locale.GERMAN.getDisplayLanguage(Locale.ENGLISH), Locale.GERMAN.getLanguage()),
-        JAPANESE(Locale.JAPANESE.getDisplayLanguage(), Locale.JAPANESE.getDisplayLanguage(Locale.ENGLISH), Locale.JAPANESE
+        FRENCH(Locale.FRENCH.getDisplayLanguage(), Locale.FRENCH.getDisplayLanguage(Locale.ENGLISH), Locale.FRENCH
                 .getLanguage()),
+        GERMAN(Locale.GERMAN.getDisplayLanguage(), Locale.GERMAN.getDisplayLanguage(Locale.ENGLISH), Locale.GERMAN
+                .getLanguage()),
+        JAPANESE(
+                Locale.JAPANESE.getDisplayLanguage(),
+                Locale.JAPANESE.getDisplayLanguage(Locale.ENGLISH),
+                Locale.JAPANESE.getLanguage()),
         ITALIAN(Locale.ITALIAN.getDisplayLanguage(), Locale.ITALIAN.getDisplayLanguage(Locale.ENGLISH), Locale.ITALIAN
                 .getLanguage()),
         BRASIL("Brasil", "Brasil", "pt"), //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -408,4 +415,16 @@ public class I18nPreferencePage extends PreferencePage implements IWorkbenchPref
             return shortOfLocale;
         }
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
+
 }
