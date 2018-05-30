@@ -400,8 +400,8 @@ public class CorePlugin extends AbstractUIPlugin {
         // MOD gdbu 2011-11-18 TDQ-3969 : after create items re-filter the tree , to create a new list .
         if (DQRepositoryNode.isOnFilterring()) {
             RepositoryNodeHelper.fillTreeList(null);
-            RepositoryNodeHelper
-                    .setFilteredNode(RepositoryNodeHelper.getRootNode(ERepositoryObjectType.TDQ_DATA_PROFILING, true));
+            RepositoryNodeHelper.setFilteredNode(RepositoryNodeHelper.getRootNode(
+                    ERepositoryObjectType.TDQ_DATA_PROFILING, true));
         }
     }
 
@@ -539,8 +539,11 @@ public class CorePlugin extends AbstractUIPlugin {
     public ReturnCode initProxyRepository() {
         ReturnCode rc = new ReturnCode();
         Project project = null;
-        RepositoryContext repositoryContext = (RepositoryContext) org.talend.core.runtime.CoreRuntimePlugin.getInstance()
-                .getContext().getProperty(Context.REPOSITORY_CONTEXT_KEY);
+        RepositoryContext repositoryContext =
+                (RepositoryContext) org.talend.core.runtime.CoreRuntimePlugin
+                        .getInstance()
+                        .getContext()
+                        .getProperty(Context.REPOSITORY_CONTEXT_KEY);
         if (repositoryContext != null) {
             project = repositoryContext.getProject();
             User user = repositoryContext.getUser();
@@ -560,7 +563,8 @@ public class CorePlugin extends AbstractUIPlugin {
                 log.error(e, e);
             }
             ProxyRepositoryFactory proxyRepository = ProxyRepositoryFactory.getInstance();
-            IRepositoryFactory repository = RepositoryFactoryProvider.getRepositoriyById(RepositoryConstants.REPOSITORY_LOCAL_ID);
+            IRepositoryFactory repository =
+                    RepositoryFactoryProvider.getRepositoriyById(RepositoryConstants.REPOSITORY_LOCAL_ID);
             if (repository == null) {
                 log.fatal(DefaultMessagesImpl.getString("CorePlugin.noLocalRepositoryFound")); //$NON-NLS-1$
                 rc.setMessage(DefaultMessagesImpl.getString("CorePlugin.noLocalRepositoryFound"));//$NON-NLS-1$
@@ -572,7 +576,8 @@ public class CorePlugin extends AbstractUIPlugin {
                 proxyRepository.checkAvailability();
                 proxyRepository.initialize();
 
-                XmiResourceManager xmiResourceManager = proxyRepository.getRepositoryFactoryFromProvider().getResourceManager();
+                XmiResourceManager xmiResourceManager =
+                        proxyRepository.getRepositoryFactoryFromProvider().getResourceManager();
                 IProject rootProject = ResourceManager.getRootProject();
 
                 if (rootProject.getFile(FileConstants.LOCAL_PROJECT_FILENAME).exists()) {
@@ -588,13 +593,15 @@ public class CorePlugin extends AbstractUIPlugin {
                     user.setPassword(password.getBytes());
                     String projectName = ResourceManager.getRootProjectName();
                     String projectDesc = ResourcesPlugin.getWorkspace().newProjectDescription(projectName).getComment();
-                    Project projectInfor = ProjectHelper.createProject(projectName, projectDesc, ECodeLanguage.JAVA.getName(),
-                            user);
+                    Project projectInfor =
+                            ProjectHelper.createProject(projectName, projectDesc, ECodeLanguage.JAVA.getName(), user);
 
                     // MOD zshen create project by proxyRepository
                     checkFileName(projectInfor.getLabel(), RepositoryConstants.PROJECT_PATTERN);
 
-                    project = proxyRepository.getRepositoryFactoryFromProvider().createProject(user, password, projectInfor);
+                    project =
+                            proxyRepository.getRepositoryFactoryFromProvider().createProject(user, password,
+                                    projectInfor);
                 }
 
                 if (project != null) {
@@ -609,8 +616,9 @@ public class CorePlugin extends AbstractUIPlugin {
                     // 'maven_user_settings.xml').before set, must check user setting first.
                     if (org.talend.commons.utils.platform.PluginChecker.isOnlyTopLoaded()) {
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(IMavenUIService.class)) {
-                            IMavenUIService mavenUIService = (IMavenUIService) GlobalServiceRegister.getDefault().getService(
-                                    IMavenUIService.class);
+                            IMavenUIService mavenUIService =
+                                    (IMavenUIService) GlobalServiceRegister.getDefault().getService(
+                                            IMavenUIService.class);
                             if (mavenUIService != null) {
                                 mavenUIService.checkUserSettings(new NullProgressMonitor());
                                 mavenUIService.updateMavenResolver(false);
@@ -619,8 +627,9 @@ public class CorePlugin extends AbstractUIPlugin {
                         }
                         // deploy libraries and maven index here
                         if (GlobalServiceRegister.getDefault().isServiceRegistered(ILibrariesService.class)) {
-                            ILibrariesService librariesService = (ILibrariesService) GlobalServiceRegister.getDefault()
-                                    .getService(ILibrariesService.class);
+                            ILibrariesService librariesService =
+                                    (ILibrariesService) GlobalServiceRegister.getDefault().getService(
+                                            ILibrariesService.class);
                             if (librariesService != null) {
                                 librariesService.syncLibraries();
                                 // TDQ-9529 check libararies install status at here,so that
@@ -673,14 +682,17 @@ public class CorePlugin extends AbstractUIPlugin {
      */
     private void checkFileName(String fileName, String pattern) {
         if (!Pattern.matches(pattern, fileName)) {
-            throw new IllegalArgumentException(DefaultMessagesImpl.getString(
-                    "ProxyRepositoryFactory.illegalArgumentException.labelNotMatchPattern", new Object[] { fileName, pattern })); //$NON-NLS-1$
+            throw new IllegalArgumentException(
+                    DefaultMessagesImpl
+                            .getString(
+                                    "ProxyRepositoryFactory.illegalArgumentException.labelNotMatchPattern", new Object[] { fileName, pattern })); //$NON-NLS-1$
         }
     }
 
     public ISemanticStudioService getSemanticStudioService() {
         if (service == null) {
-            ServiceReference<?> serviceReference = bundleContext.getServiceReference(ISemanticStudioService.class.getName());
+            ServiceReference<?> serviceReference =
+                    bundleContext.getServiceReference(ISemanticStudioService.class.getName());
             if (serviceReference != null) {
                 service = (ISemanticStudioService) bundleContext.getService(serviceReference);
             }

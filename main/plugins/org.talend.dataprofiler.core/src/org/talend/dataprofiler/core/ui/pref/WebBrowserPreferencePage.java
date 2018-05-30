@@ -74,8 +74,9 @@ public class WebBrowserPreferencePage extends PreferencePage implements IWorkben
      * @see org.eclipse.ui.IWorkbenchPreferencePage#init(org.eclipse.ui.IWorkbench)
      */
     public void init(IWorkbench workbench) {
-        isBlockWeb = Platform.getPreferencesService().getBoolean(CorePlugin.PLUGIN_ID, BLOCK_WEB_BROWSER,
-                DQPreferenceManager.BLOCK_HELP_DEFAULT, new IScopeContext[] { InstanceScope.INSTANCE });
+        isBlockWeb =
+                Platform.getPreferencesService().getBoolean(CorePlugin.PLUGIN_ID, BLOCK_WEB_BROWSER,
+                        DQPreferenceManager.BLOCK_HELP_DEFAULT, new IScopeContext[] { InstanceScope.INSTANCE });
     }
 
     /*
@@ -103,4 +104,16 @@ public class WebBrowserPreferencePage extends PreferencePage implements IWorkben
 
         return true;
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
+
 }

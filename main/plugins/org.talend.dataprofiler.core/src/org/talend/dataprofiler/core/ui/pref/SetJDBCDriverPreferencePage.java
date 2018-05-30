@@ -158,37 +158,44 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
         dbTypeLabel.setText(DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.dbType") + dbType_jdbc); //$NON-NLS-1$
         dbTypeLabel.setLayoutData(gridData);
 
-        generalJdbcUrlText = new LabelledText(mainComposite,
-                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.url"), 2); //$NON-NLS-1$
+        generalJdbcUrlText =
+                new LabelledText(mainComposite,
+                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.url"), 2); //$NON-NLS-1$
         String url = getPreferenceStore().getString(URL_KEY);
         generalJdbcUrlText.setText(url != null ? url : PluginConstant.EMPTY_STRING);
 
-        generalJdbcDriverjarText = new LabelledText(mainComposite,
-                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.jarfile"), //$NON-NLS-1$
-                1);
+        generalJdbcDriverjarText =
+                new LabelledText(mainComposite,
+                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.jarfile"), //$NON-NLS-1$
+                        1);
         String driver = getPreferenceStore().getString(DRIVER_KEY);
         generalJdbcDriverjarText.setText(driver != null ? driver : PluginConstant.EMPTY_STRING);
 
         browseJarFilesButton = new Button(mainComposite, SWT.NONE);
         browseJarFilesButton.setText("..."); //$NON-NLS-1$
-        generalJdbcClassNameText = new LabelledCombo(mainComposite,
-                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.classname"), "", null, 1, true, SWT.NONE); //$NON-NLS-1$
+        generalJdbcClassNameText =
+                new LabelledCombo(
+                        mainComposite,
+                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.classname"), "", null, 1, true, SWT.NONE); //$NON-NLS-1$
 
         String className = getPreferenceStore().getString(CLASSNAME_KEY);
         generalJdbcClassNameText.setText(className != null ? className : PluginConstant.EMPTY_STRING);
         browseClassButton = new Button(mainComposite, SWT.NONE);
         browseClassButton.setText("..."); //$NON-NLS-1$
-        generalJdbcUserText = new LabelledText(mainComposite,
-                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.user"), 2); //$NON-NLS-1$
+        generalJdbcUserText =
+                new LabelledText(mainComposite,
+                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.user"), 2); //$NON-NLS-1$
         String userName = getPreferenceStore().getString(USERNAME_KEY);
         generalJdbcUserText.setText(userName != null ? userName : PluginConstant.EMPTY_STRING);
-        generalJdbcPasswordText = new LabelledText(mainComposite,
-                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.password"), 2); //$NON-NLS-1$
+        generalJdbcPasswordText =
+                new LabelledText(mainComposite,
+                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.password"), 2); //$NON-NLS-1$
         generalJdbcPasswordText.getTextControl().setEchoChar('*'); // see
         String password = getPreferenceStore().getString(PASSWORD_KEY);
         generalJdbcPasswordText.setText(password != null ? password : PluginConstant.EMPTY_STRING);
-        generalMappingFileText = new LabelledText(mainComposite,
-                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.mapping"), 1); //$NON-NLS-1$
+        generalMappingFileText =
+                new LabelledText(mainComposite,
+                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.general.mapping"), 1); //$NON-NLS-1$
         String mapFile = getPreferenceStore().getString(MAPFILE_KEY);
         generalMappingFileText.setText(mapFile != null ? mapFile : PluginConstant.EMPTY_STRING);
         generalMappingSelectButton = new Button(mainComposite, SWT.NONE);
@@ -208,9 +215,10 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
                 if (dialog.open() == Window.OK) {
                     Object selects[] = dialog.getResult();
                     if (selects != null && selects.length > 0) {
-                        boolean isConfirm = MessageDialog.openConfirm(dialog.getShell(),
-                                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.confirmTitle"), //$NON-NLS-1$
-                                DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.confirmContent")); //$NON-NLS-1$
+                        boolean isConfirm =
+                                MessageDialog.openConfirm(dialog.getShell(),
+                                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.confirmTitle"), //$NON-NLS-1$
+                                        DefaultMessagesImpl.getString("SetJDBCDriverPreferencePage.confirmContent")); //$NON-NLS-1$
                         if (!isConfirm) {
                             return;
                         }
@@ -227,7 +235,8 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                SelectDatabaseJarDialog dialog = new SelectDatabaseJarDialog(getShell(), generalJdbcDriverjarText.getText());
+                SelectDatabaseJarDialog dialog =
+                        new SelectDatabaseJarDialog(getShell(), generalJdbcDriverjarText.getText());
                 if (dialog.open() == Window.OK) {
                     generalJdbcDriverjarText.setText(dialog.getJarsString());
                 }
@@ -295,9 +304,11 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
     }
 
     private CheckedTreeSelectionDialog createConnSelectDialog() {
-        RepositoryNode node = (RepositoryNode) RepositoryNodeHelper.getMetadataFolderNode(EResourceConstant.DB_CONNECTIONS);
-        CheckedTreeSelectionDialog dialog = new CheckedTreeSelectionDialog(getShell(), new DQRepositoryViewLabelProvider(),
-                new ResourceViewContentProvider());
+        RepositoryNode node =
+                (RepositoryNode) RepositoryNodeHelper.getMetadataFolderNode(EResourceConstant.DB_CONNECTIONS);
+        CheckedTreeSelectionDialog dialog =
+                new CheckedTreeSelectionDialog(getShell(), new DQRepositoryViewLabelProvider(),
+                        new ResourceViewContentProvider());
         dialog.setInput(node);
         dialog.addFilter(new ViewerFilter() {
 
@@ -423,11 +434,24 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
                 }
             }
 
-            RepositoryNode node = (RepositoryNode) RepositoryNodeHelper.getMetadataFolderNode(EResourceConstant.DB_CONNECTIONS);
+            RepositoryNode node =
+                    (RepositoryNode) RepositoryNodeHelper.getMetadataFolderNode(EResourceConstant.DB_CONNECTIONS);
             CorePlugin.getDefault().refreshDQView(node);
         } catch (PersistenceException e) {
             log.error(e);
         }
         return true;
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
+
 }

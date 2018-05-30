@@ -61,4 +61,15 @@ public class DataProfilerPreferencePage extends PreferencePage implements IWorkb
     public void init(IWorkbench workbench) {
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
+
 }

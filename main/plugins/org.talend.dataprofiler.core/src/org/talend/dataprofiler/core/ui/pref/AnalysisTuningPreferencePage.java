@@ -86,8 +86,9 @@ public class AnalysisTuningPreferencePage extends PreferencePage implements IWor
 
         Composite composite2 = new Composite(group2, SWT.NONE);
 
-        autoComboField = new CheckBoxFieldEditor(AnalysisThreadMemoryChangeNotifier.ANALYSIS_AUTOMATIC_MEMORY_CONTROL,
-                DefaultMessagesImpl.getString("AnalysisTuningPreferencePage.EnableThreadControl"), composite2); //$NON-NLS-1$
+        autoComboField =
+                new CheckBoxFieldEditor(AnalysisThreadMemoryChangeNotifier.ANALYSIS_AUTOMATIC_MEMORY_CONTROL,
+                        DefaultMessagesImpl.getString("AnalysisTuningPreferencePage.EnableThreadControl"), composite2); //$NON-NLS-1$
 
         final Composite composite4 = new Composite(composite2, SWT.NONE);
         composite4.setLayout(new GridLayout(4, false));
@@ -119,8 +120,9 @@ public class AnalysisTuningPreferencePage extends PreferencePage implements IWor
         compositeScale.setLayoutData(gridData1);
 
         // MOD yyi 2012-06-19 TDQ-4916 if the value is set to zero the threshold function would be disabled.
-        memoryScaleField = new ScaleFieldEditor(AnalysisThreadMemoryChangeNotifier.ANALYSIS_MEMORY_THRESHOLD,
-                "", compositeScale, 0, memMax, 1, 8); //$NON-NLS-1$
+        memoryScaleField =
+                new ScaleFieldEditor(AnalysisThreadMemoryChangeNotifier.ANALYSIS_MEMORY_THRESHOLD,
+                        "", compositeScale, 0, memMax, 1, 8); //$NON-NLS-1$
 
         memoryScaleField.setPropertyChangeListener(new IPropertyChangeListener() {
 
@@ -212,4 +214,16 @@ public class AnalysisTuningPreferencePage extends PreferencePage implements IWor
     private int convertToMeg(long numBytes) {
         return Integer.parseInt(String.valueOf((numBytes + (512 * 1024)) / (1024 * 1024)));
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
+
 }
