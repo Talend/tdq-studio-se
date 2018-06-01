@@ -78,6 +78,7 @@ import org.talend.dataprofiler.chart.util.ChartUtils;
 import org.talend.dataprofiler.chart.util.EncapsulationCumstomerDataset;
 import org.talend.dataprofiler.chart.util.HideSeriesChartDialog;
 import org.talend.dataprofiler.chart.util.PluginConstant;
+import org.talend.dataprofiler.chart.util.SlideChartComposite;
 import org.talend.dataprofiler.chart.util.TalendChartComposite;
 import org.talend.dataprofiler.chart.util.TopChartFactory;
 import org.talend.dataprofiler.service.ITOPChartService;
@@ -105,8 +106,12 @@ public class TOPChartService implements ITOPChartService {
 
     @Override
     public Object createTalendChartComposite(Object parentComponent, int style, Object chart, boolean useBuffer) {
-        ChartComposite cc = new TalendChartComposite((Composite) parentComponent, style, (JFreeChart) chart, useBuffer);
-
+        ChartComposite cc;
+        if (style == SWT.VERTICAL) {
+            cc = new SlideChartComposite((Composite) parentComponent, style, (JFreeChart) chart, useBuffer);
+        } else {
+            cc = new TalendChartComposite((Composite) parentComponent, style, (JFreeChart) chart, useBuffer);
+        }
         GridData gd = new GridData();
         gd.widthHint = CHART_STANDARD_WIDHT;
         gd.heightHint = CHART_STANDARD_HEIGHT;

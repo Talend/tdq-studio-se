@@ -54,6 +54,7 @@ import org.jfree.chart.title.LegendTitle;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.urls.StandardXYZURLGenerator;
 import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.SlidingCategoryDataset;
 import org.jfree.data.gantt.TaskSeriesCollection;
 import org.jfree.data.general.PieDataset;
 import org.jfree.data.statistics.BoxAndWhiskerCategoryDataset;
@@ -389,13 +390,15 @@ public final class TopChartFactory {
     public static JFreeChart createBarChartByKCD(String title, CategoryDataset dataset, Object cusmomerDataset) {
         // ADD msjian TDQ-5112 2012-4-10: after upgrate to jfreechart-1.0.12.jar, change the default chart wallPaint
         ChartFactory.setChartTheme(StandardChartTheme.createLegacyTheme());
+        // TDQ-13378 add to vertical scroll bar. the scroll bar will be visible when the count >10
+        SlidingCategoryDataset slideDataset = new SlidingCategoryDataset(dataset, 0, 10);
         // TDQ-5112~
         JFreeChart createBarChart = ChartFactory.createBarChart(null,
-                Messages.getString("TopChartFactory.Value"), title, dataset, PlotOrientation.HORIZONTAL, false, false, false); //$NON-NLS-1$
+                                Messages.getString("TopChartFactory.Value"), title, slideDataset, PlotOrientation.HORIZONTAL, false, false, false); //$NON-NLS-1$
 
         CategoryPlot plot = createBarChart.getCategoryPlot();
         if (cusmomerDataset != null) {
-            plot.setDataset(1, new EncapsulationCumstomerDataset(dataset, cusmomerDataset));
+            plot.setDataset(1, new EncapsulationCumstomerDataset(slideDataset, cusmomerDataset));
         }
 
         CategoryAxis domainAxis = plot.getDomainAxis();

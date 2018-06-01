@@ -42,6 +42,7 @@ import org.talend.dataprofiler.core.ui.editor.preview.model.ChartTypeStatesFacto
 import org.talend.dataprofiler.core.ui.editor.preview.model.TableTypeStatesFactory;
 import org.talend.dataprofiler.core.ui.editor.preview.model.TableWithData;
 import org.talend.dataprofiler.core.ui.editor.preview.model.states.IChartTypeStates;
+import org.talend.dataprofiler.core.ui.editor.preview.model.states.freq.FrequencyTypeStates;
 import org.talend.dataprofiler.core.ui.editor.preview.model.states.pattern.PatternStatisticsState;
 import org.talend.dataprofiler.core.ui.editor.preview.model.states.table.ITableTypeStates;
 import org.talend.dataprofiler.core.ui.events.DynamicChartEventReceiver;
@@ -337,8 +338,10 @@ public class ResultPaginationInfo extends IndicatorPaginationInfo {
                     } else {
                         TOPChartUtils.getInstance().decoratePatternMatching(chart);
                     }
-                    Object chartComposite = TOPChartUtils.getInstance().createTalendChartComposite(composite, SWT.NONE, chart,
-                            true);
+                    // TDQ-13378 vertical scroll bar for Frequency indicators
+                    int swtStyle = (chartTypeState instanceof FrequencyTypeStates) ? SWT.VERTICAL : SWT.NONE;
+                    Object chartComposite =
+                            TOPChartUtils.getInstance().createTalendChartComposite(composite, swtStyle, chart, true);
                     dyModel.setBawParentChartComp(chartComposite);
                     Map<String, Object> menuMap = createMenuForAllDataEntity((Composite) chartComposite, dataExplorer, analysis,
                             ((ICustomerDataset) chartTypeState.getDataset()).getDataEntities());
