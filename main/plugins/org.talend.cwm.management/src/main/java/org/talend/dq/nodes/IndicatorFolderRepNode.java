@@ -15,6 +15,8 @@ package org.talend.dq.nodes;
 import java.util.List;
 
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.Container;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.model.general.Project;
@@ -104,6 +106,11 @@ public class IndicatorFolderRepNode extends DQFolderRepNode {
             folder.setRepositoryNode(indicatorFolderNode);
             super.getChildren().add(indicatorFolderNode);
         }
+    }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
     }
 
 }

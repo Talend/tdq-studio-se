@@ -63,7 +63,7 @@ public class RecycleBinRepNode extends DQRepositoryNode {
      */
     @Override
     public IImage getIcon() {
-        return this.icon;
+        return ECoreImage.RECYCLE_BIN_EMPTY_ICON;
     }
 
     /**

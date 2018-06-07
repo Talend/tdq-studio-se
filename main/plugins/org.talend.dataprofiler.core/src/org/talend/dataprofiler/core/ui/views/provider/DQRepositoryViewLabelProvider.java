@@ -28,6 +28,8 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
+import org.talend.commons.ui.runtime.image.IImage;
+import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.context.Context;
 import org.talend.core.context.RepositoryContext;
@@ -41,6 +43,7 @@ import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.repository.RepositoryNodeProviderRegistryReader;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IReferencedProjectService;
@@ -121,8 +124,35 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
     public Image getImage(Object element) {
         Image image = super.getImage(element);
 
-        if (element instanceof IRepositoryNode) {
-            IRepositoryNode node = (IRepositoryNode) element;
+        if (element instanceof RepositoryNode) {
+            RepositoryNode node = (RepositoryNode) element;
+
+            if (node instanceof ExchangeCategoryRepNode || node instanceof ExchangeComponentRepNode) {
+                return ImageLib.getImage(ImageLib.EXCHANGE);
+            }
+            if (node instanceof DBConnectionRepNode) {
+                String originalImageName = ImageLib.TD_DATAPROVIDER;
+                if (!RepositoryNodeHelper.isSupportedConnection(node) || isNeedAddDriverConnection(node)) {
+                    image = ImageLib.createErrorIcon(originalImageName);
+                } else if (isInvalidJDBCConnection(node)) {
+                    image = ImageLib.createInvalidIcon(originalImageName);
+                } else {
+                    image = ImageLib.getImage(originalImageName);
+                }
+                return image;
+            }
+            IImage nodeIcon = node.getIcon();
+            if (nodeIcon != null) {
+                return ImageProvider.getImage(nodeIcon);
+            }
+            ERepositoryObjectType repositoryObjectType = node.getObject().getRepositoryObjectType();
+            if (repositoryObjectType != null) {
+                Image iimage = RepositoryNodeProviderRegistryReader.getInstance().getImage(repositoryObjectType);
+                if (iimage != null) {
+                    return iimage;
+                }
+            }
+
             if (node instanceof ReportAnalysisRepNode) {
                 image = ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
             } else if (node instanceof ExchangeCategoryRepNode || node instanceof ExchangeComponentRepNode) {

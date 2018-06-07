@@ -15,6 +15,7 @@ package org.talend.dq.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dq.helper.RepositoryNodeHelper;
@@ -356,6 +357,14 @@ public class DQRepositoryNode extends RepositoryNode {
 
     public String getDisplayProjectName() {
         return "(@" + this.getProject().getLabel() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ 
+    }
+
+    public IImage getIcon() {
+        IImage iImage = super.getIcon();
+        if (iImage != null) {
+            return iImage;
+        }
+        return null;
     }
 
 }

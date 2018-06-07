@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.Container;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.model.general.Project;
@@ -176,4 +178,10 @@ public class ReportFolderRepNode extends DQFolderRepNode {
         }
         return super.isIgnoreFolder(withDeleted, project, folder);
     }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
+    }
+
 }

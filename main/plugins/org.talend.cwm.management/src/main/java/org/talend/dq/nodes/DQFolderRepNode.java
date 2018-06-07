@@ -137,4 +137,5 @@ public abstract class DQFolderRepNode extends DQRepositoryNode {
         return ProxyRepositoryFactory.getInstance().getTdqRepositoryViewObjects(project, getContentType(),
                 RepositoryNodeHelper.getPath(folderNode).toString());
     }
+    
 }
