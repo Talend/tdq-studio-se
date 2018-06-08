@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.dq.nodes;
 
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
@@ -65,4 +67,10 @@ public class DFColumnRepNode extends ColumnRepNode {
     public String getDisplayText() {
         return getId() + "(" + getNodeDataType() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.METADATA_COLUMN_ICON;
+    }
+
 }

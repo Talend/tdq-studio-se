@@ -16,15 +16,19 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.utils.RepositoryManagerHelper;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.ui.views.IRepositoryView;
 
 /**
  * created by msjian on 2015年5月7日 Detailled comment
@@ -138,4 +142,11 @@ public abstract class DQFolderRepNode extends DQRepositoryNode {
                 RepositoryNodeHelper.getPath(folderNode).toString());
     }
     
+    protected IImage getIconWithState(Object obj) {
+        IRepositoryView repositoryView = RepositoryManagerHelper.getRepositoryView();
+        if (repositoryView != null) {
+            return (repositoryView.getExpandedState(obj) ? ECoreImage.FOLDER_OPEN_ICON : ECoreImage.FOLDER_CLOSE_ICON);
+        }
+        return ECoreImage.FOLDER_OPEN_ICON;
+    }
 }

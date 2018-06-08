@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.repository.ERepositoryObjectType;
@@ -128,4 +130,10 @@ public class DFColumnFolderRepNode extends DQRepositoryNode {
     public String getDisplayText() {
         return getNodeName();
     }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
+    }
+
 }

@@ -31,8 +31,6 @@ import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.GlobalServiceRegister;
-import org.talend.core.context.Context;
-import org.talend.core.context.RepositoryContext;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
@@ -44,8 +42,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.RepositoryNodeProviderRegistryReader;
-import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IReferencedProjectService;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.ConnectionHelper;
@@ -59,40 +55,16 @@ import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisContext;
 import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
-import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
-import org.talend.dq.nodes.AnalysisRepNode;
-import org.talend.dq.nodes.ContextRepNode;
 import org.talend.dq.nodes.DBCatalogRepNode;
-import org.talend.dq.nodes.DBColumnFolderRepNode;
 import org.talend.dq.nodes.DBColumnRepNode;
-import org.talend.dq.nodes.DBConnectionFolderRepNode;
 import org.talend.dq.nodes.DBConnectionRepNode;
 import org.talend.dq.nodes.DBSchemaRepNode;
-import org.talend.dq.nodes.DBTableFolderRepNode;
-import org.talend.dq.nodes.DBTableRepNode;
-import org.talend.dq.nodes.DBViewFolderRepNode;
-import org.talend.dq.nodes.DBViewRepNode;
-import org.talend.dq.nodes.DFColumnFolderRepNode;
-import org.talend.dq.nodes.DFColumnRepNode;
-import org.talend.dq.nodes.DFConnectionRepNode;
-import org.talend.dq.nodes.DFTableRepNode;
-import org.talend.dq.nodes.JrxmlTempleteRepNode;
-import org.talend.dq.nodes.PatternRepNode;
 import org.talend.dq.nodes.RecycleBinRepNode;
-import org.talend.dq.nodes.ReportAnalysisRepNode;
-import org.talend.dq.nodes.ReportRepNode;
-import org.talend.dq.nodes.RuleRepNode;
-import org.talend.dq.nodes.SourceFileRepNode;
-import org.talend.dq.nodes.SysIndicatorDefinitionRepNode;
-import org.talend.dq.nodes.hadoopcluster.HDFSOfHCConnectionNode;
-import org.talend.dq.nodes.hadoopcluster.HadoopClusterConnectionRepNode;
-import org.talend.dq.nodes.hadoopcluster.HiveOfHCConnectionNode;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
-import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
@@ -127,6 +99,11 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
         if (element instanceof RepositoryNode) {
             RepositoryNode node = (RepositoryNode) element;
 
+            // for the Exchange first level
+            if (node.getLabel().equals(EResourceConstant.EXCHANGE.getName())) {
+                return ImageLib.getImage(ImageLib.EXCHANGE);
+            }
+            // for the children of the Exchange
             if (node instanceof ExchangeCategoryRepNode || node instanceof ExchangeComponentRepNode) {
                 return ImageLib.getImage(ImageLib.EXCHANGE);
             }
@@ -141,6 +118,28 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                 }
                 return image;
             }
+            if (node instanceof DBCatalogRepNode) {
+                return ImageLib.getImage(ImageLib.CATALOG);
+            } else if (node instanceof DBSchemaRepNode) {
+                return ImageLib.getImage(ImageLib.SCHEMA);
+            }
+            // for the key of the column
+            if (node instanceof DBColumnRepNode) {
+                if (((DBColumnRepNode) node).isKey()) {
+                    return ImageLib.getImage(ImageLib.PK_COLUMN);
+                } else {
+                    return ImageLib.getImage(ImageLib.TD_COLUMN);
+                }
+            }
+//            if (node instanceof RuleRepNode) {
+//                if (((RuleRepNode) node).getRule() instanceof MatchRuleDefinition) {
+//                    return ImageLib.getImage(ImageLib.MATCH_RULE_ICON);
+//                } else {
+//                    return ImageLib.getImage(ImageLib.DQ_RULE);
+//                }
+//            } 
+
+            // common way to get the icon-- same with DI side
             IImage nodeIcon = node.getIcon();
             if (nodeIcon != null) {
                 return ImageProvider.getImage(nodeIcon);
@@ -153,151 +152,45 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                 }
             }
 
-            if (node instanceof ReportAnalysisRepNode) {
-                image = ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
-            } else if (node instanceof ExchangeCategoryRepNode || node instanceof ExchangeComponentRepNode) {
-                image = ImageLib.getImage(ImageLib.EXCHANGE);
-            } else if (node instanceof RecycleBinRepNode) {
-                image = ImageLib.getImage(ImageLib.RECYCLEBIN_EMPTY);
-            } else {
-                IRepositoryViewObject viewObject = node.getObject();
-                ENodeType type = node.getType();
-                if (type.equals(ENodeType.SYSTEM_FOLDER)) {
-                    if (EResourceConstant.REFERENCED_PROJECT.getName().equals(node.getProperties(EProperties.LABEL))) {
-                        image = ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
-                    } else {
-                        String label = viewObject.getLabel();
-                        if (label.equals(EResourceConstant.DATA_PROFILING.getName())) {
-                            image = ImageLib.getImage(ImageLib.DATA_PROFILING);
-                        } else if (label.equals(EResourceConstant.METADATA.getName())) {
-                            image = ImageLib.getImage(ImageLib.METADATA);
-                        } else if (node instanceof DBConnectionFolderRepNode) {
-                            image = ImageLib.getImage(ImageLib.CONNECTION);
-                        } else if (label.equals(EResourceConstant.FILEDELIMITED.getName())) {
-                            image = ImageLib.getImage(ImageLib.FILE_DELIMITED);
-                        } else if (label.equals(EResourceConstant.LIBRARIES.getName())) {
-                            image = ImageLib.getImage(ImageLib.LIBRARIES);
-                        } else if (label.equals(EResourceConstant.EXCHANGE.getName())) {
-                            image = ImageLib.getImage(ImageLib.EXCHANGE);
-                        } else if (label.equals(EResourceConstant.HADOOP_CLUSTER.getName())) {
-                            image = ImageLib.getImage(ImageLib.HADOOP_CLUSTER);
-                        } else if (label.equals(EResourceConstant.CONTEXT.getName())) {
-                            image = ImageLib.getImage(ImageLib.CONTEXT);
-                        } else {
-                            image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
-                        }
-                    }
-                } else if (type.equals(ENodeType.SIMPLE_FOLDER)) {
-                    image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
-                } else if (type.equals(ENodeType.REFERENCED_PROJECT)) {
-                    image = ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
-                } else if (type.equals(ENodeType.REPOSITORY_ELEMENT)) {
-                    // TDQ-7560 when the image is a overlay image,use originalImageName to get the corresponding one.
-                    String originalImageName = null;
-                    if (node instanceof DBConnectionRepNode) {
-                        originalImageName = ImageLib.TD_DATAPROVIDER;
-                        if (!RepositoryNodeHelper.isSupportedConnection(node) || isNeedAddDriverConnection(node)) {
-                            image = ImageLib.createErrorIcon(originalImageName);
-                        } else if (isInvalidJDBCConnection(node)) {
-                            image = ImageLib.createInvalidIcon(originalImageName);
-                        } else {
-                            image = ImageLib.getImage(originalImageName);
-                        }
-                    } else if (node instanceof DFConnectionRepNode) {
-                        originalImageName = ImageLib.FILE_DELIMITED;
-                    } else if (node instanceof AnalysisRepNode) {
-                        originalImageName = ImageLib.ANALYSIS_OBJECT;
-                        image = addWarnIconIfNeeded(node, originalImageName);
-                    } else if (node instanceof ReportRepNode) {
-                        originalImageName = ImageLib.REPORT_OBJECT;
-                        image = addWarnIconIfNeeded(node, originalImageName);
-                    } else if (node instanceof SysIndicatorDefinitionRepNode) {
-                        originalImageName = ImageLib.IND_DEFINITION;
-                    } else if (node instanceof PatternRepNode) {
-                        originalImageName = ImageLib.PATTERN_REG;
-                    } else if (node instanceof RuleRepNode) {
-                        if (((RuleRepNode) node).getRule() instanceof MatchRuleDefinition) {
-                            originalImageName = ImageLib.MATCH_RULE_ICON;
-                        } else {
-                            originalImageName = ImageLib.DQ_RULE;
-                        }
-                    } else if (node instanceof SourceFileRepNode) {
-                        originalImageName = ImageLib.SOURCE_FILE;
-                    } else if (node instanceof HadoopClusterConnectionRepNode) {
-                        originalImageName = ImageLib.HADOOP_CLUSTER;
-                    } else if (node instanceof HDFSOfHCConnectionNode) {
-                        originalImageName = ImageLib.HDFS;
-                    } else if (node instanceof HiveOfHCConnectionNode) {
-                        originalImageName = ImageLib.HIVE_LINK;
-                    } else if (node instanceof ExchangeCategoryRepNode || node instanceof ExchangeComponentRepNode) {
-                        originalImageName = ImageLib.EXCHANGE;
-                    } else if (node instanceof ContextRepNode) {
-                        originalImageName = ImageLib.CONTEXT;
-                    } else if (node instanceof RepositoryNode) {
-                        // MOD qiongli 2011-1-18 get image for nodes in recycle bin
-                        Image imageNode = getImageByContentType((RepositoryNode) node);
-                        if (image != null) {
-                            image = imageNode;
-                        }
-                    }
-                    if (originalImageName != null
-                            && !(node instanceof DBConnectionRepNode || node instanceof AnalysisRepNode || node instanceof ReportRepNode)) {
-                        image = ImageLib.getImage(originalImageName);
-                    }
+            // } else if (node instanceof RepositoryNode) {
+            // // MOD qiongli 2011-1-18 get image for nodes in recycle bin
+            // Image imageNode = getImageByContentType((RepositoryNode) node);
+            // if (image != null) {
+            // image = imageNode;
+            // }
+            // }
+            // if (originalImageName != null
+            // && !(node instanceof DBConnectionRepNode || node instanceof AnalysisRepNode || node instanceof
+            // ReportRepNode)) {
+            // image = ImageLib.getImage(originalImageName);
+            // }
                     // MOD klliu 2010-04-11 20468: Unfolder "exchange",get many NPE
                     // exchange folder did not contain viewObject.
-                    if (viewObject != null) {
-                        // MOD yyi 2011-04-07 19696: "Lock element"
-                        ERepositoryStatus status = ProxyRepositoryFactory.getInstance().getStatus(viewObject);
-
-                        Context ctx = CoreRuntimePlugin.getInstance().getContext();
-                        RepositoryContext rc = (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
-
-                        // TUP-1918:for offline mode,its item is locked by default but need show the default image. This
-                        // will be enhanced later by TDI-29265.
-                        if (rc.isEditableAsReadOnly()) {
-                            if (status == ERepositoryStatus.LOCK_BY_USER) {
-                                status = ERepositoryStatus.DEFAULT;
-                            }
-                        }
-
-                        if (ERepositoryStatus.DEFAULT != status && originalImageName != null) {
-                            if (ERepositoryStatus.LOCK_BY_USER == status) {
-                                image = ImageLib.createLockedByOwnIcon(originalImageName);
-                            } else if (ERepositoryStatus.LOCK_BY_OTHER == status) {
-                                image = ImageLib.createLockedByOtherIcon(originalImageName);
-                            }
-                        }
-                    }
-                } else if (type.equals(ENodeType.TDQ_REPOSITORY_ELEMENT)) {
-                    if (node instanceof DBCatalogRepNode) {
-                        image = ImageLib.getImage(ImageLib.CATALOG);
-                    } else if (node instanceof DBSchemaRepNode) {
-                        image = ImageLib.getImage(ImageLib.SCHEMA);
-                    } else if (node instanceof DBTableFolderRepNode) {
-                        image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
-                    } else if (node instanceof DBViewFolderRepNode) {
-                        image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
-                    } else if (node instanceof DBTableRepNode || node instanceof DFTableRepNode) {
-                        image = ImageLib.getImage(ImageLib.TABLE);
-                    } else if (node instanceof DBViewRepNode) {
-                        image = ImageLib.getImage(ImageLib.VIEW);
-                    } else if (node instanceof DBColumnRepNode) {
-                        if (((DBColumnRepNode) node).isKey()) {
-                            image = ImageLib.getImage(ImageLib.PK_COLUMN);
-                        } else {
-                            image = ImageLib.getImage(ImageLib.TD_COLUMN);
-                        }
-                    } else if (node instanceof DFColumnRepNode) {
-                        image = ImageLib.getImage(ImageLib.TD_COLUMN);
-                    } else if (node instanceof DBColumnFolderRepNode || node instanceof DFColumnFolderRepNode) {
-                        image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
-                    } else if (node instanceof JrxmlTempleteRepNode) {
-                        image = ImageLib.getImage(ImageLib.JRXML_ICON);
-                    }
+            // if (viewObject != null) {
+            // // MOD yyi 2011-04-07 19696: "Lock element"
+            // ERepositoryStatus status = ProxyRepositoryFactory.getInstance().getStatus(viewObject);
+            //
+            // Context ctx = CoreRuntimePlugin.getInstance().getContext();
+            // RepositoryContext rc = (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
+            //
+            // // TUP-1918:for offline mode,its item is locked by default but need show the default image. This
+            // // will be enhanced later by TDI-29265.
+            // if (rc.isEditableAsReadOnly()) {
+            // if (status == ERepositoryStatus.LOCK_BY_USER) {
+            // status = ERepositoryStatus.DEFAULT;
+            // }
+            // }
+            //
+            // if (ERepositoryStatus.DEFAULT != status && originalImageName != null) {
+            // if (ERepositoryStatus.LOCK_BY_USER == status) {
+            // image = ImageLib.createLockedByOwnIcon(originalImageName);
+            // } else if (ERepositoryStatus.LOCK_BY_OTHER == status) {
+            // image = ImageLib.createLockedByOtherIcon(originalImageName);
+            // }
+            // }
+            // }
                 }
-            }
-        }
+
 
         return image;
     }

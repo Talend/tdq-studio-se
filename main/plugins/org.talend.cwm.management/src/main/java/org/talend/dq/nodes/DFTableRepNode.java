@@ -15,6 +15,8 @@ package org.talend.dq.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
@@ -66,6 +68,11 @@ public class DFTableRepNode extends ColumnSetRepNode {
             return this.getProperties(EProperties.LABEL).toString();
         }
         return this.getObject().getLabel();
+    }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.METADATA_TABLE_ICON;
     }
 
 }

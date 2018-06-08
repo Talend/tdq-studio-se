@@ -15,6 +15,8 @@ package org.talend.dq.nodes;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.repositoryObject.MetadataCatalogRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataSchemaRepositoryObject;
@@ -113,4 +115,10 @@ public class DBViewRepNode extends ColumnSetRepNode {
     public String getLabel() {
         return this.getTdView().getName();
     }
+    
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.METADATA_TABLE_ICON;
+    }
+
 }

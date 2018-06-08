@@ -17,6 +17,8 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
@@ -111,6 +113,11 @@ public class HiveOfHCFolderRepNode extends DQFolderRepNode {
     @Override
     public String getDisplayText() {
         return Messages.getString("HiveOfHCFolderRepNode.displayText"); //$NON-NLS-1$
+    }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
     }
 
 }

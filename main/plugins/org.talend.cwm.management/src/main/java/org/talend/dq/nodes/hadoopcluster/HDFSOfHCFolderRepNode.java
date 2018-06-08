@@ -18,6 +18,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
@@ -103,6 +105,11 @@ public class HDFSOfHCFolderRepNode extends DQFolderRepNode {
         path = path.removeLastSegments(1);
         path = path.append("hdfs"); //$NON-NLS-1$
         return path;
+    }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
     }
 
 }

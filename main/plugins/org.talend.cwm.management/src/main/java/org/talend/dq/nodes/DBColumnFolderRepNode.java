@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.database.DqRepositoryViewService;
 import org.talend.core.model.properties.ConnectionItem;
@@ -231,6 +233,11 @@ public class DBColumnFolderRepNode extends DQDBFolderRepositoryNode implements I
             columnsList = ViewHelper.getColumns(tdView);
         }
         return columnsList.size();
+    }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
     }
 
 }

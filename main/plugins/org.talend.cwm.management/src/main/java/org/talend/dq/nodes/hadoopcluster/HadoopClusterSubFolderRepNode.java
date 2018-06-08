@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.dq.nodes.hadoopcluster;
 
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.model.RepositoryNode;
 
@@ -36,6 +38,11 @@ public class HadoopClusterSubFolderRepNode extends HadoopClusterFolderRepNode {
     @Override
     public String getDisplayText() {
         return getObject().getLabel();
+    }
+
+    @Override
+    public IImage getIcon() {
+        return ECoreImage.FOLDER_CLOSE_ICON;
     }
 
 }
