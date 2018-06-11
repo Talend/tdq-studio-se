@@ -129,19 +129,18 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             // for the ana under the report
             if (node instanceof ReportAnalysisRepNode) {
                 return ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
-            }else if(node instanceof ReportFileRepNode) {
+            } else if (node instanceof ReportFileRepNode) {
                 return super.getImage(element);
-                
             }
 
             // common way to get the icon-- same with DI side
             IImage nodeIcon = node.getIcon();
             if (nodeIcon != null) {
                 return ImageProvider.getImage(nodeIcon);
-            }else if (node instanceof DQRepositoryNode){
+            } else if (node instanceof DQRepositoryNode) {
                 return ((DQRepositoryNode) node).getImage();
             }
-            
+
         }
 
         return super.getImage(element);
