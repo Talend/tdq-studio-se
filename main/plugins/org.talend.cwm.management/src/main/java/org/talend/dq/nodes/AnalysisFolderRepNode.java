@@ -200,6 +200,11 @@ public class AnalysisFolderRepNode extends DQFolderRepNode {
     }
 
     @Override
+    public String getDisplayText() {
+        return getLabelWithCount();
+    }
+
+    @Override
     public IImage getIcon() {
         return getIconWithState(this.getObject());
     }
