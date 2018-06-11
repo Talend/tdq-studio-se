@@ -14,7 +14,6 @@ package org.talend.dq.nodes;
 
 import java.util.List;
 
-import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -132,7 +131,7 @@ public class DBColumnRepNode extends ColumnRepNode {
 
     @Override
     public IImage getIcon() {
-        return ECoreImage.METADATA_COLUMN_ICON;
+        return null;
     }
 
 }

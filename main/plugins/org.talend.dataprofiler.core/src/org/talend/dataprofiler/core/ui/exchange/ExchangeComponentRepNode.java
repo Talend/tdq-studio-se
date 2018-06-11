@@ -12,6 +12,9 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.exchange;
 
+import org.eclipse.swt.graphics.Image;
+import org.talend.commons.ui.runtime.image.IImage;
+import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.ecos.model.IEcosComponent;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
@@ -54,4 +57,15 @@ public class ExchangeComponentRepNode extends DQRepositoryNode {
     public String getLabel() {
         return this.label == null ? "" : this.label;//$NON-NLS-1$ 
     }
+
+    @Override
+    public IImage getIcon() {
+        return null;
+    }
+
+    @Override
+    public Image getImage() {
+        return ImageLib.getImage(ImageLib.EXCHANGE);
+    }
+
 }

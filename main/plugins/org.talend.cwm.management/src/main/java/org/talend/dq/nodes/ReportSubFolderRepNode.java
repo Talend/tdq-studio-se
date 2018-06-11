@@ -92,12 +92,6 @@ public class ReportSubFolderRepNode extends ReportFolderRepNode {
                             .getReport()));
                     // MOD msjian TDQ-5128 2012-5-4: fixed when the user delete a file from file system display error
                     buildChildrenReportFile(repFiles);
-                    // if (repFiles == null || repFiles.length == 0) {
-                    // loadChildrenLocalFolder();
-                    // } else {
-                    // buildChildrenReportFile(repFiles);
-                    // }
-                    // TDQ-5128~
                 }
             } catch (Exception e) {
                 log.warn(e, e);

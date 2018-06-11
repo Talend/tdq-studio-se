@@ -15,6 +15,9 @@ package org.talend.dataprofiler.core.ui.exchange;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.graphics.Image;
+import org.talend.commons.ui.runtime.image.IImage;
+import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.ecos.model.IEcosCategory;
 import org.talend.dataprofiler.ecos.model.IEcosComponent;
 import org.talend.dq.nodes.DQRepositoryNode;
@@ -90,5 +93,15 @@ public class ExchangeCategoryRepNode extends DQRepositoryNode {
             }
         }
         return filterResultsIfAny(list);
+    }
+
+    @Override
+    public IImage getIcon() {
+        return null;
+    }
+
+    @Override
+    public Image getImage() {
+        return ImageLib.getImage(ImageLib.EXCHANGE);
     }
 }
