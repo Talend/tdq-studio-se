@@ -118,7 +118,7 @@ public class DBViewRepNode extends ColumnSetRepNode {
     
     @Override
     public IImage getIcon() {
-        return ECoreImage.METADATA_TABLE_ICON;
+        return ECoreImage.METADATA_VIEW_ICON;
     }
 
 }
