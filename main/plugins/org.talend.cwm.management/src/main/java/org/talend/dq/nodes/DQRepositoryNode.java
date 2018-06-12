@@ -364,7 +364,8 @@ public class DQRepositoryNode extends RepositoryNode {
 
     @Override
     public IImage getIcon() {
-        if (getParent() != null && getParent().isBin() && ERepositoryObjectType.FOLDER.equals(this.getObjectType())) {
+        if (getParent() != null && getParent() instanceof RecycleBinRepNode
+                && ERepositoryObjectType.FOLDER.equals(this.getObjectType())) {
             return ECoreImage.FOLDER_CLOSE_ICON;
         }
 

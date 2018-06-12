@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.dq.nodes;
 
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.repository.model.RepositoryNode;
 
@@ -41,4 +42,10 @@ public class DBConnectionSubFolderRepNode extends DBConnectionFolderRepNode {
     public String getDisplayText() {
         return getObject().getLabel();
     }
+
+    @Override
+    public IImage getIcon() {
+        return getIconWithState(this.getObject());
+    }
+
 }

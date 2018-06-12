@@ -121,7 +121,7 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                 return ImageLib.getImage(ImageLib.SCHEMA);
             }
             // for the key of the column
-            if (objectType != null && ERepositoryObjectType.METADATA_COLUMN.equals(objectType)) {
+            if (node instanceof DBColumnRepNode) {
                 if (((DBColumnRepNode) node).isKey()) {
                     return ImageLib.getImage(ImageLib.PK_COLUMN);
                 } else {
