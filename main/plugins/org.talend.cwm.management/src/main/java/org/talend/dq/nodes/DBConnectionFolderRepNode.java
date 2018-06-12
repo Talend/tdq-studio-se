@@ -15,6 +15,7 @@ package org.talend.dq.nodes;
 import java.util.List;
 
 import org.talend.commons.exception.PersistenceException;
+import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.Container;
 import org.talend.commons.utils.data.container.RootContainer;
 import org.talend.core.ITDQRepositoryService;
@@ -137,4 +138,10 @@ public class DBConnectionFolderRepNode extends DQFolderRepNode {
             updateSoftwareSystem(viewObject);
         }
     }
+
+    @Override
+    public IImage getIcon() {
+        return getIconWithState(this.getObject());
+    }
+
 }

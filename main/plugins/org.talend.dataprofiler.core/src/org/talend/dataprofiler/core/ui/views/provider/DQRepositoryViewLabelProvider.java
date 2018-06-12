@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Display;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
+import org.talend.commons.ui.runtime.image.OverlayImageProvider;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -57,9 +58,11 @@ import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.nodes.DBColumnRepNode;
 import org.talend.dq.nodes.DBConnectionRepNode;
 import org.talend.dq.nodes.DQRepositoryNode;
+import org.talend.dq.nodes.PatternLanguageRepNode;
 import org.talend.dq.nodes.RecycleBinRepNode;
 import org.talend.dq.nodes.ReportAnalysisRepNode;
 import org.talend.dq.nodes.ReportFileRepNode;
+import org.talend.dq.nodes.hadoopcluster.HiveOfHCConnectionNode;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
@@ -92,7 +95,7 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
 
     @Override
     public Image getImage(Object element) {
-        Image image;
+        Image image = null;
 
         if (element instanceof RepositoryNode) {
             RepositoryNode node = (RepositoryNode) element;
@@ -111,7 +114,6 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                 } else {
                     image = ImageLib.getImage(originalImageName);
                 }
-                return image;
             }
             if (objectType != null && ERepositoryObjectType.METADATA_CON_CATALOG.equals(objectType)) {
                 return ImageLib.getImage(ImageLib.CATALOG);
@@ -119,7 +121,7 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                 return ImageLib.getImage(ImageLib.SCHEMA);
             }
             // for the key of the column
-            if (objectType != null && ERepositoryObjectType.METADATA_CON_COLUMN.equals(objectType)) {
+            if (objectType != null && ERepositoryObjectType.METADATA_COLUMN.equals(objectType)) {
                 if (((DBColumnRepNode) node).isKey()) {
                     return ImageLib.getImage(ImageLib.PK_COLUMN);
                 } else {
@@ -128,19 +130,35 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             }
             // for the ana under the report
             if (node instanceof ReportAnalysisRepNode) {
-                return ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
+                image = ImageLib.getImage(ImageLib.ANALYSIS_OBJECT);
             } else if (node instanceof ReportFileRepNode) {
-                return super.getImage(element);
+                image = super.getImage(element);
+            } else if (node instanceof PatternLanguageRepNode) {// for the element under the pattern
+                image = super.getImage(element);
+            } else if (node instanceof HiveOfHCConnectionNode) {// for the hive under the hadoop cluster
+                return ImageLib.getImage(ImageLib.HIVE_LINK);
             }
 
             // common way to get the icon-- same with DI side
-            IImage nodeIcon = node.getIcon();
-            if (nodeIcon != null) {
-                return ImageProvider.getImage(nodeIcon);
-            } else if (node instanceof DQRepositoryNode) {
-                return ((DQRepositoryNode) node).getImage();
+            if (image == null) {
+                IImage nodeIcon = node.getIcon();
+                if (nodeIcon != null) {
+                    image = ImageProvider.getImage(nodeIcon);
+                } else if (node instanceof DQRepositoryNode) {
+                    image = ((DQRepositoryNode) node).getImage();
+                }
             }
 
+            if (node.getObject() != null) {
+                ERepositoryStatus repositoryStatus = node.getObject().getRepositoryStatus();
+                Image image2 = OverlayImageProvider.getImageWithStatus(image, repositoryStatus);
+
+                ERepositoryStatus informationStatus = node.getObject().getInformationStatus();
+
+                return OverlayImageProvider.getImageWithStatus(image2, informationStatus);
+            } else {
+                return image;
+            }
         }
 
         return super.getImage(element);
