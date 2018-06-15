@@ -59,7 +59,8 @@ public class ParserRuleTableViewer {
 
     private ParserRule parserRule;
 
-    private String[] headers = { "Name", "Type", "Value" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    private String[] headers = {
+            DefaultMessagesImpl.getString("ParserRuleTableViewer.name"), DefaultMessagesImpl.getString("ParserRuleTableViewer.type"), DefaultMessagesImpl.getString("ParserRuleTableViewer.value") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
     private int[] widths = { 100, 100, 300 };
 

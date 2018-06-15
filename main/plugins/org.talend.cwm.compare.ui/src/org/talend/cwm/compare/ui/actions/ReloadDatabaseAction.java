@@ -145,7 +145,7 @@ public class ReloadDatabaseAction extends Action {
                     DefaultMessagesImpl.getString("TOPRepositoryService.dependcyTile"), //$NON-NLS-1$
                     DefaultMessagesImpl.getString("TOPRepositoryService.dependcyMessage", conn.getLabel())); //$NON-NLS-1$
             if (isOk != Dialog.OK) {
-                returnCode.setReturnCode("The user canceled the operation!", false); //$NON-NLS-1$
+                returnCode.setReturnCode(DefaultMessagesImpl.getString("ReloadDatabaseAction.Cancel"), false); //$NON-NLS-1$
                 return;
             }
         }

@@ -24,6 +24,7 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataTableRepositoryObject;
+import org.talend.cwm.management.i18n.Messages;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
@@ -97,7 +98,7 @@ public class DFColumnFolderRepNode extends DQRepositoryNode {
     }
 
     public String getNodeName() {
-        return "Columns (" + this.getChildrenCount() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        return Messages.getString("DFColumnFolderRepNode.Columns", this.getChildrenCount()); //$NON-NLS-1$ 
     }
 
     public int getChildrenCount() {

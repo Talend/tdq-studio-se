@@ -341,7 +341,7 @@ public abstract class AbstractPagePart {
                 masterPage.getConnCombo().addSelectionListener(selectionListener);
             }
         } else {
-            masterPage.getConnCombo().setText("unknown connection");//$NON-NLS-1$
+            masterPage.getConnCombo().setText(DefaultMessagesImpl.getString("AbstractPagePart.unknown"));//$NON-NLS-1$
         }
     }
 

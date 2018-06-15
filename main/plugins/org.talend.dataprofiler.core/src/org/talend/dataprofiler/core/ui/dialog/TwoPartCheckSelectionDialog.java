@@ -564,9 +564,11 @@ public abstract class TwoPartCheckSelectionDialog extends SelectionStatusDialog 
         GridData data = new GridData(GridData.HORIZONTAL_ALIGN_END | GridData.GRAB_HORIZONTAL);
         data.grabExcessHorizontalSpace = true;
         composite.setData(data);
-        Button selectButton = createButton(buttonComposite, IDialogConstants.SELECT_ALL_ID, "Select &All", false); //$NON-NLS-1$
+        Button selectButton = createButton(buttonComposite, IDialogConstants.SELECT_ALL_ID,
+                DefaultMessagesImpl.getString("TwoPartCheckSelectionDialog.SelectAll"), false); //$NON-NLS-1$
 
-        Button deselectButton = createButton(buttonComposite, IDialogConstants.DESELECT_ALL_ID, "&Deselect All", false); //$NON-NLS-1$
+        Button deselectButton = createButton(buttonComposite, IDialogConstants.DESELECT_ALL_ID,
+                DefaultMessagesImpl.getString("TwoPartCheckSelectionDialog.DeSelectAll"), false); //$NON-NLS-1$
 
         addSelectionButtonListener(selectButton, deselectButton);
         return buttonComposite;

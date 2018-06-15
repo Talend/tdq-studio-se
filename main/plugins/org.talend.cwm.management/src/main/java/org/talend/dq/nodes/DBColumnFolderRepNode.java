@@ -30,6 +30,7 @@ import org.talend.core.repository.model.repositoryObject.TdViewRepositoryObject;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.cwm.helper.ViewHelper;
+import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
 import org.talend.cwm.relational.TdView;
@@ -214,7 +215,7 @@ public class DBColumnFolderRepNode extends DQDBFolderRepositoryNode implements I
      */
     @Override
     public String getLabel() {
-        return "Columns (" + getChildrenCount() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        return Messages.getString("DBColumnFolderRepNode.Columns", getChildrenCount()); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**

@@ -566,7 +566,7 @@ public class ColumnSetAnalysisDetailsPage extends AbstractAnalysisMetadataPage i
         GridLayout gridLayout = new GridLayout(2, false);
         gridLayout.marginWidth = 0;
         storeDataSection.setLayout(gridLayout);
-        toolkit.createLabel(storeDataSection, "Store data:").setToolTipText("Storing data in analysis file"); //$NON-NLS-1$ //$NON-NLS-2$
+        toolkit.createLabel(storeDataSection, DefaultMessagesImpl.getString("ColumnSetAnalysisDetailsPage.StoreData")).setToolTipText(DefaultMessagesImpl.getString("ColumnSetAnalysisDetailsPage.StoreDataTip")); //$NON-NLS-1$ //$NON-NLS-2$
         storeDataCheck = new Button(storeDataSection, SWT.CHECK | SWT.RIGHT_TO_LEFT);
         setStoreDataValueAndStatus();
 

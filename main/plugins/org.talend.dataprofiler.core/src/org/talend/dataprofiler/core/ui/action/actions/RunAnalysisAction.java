@@ -193,7 +193,7 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
                 isNeedUnlock = false;
             }
 
-            final WorkspaceJob job = new WorkspaceJob("Run Analysis") { //$NON-NLS-1$
+            final WorkspaceJob job = new WorkspaceJob(DefaultMessagesImpl.getString("RunAnalysisAction.RunAnalysis")) { //$NON-NLS-1$
 
                 @Override
                 public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {

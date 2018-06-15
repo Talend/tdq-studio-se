@@ -438,7 +438,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      * @returnd efault connection's version
      */
     private String getConnectionVersionDefault() {
-        String version = "Unknown"; //$NON-NLS-1$
+        String version = DefaultMessagesImpl.getString("AbstractAnalysisMetadataPage.Unknown"); //$NON-NLS-1$
         Object data = getConnComboSelectNode();
         if (data != null) {
             if (data instanceof DBConnectionRepNode) {
@@ -463,7 +463,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      * @return
      */
     private String initConnectionVersion(Connection connection) {
-        String version = "0.1"; //$NON-NLS-1$
+        String version = DefaultMessagesImpl.getString("AbstractAnalysisMetadataPage.Version"); //$NON-NLS-1$
         Resource eResource = connection.eResource();
         if (eResource != null) {
             URI uri = eResource.getURI();

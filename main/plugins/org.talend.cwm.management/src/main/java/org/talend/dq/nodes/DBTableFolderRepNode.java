@@ -28,6 +28,7 @@ import org.talend.core.repository.model.repositoryObject.MetadataSchemaRepositor
 import org.talend.core.repository.model.repositoryObject.TdTableRepositoryObject;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.PackageHelper;
+import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdTable;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dq.helper.RepositoryNodeHelper;
@@ -226,9 +227,9 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
     @Override
     public String getLabel() {
         if (hasChildren()) {
-            return "Tables (" + this.getChildrenCount() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+            return Messages.getString("DBTableFolderRepNode.TablesWithCount", this.getChildrenCount()); //$NON-NLS-1$
         }
-        return "Tables"; //$NON-NLS-1$
+        return Messages.getString("DBTableFolderRepNode.Tables"); //$NON-NLS-1$
     }
 
     private int getChildrenCount() {

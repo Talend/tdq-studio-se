@@ -135,10 +135,11 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
      * @param comp
      */
     private void createParserRuleDefinitionSection(Composite comp) {
-        parserRuleDefinitionSection = createSection(form, comp, "Parser Rule", null); //$NON-NLS-1$
+        parserRuleDefinitionSection = createSection(form, comp,
+                DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.parserRule"), null); //$NON-NLS-1$
 
         Label label = new Label(parserRuleDefinitionSection, SWT.WRAP);
-        label.setText("Type in the definition of your Parser Rules."); //$NON-NLS-1$
+        label.setText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.typeRule")); //$NON-NLS-1$
 
         parserRuleDefinitionSection.setDescriptionControl(label);
         createParserRuleDefinitionComp();
@@ -155,7 +156,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
         newComp.setLayout(fromlayout);
         // create parser rules label
         Label label1 = new Label(newComp, SWT.ON_TOP);
-        label1.setText("Parser Rules"); //$NON-NLS-1$
+        label1.setText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.parserRule")); //$NON-NLS-1$
         FormData data = new FormData();
         data.top = new FormAttachment(0, 10);
         data.left = new FormAttachment(0, 5);
@@ -206,7 +207,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
         labelGd.widthHint = 30;
 
         final Button addButton = new Button(buttonsComposite, SWT.NONE);
-        addButton.setToolTipText("Add New Item"); //$NON-NLS-1$
+        addButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.addItem")); //$NON-NLS-1$
         addButton.setImage(ImageLib.getImage(ImageLib.ADD_ACTION));
         addButton.setLayoutData(labelGd);
         addButton.addSelectionListener(new SelectionAdapter() {
@@ -218,7 +219,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
         });
 
         final Button delButton = new Button(buttonsComposite, SWT.NONE);
-        delButton.setToolTipText("Delete Selcetion Item"); //$NON-NLS-1$
+        delButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.deleteItem")); //$NON-NLS-1$
         delButton.setImage(ImageLib.getImage(ImageLib.DELETE_ACTION));
         delButton.setLayoutData(labelGd);
         delButton.addSelectionListener(new SelectionAdapter() {
@@ -233,7 +234,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
             }
         });
         final Button upButton = new Button(buttonsComposite, SWT.NONE);
-        upButton.setToolTipText("Move Item Up"); //$NON-NLS-1$
+        upButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.moveupItem")); //$NON-NLS-1$
         upButton.setImage(ImageLib.getImage(ImageLib.UP_ACTION));
         upButton.setLayoutData(labelGd);
         upButton.addSelectionListener(new SelectionAdapter() {
@@ -249,7 +250,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
         });
 
         final Button downButton = new Button(buttonsComposite, SWT.NONE);
-        downButton.setToolTipText("Move Item Down"); //$NON-NLS-1$
+        downButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.moveDownItem")); //$NON-NLS-1$
         downButton.setImage(ImageLib.getImage(ImageLib.DOWN_ACTION));
         downButton.setLayoutData(labelGd);
         downButton.addSelectionListener(new SelectionAdapter() {
@@ -264,7 +265,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
             }
         });
         final Button copyButton = new Button(buttonsComposite, SWT.NONE);
-        copyButton.setToolTipText("Copy Selcetion Item"); //$NON-NLS-1$
+        copyButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.copyItem")); //$NON-NLS-1$
         copyButton.setImage(ImageLib.getImage(ImageLib.COPY_ACTION));
         copyButton.setLayoutData(labelGd);
         copyButton.addSelectionListener(new SelectionAdapter() {
@@ -278,7 +279,7 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
         });
 
         final Button pasteButton = new Button(buttonsComposite, SWT.NONE);
-        pasteButton.setToolTipText("Paste Selcetion Item"); //$NON-NLS-1$
+        pasteButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.parseItem")); //$NON-NLS-1$
         pasteButton.setImage(ImageLib.getImage(ImageLib.PASTE_ACTION));
         pasteButton.setLayoutData(labelGd);
         pasteButton.addSelectionListener(new SelectionAdapter() {

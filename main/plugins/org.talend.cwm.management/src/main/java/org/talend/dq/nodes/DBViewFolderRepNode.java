@@ -28,6 +28,7 @@ import org.talend.core.repository.model.repositoryObject.MetadataSchemaRepositor
 import org.talend.core.repository.model.repositoryObject.TdViewRepositoryObject;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.PackageHelper;
+import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdView;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dq.helper.RepositoryNodeHelper;
@@ -223,9 +224,9 @@ public class DBViewFolderRepNode extends DQDBFolderRepositoryNode implements ICo
     @Override
     public String getLabel() {
         if (hasChildren()) {
-            return "Views (" + this.getChildrenCount() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+            return Messages.getString("DBViewFolderRepNode.ViewsWithCount", this.getChildrenCount()); //$NON-NLS-1$
         }
-        return "Views"; //$NON-NLS-1$
+        return Messages.getString("DBViewFolderRepNode.Views"); //$NON-NLS-1$
     }
 
     /*

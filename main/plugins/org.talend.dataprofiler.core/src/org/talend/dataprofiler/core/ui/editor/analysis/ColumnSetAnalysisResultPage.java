@@ -189,7 +189,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
 
             // match
             if (0 < allMatchIndicator.getCompositeRegexMatchingIndicators().size()) {
-                this.createAllMatchPart(sectionClient, "All Match", allMatchIndicator);//$NON-NLS-1$
+                this.createAllMatchPart(sectionClient,
+                        DefaultMessagesImpl.getString("ColumnSetAnalysisResultPage.AllMatch"), allMatchIndicator);//$NON-NLS-1$
             }
         }
 

@@ -454,7 +454,8 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
         cmBodyComp.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         int style = SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
-        String[] headers = { "Characters to replace", "Replacement characters" };//$NON-NLS-1$//$NON-NLS-2$
+        String[] headers = {
+                DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.charReplaceCharacters to replace"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.replaceChar") };//$NON-NLS-1$//$NON-NLS-2$
         int[] widths = { 300, 300 };
         buildCharactersMappingLineComp(cmBodyComp, charactersMapping, style, headers, widths);
 
@@ -662,15 +663,17 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
         int style = SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
 
         if (aggregateDateExpression.haveAggregateExpression()) {
-            String title = "bubble chart functions";//$NON-NLS-1$
-            String[] headers = { "horizontal axis", "vertical axis", "bubble size" };//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+            String title = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.functions");//$NON-NLS-1$
+            String[] headers = {
+                    DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.hAxis"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.vAxis"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.size") };//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
             int[] widths = { 120, 120, 240 };
             buildAggregateDateComp(expressionBodyComp, aggregateDateExpression, style, title, headers, widths);
         }
 
         if (aggregateDateExpression.haveDateExpression()) {
-            String title = "gantt chart functions";//$NON-NLS-1$
-            String[] headers = { "lower value", "upper value", "total", "highlighted values" };//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
+            String title = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.ganttChart");//$NON-NLS-1$
+            String[] headers = {
+                    DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.lowerValue"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.upperValue"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.totalValue"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.highValue") };//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
             int[] widths = { 120, 120, 120, 240 };
             buildAggregateDateComp(expressionBodyComp, aggregateDateExpression, style, title, headers, widths);
         }

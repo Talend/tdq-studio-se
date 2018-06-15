@@ -59,7 +59,7 @@ public class ReportFolderRepNode extends DQFolderRepNode {
     }
 
     private String getLabelWithCount() {
-        String label = "Report"; //$NON-NLS-1$
+        String label = null;
         if (this.getObject() != null) {
             label = this.getObject().getLabel();
         } else {

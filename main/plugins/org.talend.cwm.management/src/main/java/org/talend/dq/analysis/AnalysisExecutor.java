@@ -328,7 +328,7 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
             }
         } else {
             rc.setOk(Boolean.FALSE);
-            rc.setMessage("Connection is null when running analysis: " + analysis.getName()); //$NON-NLS-1$
+            rc.setMessage(Messages.getString("AnalysisExecutor.ConnectionNull", analysis.getName())); //$NON-NLS-1$
             log.error(rc.getMessage());
         }
         return rc;
@@ -464,7 +464,7 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
         }
 
         if (pooledConnection == null) {
-            rc.setReturnCode("Can't get any useable connection!", false); //$NON-NLS-1$
+            rc.setReturnCode(Messages.getString("AnalysisExecutor.NoUseableConnection"), false); //$NON-NLS-1$
             return rc;
         }
 

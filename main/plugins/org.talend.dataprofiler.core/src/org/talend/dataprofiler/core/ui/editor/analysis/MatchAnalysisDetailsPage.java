@@ -401,7 +401,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         if (analysisColumnSize > 0 && firstColumnNode != null) {
             updateAnalyzeDataLabel(firstColumnNode);
         } else if (analysisColumnSize > 0 && firstColumnNode == null) {
-            analyzeDataLabel.setText(analyzeDataDefaultInfo + "The connection is not available now!"); //$NON-NLS-1$
+            analyzeDataLabel.setText(analyzeDataDefaultInfo
+                    + DefaultMessagesImpl.getString("MatchAnalysisDetailsPage.connectionNotAvaible")); //$NON-NLS-1$
         } else {
             analyzeDataLabel.setText(analyzeDataDefaultInfo);
         }

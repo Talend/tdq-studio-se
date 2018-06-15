@@ -304,7 +304,7 @@ public class AnalysisTableTreeViewer extends AbstractTableDropTree {
             }
             String columnSetName = columnSet.getName();
             if (columnSetName == null) {
-                columnSetName = "Unknown name"; //$NON-NLS-1$
+                columnSetName = DefaultMessagesImpl.getString("AnalysisTableTreeViewer.unknown"); //$NON-NLS-1$
             }
             treeItem.setText(0, columnSetName);
             treeItem.setData(TABLE_INDICATOR_KEY, tableIndicator);
@@ -522,7 +522,7 @@ public class AnalysisTableTreeViewer extends AbstractTableDropTree {
         indicatorItem.setData(INDICATOR_UNIT_KEY, unit);
         indicatorItem.setData(VIEWER_KEY, this);
         String label = indicatorUnit.getIndicatorName();
-        label = label != null ? label : "Unknown indicator";//$NON-NLS-1$
+        label = label != null ? label : DefaultMessagesImpl.getString("AnalysisTableTreeViewer.unknownIndicator");//$NON-NLS-1$
 
         SysIndicatorDefinitionRepNode recursiveFindIndicatorDefinition = RepositoryNodeHelper
                 .recursiveFindIndicatorDefinition(indicatorUnit.getIndicator().getIndicatorDefinition());

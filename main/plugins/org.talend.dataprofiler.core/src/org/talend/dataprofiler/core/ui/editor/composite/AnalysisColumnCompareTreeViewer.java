@@ -262,7 +262,8 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
         // MOD qiongli 2010-6-10,bug 13600:remove "reverse columns" button for
         // ColumnSet comparison analysis.s
         if (masterPage instanceof FunctionalDependencyAnalysisDetailsPage) {
-            columnReverseButtion = toolkit.createButton(compareToplevelComp, "Reverse columns", SWT.NONE); //$NON-NLS-1$
+            columnReverseButtion = toolkit.createButton(compareToplevelComp,
+                    DefaultMessagesImpl.getString("AnalysisColumnCompareTreeViewer.revertColumn"), SWT.NONE); //$NON-NLS-1$
             columnReverseButtion.addMouseListener(new MouseAdapter() {
 
                 @Override
@@ -630,7 +631,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
                 columnHeader.setText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.element", tableName)); //$NON-NLS-1$
             } else {
                 columnList.remove(column);
-                columnHeader.setText("The connection is not available now!"); //$NON-NLS-1$
+                columnHeader.setText(DefaultMessagesImpl.getString("AnalysisColumnCompareTreeViewer.connectionNotAvaible")); //$NON-NLS-1$
             }
         }
 

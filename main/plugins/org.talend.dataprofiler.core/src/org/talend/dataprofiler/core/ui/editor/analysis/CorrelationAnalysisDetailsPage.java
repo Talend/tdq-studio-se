@@ -551,7 +551,8 @@ public class CorrelationAnalysisDetailsPage extends AbstractAnalysisMetadataPage
      * @param form
      */
     private void createIndicatorsSection(ScrolledForm form, Composite topComp) {
-        indicatorsSection = createSection(form, topComp, "Indicators", null); //$NON-NLS-1$
+        indicatorsSection = createSection(form, topComp,
+                DefaultMessagesImpl.getString("CorrelationAnalysisDetailsPage.indicators"), null); //$NON-NLS-1$
 
         Composite indicatorsComp = toolkit.createComposite(indicatorsSection, SWT.NONE);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(indicatorsComp);
