@@ -331,8 +331,7 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
 
         // Reference Projects
         if (org.talend.core.PluginChecker.isRefProjectLoaded() && inWhichProject.getEmfProject() != null
-                && inWhichProject.getEmfProject().getReferencedProjects().size() > 0) {
-
+                && inWhichProject.getProjectReferenceList().size() > 0) {
             if (!ProxyRepositoryManager.getInstance().isMergeRefProject()) {
                 DQRepositoryNode refProjectNode =
                         createNewRepNode(ERepositoryObjectType.REFERENCED_PROJECTS, inWhichProject);
@@ -352,15 +351,10 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
     private void handleReferenced(RepositoryNode parent) {
         Project currentProject = ((DQRepositoryNode) parent).getProject();
         if (parent.getType().equals(ENodeType.SYSTEM_FOLDER)) {
-            for (ProjectReference refProject : (List<ProjectReference>) currentProject
-                    .getEmfProject()
-                    .getReferencedProjects()) {
-                String parentBranch = ProjectManager.getInstance().getMainProjectBranch(currentProject);
-                // if not a DB ref project, modified by nma, order 12519
-                org.talend.core.model.properties.Project emfProject = refProject.getReferencedProject();
-                if (emfProject.getUrl() != null && emfProject.getUrl().startsWith("teneo") //$NON-NLS-1$
-                        || (refProject.getBranch() != null && refProject.getBranch().equals(parentBranch))) {
-
+            for (ProjectReference refProject : currentProject.getProjectReferenceList()) {
+                if (ProjectManager.validReferenceProject(currentProject.getEmfProject(), refProject)) {
+                    // if not a DB ref project, modified by nma, order 12519
+                    org.talend.core.model.properties.Project emfProject = refProject.getReferencedProject();
                     DQRepositoryNode referencedProjectNode =
                             new DQRepositoryNode(null, parent, ENodeType.REFERENCED_PROJECT, currentProject);
                     referencedProjectNode.setProperties(EProperties.LABEL, emfProject.getLabel());
