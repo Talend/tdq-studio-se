@@ -135,7 +135,9 @@ public class BinsDesignerForm extends AbstractIndicatorForm {
         column3.setText(DefaultMessagesImpl.getString("BinsDesignerForm.high")); //$NON-NLS-1$
         column3.setAlignment(SWT.CENTER);
 
-        tableViewer.setColumnProperties(new String[] { "low", "data", "high" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        tableViewer
+                .setColumnProperties(new String[] {
+                        DefaultMessagesImpl.getString("BinsDesignerForm.Low"), DefaultMessagesImpl.getString("BinsDesignerForm.Data"), DefaultMessagesImpl.getString("BinsDesignerForm.High") }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         CellEditor[] cellEditor = new CellEditor[3];
         cellEditor[0] = new TextCellEditor(table);

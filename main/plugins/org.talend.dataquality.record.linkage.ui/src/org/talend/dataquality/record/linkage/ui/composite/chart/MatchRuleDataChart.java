@@ -83,7 +83,7 @@ public class MatchRuleDataChart extends Composite {
 
     private Object createChart(Object categorydataset) {
         Object localJFreeChart = TOPChartUtil.getInstance().createMatchRuleBarChart(DefaultMessagesImpl.getString("DataChart.0"), //$NON-NLS-1$
-                "Group Count", categorydataset); //$NON-NLS-1$
+                DefaultMessagesImpl.getString("MatchRuleDataChart.GroupCount"), categorydataset); //$NON-NLS-1$
         return localJFreeChart;
     }
 

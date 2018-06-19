@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.talend.dataprofiler.core.CorePlugin;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisItemEditorInput;
 import org.talend.dataprofiler.core.ui.wizard.analysis.AbstractAnalysisWizard;
@@ -46,7 +47,7 @@ public class FunctionDependencyWizard extends AbstractAnalysisWizard implements 
      */
     public void init(IWorkbench workbench, IStructuredSelection selection) {
         setHelpAvailable(true);
-        setWindowTitle("Just a test"); //$NON-NLS-1$
+        setWindowTitle(DefaultMessagesImpl.getString("FunctionDependencyWizard.Title")); //$NON-NLS-1$
     }
 
     @Override

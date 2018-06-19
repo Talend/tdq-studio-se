@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.Wizard;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.imex.model.IExportWriter;
 import org.talend.dataprofiler.core.ui.imex.model.ItemRecord;
 import org.talend.dataprofiler.core.ui.progress.ProgressUI;
@@ -42,12 +43,12 @@ public class ExportWizard extends Wizard {
      * DOC bZhou ExportWizard constructor comment.
      */
     public ExportWizard(String specifiedPath) {
-        setWindowTitle("Export Item");//$NON-NLS-1$ 
+        setWindowTitle(DefaultMessagesImpl.getString("ExportWizard.Title"));//$NON-NLS-1$ 
         this.exportPage = new ExportWizardPage(specifiedPath);
     }
 
     public ExportWizard(String specifiedPath, Object[] selectedObj) {
-        setWindowTitle("Export Item");//$NON-NLS-1$ 
+        setWindowTitle(DefaultMessagesImpl.getString("ExportWizard.Title"));//$NON-NLS-1$ 
         this.exportPage = new ExportWizardPage(null, selectedObj);
     }
 
@@ -77,7 +78,7 @@ public class ExportWizard extends Wizard {
         IRunnableWithProgress op = new IRunnableWithProgress() {
 
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                monitor.beginTask("Export Item", records.length);//$NON-NLS-1$ 
+                monitor.beginTask(DefaultMessagesImpl.getString("ExportWizard.Export"), records.length);//$NON-NLS-1$ 
 
                 writer.write(records, monitor);
 

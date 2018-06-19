@@ -30,6 +30,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -129,7 +130,7 @@ public class ZipFileExportWriter extends FileSystemExportWriter {
     public List<String> check() {
         List<String> errors = new ArrayList<String>();
 
-        ReturnCode rc = new ReturnCode("The root file extension is invalid!", false);//$NON-NLS-1$
+        ReturnCode rc = new ReturnCode(DefaultMessagesImpl.getString("ZipFileExportWriter.ExtensionInvalid"), false);//$NON-NLS-1$
 
         if (fileExtension != null) {
             String[] validExtensions = new String[] { "zip", "tar", "tar.gz" };//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

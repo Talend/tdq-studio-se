@@ -51,6 +51,7 @@ import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Property;
 import org.talend.cwm.helper.ResourceHelper;
 import org.talend.dataprofiler.core.PluginConstant;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.migration.helper.IndicatorDefinitionFileHelper;
 import org.talend.dataprofiler.core.ui.imex.model.EImexType;
 import org.talend.dataprofiler.core.ui.imex.model.ExportWriterFactory;
@@ -332,7 +333,7 @@ public class ExportWizardPage extends WizardPage {
                             if (findRecord != null) {
                                 repositoryTree.setChecked(findRecord, checked);
                             } else {
-                                log.error("Can't find the file: " + file.getAbsolutePath());//$NON-NLS-1$ 
+                                log.error(DefaultMessagesImpl.getString("ExportWizardPage.CanNotFind", file.getAbsolutePath()));//$NON-NLS-1$ 
                             }
                         }
                     } else {
@@ -411,7 +412,7 @@ public class ExportWizardPage extends WizardPage {
                                     .getProperty(element)
                                     .getDisplayName() : depFile.getName();
                     // TDQ-5909~
-                    errors.add("\"" + record.getName() + "\" miss dependency : " + dptLabel);//$NON-NLS-1$ //$NON-NLS-2$ 
+                    errors.add(DefaultMessagesImpl.getString("ExportWizardPage.missDepend", record.getName(), dptLabel));//$NON-NLS-1$ //$NON-NLS-2$ 
                 }
             }
         }

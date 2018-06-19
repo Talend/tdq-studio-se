@@ -24,6 +24,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
 
 /**
  * created by zshen on Aug 7, 2013 Detailled comment
@@ -79,7 +80,7 @@ public class BlockingKeyDataChart extends Composite {
     }
 
     private Object computeChart() {
-        Object chart = createBarChart("Number of rows", createDataset()); //$NON-NLS-1$
+        Object chart = createBarChart(DefaultMessagesImpl.getString("BlockingKeyDataChart.rows"), createDataset()); //$NON-NLS-1$
 
         return chart;
 
@@ -96,7 +97,7 @@ public class BlockingKeyDataChart extends Composite {
         while (iterator.hasNext()) {
             String key = iterator.next();
             Integer blockSize = prviewData.get(key).size();
-            assert blockSize != null : "no row found for block " + key; //$NON-NLS-1$
+            assert blockSize != null : DefaultMessagesImpl.getString("BlockingKeyDataChart.noRow", key); //$NON-NLS-1$
             if (blockSize == null) { // should not happen
                 blockSize = 0;
             }

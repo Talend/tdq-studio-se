@@ -33,6 +33,7 @@ import org.talend.commons.utils.io.FilesUtils;
 import org.talend.core.model.properties.Property;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.migration.helper.WorkspaceVersionHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
@@ -115,7 +116,7 @@ public class FileSystemExportWriter implements IExportWriter {
 
                 Map<IPath, IPath> toImportMap = mapping(record);
 
-                monitor.subTask("Exporting " + record.getName());//$NON-NLS-1$ 
+                monitor.subTask(DefaultMessagesImpl.getString("Exporting ", record.getName()));//$NON-NLS-1$ 
 
                 if (record.isValid()) {
 
@@ -157,7 +158,7 @@ public class FileSystemExportWriter implements IExportWriter {
         if (resFile.exists()) {
             FilesUtils.copyFile(resFile, desFile);
         } else {
-            log.warn("Export failed! " + resFile.getAbsolutePath() + " is not existed");//$NON-NLS-1$ //$NON-NLS-2$ 
+            log.warn(DefaultMessagesImpl.getString("FileSystemExportWriter.ExportFail", resFile.getAbsolutePath()));//$NON-NLS-1$ //$NON-NLS-2$ 
         }
     }
 
@@ -238,7 +239,7 @@ public class FileSystemExportWriter implements IExportWriter {
         List<String> errors = new ArrayList<String>();
 
         if (basePath == null || !basePath.toFile().exists()) {
-            errors.add("The root directory does not exist");//$NON-NLS-1$ 
+            errors.add(DefaultMessagesImpl.getString("FileSystemExportWriter.RootNotExist"));//$NON-NLS-1$ 
         }
 
         return errors;

@@ -286,7 +286,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 }
                 record.setConflictObject(null);
             } catch (Exception e) {
-                record.addError("\"" + record.getName() + "\" check item conflict failed!");//$NON-NLS-1$ //$NON-NLS-2$ 
+                record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.CheckFailed", record.getName()));//$NON-NLS-1$ //$NON-NLS-2$ 
             }
         }
     }
@@ -325,7 +325,8 @@ public class FileSystemImportWriter implements IImportWriter {
                     }
                 }
                 InternalEObject inObject = (InternalEObject) melement;
-                record.addError("\"" + record.getName() + "\" missing dependented file : " + inObject.eProxyURI().toFileString());//$NON-NLS-1$ //$NON-NLS-2$ 
+                record.addError(DefaultMessagesImpl.getString(
+                        "FileSystemImportWriter.MissDepend", record.getName(), inObject.eProxyURI().toFileString()));//$NON-NLS-1$ //$NON-NLS-2$ 
             }
         }
     }
@@ -386,7 +387,7 @@ public class FileSystemImportWriter implements IImportWriter {
             // error
 
             desFile.delete();
-            log.warn(desFile.getAbsoluteFile() + " is overwritten!");//$NON-NLS-1$ 
+            log.warn(DefaultMessagesImpl.getString("FileSystemImportWriter.Overwritten", desFile.getAbsoluteFile()));//$NON-NLS-1$ 
         }
 
         FileUtils.copyFile(resFile, desFile);
@@ -488,11 +489,12 @@ public class FileSystemImportWriter implements IImportWriter {
 
                         Map<IPath, IPath> toImportMap = mapping(record);
 
-                        fMonitor.subTask("Importing " + record.getName());//$NON-NLS-1$
+                        fMonitor.subTask(DefaultMessagesImpl.getString("FileSystemImportWriter.Importing", record.getName()));//$NON-NLS-1$
 
                         if (record.isValid()) {
                             boolean isDeleted = false;
-                            log.info("Importing " + record.getFile().getAbsolutePath());//$NON-NLS-1$
+                            log.info(DefaultMessagesImpl.getString(
+                                    "FileSystemImportWriter.Importing", record.getFile().getAbsolutePath()));//$NON-NLS-1$
 
                             // Delete the conflict node before import.
                             IRepositoryViewObject object = record.getConflictObject();
@@ -1244,13 +1246,13 @@ public class FileSystemImportWriter implements IImportWriter {
     public List<String> check() {
         List<String> errors = new ArrayList<String>();
         if (!checkBasePath()) {
-            errors.add("The root directory is invalid!");//$NON-NLS-1$
+            errors.add(DefaultMessagesImpl.getString("FileSystemImportWriter.RootInvalid"));//$NON-NLS-1$
         } else if (!checkVersion()) {
-            errors.add("Can't verify the imported version!");//$NON-NLS-1$
+            errors.add(DefaultMessagesImpl.getString("FileSystemImportWriter.VeriryVersion"));//$NON-NLS-1$
         } else if (!checkProject()) {
-            errors.add("Invalid Project! Can't load the project setting.");//$NON-NLS-1$
+            errors.add(DefaultMessagesImpl.getString("FileSystemImportWriter.InvalidProject"));//$NON-NLS-1$
         } else if (!checkTempPath()) {
-            errors.add("Cannot create temporary folder.");//$NON-NLS-1$
+            errors.add(DefaultMessagesImpl.getString("FileSystemImportWriter.CannotCreate"));//$NON-NLS-1$
         }
 
         return errors;

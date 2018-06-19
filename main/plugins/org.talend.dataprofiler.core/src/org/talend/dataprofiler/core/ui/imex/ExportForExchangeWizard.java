@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.imex.model.EImexType;
 import org.talend.dataprofiler.core.ui.imex.model.ExportWriterFactory;
 import org.talend.dataprofiler.core.ui.imex.model.IExportWriter;
@@ -37,7 +38,7 @@ public class ExportForExchangeWizard extends ExportWizard {
     private static Logger log = Logger.getLogger(ExportForExchangeWizard.class);
 
     public ExportForExchangeWizard(String specifiedPath) {
-        setWindowTitle("Export For Talend Exchange");//$NON-NLS-1$ 
+        setWindowTitle(DefaultMessagesImpl.getString("ExportForExchangeWizard.Title"));//$NON-NLS-1$ 
         this.exportPage = new ExportForExchangeWizardPage(specifiedPath);
     }
 
@@ -52,7 +53,7 @@ public class ExportForExchangeWizard extends ExportWizard {
         IRunnableWithProgress op = new IRunnableWithProgress() {
 
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                monitor.beginTask("Export Item", recordsList.size());//$NON-NLS-1$ 
+                monitor.beginTask(DefaultMessagesImpl.getString("ExportForExchangeWizard.ExportItem"), recordsList.size());//$NON-NLS-1$ 
                 for (String zipFileName : recordsList.keySet()) {
                     writer.setBasePath(writerBashPath.append(zipFileName));
                     writer.write(recordsList.get(zipFileName), monitor);

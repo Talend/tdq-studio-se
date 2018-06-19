@@ -71,9 +71,9 @@ public class IndicatorEditor extends CommonFormEditor {
     protected void addPages() {
         // TDQ-8453 according to the type to use IndicatorDefinition or UDI master page
         if (isSystemIndicator()) {
-            masterPage = new IndicatorDefinitionMaterPage(this, ID, "Indicator Definition");//$NON-NLS-1$
+            masterPage = new IndicatorDefinitionMaterPage(this, ID, DefaultMessagesImpl.getString("IndicatorEditor.Indicator"));//$NON-NLS-1$
         } else {
-            masterPage = new UDIMasterPage(this, ID, "User Define Indicator Definition");//$NON-NLS-1$
+            masterPage = new UDIMasterPage(this, ID, DefaultMessagesImpl.getString("IndicatorEditor.UserIndicator"));//$NON-NLS-1$
         }
         try {
             addPage(masterPage);

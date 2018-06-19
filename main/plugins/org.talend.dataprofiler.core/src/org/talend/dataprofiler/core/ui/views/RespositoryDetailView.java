@@ -696,7 +696,7 @@ public class RespositoryDetailView extends ViewPart implements ISelectionListene
 
         // ~TDQ-3337
         newLabelAndText(gContainer, DefaultMessagesImpl.getString("RespositoryDetailView.type2"), subtype); //$NON-NLS-1$
-        newLabelAndText(gContainer, "Version: ", version); //$NON-NLS-1$
+        newLabelAndText(gContainer, DefaultMessagesImpl.getString("RespositoryDetailView.Version"), version); //$NON-NLS-1$
 
     }
 

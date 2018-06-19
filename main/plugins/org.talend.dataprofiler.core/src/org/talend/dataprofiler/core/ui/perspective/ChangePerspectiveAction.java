@@ -12,7 +12,9 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.perspective;
 
-import static org.talend.dataprofiler.core.PluginConstant.*;
+import static org.talend.dataprofiler.core.PluginConstant.CHEAT_SHEET_VIEW;
+import static org.talend.dataprofiler.core.PluginConstant.PERSPECTIVE_ID;
+import static org.talend.dataprofiler.core.PluginConstant.SE_ID;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -29,6 +31,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.WorkbenchException;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.PluginConstant;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 
 /**
  * Changes the active perspective. <br/>
@@ -40,9 +43,11 @@ public class ChangePerspectiveAction extends Action {
 
     private static Logger log = Logger.getLogger(ChangePerspectiveAction.class);
 
-    private static final String SWITCH_TO_DATA_PROFILING = "Switch to " + PluginConstant.DATAPROFILER_PERSPECTIVE; //$NON-NLS-1$
+    private static final String SWITCH_TO_DATA_PROFILING = DefaultMessagesImpl.getString(
+            "ChangePerspectiveAction.SwitchTo", PluginConstant.DATAPROFILER_PERSPECTIVE); //$NON-NLS-1$
 
-    private static final String SWITCH_TO_DATA_DISCOVERY = "Switch to " + PluginConstant.DATAEXPLORER_PERSPECTIVE; //$NON-NLS-1$
+    private static final String SWITCH_TO_DATA_DISCOVERY = DefaultMessagesImpl.getString(
+            "ChangePerspectiveAction.SwitchTo", PluginConstant.DATAEXPLORER_PERSPECTIVE); //$NON-NLS-1$
 
     static ChangePerspectiveAction action;
 
@@ -96,7 +101,8 @@ public class ChangePerspectiveAction extends Action {
             try {
                 workbench.showPerspective(perspectiveId, workbench.getActiveWorkbenchWindow());
             } catch (WorkbenchException e) {
-                IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, IStatus.OK, "Show perspective failed.", e); //$NON-NLS-1$
+                IStatus status = new Status(IStatus.ERROR, CorePlugin.PLUGIN_ID, IStatus.OK,
+                        DefaultMessagesImpl.getString("ChangePerspectiveAction.ShowFailed"), e); //$NON-NLS-1$
                 CorePlugin.getDefault().getLog().log(status);
             }
         }

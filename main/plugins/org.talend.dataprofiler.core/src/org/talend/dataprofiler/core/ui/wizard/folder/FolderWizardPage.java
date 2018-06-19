@@ -46,7 +46,7 @@ public class FolderWizardPage extends WizardPage {
      * Constructs a new NewProjectWizardPage.
      */
     public FolderWizardPage(String defaultLabel) {
-        super("WizardPage"); //$NON-NLS-1$
+        super(DefaultMessagesImpl.getString("FolderWizardPage.Default")); //$NON-NLS-1$
         this.defaultLabel = defaultLabel;
 
         setTitle(DefaultMessagesImpl.getString("FolderWizardPage.folder")); //$NON-NLS-1$
@@ -66,7 +66,7 @@ public class FolderWizardPage extends WizardPage {
 
         // Name
         Label nameLab = new Label(container, SWT.NONE);
-        nameLab.setText("Name"); //$NON-NLS-1$
+        nameLab.setText(DefaultMessagesImpl.getString("FolderWizardPage.Name")); //$NON-NLS-1$
 
         nameText = new Text(container, SWT.BORDER);
         nameText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

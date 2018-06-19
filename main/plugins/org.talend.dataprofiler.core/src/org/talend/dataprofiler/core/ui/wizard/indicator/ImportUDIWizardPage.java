@@ -108,7 +108,7 @@ public class ImportUDIWizardPage extends WizardPage {
         renameBtn.setText(DefaultMessagesImpl.getString("ImportUDIWizardPage.renameNewIndicator")); //$NON-NLS-1$
 
         Label label2 = new Label(container, SWT.NONE);
-        label2.setText("Preview:"); //$NON-NLS-1$
+        label2.setText(DefaultMessagesImpl.getString("ImportUDIWizardPage.Preview")); //$NON-NLS-1$
 
         csvViewer = new CsvFileTableViewer(container, SWT.NONE);
         csvViewer.setLayoutData(new GridData(GridData.FILL_BOTH));

@@ -14,6 +14,7 @@ package org.talend.dataquality.record.linkage.ui.action;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TableViewer;
+import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
 
 
 /**
@@ -27,7 +28,7 @@ public class RefreshTableViewAction extends Action {
 
     public RefreshTableViewAction(TableViewer tv) {
         this.tv = tv;
-        setText("Refresh"); //$NON-NLS-1$
+        setText(DefaultMessagesImpl.getString("RefreshTableViewAction.Refresh")); //$NON-NLS-1$
     }
 
     @Override

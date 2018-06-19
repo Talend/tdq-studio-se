@@ -267,7 +267,7 @@ public class JavaUDIParametersForm extends AbstractIndicatorForm {
     private class NewRowAction extends Action {
 
         public NewRowAction() {
-            super("Insert New Row"); //$NON-NLS-1$
+            super(DefaultMessagesImpl.getString("JavaUDIParametersForm.NewRow")); //$NON-NLS-1$
         }
 
         public void run() {
@@ -284,7 +284,7 @@ public class JavaUDIParametersForm extends AbstractIndicatorForm {
     private class DelRowAction extends Action {
 
         public DelRowAction() {
-            super("Delete Row"); //$NON-NLS-1$
+            super(DefaultMessagesImpl.getString("JavaUDIParametersForm.DeleteRow")); //$NON-NLS-1$
         }
 
         public void run() {
@@ -318,7 +318,7 @@ public class JavaUDIParametersForm extends AbstractIndicatorForm {
                 case 1:
                     return ((JavaUDIIndicatorParameter) element).getValue();
                 default:
-                    return "Invalid column: " + columnIndex; //$NON-NLS-1$
+                    return DefaultMessagesImpl.getString("JavaUDIParametersForm.InvalidRow", columnIndex); //$NON-NLS-1$
                 }
             }
 
@@ -374,9 +374,9 @@ public class JavaUDIParametersForm extends AbstractIndicatorForm {
         table.setLayout(layout);
 
         TableColumn nameColumn = new TableColumn(table, SWT.CENTER);
-        nameColumn.setText("Parameter Key"); //$NON-NLS-1$
+        nameColumn.setText(DefaultMessagesImpl.getString("JavaUDIParametersForm.ParameterKey")); //$NON-NLS-1$
         TableColumn valColumn = new TableColumn(table, SWT.CENTER);
-        valColumn.setText("Parameter Value"); //$NON-NLS-1$
+        valColumn.setText(DefaultMessagesImpl.getString("JavaUDIParametersForm.ParameterValue")); //$NON-NLS-1$
         table.setHeaderVisible(true);
         return tableViewer;
     }
