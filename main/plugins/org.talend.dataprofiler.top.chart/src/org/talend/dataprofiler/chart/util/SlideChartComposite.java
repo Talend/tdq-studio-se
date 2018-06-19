@@ -43,11 +43,11 @@ public class SlideChartComposite extends TalendChartComposite {
     }
 
     private void setBarProperty() {
-        ScrollBar verticalBar = this.getVerticalBar();
+        final ScrollBar verticalBar = this.getVerticalBar();
         CategoryDataset dataset = chart.getCategoryPlot().getDataset();
         if (dataset instanceof SlidingCategoryDataset) {
             slidDataSet = (SlidingCategoryDataset) dataset;
-            int underlingCount = slidDataSet.getUnderlyingDataset().getColumnCount();
+            final int underlingCount = slidDataSet.getUnderlyingDataset().getColumnCount();
             verticalBar.setMaximum(underlingCount);
             if (underlingCount <= slidDataSet.getMaximumCategoryCount()) {
                 verticalBar.setVisible(false);

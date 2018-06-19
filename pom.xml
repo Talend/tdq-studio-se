@@ -45,6 +45,7 @@
 		<module>i18n/plugins/org.talend.dataquality.edit.nl</module>
 		<module>i18n/plugins/org.talend.dataquality.matching.nl</module>
 		<module>i18n/plugins/org.talend.dataquality.nl</module>
+		<module>i18n/plugins/org.talend.dataprofiler.migration.nl</module>
 		<module>i18n/plugins/org.talend.dataquality.record.linkage.nl</module>
 		<module>i18n/plugins/org.talend.dataquality.record.linkage.ui.nl</module>
 		<module>i18n/plugins/org.talend.dataquality.standardization.nl</module>
