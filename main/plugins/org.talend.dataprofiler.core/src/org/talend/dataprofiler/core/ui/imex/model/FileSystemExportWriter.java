@@ -116,7 +116,7 @@ public class FileSystemExportWriter implements IExportWriter {
 
                 Map<IPath, IPath> toImportMap = mapping(record);
 
-                monitor.subTask(DefaultMessagesImpl.getString("Exporting ", record.getName()));//$NON-NLS-1$ 
+                monitor.subTask(DefaultMessagesImpl.getString("FileSystemExportWriter.Export", record.getName()));//$NON-NLS-1$ 
 
                 if (record.isValid()) {
 
