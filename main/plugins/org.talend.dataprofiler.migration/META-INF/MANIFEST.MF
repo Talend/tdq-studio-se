@@ -14,3 +14,4 @@ Export-Package: org.talend.dataprofiler.migration,
  org.talend.dataprofiler.migration.manager
 Bundle-ClassPath: .,
  dist/org.talend.dataprofiler.migration.jar
+Bundle-Vendor: .Talend SA.

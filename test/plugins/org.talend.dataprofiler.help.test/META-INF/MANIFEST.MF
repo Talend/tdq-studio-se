@@ -6,3 +6,4 @@ Bundle-Version: 1.0.0.qualifier
 Fragment-Host: org.talend.dataprofiler.help;bundle-version="6.2.0"
 Require-Bundle: org.junit,
  org.talend.libraries.apache.common
+Bundle-Vendor: .Talend SA.
