@@ -649,12 +649,16 @@ public final class ChartDecorator {
         if (str == null || str.length() == 0) {
             return false;
         }
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
+        for (int i = 0; i < str.codePointCount(0, str.length()); i++) {
+            // TDQ-15079: change from charAt to codePointAt to support surrogate pair characters.
+            int c = str.codePointAt(i);
             Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);
             if (ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS
                     || ub == Character.UnicodeBlock.CJK_COMPATIBILITY_IDEOGRAPHS
                     || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_A
+                    || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_B
+                    || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_C
+                    || ub == Character.UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS_EXTENSION_D
                     || ub == Character.UnicodeBlock.CJK_SYMBOLS_AND_PUNCTUATION
                     || ub == Character.UnicodeBlock.GENERAL_PUNCTUATION
                     || ub == Character.UnicodeBlock.HALFWIDTH_AND_FULLWIDTH_FORMS

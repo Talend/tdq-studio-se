@@ -68,7 +68,10 @@ public class DrillDownUtils {
         // when the data is too long
         String keyLabel = String.valueOf(dataEntity.getKey());
         // the equals on the right is the same to FrequencyTypeStateUtil.getKeyLabel()
-        if (keyLabel.length() > 30 && selectValue.equals(keyLabel.substring(0, 30) + "...(" + keyLabel.length() + " characters)")) { //$NON-NLS-1$ //$NON-NLS-2$
+        int keyLabelCPCount = keyLabel.codePointCount(0, keyLabel.length());
+        if (keyLabelCPCount > 30
+                && selectValue.equals(keyLabel.substring(0, keyLabel.offsetByCodePoints(0, 30))
+                        + "...(" + keyLabelCPCount + " characters)")) { //$NON-NLS-1$ //$NON-NLS-2$
             selectValue = keyLabel;
         }
         // TDQ-10785~

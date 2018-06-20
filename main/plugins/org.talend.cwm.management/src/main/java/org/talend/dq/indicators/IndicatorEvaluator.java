@@ -292,7 +292,7 @@ public class IndicatorEvaluator extends Evaluator<String> {
             if (object == null) {
                 key = SpecialValueDisplay.NULL_FIELD;
             } else if (indicator instanceof MinLengthIndicator || indicator instanceof MaxLengthIndicator) {
-                key = String.valueOf(object.toString().length());
+                key = String.valueOf(object.toString().codePointCount(0, object.toString().length()));
             } else if (object.equals(PluginConstant.EMPTY_STRING)) {
                 key = SpecialValueDisplay.EMPTY_FIELD;
             } else if (indicator instanceof PatternLowFreqIndicator) {
