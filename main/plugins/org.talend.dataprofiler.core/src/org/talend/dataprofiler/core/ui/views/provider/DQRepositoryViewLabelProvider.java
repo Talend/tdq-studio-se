@@ -69,6 +69,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -379,40 +380,43 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
      */
     @Override
     public Color getForeground(Object element) {
-        RepositoryNode node = (RepositoryNode) element;
-        if (node instanceof RecycleBinRepNode) {
-            return super.getForeground(element);
-        }
-        if (node.getObject() != null) {
-            switch (node.getType()) {
-            case REFERENCED_PROJECT:
-                return STABLE_PRIMARY_ENTRY_COLOR;
-            case STABLE_SYSTEM_FOLDER:
-            case SYSTEM_FOLDER:
-                if (node.getContentType() == ERepositoryObjectType.TDQ_DATA_PROFILING
-                        || node.getContentType() == ERepositoryObjectType.METADATA
-                        || node.getContentType() == ERepositoryObjectType.TDQ_SYSTEM_INDICATORS
-                        || node.getContentType() == ERepositoryObjectType.TDQ_PATTERN_REGEX) {
+        if (element != null && element instanceof RepositoryNode) {
+            RepositoryNode node = (RepositoryNode) element;
+            if (node instanceof RecycleBinRepNode) {
+                return super.getForeground(element);
+            }
+            if (node.getObject() != null) {
+                switch (node.getType()) {
+                case REFERENCED_PROJECT:
                     return STABLE_PRIMARY_ENTRY_COLOR;
-                }
-                return STABLE_SECONDARY_ENTRY_COLOR;
-            default:
-                ERepositoryStatus repositoryStatus = node.getObject().getRepositoryStatus();
-                if (repositoryStatus == ERepositoryStatus.LOCK_BY_OTHER) {
-                    return LOCKED_ENTRY;
-                }
+                case STABLE_SYSTEM_FOLDER:
+                case SYSTEM_FOLDER:
+                    if (node.getContentType() == ERepositoryObjectType.TDQ_DATA_PROFILING
+                            || node.getContentType() == ERepositoryObjectType.METADATA
+                            || node.getContentType() == ERepositoryObjectType.TDQ_SYSTEM_INDICATORS
+                            || node.getContentType() == ERepositoryObjectType.TDQ_PATTERN_REGEX) {
+                        return STABLE_PRIMARY_ENTRY_COLOR;
+                    }
+                    return STABLE_SECONDARY_ENTRY_COLOR;
+                default:
+                    ERepositoryStatus repositoryStatus = node.getObject().getRepositoryStatus();
+                    if (repositoryStatus == ERepositoryStatus.LOCK_BY_OTHER) {
+                        return LOCKED_ENTRY;
+                    }
 
-                if (org.talend.core.PluginChecker.isRefProjectLoaded()) {
-                    IReferencedProjectService service = (IReferencedProjectService) GlobalServiceRegister.getDefault()
-                            .getService(IReferencedProjectService.class);
-                    if (service != null && service.isMergeRefProject()) {
-                        IRepositoryViewObject object = node.getObject();
-                        if (object != null) {
-                            org.talend.core.model.properties.Project mainProject = ProjectManager.getInstance()
-                                    .getCurrentProject().getEmfProject();
-                            String projectLabel = object.getProjectLabel();
-                            if (!mainProject.getLabel().equals(projectLabel)) {
-                                return MERGED_REFERENCED_ITEMS_COLOR;
+                    if (org.talend.core.PluginChecker.isRefProjectLoaded()) {
+                        IReferencedProjectService service =
+                                (IReferencedProjectService) GlobalServiceRegister.getDefault().getService(
+                                        IReferencedProjectService.class);
+                        if (service != null && service.isMergeRefProject()) {
+                            IRepositoryViewObject object = node.getObject();
+                            if (object != null) {
+                                org.talend.core.model.properties.Project mainProject =
+                                        ProjectManager.getInstance().getCurrentProject().getEmfProject();
+                                String projectLabel = object.getProjectLabel();
+                                if (!mainProject.getLabel().equals(projectLabel)) {
+                                    return MERGED_REFERENCED_ITEMS_COLOR;
+                                }
                             }
                         }
                     }
