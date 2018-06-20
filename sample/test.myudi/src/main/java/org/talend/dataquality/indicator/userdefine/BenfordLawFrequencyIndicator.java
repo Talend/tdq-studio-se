@@ -49,7 +49,8 @@ public class BenfordLawFrequencyIndicator extends UserDefIndicatorImpl {
         if (data == null)
             return true;
 
-        Integer leadDigit = Integer.valueOf(String.valueOf(data).substring(0, 1));
+        Integer leadDigit =
+                Integer.valueOf(String.valueOf(data).substring(0, String.valueOf(data).offsetByCodePoints(0, 1)));
 
         // increment frequency of leading digit in data
         Long c = this.valueToFreq.get(leadDigit);

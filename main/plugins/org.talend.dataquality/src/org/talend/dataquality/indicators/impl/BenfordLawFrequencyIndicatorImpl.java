@@ -63,7 +63,8 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
                 invalid.add(val);
                 Long freq = this.valueToFreq.get(val);
                 counted = (freq == null) ? counted : counted + freq;
-            } else if (String.valueOf(val).length() > 1) { // check the length, should only = 1, if >1, cut it
+            } else if (String.valueOf(val).codePointCount(0, String.valueOf(val).length()) > 1) {
+                // check the length, should only = 1, if >1, cut it
                 lengthMore.add(val);
             }
 
@@ -79,7 +80,7 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
         // check the length, should only = 1, if >1, cut it
         if (lengthMore.size() > 0) {
             for (Object val : lengthMore) {
-                String k = String.valueOf(val).substring(0, 1);
+                String k = String.valueOf(val).substring(0, String.valueOf(val).offsetByCodePoints(0, 1));
                 Long freq = this.valueToFreq.get(val);
                 this.valueToFreq.remove(val);
                 this.valueToFreq.put(k, freq);
@@ -151,7 +152,7 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
         } else if (isInvalid < 0) {
             setValue(INVALID);
         } else {
-            setValue(String.valueOf(data).substring(0, 1));
+            setValue(String.valueOf(data).substring(0, String.valueOf(data).offsetByCodePoints(0, 1)));
         }
 
         return true;
