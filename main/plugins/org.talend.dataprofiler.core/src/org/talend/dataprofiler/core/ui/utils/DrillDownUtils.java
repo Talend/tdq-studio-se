@@ -68,7 +68,7 @@ public class DrillDownUtils {
         // when the data is too long
         String keyLabel = String.valueOf(dataEntity.getKey());
         // the equals on the right is the same to FrequencyTypeStateUtil.getKeyLabel()
-        int keyLabelCPCount = keyLabel.codePointCount(0, keyLabel.length());
+        long keyLabelCPCount = keyLabel.codePoints().count();
         if (keyLabelCPCount > 30
                 && selectValue.equals(keyLabel.substring(0, keyLabel.offsetByCodePoints(0, 30))
                         + "...(" + keyLabelCPCount + " characters)")) { //$NON-NLS-1$ //$NON-NLS-2$

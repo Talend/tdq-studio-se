@@ -649,7 +649,7 @@ public final class ChartDecorator {
         if (str == null || str.length() == 0) {
             return false;
         }
-        for (int i = 0; i < str.codePointCount(0, str.length()); i++) {
+        for (int i = 0; i < str.codePoints().count(); i++) {
             // TDQ-15079: change from charAt to codePointAt to support surrogate pair characters.
             int c = str.codePointAt(i);
             Character.UnicodeBlock ub = Character.UnicodeBlock.of(c);

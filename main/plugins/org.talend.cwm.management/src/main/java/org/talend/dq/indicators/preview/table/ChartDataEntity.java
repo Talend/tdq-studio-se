@@ -343,11 +343,11 @@ public class ChartDataEntity {
                     || indicatorEnum == IndicatorEnum.CIWordPatternLowFreqIndicatorEnum) {
                 if (key != null) {
                     String keyLabel = key.toString();
-                    int keylabelCPCount = keyLabel.codePointCount(0, keyLabel.length());
-                    if (keylabelCPCount > 30) {
-                        msg.append(keylabelCPCount > 200 ? keyLabel.substring(0,
+                    long keyLabelCPCount = keyLabel.codePoints().count();
+                    if (keyLabelCPCount > 30) {
+                        msg.append(keyLabelCPCount > 200 ? keyLabel.substring(0,
                                 keyLabel.offsetByCodePoints(0, 200))
-                                + "...(" + keylabelCPCount + " characters)" : keyLabel); //$NON-NLS-1$ //$NON-NLS-2$
+                                + "...(" + keyLabelCPCount + " characters)" : keyLabel); //$NON-NLS-1$ //$NON-NLS-2$
                     }
 
                 }
