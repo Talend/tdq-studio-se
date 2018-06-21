@@ -209,8 +209,7 @@ public class FrequencyStatisticsExplorer extends DataExplorer {
      * @return
      */
     private String getQuarterCharacters(String label) {
-        int labelCPCount = label.codePointCount(0, label.length());
-        return label.substring(labelCPCount - 1, labelCPCount);
+        return label.substring(label.length() - 1);
     }
 
     /**
@@ -220,11 +219,8 @@ public class FrequencyStatisticsExplorer extends DataExplorer {
      * @return
      */
     private String getYearCharacters(String label) {
-        if (label != null) {
-            int labelCPCount = label.codePointCount(0, label.length());
-            if (labelCPCount >= 4) {
-                return label.substring(0, label.offsetByCodePoints(0, 4));
-            }
+        if (label != null && label.length() >= 4) {
+            return label.substring(0, 4);
         }
 
         return null;
@@ -239,17 +235,13 @@ public class FrequencyStatisticsExplorer extends DataExplorer {
      * @return
      */
     private String getMonthCharacters(DateGrain dateGrain, String label) {
-        if (label == null) {
-            return null;
-        }
-        int labelCPCount = label.codePointCount(0, label.length());
         switch (dateGrain) {
         case DAY:
         case WEEK:
             // week and day are the two last digits
-            return label.substring(labelCPCount - 4, labelCPCount - 2);
+            return label.substring(label.length() - 4, label.length() - 2);
         case MONTH:
-            return label.substring(labelCPCount - 2, labelCPCount);
+            return label.substring(label.length() - 2);
         default:
             break;
         }
@@ -263,8 +255,7 @@ public class FrequencyStatisticsExplorer extends DataExplorer {
      * @return
      */
     private String getWeekCharacters(String label) {
-        int labelCPCount = label.codePointCount(0, label.length());
-        return label.substring(labelCPCount - 2, labelCPCount);
+        return label.substring(label.length() - 2);
     }
 
     /**
@@ -274,8 +265,7 @@ public class FrequencyStatisticsExplorer extends DataExplorer {
      * @return
      */
     private String getDayCharacters(String label) {
-        int labelCPCount = label.codePointCount(0, label.length());
-        return label.substring(labelCPCount - 2, labelCPCount);
+        return label.substring(label.length() - 2);
     }
 
     /**

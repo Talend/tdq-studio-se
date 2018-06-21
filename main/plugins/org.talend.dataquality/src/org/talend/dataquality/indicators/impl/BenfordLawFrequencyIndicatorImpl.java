@@ -63,7 +63,7 @@ public class BenfordLawFrequencyIndicatorImpl extends FrequencyIndicatorImpl imp
                 invalid.add(val);
                 Long freq = this.valueToFreq.get(val);
                 counted = (freq == null) ? counted : counted + freq;
-            } else if (String.valueOf(val).codePointCount(0, String.valueOf(val).length()) > 1) {
+            } else if (String.valueOf(val).codePoints().count() > 1) {
                 // check the length, should only = 1, if >1, cut it
                 lengthMore.add(val);
             }
