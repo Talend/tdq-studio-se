@@ -148,7 +148,8 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                     image = ((DQRepositoryNode) node).getImage();
                 }
             }
-            if (ERepositoryObjectType.METADATA_CON_TABLE.equals(objectType)) {
+            if (ERepositoryObjectType.METADATA_CON_TABLE.equals(objectType)
+                    || ERepositoryObjectType.METADATA_CON_VIEW.equals(objectType)) {
                 return image;
             }
 
