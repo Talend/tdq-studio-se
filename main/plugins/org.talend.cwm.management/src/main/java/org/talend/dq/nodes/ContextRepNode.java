@@ -44,4 +44,8 @@ public class ContextRepNode extends DQRepositoryNode {
         return null;
     }
 
+    @Override
+    public boolean canExpandForDoubleClick() {
+        return false;
+    }
 }
