@@ -132,8 +132,10 @@ public class ColumnSetDBMap extends DBMap<List<Object>, Long> {
             if (sortDirection == 0) {
                 dbMapSpecialColCompartor = Collections.reverseOrder(dbMapSpecialColCompartor);
             }
+            // How many data entry can be cache in memory. It will be save in disk after Overflow the size.
+            int batchSize = 2000;
             iterator =
-                    Pump.sort(this.keySet().iterator(), false, 2000, dbMapSpecialColCompartor,
+                    Pump.sort(this.keySet().iterator(), false, batchSize, dbMapSpecialColCompartor,
                             this.talendSerializerBase);
         } else {
             if (indexMap != null) {
