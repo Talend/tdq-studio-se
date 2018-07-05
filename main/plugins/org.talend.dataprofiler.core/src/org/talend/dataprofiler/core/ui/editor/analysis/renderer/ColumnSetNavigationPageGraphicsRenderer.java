@@ -48,7 +48,8 @@ public class ColumnSetNavigationPageGraphicsRenderer extends AbstractPageControl
         this(parent, style, controller, BlueNavigationPageGraphicsConfigurator.getInstance(), false);
     }
 
-    public ColumnSetNavigationPageGraphicsRenderer(Composite parent, int style, PageableController controller, boolean keepLeft) {
+    public ColumnSetNavigationPageGraphicsRenderer(Composite parent, int style, PageableController controller,
+            boolean keepLeft) {
         this(parent, style, controller, BlueNavigationPageGraphicsConfigurator.getInstance(), keepLeft);
     }
 
@@ -187,14 +188,10 @@ public class ColumnSetNavigationPageGraphicsRenderer extends AbstractPageControl
 
     public void sortChanged(String oldPopertyName, String propertyName, int oldSortDirection, int sortDirection,
             PageableController paginationController) {
-        if (oldPopertyName != null && oldPopertyName == propertyName && oldSortDirection != sortDirection) {
-            // convert sort direction
-        } else if (SWT.UP == sortDirection) {
-            // asc case
-        } else {
-            // desc case
+        if (oldPopertyName != propertyName || oldSortDirection != sortDirection) {
+            // Do reset when reorder needed
+            paginationController.reset();
         }
-        paginationController.reset();
     }
 
     private void refreshEnabled(PageableController controller) {

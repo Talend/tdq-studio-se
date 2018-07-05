@@ -78,7 +78,7 @@ public class DBMapCompartor implements Comparator<Object>, Serializable {
      * @param array2
      * @return
      */
-    private int listCompare(Object[] array1, Object[] array2) {
+    protected int listCompare(Object[] array1, Object[] array2) {
         int i = -1;
         for (int index = 0; index < array1.length; index++) {
             i = compare(array1[index], array2[index]);

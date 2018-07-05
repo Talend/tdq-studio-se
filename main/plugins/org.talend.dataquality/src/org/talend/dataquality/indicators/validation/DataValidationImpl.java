@@ -27,6 +27,14 @@ public class DataValidationImpl implements DataValidation {
 
     protected List<Object[]> resultList = null;
 
+    protected String[] propertiesStr;
+
+    // the current sort information: the property name and direction of the
+    // sort.
+    protected String sortPropertyName;
+
+    protected int sortDirection;
+
     /**
      * DOC zshen DataValidationImpl constructor comment.
      * 
@@ -86,7 +94,7 @@ public class DataValidationImpl implements DataValidation {
     @Override
     public boolean isWork() {
         // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     /*
@@ -118,6 +126,55 @@ public class DataValidationImpl implements DataValidation {
     @Override
     public List<Object[]> getResult() {
         return resultList;
+    }
+
+    /**
+     * 
+     * Get the index of column which need to sort
+     * 
+     * @return
+     */
+    public int getReorderIndex() {
+        return 0;
+    }
+
+    /**
+     * 
+     * Setting properties array
+     * 
+     * @param propertiesStr
+     */
+    public void setProperties(String[] propertiesStr) {
+        this.propertiesStr = propertiesStr;
+    }
+
+    /**
+     * Getter for sortPropertyName.
+     * 
+     * @return the sortPropertyName
+     */
+    public String getSortPropertyName() {
+        return this.sortPropertyName;
+    }
+
+    /**
+     * Getter for sortDirection.
+     * 
+     * @return the sortDirection
+     */
+    public int getSortDirection() {
+        return this.sortDirection;
+    }
+
+    /**
+     * 
+     * Setting information of sort
+     * 
+     * @param controller
+     */
+    public void synSortState(String sortPropertyName, int sortDirection) {
+        this.sortDirection = sortDirection;
+        this.sortPropertyName = sortPropertyName;
     }
 
 }

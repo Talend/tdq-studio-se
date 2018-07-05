@@ -18,7 +18,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.talend.dataprofiler.core.ui.utils.FixOrderList;
 import org.talend.dataprofiler.core.ui.wizard.patterns.DataFilterType;
 import org.talend.dataquality.indicators.RegexpMatchingIndicator;
 import org.talend.dataquality.indicators.validation.DataValidationImpl;
@@ -32,31 +31,15 @@ public class PatternsDataValidation extends DataValidationImpl {
 
     private DataFilterType filterType = null;
 
-    private FixOrderList orderResult = new FixOrderList();
-
     /**
      * DOC zshen PatternsDataValidation constructor comment.
      * 
      * @param tableFilterResult
      */
-    public PatternsDataValidation(List<Map<Integer, RegexpMatchingIndicator>> tableFilterResult, DataFilterType filterType) {
+    public PatternsDataValidation(List<Map<Integer, RegexpMatchingIndicator>> tableFilterResult,
+            DataFilterType filterType) {
         this.tableFilterResult = tableFilterResult;
         this.filterType = filterType;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.dataquality.indicators.validation.DataValidationImpl#initParameter()
-     */
-    @Override
-    protected void initParameter() {
-        if (resultList == null) {
-            orderResult = new FixOrderList();
-            resultList = orderResult;
-        } else {
-            orderResult.reset();
-        }
     }
 
     /*
@@ -110,31 +93,19 @@ public class PatternsDataValidation extends DataValidationImpl {
     /*
      * (non-Javadoc)
      * 
-     * @see org.talend.dataquality.indicators.validation.DataValidationImpl#add(java.lang.Object[])
+     * @see org.talend.dataquality.indicators.validation.DataValidationImpl#getReorderIndex()
      */
     @Override
-    public boolean add(Object[] element) {
-        return orderResult.add(element);
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.dataquality.indicators.validation.DataValidationImpl#isWork()
-     */
-    @Override
-    public boolean isWork() {
-        return orderResult.isWork();
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.dataquality.indicators.validation.DataValidationImpl#getResult()
-     */
-    @Override
-    public List<Object[]> getResult() {
-        return orderResult;
+    public int getReorderIndex() {
+        if (this.propertiesStr == null) {
+            return -1;
+        }
+        for (int index = 0; index < this.propertiesStr.length; index++) {
+            if (propertiesStr[index].equals(sortPropertyName)) {
+                return index;
+            }
+        }
+        return -1;
     }
 
 }

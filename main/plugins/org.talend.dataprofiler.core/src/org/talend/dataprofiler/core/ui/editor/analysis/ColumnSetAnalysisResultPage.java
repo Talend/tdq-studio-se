@@ -60,6 +60,7 @@ import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataprofiler.common.ui.editor.preview.ICustomerDataset;
+import org.talend.dataprofiler.common.ui.pagination.controller.PageableWithIndexController;
 import org.talend.dataprofiler.common.ui.pagination.pageloder.MapDBPageConstant;
 import org.talend.dataprofiler.common.ui.pagination.pageloder.MapDBPageLoader;
 import org.talend.dataprofiler.core.ImageLib;
@@ -85,6 +86,7 @@ import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.RegexpMatchingIndicator;
 import org.talend.dataquality.indicators.columnset.AllMatchIndicator;
+import org.talend.dataquality.indicators.columnset.ColumnsetFactory;
 import org.talend.dataquality.indicators.columnset.SimpleStatIndicator;
 import org.talend.dataquality.indicators.columnset.impl.AllMatchIndicatorImpl;
 import org.talend.dataquality.indicators.mapdb.AbstractDB;
@@ -150,7 +152,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
 
         if (topComposite != null && !topComposite.isDisposed()) {
             graphicsAndTableComp = toolkit.createComposite(topComposite);
-            graphicsAndTableComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING));
+            graphicsAndTableComp.setLayoutData(new GridData(GridData.FILL_HORIZONTAL
+                    | GridData.VERTICAL_ALIGN_BEGINNING));
             graphicsAndTableComp.setLayout(new GridLayout());
             createResultSection(graphicsAndTableComp);
             form.reflow(true);
@@ -165,8 +168,9 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
     @Override
     protected void createResultSection(Composite parent) {
         executeData = getAnalysisHandler().getExecuteData();
-        graphicsAndTableSection = this.createSection(form, parent,
-                DefaultMessagesImpl.getString("ColumnSetResultPage.AnalysisResult"), null); //$NON-NLS-1$
+        graphicsAndTableSection =
+                this.createSection(form, parent,
+                        DefaultMessagesImpl.getString("ColumnSetResultPage.AnalysisResult"), null); //$NON-NLS-1$
         Composite sectionClient = toolkit.createComposite(graphicsAndTableSection);
         sectionClient.setLayout(new GridLayout());
         sectionClient.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -234,7 +238,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
 
         // MOD qiongli feature 19192.
         if (masterPage.getCurrentModelElement().getParameters().isStoreData()) {
-            ChartTableFactory.addMenuAndTip(tableviewer, tableTypeState.getDataExplorer(), masterPage.getCurrentModelElement());
+            ChartTableFactory.addMenuAndTip(tableviewer, tableTypeState.getDataExplorer(),
+                    masterPage.getCurrentModelElement());
         } else {
             TableUtils.addTooltipForTable(tableviewer.getTable());
             TableUtils.addActionTooltip(tableviewer.getTable());
@@ -252,7 +257,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
         return section;
     }
 
-    private Section createSimpleStatisticsPart(Composite parentComp, String title, SimpleStatIndicator simpleStatIndicator) {
+    private Section createSimpleStatisticsPart(Composite parentComp, String title,
+            SimpleStatIndicator simpleStatIndicator) {
         // MOD sgandon 15/03/2010 bug 11769 : made descriotion null to remove empty space.
         Section section = createSection(form, parentComp, title, null);
         section.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -272,13 +278,17 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
             final SimpleStatIndicator simpleStatIndicator) {
 
         List<IndicatorUnit> units = new ArrayList<IndicatorUnit>();
-        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.RowCountIndicatorEnum, masterPage.getSimpleStatIndicator()
+        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.RowCountIndicatorEnum, masterPage
+                .getSimpleStatIndicator()
                 .getRowCountIndicator()));
-        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.DistinctCountIndicatorEnum, masterPage.getSimpleStatIndicator()
+        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.DistinctCountIndicatorEnum, masterPage
+                .getSimpleStatIndicator()
                 .getDistinctCountIndicator()));
-        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.DuplicateCountIndicatorEnum, masterPage.getSimpleStatIndicator()
+        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.DuplicateCountIndicatorEnum, masterPage
+                .getSimpleStatIndicator()
                 .getDuplicateCountIndicator()));
-        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.UniqueIndicatorEnum, masterPage.getSimpleStatIndicator()
+        units.add(new ColumnSetIndicatorUnit(IndicatorEnum.UniqueIndicatorEnum, masterPage
+                .getSimpleStatIndicator()
                 .getUniqueCountIndicator()));
 
         EIndicatorChartType simpleStatType = EIndicatorChartType.SIMPLE_STATISTICS;
@@ -299,7 +309,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
             Object chart = chartTypeState.getChart();
             TOPChartUtils.getInstance().decorateChart(chart, false);
             if (chart != null) {
-                Object chartComposite2 = TOPChartUtils.getInstance().createChartComposite(composite, SWT.NONE, chart, true);
+                Object chartComposite2 =
+                        TOPChartUtils.getInstance().createChartComposite(composite, SWT.NONE, chart, true);
 
                 addMenuToChartComp(chartComposite2, dataExplorer, analysis,
                         ((ICustomerDataset) chartTypeState.getDataset()).getDataEntities());
@@ -333,14 +344,15 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
                     List<Indicator> indicatorsList = masterPage.getCurrentModelElement().getResults().getIndicators();
                     SelectPatternsWizard wizard = new SelectPatternsWizard(indicatorsList);
                     wizard.setFilterType(filterType);
-                    wizard.setOldTableInputList(ColumnSetAnalysisResultPage.this.tableFilterResult.getTableFilterResult());
+                    wizard.setOldTableInputList(ColumnSetAnalysisResultPage.this.tableFilterResult
+                            .getTableFilterResult());
                     WizardDialog dialog = new WizardDialog(null, wizard);
                     dialog.setPageSize(300, 400);
                     wizard.setContainer(dialog);
                     wizard.setWindowTitle(DefaultMessagesImpl.getString("SelectPatternsWizard.title"));//$NON-NLS-1$
                     if (WizardDialog.OK == dialog.open()) {
-                        ColumnSetAnalysisResultPage.this.tableFilterResult = new TableFilterResult(wizard.getPatternSelectPage()
-                                .getTableInputList());
+                        ColumnSetAnalysisResultPage.this.tableFilterResult =
+                                new TableFilterResult(wizard.getPatternSelectPage().getTableInputList());
                         filterType = wizard.getPatternSelectPage().getFilterType();
                         columnsElementViewer.refresh();
                     }
@@ -416,14 +428,15 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
                     List<Indicator> indicatorsList = masterPage.getCurrentModelElement().getResults().getIndicators();
                     SelectPatternsWizard wizard = new SelectPatternsWizard(indicatorsList);
                     wizard.setFilterType(filterType);
-                    wizard.setOldTableInputList(ColumnSetAnalysisResultPage.this.tableFilterResult.getTableFilterResult());
+                    wizard.setOldTableInputList(ColumnSetAnalysisResultPage.this.tableFilterResult
+                            .getTableFilterResult());
                     WizardDialog dialog = new WizardDialog(null, wizard);
                     dialog.setPageSize(300, 400);
                     wizard.setContainer(dialog);
                     wizard.setWindowTitle(DefaultMessagesImpl.getString("SelectPatternsWizard.title"));//$NON-NLS-1$
                     if (WizardDialog.OK == dialog.open()) {
-                        ColumnSetAnalysisResultPage.this.tableFilterResult = new TableFilterResult(wizard.getPatternSelectPage()
-                                .getTableInputList());
+                        ColumnSetAnalysisResultPage.this.tableFilterResult =
+                                new TableFilterResult(wizard.getPatternSelectPage().getTableInputList());
                         filterType = wizard.getPatternSelectPage().getFilterType();
                         columnsElementViewer.refresh();
                         redrawController();
@@ -452,12 +465,13 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
             setupTableGridDataLimitedSize(table, pageSize);
 
             // add pagation control
-            controller = new PageableController(MapDBPageConstant.NUMBER_PER_PAGE);
+            controller = new PageableWithIndexController(MapDBPageConstant.NUMBER_PER_PAGE);
 
             if (mapDB != null) {
                 redrawPagationComposite(sectionTableComp, null, true);
             }
             createColumns(controller, ssIndicator);
+
             // Set current page to 0 to refresh the table
             controller.reset();
             for (TableColumn column : table.getColumns()) {
@@ -475,7 +489,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
         if (ColumnSetAnalysisResultPage.this.tableFilterResult.isEmptyResult() || DataFilterType.ALL_DATA == filterType) {
             redrawPagationComposite(parent, null, true);
         } else {
-            redrawPagationComposite(parent, ColumnSetAnalysisResultPage.this.tableFilterResult.getTableFilterResult(), false);
+            redrawPagationComposite(parent, ColumnSetAnalysisResultPage.this.tableFilterResult.getTableFilterResult(),
+                    false);
         }
     }
 
@@ -486,13 +501,16 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
      */
     private void redrawPagationComposite(Composite parent, List<Map<Integer, RegexpMatchingIndicator>> patternList,
             boolean withPageNumberButton) {
-        final IPageLoader<PageResult<Object[]>> pageLoader = new MapDBPageLoader<Object>(mapDB, new PatternsDataValidation(
-                patternList, filterType), mapDB.size());
+        PatternsDataValidation patternsDataValidation = new PatternsDataValidation(patternList, filterType);
+        patternsDataValidation.setProperties(((PageableWithIndexController) controller).getPropertiesStr());
+        final IPageLoader<PageResult<Object[]>> pageLoader =
+                new MapDBPageLoader<Object>(mapDB, patternsDataValidation, mapDB.size());
         controller.removePageChangedListener(createLoadPageAndReplaceItemsListener);
         controller.removePageChangedListener(resultAndPageButtonsDecorator);
         controller.setCurrentPage(-1);
-        createLoadPageAndReplaceItemsListener = PageLoaderStrategyHelper.createLoadPageAndReplaceItemsListener(controller,
-                columnsElementViewer, pageLoader, PageResultContentProvider.getInstance(), null);
+        createLoadPageAndReplaceItemsListener =
+                PageLoaderStrategyHelper.createLoadPageAndReplaceItemsListener(controller, columnsElementViewer,
+                        pageLoader, PageResultContentProvider.getInstance(), null);
         controller.addPageChangedListener(createLoadPageAndReplaceItemsListener);
         if (buttonComposite != null) {
             buttonComposite.dispose();
@@ -501,8 +519,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
         buttonComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
         buttonComposite.setLayout(new GridLayout());
 
-        resultAndPageButtonsDecorator = new ColumnSetNavigationPageGraphicsRenderer(buttonComposite, SWT.NONE, controller,
-                withPageNumberButton);
+        resultAndPageButtonsDecorator =
+                new ColumnSetNavigationPageGraphicsRenderer(buttonComposite, SWT.NONE, controller, withPageNumberButton);
         GridData gridData = new GridData(GridData.FILL_BOTH);
         resultAndPageButtonsDecorator.setLayoutData(gridData);
         controller.reset();
@@ -522,9 +540,18 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
             TableViewerColumn col = createTableViewerColumn(tableColumnName);
             TableSectionViewerProvider provider = new TableSectionViewerProvider();
             col.setLabelProvider(provider);
-            col.getColumn().addSelectionListener(new SortTableColumnSelectionListener(tableColumnName, controller));
+
+            // ignore last one column 'count(*)' because it is the value of map
+            if (!tableColumnName.equalsIgnoreCase(ColumnsetFactory.eINSTANCE
+                    .createColumnSetMultiValueIndicator()
+                    .getCountAll())) {
+                col.getColumn().addSelectionListener(new SortTableColumnSelectionListener(tableColumnName, controller));
+            }
 
         }
+        String[] properties = tableColumnNames.toArray(new String[] {});
+        columnsElementViewer.setColumnProperties(properties);
+        ((PageableWithIndexController) controller).setPropertiesStr(properties);
     }
 
     private TableViewerColumn createTableViewerColumn(String title) {
@@ -555,8 +582,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
     /**
      * DOC zshen ColumnSetResultPage class global comment. Detailled comment
      */
-    class TableSectionViewerProvider extends CellLabelProvider implements IStructuredContentProvider, ITableLabelProvider,
-            ITableColorProvider {
+    class TableSectionViewerProvider extends CellLabelProvider implements IStructuredContentProvider,
+            ITableLabelProvider, ITableColorProvider {
 
         @SuppressWarnings("unchecked")
         public Object[] getElements(Object inputElement) {

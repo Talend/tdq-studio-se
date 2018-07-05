@@ -13,12 +13,17 @@
 package org.talend.dataquality.indicators.mapdb;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.NavigableSet;
 
+import org.mapdb.Pump;
 import org.talend.cwm.indicator.DataValidation;
+import org.talend.dataquality.indicators.mapdb.compartor.DBMapSpecialColCompartor;
+import org.talend.dataquality.indicators.validation.DataValidationImpl;
 
 /**
  * created by talend on Aug 25, 2014 Detailled comment
@@ -42,7 +47,7 @@ public class ColumnSetDBMap extends DBMap<List<Object>, Long> {
     @Override
     public List<Object[]> subList(long fromIndex, long toIndex, Map<Long, List<Object>> indexMap) {
         boolean stratToRecord = false;
-        List<Object[]> returnList = new ArrayList<Object[]>();
+        List<Object[]> returnList = new ArrayList<>();
         if (!checkIndex(fromIndex, toIndex)) {
             return returnList;
         }
@@ -103,10 +108,12 @@ public class ColumnSetDBMap extends DBMap<List<Object>, Long> {
      * org.talend.commons.MapDB.utils.DataValidation)
      */
     @Override
-    public List<Object[]> subList(long fromIndex, long toIndex, Map<Long, List<Object>> indexMap, DataValidation dataValiator) {
+    public List<Object[]> subList(long fromIndex, long toIndex, Map<Long, List<Object>> indexMap,
+            DataValidation dataValiator) {
         if (dataValiator == null) {
             return subList(fromIndex, toIndex, indexMap);
         }
+        dataValiator.getResult().clear();
         boolean stratToRecord = false;
 
         if (!checkIndex(fromIndex, toIndex)) {
@@ -114,58 +121,66 @@ public class ColumnSetDBMap extends DBMap<List<Object>, Long> {
         }
         List<Object> fromKey = null;
         List<Object> toKey = null;
-        if (indexMap != null) {
-            fromKey = indexMap.get(fromIndex);
-            toKey = indexMap.get(toIndex);
-        }
+
         Iterator<List<Object>> iterator = null;
         long index = 0l;
-        if (fromKey == null) {
-            iterator = this.iterator();
-        } else if (toKey == null) {
-            NavigableSet<List<Object>> tailSet = tailSet(fromKey, true);
-            iterator = tailSet.iterator();
-            index = fromIndex;
+        int reorderIndex = ((DataValidationImpl) dataValiator).getReorderIndex();
+        if (reorderIndex > -1) {
+            int sortDirection = ((DataValidationImpl) dataValiator).getSortDirection();
+            Comparator<?> dbMapSpecialColCompartor =
+                    new DBMapSpecialColCompartor(((DataValidationImpl) dataValiator).getReorderIndex());
+            if (sortDirection == 0) {
+                dbMapSpecialColCompartor = Collections.reverseOrder(dbMapSpecialColCompartor);
+            }
+            iterator =
+                    Pump.sort(this.keySet().iterator(), false, 2000, dbMapSpecialColCompartor,
+                            this.talendSerializerBase);
         } else {
-            NavigableSet<List<Object>> tailSet = subSet(fromKey, toKey);
-            iterator = tailSet.iterator();
-            index = fromIndex;
+            if (indexMap != null) {
+                fromKey = indexMap.get(fromIndex);
+                toKey = indexMap.get(toIndex);
+            }
+            if (fromKey == null) {
+                iterator = this.iterator();
+            } else if (toKey == null) {
+                NavigableSet<List<Object>> tailSet = tailSet(fromKey, true);
+                iterator = tailSet.iterator();
+                index = fromIndex;
+            } else {
+                NavigableSet<List<Object>> tailSet = subSet(fromKey, toKey);
+                iterator = tailSet.iterator();
+                index = fromIndex;
+            }
         }
-        boolean success = true;
 
         while (iterator.hasNext()) {
             List<Object> next = iterator.next();
             if (dataValiator != null && !dataValiator.isValid(dataValiator.isCheckKey() ? next : this.get(next))) {
                 continue;
             }
-            if (index == 0 && fromKey == null && indexMap != null && !dataValiator.isWork()) {
+            if (index == 0 && fromKey == null && indexMap != null) {
                 indexMap.put(0l, next);
             }
             if (index == fromIndex) {
                 stratToRecord = true;
             }
             if (index == toIndex) {
-                if (toKey == null && indexMap != null && !dataValiator.isWork()) {
+                if (toKey == null && indexMap != null) {
                     indexMap.put(toIndex, next);
                 }
                 break;
             }
-            if (dataValiator.isWork() || stratToRecord == true) {
+            if (stratToRecord == true) {
                 Object arrayElement[] = new Object[next.size() + 1];
                 for (int i = 0; i < next.size(); i++) {
                     arrayElement[i] = next.get(i);
                 }
                 Long value = this.get(next);
                 arrayElement[next.size()] = (value == null ? "" : value.toString()); //$NON-NLS-1$
-                success = dataValiator.add(arrayElement);
+                dataValiator.add(arrayElement);
             }
-            // what time should do this need to think
-            if (!dataValiator.isWork() || stratToRecord == true && success) {
-                index++;
-            }
-
+            index++;
         }
-
         return dataValiator.getResult();
     }
 }

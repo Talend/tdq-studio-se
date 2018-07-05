@@ -20,7 +20,9 @@ import org.eclipse.nebula.widgets.pagination.PageableController;
 import org.eclipse.nebula.widgets.pagination.collections.PageResult;
 import org.talend.cwm.indicator.ColumnFilter;
 import org.talend.cwm.indicator.DataValidation;
+import org.talend.dataprofiler.common.ui.pagination.controller.PageableWithIndexController;
 import org.talend.dataquality.indicators.mapdb.AbstractDB;
+import org.talend.dataquality.indicators.validation.DataValidationImpl;
 
 /**
  * created by talend on Aug 14, 2014 Detailled comment
@@ -76,8 +78,14 @@ public class MapDBPageLoader<T> implements IPageLoader<PageResult<Object[]>> {
         if (dataValidator == null) {
             return MapDBPageListHelper.createPage(db, indexMap, columnFilter, fromIndex, toIndex, totalSize);
         } else {
+            // synchronized sort information
+            if (controller instanceof PageableWithIndexController) {
+                ((DataValidationImpl) dataValidator).setProperties(((PageableWithIndexController) controller)
+                        .getPropertiesStr());
+                ((DataValidationImpl) dataValidator).synSortState(controller.getSortPropertyName(),
+                        controller.getSortDirection());
+            }
             return MapDBPageListHelper.createPage(db, indexMap, dataValidator, fromIndex, toIndex, totalSize);
         }
     }
-
 }
