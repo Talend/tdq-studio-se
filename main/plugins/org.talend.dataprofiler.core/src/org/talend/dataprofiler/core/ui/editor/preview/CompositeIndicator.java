@@ -14,6 +14,7 @@ package org.talend.dataprofiler.core.ui.editor.preview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -92,7 +93,7 @@ public final class CompositeIndicator {
         patternList = new ArrayList<IndicatorUnit>();
         sqlPatternList = new ArrayList<IndicatorUnit>();
         modelIndicatorList = new ArrayList<IndicatorUnit>();
-        separatedMap = new HashMap<EIndicatorChartType, List<IndicatorUnit>>();
+        separatedMap = new LinkedHashMap<EIndicatorChartType, List<IndicatorUnit>>();
         // MOD xqliu 2009-02-25 feature 6015
         tableSimpleList = new ArrayList<TableIndicatorUnit>();
         tableWhereRuleList = new ArrayList<TableIndicatorUnit>();
