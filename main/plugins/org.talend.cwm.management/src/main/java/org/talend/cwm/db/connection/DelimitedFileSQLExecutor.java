@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -145,7 +146,11 @@ public class DelimitedFileSQLExecutor extends SQLExecutor {
                 String[] values = csvReader.getValues();
                 String[] analysedValues = new String[analysisElementList.size()];
                 for (int i = 0; i < analysedColumnIndex.length; i++) {
-                    analysedValues[i] = values[analysedColumnIndex[i]];
+                    if (values.length <= i) {
+                        analysedValues[i] = StringUtils.EMPTY;
+                    } else {
+                        analysedValues[i] = values[analysedColumnIndex[i]];
+                    }
                 }
                 handleRow(analysedValues);
             }

@@ -120,7 +120,11 @@ public class FileCSVReader implements IFileReader {
         String[] values = csvReader.getValues();
         String[] analysedValues = new String[analysedColumnIndex.length];
         for (int i = 0; i < analysedColumnIndex.length; i++) {
-            analysedValues[i] = values[analysedColumnIndex[i]];
+            if (values.length <= i) {
+                analysedValues[i] = StringUtils.EMPTY;
+            } else {
+                analysedValues[i] = values[analysedColumnIndex[i]];
+            }
         }
         return createRichRecord(analysedValues);
     }
