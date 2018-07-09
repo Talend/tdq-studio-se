@@ -37,8 +37,16 @@ public class DBMapSpecialColCompartor extends DBMapCompartor {
         if (colIndex == null) {
             return super.listCompare(array1, array2);
         }
+        Object value1 = null;
+        Object value2 = null;
+        if (array1.length > colIndex) {
+            value1 = array1[colIndex];
+        }
 
-        return compare(array1[colIndex], array2[colIndex]);
+        if (array2.length > colIndex) {
+            value2 = array2[colIndex];
+        }
+        return compare(value1, value2);
     }
 
 }
