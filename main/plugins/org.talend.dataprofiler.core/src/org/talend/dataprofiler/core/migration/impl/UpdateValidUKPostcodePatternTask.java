@@ -28,7 +28,7 @@ import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.sugars.ReturnCode;
 
-public class updateValidUKPostcodePatternTask extends AbstractWorksapceUpdateTask {
+public class UpdateValidUKPostcodePatternTask extends AbstractWorksapceUpdateTask {
 
     private final String NEW_REGEX_BODY =
             "'^(([BEGLMNSWbeglmnsw][0-9][0-9]?)|(([A-PR-UWYZa-pr-uwyz][A-HK-Ya-hk-y][0-9][0-9]?)|(([ENWenw][0-9][A-HJKSTUWa-hjkstuw])|([ENWenw][A-HK-Ya-hk-y][0-9][ABEHMNPRVWXYabehmnprvwxy])))) ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$'"; //$NON-NLS-1$
