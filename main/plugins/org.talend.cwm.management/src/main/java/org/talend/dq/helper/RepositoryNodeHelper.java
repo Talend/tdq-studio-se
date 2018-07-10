@@ -4014,7 +4014,12 @@ public final class RepositoryNodeHelper {
                 if (type != null && type == ENodeType.SYSTEM_FOLDER) {
                     String label = node.getObject().getLabel();
                     if (label != null) {
-                        return Messages.getString("RepositoryNodeHelper." + label.replaceAll(" ", "_"));
+                        if (label.equals(EResourceConstant.ANALYSIS.getName())
+                                || label.equals(EResourceConstant.REPORTS.getName())) {
+                            return ((DQRepositoryNode) node).getDisplayTextWithProjectName();
+                        } else {
+                            return Messages.getString("RepositoryNodeHelper." + label.replaceAll(" ", "_"));
+                        }
                     }
                 }
             }
