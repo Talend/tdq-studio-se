@@ -24,8 +24,10 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.cwm.management.i18n.Messages;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.resource.EResourceConstant;
 
 /**
  * DOC klliu class global comment. Detailled comment
@@ -62,6 +64,9 @@ public class ReportFolderRepNode extends DQFolderRepNode {
             label = this.getObject().getLabel();
         } else {
             label = super.getLabel();
+        }
+        if (EResourceConstant.REPORTS.getName().equals(label)) {
+            label = Messages.getString("RepositoryNodeHelper." + label);
         }
         return decorateCount(label);
     }
