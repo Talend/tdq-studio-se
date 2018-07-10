@@ -1752,6 +1752,12 @@
            name="Add Word Base Pattern Frequency Indicator"
            version="7.1.0">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.updateValidUKPostcodePatternTask"
+           id="org.talend.dataprofiler.core.migration.impl.updateValidUKPostcodePatternTask"
+           name="Update Valid UK Postcode Pattern"
+           version="7.1.1">
+     </workspacetask>
   </extension>
   
   <extension
