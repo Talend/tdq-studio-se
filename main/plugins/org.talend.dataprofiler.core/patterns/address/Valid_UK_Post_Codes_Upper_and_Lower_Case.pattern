@@ -6,6 +6,6 @@
   <taggedValue xmi:id="_fi29xIybEd6Dle_8xC0lwg" tag="Status" value="Draft"/>
   <taggedValue xmi:id="_fi29xYybEd6Dle_8xC0lwg" tag="Validation_Status" value="true"/>
   <components xsi:type="dataquality.domain.pattern:RegularExpression" xmi:id="_fi29xoybEd6Dle_8xC0lwg" expressionType="REGEXP">
-    <expression xmi:id="_fi29x4ybEd6Dle_8xC0lwg" body="'^ (([BEGLMNSWbeglmnsw][0-9][0-9]?)|(([A-PR-UWYZa-pr-uwyz][A-HK-Ya-hk-y][0-9][0-9]?)|(([ENWenw][0-9][A-HJKSTUWa-hjkstuw])|([ENWenw][A-HK-Ya-hk-y][0-9][ABEHMNPRVWXYabehmnprvwxy])))) ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$'" language="SQL"/>
+    <expression xmi:id="_fi29x4ybEd6Dle_8xC0lwg" body="'^(([BEGLMNSWbeglmnsw][0-9][0-9]?)|(([A-PR-UWYZa-pr-uwyz][A-HK-Ya-hk-y][0-9][0-9]?)|(([ENWenw][0-9][A-HJKSTUWa-hjkstuw])|([ENWenw][A-HK-Ya-hk-y][0-9][ABEHMNPRVWXYabehmnprvwxy])))) ?[0-9][ABD-HJLNP-UW-Zabd-hjlnp-uw-z]{2}$'" language="SQL"/>
   </components>
 </dataquality.domain.pattern:Pattern>

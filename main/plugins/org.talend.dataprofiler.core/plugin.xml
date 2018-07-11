@@ -1746,6 +1746,12 @@
            name="Add character map for hive and impala in PatternFrequency and LowFrequency Indicators"
            version="6.3.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.UpdateValidUKPostcodePatternTask"
+           id="org.talend.dataprofiler.core.migration.impl.updateValidUKPostcodePatternTask"
+           name="Update Valid UK Postcode Pattern"
+           version="7.0.2">
+     </workspacetask>
   </extension>
   
   <extension
