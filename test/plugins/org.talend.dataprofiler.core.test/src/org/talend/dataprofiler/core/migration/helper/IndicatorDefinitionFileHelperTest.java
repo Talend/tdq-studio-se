@@ -12,14 +12,14 @@
 // ============================================================================
 package org.talend.dataprofiler.core.migration.helper;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.talend.core.model.general.Project;
 import org.talend.cwm.relational.TdExpression;
 import org.talend.dataprofiler.core.helper.UnitTestBuildHelper;
 import org.talend.dataquality.helpers.BooleanExpressionHelper;
@@ -34,7 +34,6 @@ public class IndicatorDefinitionFileHelperTest {
 
     private IndicatorDefinition indiDefinition;
 
-    private static Project originalProject;
 
     @Before
     public void setup() {
@@ -65,10 +64,8 @@ public class IndicatorDefinitionFileHelperTest {
      */
     @Test
     public void testIsExistSqlExprWithLanguage_1() {
-
         boolean flag = IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(indiDefinition, "Hive");//$NON-NLS-1$
         assertFalse(flag);
-
     }
 
     /**
@@ -78,10 +75,8 @@ public class IndicatorDefinitionFileHelperTest {
      */
     @Test
     public void testIsExistSqlExprWithLanguage_2() {
-
         boolean flag = IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(indiDefinition, "MySql");//$NON-NLS-1$
         assertTrue(flag);
-
     }
 
     /**
@@ -102,14 +97,6 @@ public class IndicatorDefinitionFileHelperTest {
         String catalogOverviewUuid = "_QwDiwMYUEd27NP4lvE0A4w"; //$NON-NLS-1$
         String schemaOverviewUuid = "_V4SA0MYUEd27NP4lvE0A4w"; //$NON-NLS-1$
 
-        // technical indicator
-        String tableOverviewUuid = "_hgO7YMYUEd27NP4lvE0A4w"; //$NON-NLS-1$
-        String viewOverviewUuid = "_lNIE0MbNEd2d_JPxxDRSfQ"; //$NON-NLS-1$
-        String datePatternFrequencyUuid = "_OCTbwJR_Ed2XO-JvLwVAaa"; //$NON-NLS-1$
-
-        // normal indicator
-        String rowCountUuid = "_ccFOkBF2Ed2PKb6nEJEvhw"; //$NON-NLS-1$
-
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(textStatisticsUuid));
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(summaryStatisticsUuid));
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(interQuartileRangeUuid));
@@ -119,12 +106,6 @@ public class IndicatorDefinitionFileHelperTest {
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(connectionOverviewUuid));
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(catalogOverviewUuid));
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(schemaOverviewUuid));
-
-        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(tableOverviewUuid));
-        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(viewOverviewUuid));
-        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(datePatternFrequencyUuid));
-
-        assertFalse(IndicatorDefinitionFileHelper.isTechnialIndicator(rowCountUuid));
     }
 
     @Test
@@ -136,9 +117,22 @@ public class IndicatorDefinitionFileHelperTest {
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(viewOverviewUuid));
         assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(datePatternFrequencyTableUuid));
 
+        String ciWordPatternFrequencyUuid = "_frqV0D1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        String ciWordPatternLowFrequencyUuid = "_kvvTsT1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        String csWordPatternFrequencyUuid = "_UhvbED1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        String csWordPatternLowFrequencyUuid = "_Z1RKMD1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(ciWordPatternFrequencyUuid));
+        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(ciWordPatternLowFrequencyUuid));
+        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(csWordPatternFrequencyUuid));
+        assertTrue(IndicatorDefinitionFileHelper.isTechnialIndicator(csWordPatternLowFrequencyUuid));
+
         // null argument will return false.
         assertFalse(IndicatorDefinitionFileHelper.isTechnialIndicator(null));
         assertFalse(IndicatorDefinitionFileHelper.isTechnialIndicator(""));//$NON-NLS-1$
+
+        // normal indicator
+        String rowCountUuid = "_ccFOkBF2Ed2PKb6nEJEvhw"; //$NON-NLS-1$
+        assertFalse(IndicatorDefinitionFileHelper.isTechnialIndicator(rowCountUuid));
 
         String multipleColumnUuid = "_JoeMkM-jEd6qN5aKpPNGTg";//$NON-NLS-1$
         assertFalse(IndicatorDefinitionFileHelper.isTechnialIndicator(multipleColumnUuid));

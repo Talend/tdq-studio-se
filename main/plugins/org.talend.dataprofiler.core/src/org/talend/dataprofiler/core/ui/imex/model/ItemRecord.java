@@ -815,6 +815,7 @@ public class ItemRecord {
             return false;
         } else if (path.toString().contains(EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS.getPath())
                 && path.lastSegment().endsWith(".definition")) {
+            // this part hidden the CI/CS_Word_Pattern_(Low_)Frequency
             return !(fileName != null && fileName.startsWith("C"));
         }
 

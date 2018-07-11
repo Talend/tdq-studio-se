@@ -577,7 +577,7 @@ public class ExportWizardPage extends WizardPage {
                         // TDQ-12245~
 
                         ItemRecord depRecord = ItemRecord.findRecord(depFile);
-                        if (!repositoryTree.getChecked(depRecord)) {
+                        if (depRecord != null && !repositoryTree.getChecked(depRecord)) {
                             repositoryTree.setChecked(depRecord, true);
                         }
                     }

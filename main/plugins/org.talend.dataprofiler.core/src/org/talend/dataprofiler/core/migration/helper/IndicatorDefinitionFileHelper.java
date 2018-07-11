@@ -237,10 +237,9 @@ public final class IndicatorDefinitionFileHelper {
     }
 
     /**
-     * if the Indicator is TableOverview/ViewOverview/DatePatternFrequencyTable return true, else return false. these
-     * Indicators don't include any sql and java template and the AggregatedDefinitions is empty also, and don't show
-     * them in the DQRepositoryView and import/export wizard.<br>
-     * Sum indicator shoud not show in DQ Repository View and import/export wizard also. <br>
+     * if the Indicator is TableOverview/ViewOverview/DatePatternFrequencyTable/....etc return true, else return false.
+     * these indicators don't include any sql and java template and the AggregatedDefinitions is empty also, and don't
+     * show them in the DQRepositoryView and import/export wizard.<br>
      * Technical indicators are not need to be displayed on UI.
      * 
      * @param uuid
@@ -255,8 +254,18 @@ public final class IndicatorDefinitionFileHelper {
         String viewOverviewUuid = "_lNIE0MbNEd2d_JPxxDRSfQ"; //$NON-NLS-1$
         String datePatternFrequencyTableUuid = "_OCTbwJR_Ed2XO-JvLwVAaa"; //$NON-NLS-1$
         String sumUuid = "_ccJgAhF2Ed2PKb6nEJEvhw"; //$NON-NLS-1$
+        String ciWordPatternFrequencyUuid = "_frqV0D1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        String ciWordPatternLowFrequencyUuid = "_kvvTsT1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        String csWordPatternFrequencyUuid = "_UhvbED1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+        String csWordPatternLowFrequencyUuid = "_Z1RKMD1SEeieEt49TD3y_Q"; //$NON-NLS-1$
+
         boolean isTechUUID = tableOverviewUuid.compareTo(uuid) == 0 || viewOverviewUuid.compareTo(uuid) == 0
-                || datePatternFrequencyTableUuid.compareTo(uuid) == 0 || sumUuid.compareTo(uuid) == 0;
+                        || datePatternFrequencyTableUuid.compareTo(uuid) == 0 || sumUuid.compareTo(uuid) == 0
+                        || ciWordPatternFrequencyUuid.compareTo(uuid) == 0
+                        || ciWordPatternLowFrequencyUuid.compareTo(uuid) == 0
+                        || csWordPatternFrequencyUuid.compareTo(uuid) == 0
+                        || csWordPatternLowFrequencyUuid.compareTo(uuid) == 0;
+
         return isTechUUID || isSubCategoryIndicator(uuid);
     }
 
