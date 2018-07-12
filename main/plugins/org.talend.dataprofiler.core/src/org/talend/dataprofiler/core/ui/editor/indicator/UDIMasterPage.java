@@ -89,7 +89,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
 
     private static Logger log = Logger.getLogger(UDIMasterPage.class);
 
-    private static final String REMOVE_BUTTON_TEXT = DefaultMessagesImpl.getString("PatternMasterDetailsPage.del"); //$NON-NLS-1$
+    private static final String REMOVE_BUTTON_TEXT = DefaultMessagesImpl.getString("PatternMasterDetailsPage.delete"); //$NON-NLS-1$
 
     private static final String DEFINITION_PARAMETER_SECTION_DESCRIPTION = DefaultMessagesImpl
             .getString("IndicatorDefinitionMaterPage.parametersDecription"); //$NON-NLS-1$

@@ -455,7 +455,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
         int style = SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
         String[] headers = {
-                DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.charReplaceCharacters to replace"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.replaceChar") };//$NON-NLS-1$//$NON-NLS-2$
+                DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.charReplace"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.replaceChar") };//$NON-NLS-1$//$NON-NLS-2$
         int[] widths = { 300, 300 };
         buildCharactersMappingLineComp(cmBodyComp, charactersMapping, style, headers, widths);
 

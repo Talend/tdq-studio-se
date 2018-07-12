@@ -192,7 +192,7 @@ public class JavaUDIParametersForm extends AbstractIndicatorForm {
         });
         final Button romveButton = new Button(composite, SWT.NONE);
         romveButton.setImage(ImageLib.getImage(ImageLib.DELETE_ACTION));
-        romveButton.setToolTipText(DefaultMessagesImpl.getString("PatternMasterDetailsPage.del")); //$NON-NLS-1$
+        romveButton.setToolTipText(DefaultMessagesImpl.getString("PatternMasterDetailsPage.delete")); //$NON-NLS-1$
         GridData reGd = new GridData();
         reGd.horizontalAlignment = SWT.LEFT;
         reGd.widthHint = 65;
