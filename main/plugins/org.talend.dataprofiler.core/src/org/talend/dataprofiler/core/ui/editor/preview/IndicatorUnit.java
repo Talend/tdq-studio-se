@@ -21,6 +21,7 @@ import org.talend.cwm.management.i18n.InternationalizationUtil;
 import org.talend.dataprofiler.core.ui.wizard.indicator.forms.FormEnum;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.ExecutionLanguage;
+import org.talend.dataquality.indicators.BenfordLawFrequencyIndicator;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.IndicatorParameters;
 import org.talend.dataquality.indicators.sql.UserDefIndicator;
@@ -185,5 +186,12 @@ public abstract class IndicatorUnit {
             }
         }
         return result;
+    }
+
+    public boolean isFixResultNum() {
+        if (indicator instanceof BenfordLawFrequencyIndicator) {
+            return true;
+        }
+        return false;
     }
 }

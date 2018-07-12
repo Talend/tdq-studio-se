@@ -16,6 +16,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.dataquality.analysis.Analysis;
+import org.talend.dataquality.indicators.BenfordLawFrequencyIndicator;
 import org.talend.dataquality.indicators.FrequencyIndicator;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.LowFrequencyIndicator;
@@ -39,7 +40,8 @@ public class SpecialLimitFrequencyAnalysisFilter extends ViewerFilter {
     /*
      * (non-Javadoc)
      * 
-     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object,
+     * java.lang.Object)
      */
     @Override
     public boolean select(Viewer viewer, Object parentElement, Object element) {
@@ -53,22 +55,20 @@ public class SpecialLimitFrequencyAnalysisFilter extends ViewerFilter {
         return true;
     }
 
-    /**
-     * DOC zshen Comment method "isDefaultLimitAnaNode".
-     * 
-     * @param repositoryNode
-     * @return
-     */
     private boolean isNotDefaultLimitAnaNode(IRepositoryNode repositoryNode) {
         if (repositoryNode instanceof AnalysisRepNode) {
             Analysis analysis = ((AnalysisRepNode) repositoryNode).getAnalysis();
             for (Indicator indicator : analysis.getResults().getIndicators()) {
-                if (indicator instanceof LowFrequencyIndicator && indicator.getParameters().getTopN() != lowFreResultLimit
-                        && lowFreResultLimit > 0) {
+                // BenfordLawFrequencyIndicator can not special the number of shown
+                if (indicator instanceof BenfordLawFrequencyIndicator) {
+                    continue;
+                }
+                if (indicator instanceof LowFrequencyIndicator
+                        && indicator.getParameters().getTopN() != lowFreResultLimit && lowFreResultLimit > 0) {
                     return true;
                 }
                 // too many frequency type
-                if (isNorFrequencyIndicator(indicator) && indicator.getParameters().getTopN() != freResultLimit
+                if (isNotLowFrequencyIndicator(indicator) && indicator.getParameters().getTopN() != freResultLimit
                         && freResultLimit > 0) {
                     return true;
                 }
@@ -78,12 +78,7 @@ public class SpecialLimitFrequencyAnalysisFilter extends ViewerFilter {
         return false;
     }
 
-    /**
-     * DOC zshen Comment method "isNorFrequencyIndicator".
-     * 
-     * @return
-     */
-    private boolean isNorFrequencyIndicator(Indicator indicator) {
+    private boolean isNotLowFrequencyIndicator(Indicator indicator) {
         return indicator instanceof FrequencyIndicator && !(indicator instanceof LowFrequencyIndicator);
     }
 }

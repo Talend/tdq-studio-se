@@ -130,6 +130,9 @@ public class FrequencyTypeStateUtil {
      */
     public static int getNumberOfShown(IndicatorUnit unit, FrequencyExt[] frequencyExt) {
         int numOfShown = frequencyExt.length;
+        if (unit.isFixResultNum()) {
+            return numOfShown;
+        }
         IndicatorParameters parameters = unit.getIndicator().getParameters();
         if (parameters != null) {
             if (parameters.getTopN() < numOfShown) {
