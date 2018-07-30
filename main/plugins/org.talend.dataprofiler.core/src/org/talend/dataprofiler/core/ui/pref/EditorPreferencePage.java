@@ -611,6 +611,9 @@ public class EditorPreferencePage extends PreferencePage implements IWorkbenchPr
         pageSizeText.setText(DEFAULT_PAGE_SIZE);
         InstanceScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).put(ANALYZED_ITEMS_PER_PAGE, pageSizeText.getText());
         // ResourcesPlugin.getPlugin().savePluginPreferences();
+        // business rule Per Page
+        dqruleSizeText.setText(DEFAULT_PAGE_SIZE);
+        InstanceScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).put(DQ_RULES_PER_PAGE, dqruleSizeText.getText());
         try {
             InstanceScope.INSTANCE.getNode(CorePlugin.PLUGIN_ID).flush();
         } catch (BackingStoreException e) {
