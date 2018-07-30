@@ -60,6 +60,7 @@ import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.views.provider.DQRepositoryViewLabelProvider;
 import org.talend.dataprofiler.core.ui.views.provider.ResourceViewContentProvider;
 import org.talend.dq.CWMPlugin;
+import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.DBConnectionFolderRepNode;
 import org.talend.dq.nodes.DBConnectionRepNode;
@@ -269,6 +270,8 @@ public class SetJDBCDriverPreferencePage extends PreferencePage implements IWork
                 generalMappingFileText.setText(dialog.getSelectId());
             }
         });
+        boolean isReadOnly = ProxyRepositoryManager.getInstance().isReadOnly();
+        mainComposite.setEnabled(!isReadOnly);
         return mainComposite;
     }
 

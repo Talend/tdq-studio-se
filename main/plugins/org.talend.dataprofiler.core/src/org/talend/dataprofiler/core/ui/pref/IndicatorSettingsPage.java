@@ -38,6 +38,7 @@ import org.talend.dataquality.indicators.FrequencyIndicator;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.LowFrequencyIndicator;
 import org.talend.dataquality.properties.TDQAnalysisItem;
+import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.writer.impl.AnalysisWriter;
@@ -168,6 +169,8 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
             }
 
         });
+        boolean isReadOnly = ProxyRepositoryManager.getInstance().isReadOnly();
+        mainComposite.setEnabled(!isReadOnly);
         return mainComposite;
 
     }
@@ -302,5 +305,4 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
     protected IPreferenceStore doGetPreferenceStore() {
         return CorePlugin.getDefault().getPreferenceStore();
     }
-
 }

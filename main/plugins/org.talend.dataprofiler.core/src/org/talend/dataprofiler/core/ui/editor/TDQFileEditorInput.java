@@ -24,7 +24,7 @@ public class TDQFileEditorInput extends FileEditorInput {
 
     protected Item item = null;
 
-    public static String DEFAULT_EDITOR_ID = "org.eclipse.ui.DefaultTextEditor";//$NON-NLS-1$
+
     /**
      * DOC yyin TDQFileEditorInput constructor comment.
      *

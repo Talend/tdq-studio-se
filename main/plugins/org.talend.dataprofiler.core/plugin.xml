@@ -960,6 +960,12 @@
             id="org.talend.dataprofiler.core.ui.editor.analysis.MatchAnalysisEditor"
             name="%editor.name.MatchAnalysisEditor">
       </editor>
+      <editor
+            class="org.talend.dataprofiler.core.ui.editor.TDQFileTextEditor"
+            default="false"
+            id="org.talend.dataprofiler.core.ui.editor.TDQFileTextEditor"
+            name="%editor.name.FileTextEditor">
+      </editor>
    </extension>
   <extension
         point="org.eclipse.ui.cheatsheets.cheatSheetContent">

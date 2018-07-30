@@ -48,7 +48,8 @@ Require-Bundle: org.eclipse.nebula.widgets.tablecombo,
  org.talend.libraries.csv,
  org.talend.dataquality.sampling,
  org.eclipse.nebula.widgets.nattable.core,
- org.eclipse.m2e.core
+ org.eclipse.m2e.core,
+ org.eclipse.jface.text
 Bundle-ActivationPolicy: lazy
 Export-Package: org.talend.dataprofiler.core,
  org.talend.dataprofiler.core.exception,

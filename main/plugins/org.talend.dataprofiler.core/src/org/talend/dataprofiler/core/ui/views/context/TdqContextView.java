@@ -28,6 +28,7 @@ import org.talend.dataprofiler.core.ui.editor.AbstractMetadataFormPage;
 import org.talend.dataprofiler.core.ui.editor.SupportContextEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.report.ReportItemEditorInput;
+import org.talend.dq.helper.ProxyRepositoryManager;
 
 /**
  * created by xqliu on Jul 25, 2013 Detailled comment
@@ -179,17 +180,17 @@ public class TdqContextView extends AbstractContextView {
      */
     @Override
     protected void setCompositeReadonly(IEditorInput editorInput) {
+        boolean modelIsNull = ProxyRepositoryManager.getInstance().isReadOnly();
         if (editorInput != null) {
             if (editorInput instanceof ReportItemEditorInput) {
                 ReportItemEditorInput reportInput = (ReportItemEditorInput) editorInput;
-                boolean readOnly = reportInput.getModel() == null;
-                contextComposite.setReadOnly(readOnly);
+                modelIsNull = reportInput.getModel() == null;
             } else if (editorInput instanceof AnalysisItemEditorInput) {
                 AnalysisItemEditorInput analysisInput = (AnalysisItemEditorInput) editorInput;
-                boolean readOnly = analysisInput.getModel() == null;
-                contextComposite.setReadOnly(readOnly);
+                modelIsNull = analysisInput.getModel() == null;
             }
         }
+        contextComposite.setReadOnly(modelIsNull || ProxyRepositoryManager.getInstance().isReadOnly());
     }
 
     /*

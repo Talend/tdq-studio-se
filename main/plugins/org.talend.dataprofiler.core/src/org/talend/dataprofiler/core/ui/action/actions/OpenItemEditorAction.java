@@ -57,6 +57,7 @@ import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.exception.ExceptionFactory;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.editor.TDQFileEditorInput;
+import org.talend.dataprofiler.core.ui.editor.TDQFileTextEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.analysis.MatchAnalysisEditor;
@@ -359,7 +360,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)) {
                         editorID = SqlExplorerUtils.SQLEDITOR_ID;
                     } else {
-                        editorID = TDQFileEditorInput.DEFAULT_EDITOR_ID;
+                        editorID = TDQFileTextEditor.FILE_EDITOR_ID;
                     }
                 }
                 // TDQ-14934~
