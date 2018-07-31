@@ -12,18 +12,14 @@ import org.talend.commons.emf.FactoriesUtil;
 import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-
 public class ContextResourceFileHelper extends ResourceFileMap {
 
     private static ContextResourceFileHelper instance;
 
     private static Logger log = Logger.getLogger(ContextResourceFileHelper.class);
 
-    private List<IFile> contextList;
-
     private ContextResourceFileHelper() {
         super();
-        contextList = new ArrayList<IFile>();
     }
 
     public static ContextResourceFileHelper getInstance() {
@@ -33,15 +29,19 @@ public class ContextResourceFileHelper extends ResourceFileMap {
         return instance;
     }
 
+    /**
+     * GetAllContexts method is used to get all of Contexts
+     * 
+     * @return A list of context and make sure get news from system. Empty list if any exception generated.
+     * 
+     */
     public List<IFile> getAllContexts() {
-        if (contextList.isEmpty()) {
-            try {
-                contextList = searchAllIFiles(getTypedFolder());
-            } catch (CoreException e) {
-                log.error(e);
-            }
+        try {
+            return searchAllIFiles(getTypedFolder());
+        } catch (CoreException e) {
+            log.error(e);
         }
-        return contextList;
+        return new ArrayList<IFile>();
     }
 
     @Override

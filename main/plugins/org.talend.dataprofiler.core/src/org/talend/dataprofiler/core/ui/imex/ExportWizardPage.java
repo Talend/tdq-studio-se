@@ -149,6 +149,7 @@ public class ExportWizardPage extends WizardPage {
         addListeners();
 
         setControl(top);
+
     }
 
     /**
@@ -333,7 +334,8 @@ public class ExportWizardPage extends WizardPage {
                             if (findRecord != null) {
                                 repositoryTree.setChecked(findRecord, checked);
                             } else {
-                                log.error(DefaultMessagesImpl.getString("ExportWizardPage.CanNotFind", file.getAbsolutePath()));//$NON-NLS-1$ 
+                                log.error(DefaultMessagesImpl.getString(
+                                        "ExportWizardPage.CanNotFind", file.getAbsolutePath()));//$NON-NLS-1$ 
                             }
                         }
                     } else {
@@ -412,7 +414,9 @@ public class ExportWizardPage extends WizardPage {
                                     .getProperty(element)
                                     .getDisplayName() : depFile.getName();
                     // TDQ-5909~
-                    errors.add(DefaultMessagesImpl.getString("ExportWizardPage.missDepend", record.getName(), dptLabel));//$NON-NLS-1$ //$NON-NLS-2$ 
+                    errors
+                            .add(DefaultMessagesImpl.getString(
+                                    "ExportWizardPage.missDepend", record.getName(), dptLabel));//$NON-NLS-1$ 
                 }
             }
         }
@@ -459,9 +463,13 @@ public class ExportWizardPage extends WizardPage {
             }
             repositoryTree.setCheckedElements(selectedItemRecords.toArray());
         }
+
         createUtilityButtons(treeComposite);
     }
 
+    /**
+     * Get files from current node and their dependency files
+     */
     private void getFileFromNode(List<ItemRecord> selectedItemRecords, IRepositoryNode node) {
         if (node instanceof DQFolderRepNode || (node.getType() != null && node.getType() == ENodeType.SYSTEM_FOLDER)) {
             List<IRepositoryNode> children = node.getChildren(true);
@@ -470,10 +478,21 @@ public class ExportWizardPage extends WizardPage {
             }
         } else {
             IFile iFile = RepositoryNodeHelper.getIFile(node);
-            if (iFile != null) {
-                File file = WorkspaceUtils.ifileToFile(iFile);
-                selectedItemRecords.add(ItemRecord.findRecord(file));
+            File currentNodeFile = WorkspaceUtils.ifileToFile(iFile);
+            ItemRecord findCurrentNodeRecord = ItemRecord.findRecord(currentNodeFile);
+            selectedItemRecords.add(findCurrentNodeRecord);
+            for (File file : findCurrentNodeRecord.getDependencySet()) {
+                if (!DqFileUtils.isLocalProjectFile(file)) {
+                    continue;
+                }
+                ItemRecord dependencyItemRecord = ItemRecord.findRecord(file);
+                if (findCurrentNodeRecord != null) {
+                    selectedItemRecords.add(dependencyItemRecord);
+                } else {
+                    log.error(DefaultMessagesImpl.getString("ExportWizardPage.CanNotFind", file.getAbsolutePath()));//$NON-NLS-1$ 
+                }
             }
+
         }
     }
 
