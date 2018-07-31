@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.record.linkage.constant.RecordMatcherType;
 import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
@@ -170,15 +171,11 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
      * DOC zshen Comment method "noticeOtherSection".
      */
     private void notifyOtherSections() {
-        // matchKeySection.redrawnContent();
         matchKeySection.changeSectionDisStatus(isVSRMode);
-        if (isShowBlockingKeySection(isVSRMode)) {
-            blockKeySection.changeSectionDisStatus(true);
-        } else {
-            // Hide the section.
-            blockKeySection.changeSectionDisStatus(false);
+        // MOD 20180731, TDQ-15002 yyin
+        if (!CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
+            blockKeySection.getSection().setExpanded(false);
         }
-        // survivorshipDefinitionSection.changeSectionDisStatus(!isVSRMode);
         defaultSurvivorshipDefinitionSection.changeSectionDisStatus(!isVSRMode);
         particularDefaultSurvivorshipSection.changeSectionDisStatus(!isVSRMode);
         changeDisplayStatus();

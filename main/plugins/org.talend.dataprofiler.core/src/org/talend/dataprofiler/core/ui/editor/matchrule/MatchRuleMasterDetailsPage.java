@@ -27,6 +27,7 @@ import org.eclipse.ui.forms.editor.FormEditor;
 import org.eclipse.ui.part.FileEditorInput;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.properties.Item;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.editor.AbstractMetadataFormPage;
@@ -265,8 +266,7 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
         blockingKeyDefinitionSection.setMatchRuleDef(getCurrentModelElement());
         blockingKeyDefinitionSection.createContent();
         blockingKeyDefinitionSection.addPropertyChangeListener(this);
-        blockingKeyDefinitionSection.changeSectionDisStatus(selectAlgorithmSection.isVSRMode());
-        blockingKeyDefinitionSection.getSection().setExpanded(true);
+        blockingKeyDefinitionSection.getSection().setExpanded(CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected());
         registerSection(blockingKeyDefinitionSection.getSection());
     }
 
