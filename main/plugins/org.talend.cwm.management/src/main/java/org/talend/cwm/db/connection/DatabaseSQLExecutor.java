@@ -99,8 +99,9 @@ public class DatabaseSQLExecutor extends SQLExecutor {
         if (isShowRandomData()) {
             finalQuery = dbms.getRandomQuery(finalQuery);
         }
-
-        if (getLimit() > 0) {
+        Connection con = (Connection) connection;
+        // not all database support Limit. only append Limit for non-JDBC type at here.
+        if (getLimit() > 0 && !ConnectionUtils.isTcompJdbc(con) && !ConnectionUtils.isGeneralJdbc(con)) {
             return dbms.getTopNQuery(finalQuery, getLimit());
         } else {
             return finalQuery;
@@ -148,6 +149,12 @@ public class DatabaseSQLExecutor extends SQLExecutor {
         ResultSet resultSet = null;
         try {
             statement = sqlconnection.getObject().createStatement();
+            // for JDBC type, use 'statement.setMaxRows(limit)' instead of Limit in sql query;
+            int limit = getLimit();
+            Connection con = (Connection) connection;
+            if (limit > 0 && (ConnectionUtils.isTcompJdbc(con) || ConnectionUtils.isGeneralJdbc(con))) {
+                statement.setMaxRows(limit);
+            }
             statement.execute(createSqlStatement(connection, analysedElements, where));
             resultSet = statement.getResultSet();
 
