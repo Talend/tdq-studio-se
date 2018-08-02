@@ -51,6 +51,7 @@ import org.talend.dataquality.helpers.ReportHelper;
 import org.talend.dataquality.helpers.ReportHelper.ReportType;
 import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
+import org.talend.dq.helper.HadoopClusterUtils;
 import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.ReportFileHelper;
 import org.talend.dq.helper.RepositoryNodeHelper;
@@ -673,6 +674,8 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
             fullPath = ResourceManager.getRulesParserFolder().getFullPath();
         } else if (objectType == ERepositoryObjectType.TDQ_RULES_MATCHER) {
             fullPath = ResourceManager.getRulesMatcherFolder().getFullPath();
+        } else if (objectType == HadoopClusterUtils.getDefault().getHadoopClusterType()) {
+            fullPath = ResourceManager.getHadoopClusterFolder().getFullPath();
         }
         return fullPath;
     }
