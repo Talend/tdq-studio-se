@@ -504,7 +504,8 @@ public class ColumnSetAnalysisResultPage extends AbstractAnalysisResultPageWithC
         PatternsDataValidation patternsDataValidation = new PatternsDataValidation(patternList, filterType);
         patternsDataValidation.setProperties(((PageableWithIndexController) controller).getPropertiesStr());
         final IPageLoader<PageResult<Object[]>> pageLoader =
-                new MapDBPageLoader<Object>(mapDB, patternsDataValidation, mapDB.size());
+                new MapDBPageLoader<Object>(mapDB, patternsDataValidation, mapDB.size(),
+                        StandardDBName.dataSection.name(), simpleStaticIndicator);
         controller.removePageChangedListener(createLoadPageAndReplaceItemsListener);
         controller.removePageChangedListener(resultAndPageButtonsDecorator);
         controller.setCurrentPage(-1);
