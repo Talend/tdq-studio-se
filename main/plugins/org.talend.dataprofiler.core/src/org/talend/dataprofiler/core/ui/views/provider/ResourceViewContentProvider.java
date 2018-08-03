@@ -243,13 +243,19 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
         } else {
             // create the reference project nodes(metadata/library/dataprofiling), make them the same with main project,
             // to avoid can not get reference project nodes when open the select udi/pattern/rule dialog
-            if (EResourceConstant.REFERENCED_PROJECT.getName().equals(node.getProperties(EProperties.LABEL))) {
-                if (!ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+            if (!ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+                if (EResourceConstant.REFERENCED_PROJECT.getName().equals(node.getProperties(EProperties.LABEL))) {
                     for (IRepositoryNode refProjectNode : node.getChildren()) {
                         for (IRepositoryNode refProjectItemNode : refProjectNode.getChildren()) {
                             getRepositoryNodeChildren(refProjectItemNode);
                         }
                     }
+                }
+                // no need to sort children for root reference project node
+                if (node.getParent() != null
+                        && EResourceConstant.REFERENCED_PROJECT.getName().equals(
+                                node.getParent().getProperties(EProperties.LABEL))) {
+                    return children.toArray();
                 }
             }
         }
