@@ -23,8 +23,6 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.dq.helper.ProxyRepositoryManager;
-import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 
@@ -67,13 +65,15 @@ public class SourceFileFolderRepNode extends DQFolderRepNode {
         RootContainer<String, IRepositoryViewObject> sourceFiles = super.getTdqViewObjects(project, this);
         // sub folders
         for (Container<String, IRepositoryViewObject> container : sourceFiles.getSubContainer()) {
-            Folder folder = new Folder((Property) container.getProperty(), ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT);
+            Folder folder =
+                    new Folder((Property) container.getProperty(), ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT);
 
             if (isIgnoreFolder(withDeleted, project, folder)) {
                 continue;
             }
 
-            SourceFileSubFolderNode childNodeFolder = new SourceFileSubFolderNode(folder, this, ENodeType.SIMPLE_FOLDER, project);
+            SourceFileSubFolderNode childNodeFolder =
+                    new SourceFileSubFolderNode(folder, this, ENodeType.SIMPLE_FOLDER, project);
             childNodeFolder.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT);
             childNodeFolder.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT);
             super.getChildren().add(childNodeFolder);
@@ -83,16 +83,6 @@ public class SourceFileFolderRepNode extends DQFolderRepNode {
             if (!withDeleted && viewObject.isDeleted()) {
                 continue;
             }
-
-            // ADD msjian TDQ-4914: when the node is SystemDemoRule from ref project, we don't show it
-            if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-                if (!project.isMainProject()) {
-                    if (RepositoryNodeHelper.isSystemDemoSourceFile(viewObject.getLabel())) {
-                        continue;
-                    }
-                }
-            }
-            // TDQ-4914~
 
             SourceFileRepNode repNode = new SourceFileRepNode(viewObject, this, ENodeType.REPOSITORY_ELEMENT, project);
             repNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT);

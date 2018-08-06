@@ -29,7 +29,6 @@ import org.talend.cwm.relational.TdExpression;
 import org.talend.dataquality.helpers.IndicatorCategoryHelper;
 import org.talend.dataquality.indicators.definition.IndicatorCategory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
-import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
@@ -70,14 +69,7 @@ public class SysIndicatorFolderRepNode extends DQFolderRepNode {
      */
     @Override
     public void getChildrenForProject(boolean withDeleted, Project project) throws PersistenceException {
-        // when merge display the ref project items, we will not show the system indicators
-        if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-            if (project.isMainProject()) {
-                createChildrenNode(withDeleted, project);
-            }
-        } else {
-            createChildrenNode(withDeleted, project);
-        }
+        createChildrenNode(withDeleted, project);
     }
 
     /**
@@ -91,15 +83,16 @@ public class SysIndicatorFolderRepNode extends DQFolderRepNode {
         RootContainer<String, IRepositoryViewObject> tdqViewObjects = super.getTdqViewObjects(project, this);
         // sub folders
         for (Container<String, IRepositoryViewObject> container : tdqViewObjects.getSubContainer()) {
-            Folder folder = new Folder((Property) container.getProperty(),
-                    RepositoryNodeHelper.getSystemIndicatorFolderRepositoryType(container.getLabel()));
+            Folder folder =
+                    new Folder((Property) container.getProperty(),
+                            RepositoryNodeHelper.getSystemIndicatorFolderRepositoryType(container.getLabel()));
 
             if (isIgnoreFolder(withDeleted, project, folder)) {
                 continue;
             }
 
-            SysIndicatorFolderRepNode childNodeFolder = new SysIndicatorFolderRepNode(folder, this, ENodeType.SYSTEM_FOLDER,
-                    project);
+            SysIndicatorFolderRepNode childNodeFolder =
+                    new SysIndicatorFolderRepNode(folder, this, ENodeType.SYSTEM_FOLDER, project);
             childNodeFolder.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_SYSTEM_INDICATORS);
             childNodeFolder.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_SYSTEM_INDICATORS);
             super.getChildren().add(childNodeFolder);
@@ -123,8 +116,8 @@ public class SysIndicatorFolderRepNode extends DQFolderRepNode {
             // TDQ-11110~
 
             if (!viewObjectlabel.equals("Sum")) {//$NON-NLS-1$
-                SysIndicatorDefinitionRepNode repNode = new SysIndicatorDefinitionRepNode(viewObject, this,
-                        ENodeType.REPOSITORY_ELEMENT, project);
+                SysIndicatorDefinitionRepNode repNode =
+                        new SysIndicatorDefinitionRepNode(viewObject, this, ENodeType.REPOSITORY_ELEMENT, project);
                 repNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_SYSTEM_INDICATORS);
                 repNode.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_SYSTEM_INDICATORS);
                 viewObject.setRepositoryNode(repNode);
@@ -156,13 +149,16 @@ public class SysIndicatorFolderRepNode extends DQFolderRepNode {
      */
     @Override
     public boolean isIgnoreFolder(boolean withDeleted, Project project, Folder folder) {
-        if (!withDeleted && folder.isDeleted()) {
+        boolean ignoreFolder = super.isIgnoreFolder(withDeleted, project, folder);
+        if (ignoreFolder) {
             return true;
         }
 
         // TDQ-11110: hidden some system indicator folders.
-        boolean isBusinessRules = folder.getLabel().equals(EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName());
-        boolean isPhoneNumber = folder.getLabel().equals(EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName());
+        boolean isBusinessRules =
+                folder.getLabel().equals(EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName());
+        boolean isPhoneNumber =
+                folder.getLabel().equals(EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName());
         if (isBusinessRules || isPhoneNumber) {
             return true;
         }

@@ -24,11 +24,8 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.dq.helper.ProxyRepositoryManager;
-import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC klliu class global comment. Detailled comment
@@ -73,8 +70,8 @@ public class RulesSQLFolderRepNode extends DQFolderRepNode {
                 continue;
             }
 
-            RulesSQLSubFolderRepNode childNodeFolder = new RulesSQLSubFolderRepNode(folder, this, ENodeType.SIMPLE_FOLDER,
-                    project);
+            RulesSQLSubFolderRepNode childNodeFolder =
+                    new RulesSQLSubFolderRepNode(folder, this, ENodeType.SIMPLE_FOLDER, project);
             childNodeFolder.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_RULES_SQL);
             childNodeFolder.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_RULES_SQL);
             super.getChildren().add(childNodeFolder);
@@ -88,20 +85,6 @@ public class RulesSQLFolderRepNode extends DQFolderRepNode {
             repNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_RULES_SQL);
             repNode.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_RULES_SQL);
             viewObject.setRepositoryNode(repNode);
-
-            // ADD msjian TDQ-4914: when the node is SystemDemoRule from ref project, we don't show it
-            if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-                if (!project.isMainProject()) {
-                    ModelElement meNode = RepositoryNodeHelper.getResourceModelElement(repNode);
-                    if (meNode != null) {
-                        String uuid = RepositoryNodeHelper.getUUID(meNode);
-                        if (RepositoryNodeHelper.isSystemDemoRule(uuid)) {
-                            continue;
-                        }
-                    }
-                }
-            }
-            // TDQ-4914~
             super.getChildren().add(repNode);
         }
 

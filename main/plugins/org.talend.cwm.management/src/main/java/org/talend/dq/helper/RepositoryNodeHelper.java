@@ -353,9 +353,6 @@ public final class RepositoryNodeHelper {
      * gmail.pattern<br>
      * yahoo.pattern
      */
-    private static final String[] PATTERN_SQL_INTERNET_UUIDS = { "_5tDp8LoaEd2CVq07lsaT2w", "_jyAMQbo4Ed2fB5cidg4eog" }; //$NON-NLS-1$ //$NON-NLS-2$
-
-    private static final List<?> PATTERN_SQL_UUIDS = Arrays.asList(PATTERN_SQL_INTERNET_UUIDS);
 
     private static final List<?> PATTERN_REGEX_ADDRESS_UUIDS = Arrays.asList(PATTERN_ADDRESS_UUIDS);
 
@@ -373,59 +370,11 @@ public final class RepositoryNodeHelper {
 
     private static final List<?> PATTERN_REGEX_TEXT_UUIDS = Arrays.asList(PATTERN_TEXT_UUIDS);
 
-    private static final String[] PATTERN_REGEX_FOLDER_NAMES = {
-            Messages.getString("RepositoryNodeHelper.pattern.address"),
-            Messages.getString("RepositoryNodeHelper.pattern.code"),
-            Messages.getString("RepositoryNodeHelper.pattern.customer"),
-            Messages.getString("RepositoryNodeHelper.pattern.date"),
-            Messages.getString("RepositoryNodeHelper.pattern.internet"),
-            Messages.getString("RepositoryNodeHelper.pattern.number"),
-            Messages.getString("RepositoryNodeHelper.pattern.phone"),
-            Messages.getString("RepositoryNodeHelper.pattern.text") }; //$NON-NLS-1$
-
-    private static final String[] PATTERN_SQL_FOLDER_NAMES =
-            { Messages.getString("RepositoryNodeHelper.sql.internet"), }; //$NON-NLS-1$
-
-    private static final List<String> PATTERN_REGEX_FOLDER_NAMES_LIST = Arrays.asList(PATTERN_REGEX_FOLDER_NAMES);
-
-    private static final List<String> PATTERN_SQL_FOLDER_NAMES_LIST = Arrays.asList(PATTERN_SQL_FOLDER_NAMES);
-
-    private static final String DEMO_RULE_UUID = "_hXIKcA-ZEd6qupbF9NyF4w"; //$NON-NLS-1$
-
-    private static final String DEMO_SOURCEFILE_LABEL = "TEST_TOP"; //$NON-NLS-1$
-
     public static RecycleBinRepNode getRecycleBinRepNode() {
         if (recycleBinRepNode == null) {
             recycleBinRepNode = initRecycleBinRepNode();
         }
         return recycleBinRepNode;
-    }
-
-    public static boolean isSystemRegexPatternFolder(String folderName) {
-        return PATTERN_REGEX_FOLDER_NAMES_LIST.contains(folderName);
-    }
-
-    public static boolean isSystemSQLPatternFolder(String folderName) {
-        return PATTERN_SQL_FOLDER_NAMES_LIST.contains(folderName);
-    }
-
-    public static boolean isSystemRegexPattern(String uuid) {
-        return PATTERN_REGEX_ADDRESS_UUIDS.contains(uuid) || PATTERN_REGEX_CODE_UUIDS.contains(uuid)
-                || PATTERN_REGEX_COLOR_UUIDS.contains(uuid) || PATTERN_REGEX_DATE_UUIDS.contains(uuid)
-                || PATTERN_REGEX_INTERNET_UUIDS.contains(uuid) || PATTERN_REGEX_NUMBER_UUIDS.contains(uuid)
-                || PATTERN_REGEX_PHONE_UUIDS.contains(uuid) || PATTERN_REGEX_TEXT_UUIDS.contains(uuid);
-    }
-
-    public static boolean isSystemSQLPattern(String uuid) {
-        return PATTERN_SQL_UUIDS.contains(uuid);
-    }
-
-    public static boolean isSystemDemoRule(String uuid) {
-        return DEMO_RULE_UUID.equals(uuid);
-    }
-
-    public static boolean isSystemDemoSourceFile(String label) {
-        return DEMO_SOURCEFILE_LABEL.equals(label);
     }
 
     /**

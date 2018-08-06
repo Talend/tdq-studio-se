@@ -24,11 +24,8 @@ import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.Folder;
 import org.talend.core.model.repository.IRepositoryViewObject;
-import org.talend.dq.helper.ProxyRepositoryManager;
-import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC klliu class global comment. Detailled comment
@@ -83,8 +80,8 @@ public class PatternSqlFolderRepNode extends DQFolderRepNode {
                 continue;
             }
 
-            PatternSqlSubFolderRepNode childNodeFolder = new PatternSqlSubFolderRepNode(folder, this, ENodeType.SIMPLE_FOLDER,
-                    project);
+            PatternSqlSubFolderRepNode childNodeFolder =
+                    new PatternSqlSubFolderRepNode(folder, this, ENodeType.SIMPLE_FOLDER, project);
             childNodeFolder.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_PATTERN_SQL);
             childNodeFolder.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_PATTERN_SQL);
             super.getChildren().add(childNodeFolder);
@@ -99,41 +96,8 @@ public class PatternSqlFolderRepNode extends DQFolderRepNode {
             repNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_PATTERN_SQL);
             repNode.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_PATTERN_SQL);
             viewObject.setRepositoryNode(repNode);
-
-            // ADD msjian TDQ-4914: when the node is System sql pattern from ref project, we don't show it(only for
-            // merge mode)
-            if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-                if (!project.isMainProject()) {
-                    ModelElement meNode = RepositoryNodeHelper.getResourceModelElement(repNode);
-                    if (meNode != null) {
-                        String uuid = RepositoryNodeHelper.getUUID(meNode);
-                        if (RepositoryNodeHelper.isSystemSQLPattern(uuid)) {
-                            continue;
-                        }
-                    }
-                }
-            }
-            // TDQ-4914~
             super.getChildren().add(repNode);
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.talend.dq.nodes.DQFolderRepNode#isIgnoreFolder(boolean, org.talend.core.model.general.Project,
-     * org.talend.core.model.repository.Folder)
-     */
-    @Override
-    public boolean isIgnoreFolder(boolean withDeleted, Project project, Folder folder) {
-        if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-            if (!project.isMainProject()) {
-                if (RepositoryNodeHelper.isSystemSQLPatternFolder(folder.getLabel())) {
-                    return true;
-                }
-            }
-        }
-        return super.isIgnoreFolder(withDeleted, project, folder);
     }
 
     @Override

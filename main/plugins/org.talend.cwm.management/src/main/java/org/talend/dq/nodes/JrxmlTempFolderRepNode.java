@@ -46,7 +46,7 @@ public class JrxmlTempFolderRepNode extends DQFolderRepNode {
 
     private boolean duplicateNode(List<IRepositoryNode> children, JrxmlTempleteRepNode jrxmlNode) {
         for (IRepositoryNode node : children) {
-            if (node.getLabel().equals(jrxmlNode.getLabel())) {
+            if (node.equals(jrxmlNode)) {
                 return true;
             }
         }
@@ -78,7 +78,8 @@ public class JrxmlTempFolderRepNode extends DQFolderRepNode {
             if (isIgnoreFolder(withDeleted, project, folder)) {
                 continue;
             }
-            JrxmlTempSubFolderNode childNodeFolder = new JrxmlTempSubFolderNode(folder, this, ENodeType.SIMPLE_FOLDER, project);
+            JrxmlTempSubFolderNode childNodeFolder =
+                    new JrxmlTempSubFolderNode(folder, this, ENodeType.SIMPLE_FOLDER, project);
             childNodeFolder.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_JRAXML_ELEMENT);
             childNodeFolder.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_JRAXML_ELEMENT);
             folder.setRepositoryNode(childNodeFolder);
@@ -90,7 +91,8 @@ public class JrxmlTempFolderRepNode extends DQFolderRepNode {
             if (!withDeleted && viewObject.isDeleted()) {
                 continue;
             }
-            JrxmlTempleteRepNode jrxmlNode = new JrxmlTempleteRepNode(viewObject, this, ENodeType.REPOSITORY_ELEMENT, project);
+            JrxmlTempleteRepNode jrxmlNode =
+                    new JrxmlTempleteRepNode(viewObject, this, ENodeType.REPOSITORY_ELEMENT, project);
             jrxmlNode.setProperties(EProperties.LABEL, ERepositoryObjectType.TDQ_JRAXML_ELEMENT);
             jrxmlNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.TDQ_JRAXML_ELEMENT);
             viewObject.setRepositoryNode(jrxmlNode);
