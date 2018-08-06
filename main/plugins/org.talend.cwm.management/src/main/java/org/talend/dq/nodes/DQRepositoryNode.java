@@ -385,7 +385,9 @@ public class DQRepositoryNode extends RepositoryNode {
 
     @Override
     public boolean equals(Object obj) {
+        // call super method to make sure that there are same name element
         if (super.equals(obj)) {
+            // this expression is used to judge whether they are come from different project
             return this.getProject().equals(((DQRepositoryNode) obj).getProject());
         }
         return false;
