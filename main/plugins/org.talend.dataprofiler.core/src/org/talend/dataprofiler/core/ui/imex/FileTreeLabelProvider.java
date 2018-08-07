@@ -18,6 +18,8 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.emf.FactoriesUtil;
+import org.talend.commons.ui.runtime.image.ECoreImage;
+import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
 import org.talend.dataprofiler.core.ImageLib;
@@ -97,7 +99,7 @@ public class FileTreeLabelProvider extends LabelProvider {
                     if (record.getElement() instanceof DelimitedFileConnection) {
                         image = ImageLib.getImage(ImageLib.FILE_DELIMITED);
                     } else if (record.getElement() instanceof DatabaseConnection) {
-                        image = ImageLib.getImage(ImageLib.TD_DATAPROVIDER);
+                        image = ImageProvider.getImage(ECoreImage.METADATA_CONNECTION_ICON);
                     } else {
                         image = ImageLib.getImage(ImageLib.CONTEXT);
                     }

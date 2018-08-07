@@ -69,7 +69,6 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
-
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -106,14 +105,12 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             if (node.getLabel().equals(EResourceConstant.EXCHANGE.getName())) {
                 return ImageLib.getImage(ImageLib.EXCHANGE);
             }
-            if (objectType != null && ERepositoryObjectType.METADATA_CONNECTIONS.equals(objectType)) {
-                String originalImageName = ImageLib.TD_DATAPROVIDER;
+            if (node instanceof DBConnectionRepNode) {
+                image = ImageProvider.getImage(node.getIcon());
                 if (!RepositoryNodeHelper.isSupportedConnection(node) || isNeedAddDriverConnection(node)) {
-                    image = ImageLib.createErrorIcon(originalImageName);
+                    image = OverlayImageProvider.getImageWithError(image).createImage();
                 } else if (isInvalidJDBCConnection(node)) {
-                    image = ImageLib.createInvalidIcon(originalImageName);
-                } else {
-                    image = ImageLib.getImage(originalImageName);
+                    image = OverlayImageProvider.getImageWithWarn(image).createImage();
                 }
             }
             if (objectType != null && ERepositoryObjectType.METADATA_CON_CATALOG.equals(objectType)) {
@@ -319,9 +316,9 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             if (connectionItem != null) {
                 DatabaseConnection connection = (DatabaseConnection) connectionItem.getConnection();
                 String databaseType = connection.getDatabaseType();
-                if (databaseType.equalsIgnoreCase(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDBKey())
-                        && ((connection.getDriverJarPath() == null) || (connection.getDriverJarPath()).trim().equals(
-                                PluginConstant.EMPTY_STRING))) {
+                if ((ConnectionUtils.isTcompJdbc(databaseType) || databaseType
+                        .equalsIgnoreCase(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDBKey()))
+                        && (StringUtils.isBlank(connection.getDriverJarPath()))) {
                     return true;
                 }
             }

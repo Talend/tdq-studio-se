@@ -12,14 +12,24 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.action.actions.handle;
 
+import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.BusinessException;
 import org.talend.core.model.metadata.builder.connection.AbstractMetadataObject;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
+import org.talend.core.model.properties.Property;
+import org.talend.core.repository.model.ProxyRepositoryFactory;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dq.CWMPlugin;
+import org.talend.dq.helper.PropertyHelper;
+import org.talend.dq.writer.AElementPersistance;
 import org.talend.dq.writer.EMFSharedResources;
+import org.talend.dq.writer.impl.ElementWriterFactory;
+import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
 
@@ -27,6 +37,8 @@ import orgomg.cwm.objectmodel.core.Package;
  * duplicate a connection
  */
 public class DBConnectionDuplicateHandle extends MetadataDuplicateHandle {
+
+    private final Logger LOG = Logger.getLogger(DBConnectionDuplicateHandle.class);
 
     /*
      * (non-Javadoc)
@@ -52,11 +64,28 @@ public class DBConnectionDuplicateHandle extends MetadataDuplicateHandle {
         return duplicateModelElement;
     }
 
+    @Override
     public Item duplicateItem(Item oldItem, String newName) throws BusinessException {
-        Item duplicateItem = super.duplicateItem(oldItem, newName);
-        if (duplicateItem != null) {
-            CWMPlugin.getDefault().addConnetionAliasToSQLPlugin(((DatabaseConnectionItem) duplicateItem).getConnection());
+        ModelElement oldModelElement = PropertyHelper.getModelElement(oldItem.getProperty());
+
+        // create the related item and save
+        AElementPersistance elementWriter = ElementWriterFactory.getInstance().create(oldModelElement);
+        ModelElement newModelElement = duplicateModelElement(oldModelElement, newName);
+        IFolder folder = extractFolder(oldItem, oldModelElement);
+        IPath itemPath = folder.getFullPath().makeRelativeTo(ResourceManager.getConnectionFolder().getFullPath());
+        Property property = elementWriter.initProperty(newModelElement);
+        DatabaseConnectionItem newItem = (DatabaseConnectionItem) property.getItem();
+        // must set TypeName at here,or else, TypeName will be lost.
+        newItem.setTypeName(((DatabaseConnectionItem) oldItem).getTypeName());
+        try {
+            ProxyRepositoryFactory.getInstance().create(newItem, itemPath);
+        } catch (Exception e) {
+            createBusinessException(DefaultMessagesImpl.getString("ModelElementDuplicateHandle.duplicateFail",
+                    oldModelElement.getName(), e.getMessage()));
         }
-        return duplicateItem;
+        if (newItem != null) {
+            CWMPlugin.getDefault().addConnetionAliasToSQLPlugin(newItem.getConnection());
+        }
+        return newItem;
     }
 }
