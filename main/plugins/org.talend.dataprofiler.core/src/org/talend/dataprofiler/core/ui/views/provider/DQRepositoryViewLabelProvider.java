@@ -316,9 +316,9 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             if (connectionItem != null) {
                 DatabaseConnection connection = (DatabaseConnection) connectionItem.getConnection();
                 String databaseType = connection.getDatabaseType();
-                if ((ConnectionUtils.isTcompJdbc(databaseType) || databaseType
-                        .equalsIgnoreCase(SupportDBUrlType.GENERICJDBCDEFAULTURL.getDBKey()))
-                        && (StringUtils.isBlank(connection.getDriverJarPath()))) {
+                if ((ConnectionUtils.isTcompJdbc(databaseType) || SupportDBUrlType.GENERICJDBCDEFAULTURL
+                        .getDBKey()
+                        .equalsIgnoreCase(databaseType)) && StringUtils.isBlank(connection.getDriverJarPath())) {
                     return true;
                 }
             }
