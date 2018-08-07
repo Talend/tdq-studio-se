@@ -25,6 +25,38 @@ public class DBMapCompartor implements Comparator<Object>, Serializable {
 
     private static final long serialVersionUID = -3201084133371388584L;
 
+    private NullCompareStrategy compareStrategy = null;
+
+    public enum NullCompareStrategy {
+
+        nullMoreThanOthers(-1),
+        nullLessThanOthers(1);
+
+        int weight = 0;
+
+        private NullCompareStrategy(int weight) {
+            this.weight = weight;
+        }
+
+        /**
+         * Getter for weight.
+         * 
+         * @return the weight
+         */
+        protected int getWeight() {
+            return this.weight;
+        }
+
+    }
+
+    public DBMapCompartor(NullCompareStrategy compareStrategy) {
+        this.compareStrategy = compareStrategy;
+    }
+
+    public DBMapCompartor() {
+        this.compareStrategy = NullCompareStrategy.nullLessThanOthers;
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -38,11 +70,11 @@ public class DBMapCompartor implements Comparator<Object>, Serializable {
         }
 
         if (o1 == null && o2 != null) {
-            return -1;
+            return -1 * compareStrategy.weight;
         }
 
         if (o1 != null && o2 == null) {
-            return 1;
+            return 1 * compareStrategy.weight;
         }
 
         if (o1.equals(o2)) {
