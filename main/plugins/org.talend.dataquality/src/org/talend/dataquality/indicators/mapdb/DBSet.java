@@ -21,6 +21,7 @@ import java.util.SortedSet;
 
 import org.mapdb.BTreeKeySerializer;
 import org.mapdb.BTreeKeySerializer.BasicKeySerializer;
+import org.talend.dataquality.indicators.mapdb.DBMapCompartor.NullCompareStrategy;
 
 /**
  * created by talend on Jul 24, 2014 Detailled comment
@@ -44,6 +45,11 @@ public class DBSet<E> extends AbstractDB<E> implements NavigableSet<E> {
     public DBSet() {
         initDefaultDB();
         initSet();
+    }
+
+    public DBSet(NullCompareStrategy compareStrategy) {
+        initDefaultDB();
+        initSet(compareStrategy);
     }
 
     public DBSet(String parentFullPathStr, String fileName) {
@@ -70,11 +76,21 @@ public class DBSet<E> extends AbstractDB<E> implements NavigableSet<E> {
     /**
      * init the set
      */
-    private void initSet() {
+    private void initSet(NullCompareStrategy compareStrategy) {
         TalendSerializerBase talendSerializerBase = new TalendSerializerBase();
         BasicKeySerializer talendBasicKeySerializer = new BTreeKeySerializer.BasicKeySerializer(talendSerializerBase);
-        dbSet = getDB().createTreeSet(setName).serializer(talendBasicKeySerializer).comparator(new DBMapCompartor()).make();
+        dbSet =
+                getDB().createTreeSet(setName)
+                        .serializer(talendBasicKeySerializer)
+                        .comparator(new DBMapCompartor(compareStrategy))
+                        .make();
+    }
 
+    /**
+     * init the set
+     */
+    private void initSet() {
+        initSet(NullCompareStrategy.nullLessThanOthers);
     }
 
     /**
@@ -86,8 +102,13 @@ public class DBSet<E> extends AbstractDB<E> implements NavigableSet<E> {
             dbSet = getDB().getTreeSet(setName);
         } else {
             TalendSerializerBase talendSerializerBase = new TalendSerializerBase();
-            BasicKeySerializer talendBasicKeySerializer = new BTreeKeySerializer.BasicKeySerializer(talendSerializerBase);
-            dbSet = getDB().createTreeSet(setName).serializer(talendBasicKeySerializer).comparator(new DBMapCompartor()).make();
+            BasicKeySerializer talendBasicKeySerializer =
+                    new BTreeKeySerializer.BasicKeySerializer(talendSerializerBase);
+            dbSet =
+                    getDB().createTreeSet(setName)
+                            .serializer(talendBasicKeySerializer)
+                            .comparator(new DBMapCompartor())
+                            .make();
         }
 
     }
