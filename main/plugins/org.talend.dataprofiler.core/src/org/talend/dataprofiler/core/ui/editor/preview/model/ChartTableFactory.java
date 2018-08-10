@@ -85,6 +85,7 @@ import org.talend.dq.analysis.explore.IDataExplorer;
 import org.talend.dq.analysis.explore.PatternExplorer;
 import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguageFactory;
+import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
@@ -110,6 +111,9 @@ public final class ChartTableFactory {
      * @param currentIndicator
      */
     public static void addJobGenerationMenu(final Menu menu, final Analysis analysis, final Indicator currentIndicator) {
+        if (ProxyRepositoryManager.getInstance().isReadOnly()) {
+            return;
+        }
         Connection tdDataProvider = (Connection) analysis.getContext().getConnection();
         boolean isDelimitedFileAnalysis = ConnectionUtils.isDelimitedFileConnection(tdDataProvider);
         boolean isHiveConnection = ConnectionHelper.isHive(tdDataProvider);
@@ -172,6 +176,7 @@ public final class ChartTableFactory {
                     StructuredSelection selection = (StructuredSelection) tbViewer.getSelection();
                     final ChartDataEntity dataEntity = (ChartDataEntity) selection.getFirstElement();
                     final Indicator indicator = dataEntity != null ? dataEntity.getIndicator() : null;
+                    Boolean readOnly = ProxyRepositoryManager.getInstance().isReadOnly();
 
                     if (indicator != null && dataEntity != null) {
                         Menu menu = new Menu(table.getShell(), SWT.POP_UP);
@@ -222,7 +227,8 @@ public final class ChartTableFactory {
                                 }
                             }
                             // show extra menu to create simple analysis, help user to find the duplicated rows
-                            if (showExtraMenu) {
+
+                            if (showExtraMenu && !readOnly) {
                                 MenuItem itemCreateWhereRule = new MenuItem(menu, SWT.PUSH);
                                 itemCreateWhereRule.setText(DefaultMessagesImpl
                                         .getString("ChartTableFactory.JoinConditionColumnsAnalysis")); //$NON-NLS-1$
@@ -367,7 +373,7 @@ public final class ChartTableFactory {
 
                             }
                             // MOD by zshen feature 11574:add menu "Generate regular pattern" to date pattern
-                            if (isDatePatternFrequencyIndicator(indicator)) {
+                            if (isDatePatternFrequencyIndicator(indicator) && !readOnly) {
                                 final DatePatternFreqIndicator dateIndicator = (DatePatternFreqIndicator) indicator;
                                 MenuItem itemCreatePatt = new MenuItem(menu, SWT.PUSH);
                                 itemCreatePatt.setText(DefaultMessagesImpl.getString("ChartTableFactory.GenerateRegularPattern")); //$NON-NLS-1$
@@ -413,17 +419,19 @@ public final class ChartTableFactory {
      * @param itemEntity
      */
     public static void createMenuOfGenerateRegularPattern(final Analysis analysis, Menu menu, final ChartDataEntity dataEntity) {
-        MenuItem itemCreatePatt = new MenuItem(menu, SWT.PUSH);
-        itemCreatePatt.setText(DefaultMessagesImpl.getString("ChartTableFactory.GenerateRegularPattern")); //$NON-NLS-1$
-        itemCreatePatt.setImage(ImageLib.getImage(ImageLib.PATTERN_REG));
-        itemCreatePatt.addSelectionListener(new SelectionAdapter() {
+        if (!ProxyRepositoryManager.getInstance().isReadOnly()) {
+            MenuItem itemCreatePatt = new MenuItem(menu, SWT.PUSH);
+            itemCreatePatt.setText(DefaultMessagesImpl.getString("ChartTableFactory.GenerateRegularPattern")); //$NON-NLS-1$
+            itemCreatePatt.setImage(ImageLib.getImage(ImageLib.PATTERN_REG));
+            itemCreatePatt.addSelectionListener(new SelectionAdapter() {
 
-            @Override
-            public void widgetSelected(SelectionEvent e1) {
-                String query = dataEntity.getKey() == null ? dataEntity.getLabel() : dataEntity.getKey().toString();
-                createPattern(analysis, query);
-            }
-        });
+                @Override
+                public void widgetSelected(SelectionEvent e1) {
+                    String query = dataEntity.getKey() == null ? dataEntity.getLabel() : dataEntity.getKey().toString();
+                    createPattern(analysis, query);
+                }
+            });
+        }
     }
 
     /**

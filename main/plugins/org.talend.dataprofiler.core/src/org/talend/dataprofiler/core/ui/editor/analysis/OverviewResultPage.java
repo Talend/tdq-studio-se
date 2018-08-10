@@ -82,6 +82,7 @@ import org.talend.dataquality.indicators.schema.SchemaIndicator;
 import org.talend.dataquality.indicators.schema.TableIndicator;
 import org.talend.dataquality.indicators.schema.ViewIndicator;
 import org.talend.dq.analysis.AnalysisHandler;
+import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.nodes.DBTableFolderRepNode;
@@ -663,23 +664,26 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
                                 }
 
                             });
-                            TableItem tableItem = catalogOrSchemaTable.getItem(catalogOrSchemaTable.getSelectionIndex());
-                            final OverviewIndUIElement data = (OverviewIndUIElement) tableItem.getData();
-                            MenuItem tableAnalysisMenuItem = new MenuItem(menu, SWT.PUSH);
-                            tableAnalysisMenuItem.setText(DefaultMessagesImpl
-                                    .getString("CreateTableAnalysisAction.tableAnalysis")); //$NON-NLS-1$
-                            tableAnalysisMenuItem.setImage(ImageLib.getImage(ImageLib.ACTION_NEW_ANALYSIS));
-                            tableAnalysisMenuItem.addSelectionListener(new SelectionAdapter() {
+                            if (!ProxyRepositoryManager.getInstance().isReadOnly()) {
+                                TableItem tableItem =
+                                        catalogOrSchemaTable.getItem(catalogOrSchemaTable.getSelectionIndex());
+                                final OverviewIndUIElement data = (OverviewIndUIElement) tableItem.getData();
+                                MenuItem tableAnalysisMenuItem = new MenuItem(menu, SWT.PUSH);
+                                tableAnalysisMenuItem.setText(DefaultMessagesImpl
+                                        .getString("CreateTableAnalysisAction.tableAnalysis")); //$NON-NLS-1$
+                                tableAnalysisMenuItem.setImage(ImageLib.getImage(ImageLib.ACTION_NEW_ANALYSIS));
+                                tableAnalysisMenuItem.addSelectionListener(new SelectionAdapter() {
 
-                                @Override
-                                public void widgetSelected(SelectionEvent e) {
+                                    @Override
+                                    public void widgetSelected(SelectionEvent e) {
 
-                                    runTableAnalysis(data);
+                                        runTableAnalysis(data);
+                                    }
+
+                                });
+                                if (data.isVirtualNode()) {
+                                    tableAnalysisMenuItem.setEnabled(false);
                                 }
-
-                            });
-                            if (data.isVirtualNode()) {
-                                tableAnalysisMenuItem.setEnabled(false);
                             }
                         } else {
                             // TDQ-11430: when there is no views will not show menu

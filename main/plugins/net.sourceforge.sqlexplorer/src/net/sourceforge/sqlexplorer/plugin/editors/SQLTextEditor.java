@@ -70,6 +70,8 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.model.properties.Item;
+import org.talend.core.runtime.CoreRuntimePlugin;
+import org.talend.repository.model.IProxyRepositoryFactory;
 
 /**
  * TextEditor specialisation; encapsulates functionality specific to editing SQL.
@@ -147,6 +149,11 @@ public class SQLTextEditor extends TextEditor {
      */
     @Override
     protected void performSaveAs(IProgressMonitor progressMonitor) {
+        // do nothing when the user is read-only for current project
+        IProxyRepositoryFactory factory = CoreRuntimePlugin.getInstance().getProxyRepositoryFactory();
+        if (factory.isUserReadOnlyOnCurrentProject()) {
+            return;
+        }
         // PTODO qzhang correct save the sql file. for bug 3860.
         Shell shell = getSite().getShell();
         final IEditorInput input = getEditorInput();

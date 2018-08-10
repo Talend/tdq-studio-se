@@ -45,6 +45,7 @@ import org.talend.dataquality.analysis.AnalysisType;
 import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.properties.TDQAnalysisItem;
+import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.resourcehelper.AnaResourceFileHelper;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.ReportAnalysisRepNode;
@@ -304,7 +305,7 @@ public class AnalysisEditor extends SupportContextEditor {
             } else if (currentRepNode instanceof AnalysisRepNode) {
                 isMainProject = ((AnalysisRepNode) currentRepNode).getProject().isMainProject();
             }
-            if (isMainProject) {
+            if (isMainProject && !ProxyRepositoryManager.getInstance().isReadOnly()) {
                 runAction.run();
             }
             // TDQ-10748~
