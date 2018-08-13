@@ -719,7 +719,9 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
                         TableItem tableItem = tableCatalogOrSchemaView.getItem(tableCatalogOrSchemaView.getSelectionIndex());
                         final OverviewIndUIElement data = (OverviewIndUIElement) tableItem.getData();
 
-                        if (tableCatalogOrSchemaView.getItemCount() > 0 && tableCatalogOrSchemaView.getSelectionIndex() != -1) {
+                        if (tableCatalogOrSchemaView.getItemCount() > 0
+                                && tableCatalogOrSchemaView.getSelectionIndex() != -1
+                                && !ProxyRepositoryManager.getInstance().isReadOnly()) {
                             final Menu menu = new Menu(tableCatalogOrSchemaView.getShell(), SWT.POP_UP);
                             tableCatalogOrSchemaView.setMenu(menu);
 
