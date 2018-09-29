@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.dataquality.indicators.impl;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Random;
 
 import org.junit.Assert;
@@ -19,6 +21,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.talend.dataquality.common.regex.ChainResponsibilityHandler;
 import org.talend.dataquality.common.regex.HandlerFactory;
+import org.talend.dataquality.indicators.IndicatorsFactory;
 import org.talend.utils.dates.DateUtils;
 
 /**
@@ -93,5 +96,25 @@ public class PatternFreqIndicatorImplTest {
         // Assert that the time spend by char replacement is 3 times less than that of regex.
         Assert.assertTrue(reEnd - reStart > crEnd - crStart);
         Assert.assertTrue(reEnd - reStart < 4 * (crEnd - crStart));
+    }
+
+    /**
+     * Test method for
+     * {@link org.talend.dataquality.indicators.impl.EastAsiaPatternFreqIndicatorImpl#convertCharacters(java.lang.String)}
+     */
+    @Test
+    public void testReplaceCharacters() {
+        EastAsiaPatternFreqIndicatorImpl createFrequencyIndicator =
+                (EastAsiaPatternFreqIndicatorImpl) IndicatorsFactory.eINSTANCE.createEastAsiaPatternFreqIndicator();
+        assertEquals("aaaaaaa", createFrequencyIndicator.convertCharacters("abcdefg")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("AAAA", createFrequencyIndicator.convertCharacters("ABCD")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("AaAA", createFrequencyIndicator.convertCharacters("AbCD")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        assertEquals("CC", createFrequencyIndicator.convertCharacters("你好")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("HHHHH", createFrequencyIndicator.convertCharacters("あいうえお")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("KKKHCHH", createFrequencyIndicator.convertCharacters("リンゴを食べる")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("KKKK C", createFrequencyIndicator.convertCharacters("フランス 語")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("CCHHHHH", createFrequencyIndicator.convertCharacters("吉田あいうえお")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("CCCCCCC", createFrequencyIndicator.convertCharacters("中崎𠀀𠀁𠀂𠀃𠀄")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }
