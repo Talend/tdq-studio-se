@@ -116,5 +116,6 @@ public class PatternFreqIndicatorImplTest {
         assertEquals("KKKK C", createFrequencyIndicator.convertCharacters("フランス 語")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("CCHHHHH", createFrequencyIndicator.convertCharacters("吉田あいうえお")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("CCCCCCC", createFrequencyIndicator.convertCharacters("中崎𠀀𠀁𠀂𠀃𠀄")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("HHH", createFrequencyIndicator.convertCharacters("ゞゝゟ")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }
