@@ -2,10 +2,8 @@
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_JMeW0F0TEeWGcZIHtEALuw" name="East Asia Pattern Frequency Table" label="East Asia Pattern Frequency Table">
   <taggedValue xmi:id="_-Zty0YqnEd-SocVM_rHvUg" tag="Description" value="
         counts the number of records for each distinct pattern&#xA;
-        Hiragana are replaced by 'H' for regular chars, and 'h' for small chars&#xA;
-        Katakana are replaced by 'K' for regular chars, and 'k' for small chars&#xA;
-        Katakana Phonetic Extensions are replaced by 'k' and all of them are small chars&#xA;
-        Halfwidth Katakana are replaced by 'K' for regular chars, and 'k' for small chars&#xA;
+        Hiragana are replaced by 'H'&#xA;
+        Katakana are replaced by 'K' for full-width Katakana, and 'k' for half-width Katakana chars&#xA;
         Fullwidth Latin Numbers are replaced by '9'&#xA;
         Fullwidth Latin Uppercased Letters are replaced by 'A'&#xA;
         Fullwidth Latin Lowercased Letters are replaced by 'a'&#xA;
