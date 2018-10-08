@@ -24,7 +24,6 @@ import org.talend.dataquality.helpers.IndicatorCategoryHelper;
 import org.talend.dataquality.indicators.definition.IndicatorCategory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefinition;
-import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.GenericSQLHandler;
 import org.talend.dq.dbms.HiveDbmsLanguage;
 
@@ -93,7 +92,8 @@ public class SimpleStatisticsExplorer extends DataExplorer {
         String sql = PluginConstant.EMPTY_STRING;
         IndicatorCategory category = IndicatorCategoryHelper.getCategory(indicatorDefinition);
         EList<TdExpression> list = ((UDIndicatorDefinition) indicatorDefinition).getViewRowsExpression();
-        TdExpression tdExp = DbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
+        TdExpression tdExp =
+                dbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
                 dbmsLanguage.getDbVersion());
         sql = tdExp.getBody();
         String dataFilterClause = getDataFilterClause();

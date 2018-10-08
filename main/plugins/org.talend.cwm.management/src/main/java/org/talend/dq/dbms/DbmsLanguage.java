@@ -1056,7 +1056,7 @@ public class DbmsLanguage {
      * @param dbVersion
      * @return
      */
-    public static TdExpression getSqlExpression(IndicatorDefinition indicatorDefinition, String language,
+    public TdExpression getSqlExpression(IndicatorDefinition indicatorDefinition, String language,
             EList<TdExpression> sqlGenericExpression, ProductVersion dbVersion) {
         TdExpression defaultExpression = null;
         if (sqlGenericExpression == null || sqlGenericExpression.size() == 0) {
@@ -1093,12 +1093,9 @@ public class DbmsLanguage {
                 }
             }
         }
-        for (TdExpression exp : tempExpressions2) {
-            if (dbVersion.toString().startsWith(exp.getVersion()) || exp.getVersion().startsWith(dbVersion.toString())) {
-                // find the same major version, example: the sql expression's version is 5.1, the db version is 5.1.2 or
-                // opposite
-                return exp;
-            }
+        TdExpression findByVersion = findTdExpressionByVersion(dbVersion, tempExpressions2);
+        if (findByVersion != null) {
+            return findByVersion;
         }
 
         if (defaultExpression != null) {
@@ -2253,4 +2250,44 @@ public class DbmsLanguage {
         return query + orderBy() + "RAND() "; //$NON-NLS-1$
     }
 
+    /**
+     * @Description: Find a TdExpression by a matched/nearest version between TdExpression and ProductVersion
+     * @param dbVersion
+     * @param allExpressions
+     * @return
+     */
+    protected TdExpression findTdExpressionByVersion(ProductVersion dbVersion,
+            List<TdExpression> allExpressions) {
+        if (dbVersion == null || allExpressions.isEmpty()) {
+            return null;
+        }
+        int majorVersion = dbVersion.getMajor();
+        TdExpression nearestVersionExp = null;
+        int minDistance = 1000;
+        for (TdExpression exp : allExpressions) {
+            String expDBVersion = exp.getVersion();
+            int mainVersionInExp;
+            if (expDBVersion.contains(".")) {
+                String[] splitVersion = expDBVersion.split("\\.");
+                mainVersionInExp = Integer.parseInt(splitVersion[0]);
+            } else {
+                mainVersionInExp = Integer.parseInt(expDBVersion);
+            }
+            int subsResult = majorVersion - mainVersionInExp;
+            // return it when same major version, example: the sql expression's version is 5.1, the db version is 5.1.2
+            if (subsResult == 0) {
+                return exp;
+            }
+            // find the nearest version in allExpressions.example: real dbVersion is 9.0, 2 sql expression's version 5.0
+            // and 8.0. should find the version 8.0's sql expression
+            if (subsResult > 0 && subsResult < minDistance) {
+                minDistance = subsResult;
+                nearestVersionExp = exp;
+            }
+        }
+        if (nearestVersionExp != null && minDistance != 1000) {
+            return nearestVersionExp;
+        }
+        return null;
+    }
 }

@@ -2687,8 +2687,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage
-                .getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
+        DbmsLanguage dbms = new DB2DbmsLanguage(db2Lang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
         Assert.assertEquals(tdExpression3, sqlExpression);
     }
 
@@ -2730,8 +2731,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage
-                .getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
+        DbmsLanguage dbms = new DB2DbmsLanguage(db2Lang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
         Assert.assertEquals(tdExpression2, sqlExpression);
     }
 
@@ -2767,8 +2769,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage
-                .getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
+        DbmsLanguage dbms = new DB2DbmsLanguage(db2Lang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
         Assert.assertEquals(tdExpression2, sqlExpression);
     }
 
@@ -2804,8 +2807,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage
-                .getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
+        DbmsLanguage dbms = new DB2DbmsLanguage(db2Lang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
         Assert.assertEquals(tdExpression3, sqlExpression);
     }
 
@@ -2847,8 +2851,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage
-                .getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
+        DbmsLanguage dbms = new DB2DbmsLanguage(db2Lang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
         Assert.assertEquals(tdExpression1, sqlExpression);
     }
 
@@ -2882,8 +2887,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage
-                .getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
+        DbmsLanguage dbms = new DB2DbmsLanguage(db2Lang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, language, sqlGenericExpression, dbVersion);
         Assert.assertEquals(null, sqlExpression);
     }
 
@@ -2924,7 +2930,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression,
+        DbmsLanguage dbms = new DbmsLanguage(sqlLang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression,
                 dbVersion);
         Assert.assertEquals(tdExpression4, sqlExpression);
     }
@@ -2960,7 +2968,9 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression,
+        DbmsLanguage dbms = new DbmsLanguage(sqlLang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression,
                 dbVersion);
         Assert.assertEquals(tdExpression3, sqlExpression);
     }
@@ -2989,9 +2999,61 @@ public class DbmsLanguageTest {
 
         ProductVersion dbVersion = new ProductVersion(1, 0);
 
-        TdExpression sqlExpression = DbmsLanguage.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression,
+        DbmsLanguage dbms = new DbmsLanguage(sqlLang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression,
                 dbVersion);
         Assert.assertEquals(tdExpression1, sqlExpression);
+    }
+
+    @Test
+    public void testGetSqlExpressionMysql5() {
+        // TDQ-11558 msjian: test for get sql expresstion for redshift database when there is no redshift and ParAccel
+        // and PostgreSQL defined
+        String sqlLang = "MySql"; //$NON-NLS-1$
+        String sqlBody = "SQL body"; //$NON-NLS-1$
+
+        String redshiftLang = SupportDBUrlType.MYSQLDEFAULTURL.getLanguage();
+
+        IndicatorDefinition indicatorDefinition = DefinitionFactory.eINSTANCE.createIndicatorDefinition();
+
+        EList<TdExpression> sqlGenericExpression = new BasicEList<TdExpression>();
+
+        TdExpression tdExpression1 = RelationalFactory.eINSTANCE.createTdExpression();
+        tdExpression1.setLanguage(sqlLang);
+        tdExpression1.setBody(sqlBody);
+        sqlGenericExpression.add(tdExpression1);
+
+        TdExpression tdExpression2 = RelationalFactory.eINSTANCE.createTdExpression();
+        tdExpression2.setLanguage(sqlLang);
+        tdExpression2.setBody(sqlBody);
+        tdExpression2.setVersion("6.0");
+        sqlGenericExpression.add(tdExpression2);
+
+        TdExpression tdExpression3 = RelationalFactory.eINSTANCE.createTdExpression();
+        tdExpression3.setLanguage(sqlLang);
+        tdExpression3.setBody(sqlBody);
+        tdExpression3.setVersion("8.0");
+        sqlGenericExpression.add(tdExpression3);
+
+        ProductVersion dbVersion = new ProductVersion(5, 0);
+
+        DbmsLanguage dbms = new DbmsLanguage(sqlLang, dbVersion);
+        TdExpression sqlExpression =
+                dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression, dbVersion);
+        Assert.assertEquals(tdExpression1, sqlExpression);
+
+        dbVersion = new ProductVersion(7, 0);
+        sqlExpression = dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression, dbVersion);
+        Assert.assertEquals(tdExpression2, sqlExpression);
+
+        dbVersion = new ProductVersion(8, 0);
+        sqlExpression = dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression, dbVersion);
+        Assert.assertEquals(tdExpression3, sqlExpression);
+
+        dbVersion = new ProductVersion(10, 0);
+        sqlExpression = dbms.getSqlExpression(indicatorDefinition, redshiftLang, sqlGenericExpression, dbVersion);
+        Assert.assertEquals(tdExpression3, sqlExpression);
     }
 
     /**

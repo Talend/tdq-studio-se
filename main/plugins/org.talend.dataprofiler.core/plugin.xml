@@ -1764,6 +1764,12 @@
            name="Update Valid UK Postcode Pattern"
            version="7.1.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.UpdateRexMatchIndAndPatternForMysql8Task"
+           id="org.talend.dataprofiler.core.migration.impl.AddRexMatchForMysql8Task"
+           name="Add Regular Expression Matching Mysql 8 Task"
+           version="7.1.1">
+     </workspacetask>
   </extension>
   
   <extension

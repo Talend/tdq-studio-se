@@ -22,7 +22,6 @@ import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.dataquality.indicators.columnset.ColumnsetPackage;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefinition;
-import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.GenericSQLHandler;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -167,7 +166,8 @@ public abstract class PatternExplorer extends DataExplorer {
      */
     public String getQueryAfterReplaced(IndicatorDefinition indicatorDefinition, EList<TdExpression> list) {
         String sql = PluginConstant.EMPTY_STRING;
-        TdExpression tdExp = DbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
+        TdExpression tdExp =
+                dbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
                 dbmsLanguage.getDbVersion());
         sql = tdExp.getBody();
         String dataFilterClause = getDataFilterClause();

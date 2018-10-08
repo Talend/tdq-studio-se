@@ -137,6 +137,11 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String regexLike(String element, String regex) {
+        ProductVersion dbVersion = getDbVersion();
+        // 'RegexP' doesn't work well for MySQL8
+        if (dbVersion != null && dbVersion.getMajor() >= 8) {
+            return surroundWithSpaces("REGEXP_LIKE(" + element + "," + regex + ",'c')");
+        }
         return surroundWithSpaces(element + surroundWithSpaces(getRegularExpressionFunction()) + regex);
     }
 
@@ -147,6 +152,10 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String regexNotLike(String element, String regex) {
+        ProductVersion dbVersion = getDbVersion();
+        if (dbVersion != null && dbVersion.getMajor() >= 8) {
+            return surroundWithSpaces("NOT REGEXP_LIKE(" + element + "," + regex + ",'c')");
+        }
         return surroundWithSpaces(element + surroundWithSpaces(this.not() + getRegularExpressionFunction()) + regex);
     }
 

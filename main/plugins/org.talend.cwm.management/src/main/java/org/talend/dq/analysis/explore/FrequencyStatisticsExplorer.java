@@ -29,7 +29,6 @@ import org.talend.dataquality.indicators.IndicatorParameters;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefinition;
 import org.talend.dq.dbms.DB2DbmsLanguage;
-import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.GenericSQLHandler;
 import org.talend.dq.dbms.HiveDbmsLanguage;
 import org.talend.dq.dbms.SybaseASEDbmsLanguage;
@@ -113,7 +112,8 @@ public class FrequencyStatisticsExplorer extends DataExplorer {
     private String getQueryForUDIndicator(IndicatorDefinition indicatorDefinition) {
         String sql = PluginConstant.EMPTY_STRING;
         EList<TdExpression> list = ((UDIndicatorDefinition) indicatorDefinition).getViewRowsExpression();
-        TdExpression tdExp = DbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
+        TdExpression tdExp =
+                dbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
                 dbmsLanguage.getDbVersion());
         sql = tdExp.getBody();
         String dataFilterClause = getDataFilterClause();
