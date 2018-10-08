@@ -3007,9 +3007,7 @@ public class DbmsLanguageTest {
     }
 
     @Test
-    public void testGetSqlExpressionMysql5() {
-        // TDQ-11558 msjian: test for get sql expresstion for redshift database when there is no redshift and ParAccel
-        // and PostgreSQL defined
+    public void testGetSqlExpressionMysqlCases() {
         String sqlLang = "MySql"; //$NON-NLS-1$
         String sqlBody = "SQL body"; //$NON-NLS-1$
 

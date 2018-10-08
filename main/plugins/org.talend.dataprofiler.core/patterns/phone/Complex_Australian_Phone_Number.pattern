@@ -6,6 +6,6 @@
   <taggedValue xmi:id="_CnD1dIyeEd6Dle_8xC0lwg" tag="Status" value="Draft"/>
   <taggedValue xmi:id="_CnD1dYyeEd6Dle_8xC0lwg" tag="Validation_Status" value="true"/>
   <components xsi:type="dataquality.domain.pattern:RegularExpression" xmi:id="_CnD1doyeEd6Dle_8xC0lwg" expressionType="REGEXP">
-    <expression xmi:id="_CnD1d4yeEd6Dle_8xC0lwg" body="'^\\({0,1}((0|\\+61)(2|4|3|7|8)){0,1}\){0,1}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{1}(\ |-){0,1}[0-9]{3}$'" language="MySQL"/>
+    <expression xmi:id="_CnD1d4yeEd6Dle_8xC0lwg" body="'^\\({0,1}((0|\\+61)(2|4|3|7|8)){0,1}\\){0,1}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{1}(\ |-){0,1}[0-9]{3}$'" language="MySQL"/>
   </components>
 </dataquality.domain.pattern:Pattern>

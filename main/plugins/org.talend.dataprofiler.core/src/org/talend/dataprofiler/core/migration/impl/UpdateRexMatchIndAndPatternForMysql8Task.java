@@ -33,6 +33,9 @@ import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.resource.ResourceManager;
 
 
+/**
+ * Add a regex for Mysql 8,update pattern Complex_Australian_Phone_Number
+ */
 public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceUpdateTask {
 
     private String regulaExpMatchLabel = "Regular Expression Matching"; //$NON-NLS-1$
