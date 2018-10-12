@@ -41,7 +41,7 @@ public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceU
     private String regulaExpMatchLabel = "Regular Expression Matching"; //$NON-NLS-1$
 
     private String indicatorMySqlEx8p =
-            "SELECT COUNT(CASE WHEN REGEXP_LIKE(<%=__COLUMN_NAMES__%>, <%=__PATTERN_EXPR__%>,'c') THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
+            "SELECT COUNT(CASE WHEN REGEXP_LIKE(<%=__COLUMN_NAMES__%>,<%=__PATTERN_EXPR__%>,'c') THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
 
     // old pattern miss '\', it is :'^\\({0,1}((0|\\+61)(2|4|3|7|8)){0,1}\){0,1}(\ |-){0,1}[0-9]{2}(\ |-){0,1}[0-9]{2}(\
     // |-){0,1}[0-9]{1}(\ |-){0,1}[0-9]{3}$'
