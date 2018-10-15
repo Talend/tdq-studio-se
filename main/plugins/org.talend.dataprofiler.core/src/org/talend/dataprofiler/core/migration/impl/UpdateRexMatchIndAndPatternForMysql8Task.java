@@ -63,12 +63,27 @@ public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceU
         IndicatorDefinition indicatorDefinition =
                 DefinitionHandler.getInstance().getIndicatorDefinition(regulaExpMatchLabel);
         if (indicatorDefinition != null) {
+            EList<TdExpression> sqlGenericExpression = indicatorDefinition.getSqlGenericExpression();
+            boolean foundMysql8Expression = false;
+            String version = "8.0";
+            if (sqlGenericExpression != null && !sqlGenericExpression.isEmpty()) {
+                for (TdExpression expression : sqlGenericExpression) {
+                    if (expression != null
+                            && SupportDBUrlType.MYSQLDEFAULTURL.getLanguage().equals(expression.getLanguage())
+                            && version.equals(expression.getVersion())) {
+                        foundMysql8Expression = true;
+                        break;
+                    }
+                }
+            }
+            if (!foundMysql8Expression) {
             TdExpression expressionForMysql8 =
                     BooleanExpressionHelper.createTdExpression(SupportDBUrlType.MYSQLDEFAULTURL.getLanguage(),
-                            indicatorMySqlEx8p, "8.0");
+                                indicatorMySqlEx8p, version);
             indicatorDefinition.getSqlGenericExpression().add(expressionForMysql8);
             succuss = IndicatorDefinitionFileHelper.save(indicatorDefinition);
             DefinitionHandler.getInstance().reloadIndicatorsDefinitions();
+            }
         }
 
         // update a pattern Complex_Australian_Phone_Number_0.1.pattern which miss a '\'
