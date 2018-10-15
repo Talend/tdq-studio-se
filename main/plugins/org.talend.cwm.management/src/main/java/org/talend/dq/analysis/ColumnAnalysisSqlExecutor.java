@@ -314,9 +314,6 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
             // with ranges (frequencies of numerical intervals)
 
             int topN = indicatorEclass.equals(IndicatorsPackage.eINSTANCE.getModeIndicator()) ? 1 : getTopN(indicator);
-            topN =
-                    indicatorEclass.equals(IndicatorsPackage.eINSTANCE.getBenfordLawFrequencyIndicator()) ? 10
-                            : getTopN(indicator);
             if (topN <= 0) {
                 topN = TOP_N;
             }
