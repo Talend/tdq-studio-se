@@ -39,6 +39,11 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
      */
     @Override
     public ItemRecord computeInput(IPath path) {
+        // TDQ-15946 msjian: when reselect the file path, clean the before temp folder.
+        if (sourcePath != null && getSourceFile().exists()) {
+            FilesUtils.removeFolder(getSourceFile(), true);
+        }
+
         sourcePath = path.removeFileExtension();
 
         try {

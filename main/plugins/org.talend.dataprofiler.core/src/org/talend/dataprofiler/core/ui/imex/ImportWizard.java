@@ -56,15 +56,12 @@ public class ImportWizard extends Wizard {
 
     @Override
     public boolean performCancel() {
-        final ItemRecord[] records = importPage.getElements();
-        if (records.length > 0) {
-            final IImportWriter writer = importPage.getWriter();
-            try {
-                writer.finish(records, null);
-                writer.postFinish();
-            } catch (Exception e) {
-                ExceptionHandler.process(e);
-            }
+        final IImportWriter writer = importPage.getWriter();
+        try {
+            writer.finish(null, null);
+            writer.postFinish();
+        } catch (Exception e) {
+            ExceptionHandler.process(e);
         }
 
         return super.performCancel();
