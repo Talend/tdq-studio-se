@@ -18,6 +18,7 @@ import java.io.IOException;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
 import org.talend.resource.EResourceConstant;
 import org.talend.utils.io.FilesUtils;
@@ -31,6 +32,8 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
 
     private IPath sourcePath;
 
+    private String tempFolderNameUuid = ""; //$NON-NLS-1$
+
     /*
      * (non-Javadoc)
      * 
@@ -39,12 +42,11 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
      */
     @Override
     public ItemRecord computeInput(IPath path) {
-        // TDQ-15946 msjian: when reselect the file path, clean the before temp folder.
-        if (sourcePath != null && getSourceFile().exists()) {
-            FilesUtils.removeFolder(getSourceFile(), true);
-        }
+        // TDQ-15946 msjian: when reselect another import file, clean the before temp folder.
+        deleteTempUnzipFolder();
 
         sourcePath = path.removeFileExtension();
+        tempFolderNameUuid = EcoreUtil.generateUUID();
 
         try {
             FilesUtils.createFolder(getSourceFile());
@@ -72,6 +74,13 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
     @Override
     public void postFinish() throws IOException {
         super.postFinish();
+        deleteTempUnzipFolder();
+    }
+
+    /**
+     * DOC msjian Comment method "deleteTempUnzipFolder".
+     */
+    private void deleteTempUnzipFolder() {
         if (sourcePath != null && getSourceFile().exists()) {
             FilesUtils.removeFolder(getSourceFile(), true);
         }
@@ -79,6 +88,6 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
 
     private File getSourceFile() {
         // TDQ-14949: fix cannot import the items when the source path like "XX .zip".
-        return new File(sourcePath.toFile().getPath().trim());
+        return new File(sourcePath.toFile().getPath().trim() + tempFolderNameUuid);
     }
 }

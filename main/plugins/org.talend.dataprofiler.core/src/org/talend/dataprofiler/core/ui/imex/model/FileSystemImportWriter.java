@@ -1444,6 +1444,11 @@ public class FileSystemImportWriter implements IImportWriter {
     }
 
     private void mergeImportItemsDependency(ItemRecord[] records) {
+        // TDQ-15946: for cancel, do nothing here
+        if (records == null) {
+            return;
+        }
+        // TDQ-15946~
         for (ItemRecord itemRecord : records) {
             // If record is not a emf element then we don't need to comput dependency
             if (itemRecord.geteConflictType() != null && itemRecord.isEMFValid() && itemRecord.needMergeDependency()) {
