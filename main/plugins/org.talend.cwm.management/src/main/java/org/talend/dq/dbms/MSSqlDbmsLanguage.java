@@ -28,6 +28,8 @@ import orgomg.cwm.resource.relational.Schema;
  */
 public class MSSqlDbmsLanguage extends DbmsLanguage {
 
+    private static final String MSSQL_IDENTIFIER_QUOTE = "\""; //$NON-NLS-1$
+
     Logger log = Logger.getLogger(MSSqlDbmsLanguage.class);
 
     /**
@@ -239,4 +241,15 @@ public class MSSqlDbmsLanguage extends DbmsLanguage {
     public String getRandomQuery(String query) {
         return query + orderBy() + "NEWID() "; //$NON-NLS-1$
     }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.talend.cwm.management.api.DbmsLanguage#getQuoteIdentifier()
+     */
+    @Override
+    public String getHardCodedQuoteIdentifier() {
+        return MSSQL_IDENTIFIER_QUOTE; //$NON-NLS-1$
+    }
+
 }
