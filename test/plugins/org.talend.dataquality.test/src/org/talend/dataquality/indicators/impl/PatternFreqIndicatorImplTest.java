@@ -32,7 +32,8 @@ public class PatternFreqIndicatorImplTest {
 
     private final static String LATIN_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞß0123456789"; //$NON-NLS-1$
 
-    private final static String LATIN_CHARS_PATT = "aaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9999999999"; //$NON-NLS-1$
+    private final static String LATIN_CHARS_PATT =
+            "aaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa9999999999"; //$NON-NLS-1$
 
     @Test
     public void testLatinPatternReplacement() {
@@ -116,6 +117,6 @@ public class PatternFreqIndicatorImplTest {
         assertEquals("KKKK C", createFrequencyIndicator.convertCharacters("フランス 語")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("CCHHHHH", createFrequencyIndicator.convertCharacters("吉田あいうえお")); //$NON-NLS-1$ //$NON-NLS-2$
         assertEquals("CCCCCCC", createFrequencyIndicator.convertCharacters("中崎𠀀𠀁𠀂𠀃𠀄")); //$NON-NLS-1$ //$NON-NLS-2$
-        assertEquals("HHH", createFrequencyIndicator.convertCharacters("ゞゝゟ")); //$NON-NLS-1$ //$NON-NLS-2$
+        assertEquals("HHゟ", createFrequencyIndicator.convertCharacters("ゞゝゟ")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 }
