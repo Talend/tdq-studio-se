@@ -33,7 +33,6 @@ import org.talend.dq.indicators.preview.table.ChartDataEntity;
  */
 public abstract class FrequencyTableState extends AbstractTableTypeStates {
 
-    private static final int MAX_KEY_LENGTH = 100;
     /**
      * DOC yyin FrequencyTableState constructor comment.
      * 
@@ -63,7 +62,7 @@ public abstract class FrequencyTableState extends AbstractTableTypeStates {
 
                 for (int i = 0; i < numOfShown; i++) {
                     FrequencyExt freqExt = frequencyExt[i];
-                    String keyLabel = FrequencyTypeStateUtil.getKeyLabel(freqExt, MAX_KEY_LENGTH);
+                    String keyLabel = FrequencyTypeStateUtil.getKeyLabel(freqExt, FrequencyTypeStateUtil.MAX_KEY_LENGTH);
                     dataEnities.add(FrequencyTypeStateUtil.createChartEntity(unit.getIndicator(), freqExt, keyLabel,
                             withRowCountIndicator));
                 }

@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.ui.editor.analysis.drilldown.DrillDownEditorInput;
 import org.talend.dataprofiler.core.ui.editor.preview.model.MenuItemEntity;
+import org.talend.dataprofiler.core.ui.editor.preview.model.states.utils.FrequencyTypeStateUtil;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
 import org.talend.dataquality.analysis.AnalyzedDataSet;
@@ -69,9 +70,8 @@ public class DrillDownUtils {
         String keyLabel = String.valueOf(dataEntity.getKey());
         // the equals on the right is the same to FrequencyTypeStateUtil.getKeyLabel()
         long keyLabelCPCount = keyLabel.codePoints().count();
-        if (keyLabelCPCount > 30
-                && selectValue.equals(keyLabel.substring(0, keyLabel.offsetByCodePoints(0, 30))
-                        + "...(" + keyLabelCPCount + " characters)")) { //$NON-NLS-1$ //$NON-NLS-2$
+        if (keyLabelCPCount > FrequencyTypeStateUtil.MAX_KEY_LENGTH
+                && selectValue.equals(FrequencyTypeStateUtil.getKeyValueWithLength(keyLabel))) {
             selectValue = keyLabel;
         }
         // TDQ-10785~
