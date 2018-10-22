@@ -37,6 +37,8 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  */
 public class FrequencyTypeStateUtil {
 
+    public static final int MAX_KEY_LENGTH = 100;
+
     /**
      * DOC bZhou Comment method "isWithRowCountIndicator".
      * 
@@ -114,14 +116,24 @@ public class FrequencyTypeStateUtil {
             keyLabel = SpecialValueDisplay.EMPTY_FIELD;
         }
         // TDQ-10785: when the data is too long we show the first maxKeyLength characters for table and chart
+        keyLabel = getKeyValueWithLength(maxKeyLength, keyLabel);
+        // TDQ-10785~
+        return keyLabel;
+    }
+
+    public static String getKeyValueWithLength(int maxKeyLength, String keyLabel) {
         long keyLabelCPCount = keyLabel.codePoints().count();
+        String labelWithLength = keyLabel;
         if (keyLabelCPCount > maxKeyLength) {
-            keyLabel =
+            labelWithLength =
                     keyLabel.substring(0, keyLabel.offsetByCodePoints(0, maxKeyLength))
                             + "...(" + keyLabelCPCount + " characters)"; //$NON-NLS-1$ //$NON-NLS-2$
         }
-        // TDQ-10785~
-        return keyLabel;
+        return labelWithLength;
+    }
+
+    public static String getKeyValueWithLength(String keyLabel) {
+        return getKeyValueWithLength(MAX_KEY_LENGTH, keyLabel);
     }
 
     /**

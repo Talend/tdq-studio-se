@@ -59,7 +59,7 @@ public abstract class FrequencyTypeStates extends AbstractChartTypeStates {
 
                 for (int i = 0; i < numOfShown; i++) {
                     FrequencyExt freqExt = frequencyExt[i];
-                    String keyLabel = FrequencyTypeStateUtil.getKeyLabel(freqExt, 200);
+                    String keyLabel = FrequencyTypeStateUtil.getKeyLabel(freqExt, FrequencyTypeStateUtil.MAX_KEY_LENGTH);
 
                     setValueToDataset(customerdataset, freqExt, keyLabel);
 
