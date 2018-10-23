@@ -286,7 +286,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 }
                 record.setConflictObject(null);
             } catch (Exception e) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.CheckFailed", record.getName()));//$NON-NLS-1$ //$NON-NLS-2$ 
+                record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.CheckFailed", record.getName()));//$NON-NLS-1$ 
             }
         }
     }
@@ -326,7 +326,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 }
                 InternalEObject inObject = (InternalEObject) melement;
                 record.addError(DefaultMessagesImpl.getString(
-                        "FileSystemImportWriter.MissDepend", record.getName(), inObject.eProxyURI().toFileString()));//$NON-NLS-1$ //$NON-NLS-2$ 
+                        "FileSystemImportWriter.MissDepend", record.getName(), inObject.eProxyURI().toFileString()));//$NON-NLS-1$ 
             }
         }
     }
@@ -1428,7 +1428,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 Property property = PropertyHelper.getProperty(desIFile, true);
                 if (property != null) {
                     try {
-                        ProxyRepositoryFactory.getInstance().reload(property, desIFile);
+                        ProxyRepositoryFactory.getInstance().reload(property);
                     } catch (PersistenceException e) {
                         log.error(e);
                     }
