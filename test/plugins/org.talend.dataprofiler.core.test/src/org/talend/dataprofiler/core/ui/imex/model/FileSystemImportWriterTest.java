@@ -178,9 +178,8 @@ public class FileSystemImportWriterTest {
 
         // for imported pattern's expression
         InternalEObject eo = mock(InternalEObject.class);
-        EList<PatternComponent> importComponents =
-                new EObjectContainmentEList<PatternComponent>(PatternComponent.class, eo,
-                        PatternPackage.PATTERN__COMPONENTS);
+        EList<PatternComponent> importComponents = new EObjectContainmentEList<PatternComponent>(PatternComponent.class, eo,
+                PatternPackage.PATTERN__COMPONENTS);
         RegularExpression re = PatternFactory.eINSTANCE.createRegularExpression();
         TdExpression td = RelationalFactory.eINSTANCE.createTdExpression();
         td.setBody("sql body");//$NON-NLS-1$
@@ -247,9 +246,8 @@ public class FileSystemImportWriterTest {
         when(oldPattern.getSupplierDependency()).thenReturn(supplierDependencies_import);
 
         // for system pattern's expression
-        EList<PatternComponent> components =
-                new EObjectContainmentEList<PatternComponent>(PatternComponent.class, eo,
-                        PatternPackage.PATTERN__COMPONENTS);
+        EList<PatternComponent> components = new EObjectContainmentEList<PatternComponent>(PatternComponent.class, eo,
+                PatternPackage.PATTERN__COMPONENTS);
         RegularExpression re2 = PatternFactory.eINSTANCE.createRegularExpression();
         TdExpression td2 = RelationalFactory.eINSTANCE.createTdExpression();
         td2.setBody("system 2 body");//$NON-NLS-1$
@@ -305,7 +303,7 @@ public class FileSystemImportWriterTest {
         IndicatorDefinition importedDef = DefinitionFactory.eINSTANCE.createIndicatorDefinition();
         when(item1.getElement()).thenReturn(importedDef);
         when(item1.getProperty()).thenReturn(null);
-        when(item1.getErrors()).thenReturn(new ArrayList<ImportMessage>());
+        when(item1.getErrors()).thenReturn(new ArrayList<String>());
 
         ItemRecord[] result = this.writer.populate(itemRecords.toArray(new ItemRecord[itemRecords.size()]), false);
         Assert.assertEquals(result.length, 0);
@@ -319,7 +317,7 @@ public class FileSystemImportWriterTest {
         IndicatorDefinition importedDef = DefinitionFactory.eINSTANCE.createIndicatorDefinition();
         when(item1.getElement()).thenReturn(importedDef);
         when(item1.getProperty()).thenReturn(null);
-        when(item1.getErrors()).thenReturn(new ArrayList<ImportMessage>());
+        when(item1.getErrors()).thenReturn(new ArrayList<String>());
         // if checkExist = true , should return 1
         when(item1.isValid()).thenReturn(false);
         when(item1.getConflictObject()).thenReturn(mock(IRepositoryViewObject.class));

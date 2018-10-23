@@ -99,15 +99,15 @@ public class ImportWizard extends Wizard {
         // ~ TDQ-4284
 
         final ItemRecord[] records = importPage.getElements();
+
         final IImportWriter writer = importPage.getWriter();
-        final boolean overWrite = importPage.isOverWrite();
 
         IRunnableWithProgress op = new IRunnableWithProgress() {
 
             public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                 monitor.beginTask(DefaultMessagesImpl.getString("ImportWizard.ImportItem"), records.length);//$NON-NLS-1$ 
 
-                writer.write(records, monitor, overWrite);
+                writer.write(records, monitor);
 
                 monitor.done();
             }
@@ -124,5 +124,4 @@ public class ImportWizard extends Wizard {
 
         return true;
     }
-
 }

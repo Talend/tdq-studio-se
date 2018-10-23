@@ -333,8 +333,7 @@ public class ExportWizardPage extends WizardPage {
                             if (findRecord != null) {
                                 repositoryTree.setChecked(findRecord, checked);
                             } else {
-                                log.error(DefaultMessagesImpl.getString(
-                                        "ExportWizardPage.CanNotFind", file.getAbsolutePath()));//$NON-NLS-1$ 
+                                log.error(DefaultMessagesImpl.getString("ExportWizardPage.CanNotFind", file.getAbsolutePath()));//$NON-NLS-1$ 
                             }
                         }
                     } else {
@@ -382,7 +381,7 @@ public class ExportWizardPage extends WizardPage {
 
         ItemRecord[] elements = getElements();
         for (ItemRecord record : elements) {
-            errors.addAll(record.getErrorMessage());
+            errors.addAll(record.getErrors());
             for (File depFile : record.getDependencySet()) {
                 // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items, we
                 // ignore it(means not export it).
@@ -413,9 +412,7 @@ public class ExportWizardPage extends WizardPage {
                                     .getProperty(element)
                                     .getDisplayName() : depFile.getName();
                     // TDQ-5909~
-                    errors
-                            .add(DefaultMessagesImpl.getString(
-                                    "ExportWizardPage.missDepend", record.getName(), dptLabel));//$NON-NLS-1$ 
+                    errors.add(DefaultMessagesImpl.getString("ExportWizardPage.missDepend", record.getName(), dptLabel));//$NON-NLS-1$ //$NON-NLS-2$ 
                 }
             }
         }

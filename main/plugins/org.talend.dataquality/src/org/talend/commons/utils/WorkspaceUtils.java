@@ -17,7 +17,6 @@ import java.io.File;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -34,8 +33,6 @@ public final class WorkspaceUtils {
 
     private static final String PLATFORM = "platform"; //$NON-NLS-1$
 
-    private static final String FILE = "file";
-
     public static String SQL_EXTENSION = "sql"; //$NON-NLS-1$
 
     public static final String NULL_FIELD = "<null>"; //$NON-NLS-1$
@@ -46,33 +43,22 @@ public final class WorkspaceUtils {
      * @Deprecated use {@link #org.talend.repository.model.RepositoryConstants.ITEM_FORBIDDEN_IN_LABEL}
      */
     @Deprecated
-    public static final String[] ITEM_FORBIDDEN_IN_LABEL = {
-            "~", "!", "`", "#", "^", "&", "*", "\\", "/", "?", ":", ";", "\"", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+    public static final String[] ITEM_FORBIDDEN_IN_LABEL = { "~", "!", "`", "#", "^", "&", "*", "\\", "/", "?", ":", ";", "\"", //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
             ".", "(", ")", "，", "。", "'", "￥", "‘", "”", "、", "《", "，", "》", "<", ">", " " }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$ //$NON-NLS-14$ //$NON-NLS-15$ //$NON-NLS-16$
 
     private WorkspaceUtils() {
     }
 
     public static File ifolderToFile(IFolder ifolder) {
-        IPath location =
-                ifolder.getLocation() == null ? ResourceManager
-                        .getRootProject()
-                        .getLocation()
-                        .append(ifolder.getFullPath()) : ifolder.getLocation();
+        IPath location = ifolder.getLocation() == null ? ResourceManager.getRootProject().getLocation()
+                .append(ifolder.getFullPath()) : ifolder.getLocation();
         return location.toFile();
     }
 
     public static File ifileToFile(IFile ifile) {
-        return ifileToLocationPath(ifile).toFile();
-    }
-
-    public static IPath ifileToLocationPath(IFile ifile) {
-        IPath location =
-                ifile.getLocation() == null ? ResourceManager
-                        .getRootProject()
-                        .getLocation()
-                        .append(ifile.getFullPath()) : ifile.getLocation();
-        return location;
+        IPath location = ifile.getLocation() == null ? ResourceManager.getRootProject().getLocation().append(ifile.getFullPath())
+                : ifile.getLocation();
+        return location.toFile();
     }
 
     public static IFile fileToIFile(File file) {
@@ -90,11 +76,8 @@ public final class WorkspaceUtils {
         String filePath = file.getAbsolutePath();
         String rootPath = ResourcesPlugin.getWorkspace().getRoot().getLocation().toOSString();
         if (filePath.startsWith(rootPath)) {
-            folder =
-                    ResourcesPlugin
-                            .getWorkspace()
-                            .getRoot()
-                            .getFolder(new Path(filePath.substring(rootPath.length(), filePath.length())));
+            folder = ResourcesPlugin.getWorkspace().getRoot()
+                    .getFolder(new Path(filePath.substring(rootPath.length(), filePath.length())));
         }
         return folder;
     }
@@ -138,7 +121,6 @@ public final class WorkspaceUtils {
      * @param uri ,URI of EObject
      * @return File this element links.
      */
-    @SuppressWarnings("static-access")
     public static IFile getModelElementResource(URI uri) {
         IFile resourceFile = null;
         String scheme = uri.scheme();
@@ -147,23 +129,6 @@ public final class WorkspaceUtils {
             for (int j = 1, size = uri.segmentCount(); j < size; ++j) {
                 platformResourcePath.append('/');
                 platformResourcePath.append(uri.segment(j));
-            }
-            resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(platformResourcePath.toString()));
-        } else if (FILE.equals(scheme) && uri.segmentCount() > 1) {
-            StringBuffer platformResourcePath = new StringBuffer();
-            IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-
-            for (int j = 1, size = uri.segmentCount(); j < size; ++j) {
-                platformResourcePath.append('/');
-                if (root.getLocation().segment(j) != null && root.getLocation().segment(j).equals(uri.segment(j))) {
-                    continue;
-                } else if (uri.segment(j).startsWith("tempFolder_")) {
-                    // switch project name
-                    platformResourcePath.append(ResourceManager.getRootProject().getName());
-                    continue;
-                }
-
-                platformResourcePath.append(uri.decode(uri.segment(j)));
             }
             resourceFile = ResourcesPlugin.getWorkspace().getRoot().getFile(new Path(platformResourcePath.toString()));
         }

@@ -62,6 +62,7 @@ import org.talend.dq.writer.EMFSharedResources;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -100,11 +101,8 @@ public final class PropertyHelper {
      * @return
      */
     public static Property getCompanionProperty(File itemFile) {
-        File propertyFile =
-                new Path(itemFile.getAbsolutePath())
-                        .removeFileExtension()
-                        .addFileExtension(FactoriesUtil.PROPERTIES_EXTENSION)
-                        .toFile();
+        File propertyFile = new Path(itemFile.getAbsolutePath()).removeFileExtension()
+                .addFileExtension(FactoriesUtil.PROPERTIES_EXTENSION).toFile();
         return getProperty(propertyFile);
     }
 
@@ -119,8 +117,7 @@ public final class PropertyHelper {
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
 
         String platformString = modelElement.eResource().getURI().toPlatformString(true);
-        IPath propPath =
-                new Path(platformString).removeFileExtension().addFileExtension(FactoriesUtil.PROPERTIES_EXTENSION);
+        IPath propPath = new Path(platformString).removeFileExtension().addFileExtension(FactoriesUtil.PROPERTIES_EXTENSION);
 
         return root.getFile(propPath);
     }
@@ -145,10 +142,9 @@ public final class PropertyHelper {
 
         return null;
     }
-
-    /**
-     * getItemFile from the resource of property
-     */
+/**
+ * getItemFile from the resource of property
+ */
     public static IFile getModelElementFile(Resource propertyResource) {
         assert propertyResource != null;
         if (propertyResource.getURI().isPlatform()) {
@@ -171,15 +167,12 @@ public final class PropertyHelper {
     public static Property getProperty(IFile file) {
         return getProperty(file, false);
     }
-
+    
     public static Property getProperty(IFile file, boolean reload) {
         if (file != null && (file.exists() || file.getLocation() != null && file.getLocation().toFile().exists())) {
             if (StringUtils.equalsIgnoreCase(file.getFileExtension(), FactoriesUtil.PROPERTIES_EXTENSION)) {
                 URI propURI = URI.createPlatformResourceURI(file.getFullPath().toOSString(), false);
-                Resource resource =
-                        reload ? EMFSharedResources.getInstance().reloadResource(propURI) : EMFSharedResources
-                                .getInstance()
-                                .getResource(propURI, true);
+                Resource resource = reload ? EMFSharedResources.getInstance().reloadResource(propURI) : EMFSharedResources.getInstance().getResource(propURI, true);
                 if (resource != null) {
                     EList<EObject> contents = resource.getContents();
                     if (contents != null) {
@@ -238,9 +231,8 @@ public final class PropertyHelper {
                         resource = EmfFileResourceUtil.getInstance().getFileResource(propertyFile.getAbsolutePath());
                     }
                     if (resource.getContents() != null) {
-                        Object object =
-                                EcoreUtil.getObjectByType(resource.getContents(),
-                                        PropertiesPackage.eINSTANCE.getProperty());
+                        Object object = EcoreUtil.getObjectByType(resource.getContents(),
+                                PropertiesPackage.eINSTANCE.getProperty());
                         if (object != null) {
                             property = (Property) object;
                         }
@@ -265,11 +257,8 @@ public final class PropertyHelper {
                 IFile propertyFile = PropertyHelper.getPropertyFile(element);
                 return getProperty(propertyFile);
             } else {
-                File file =
-                        new Path(uri.toFileString())
-                                .removeFileExtension()
-                                .addFileExtension(FactoriesUtil.PROPERTIES_EXTENSION)
-                                .toFile();
+                File file = new Path(uri.toFileString()).removeFileExtension()
+                        .addFileExtension(FactoriesUtil.PROPERTIES_EXTENSION).toFile();
                 return getProperty(file);
             }
         }
@@ -419,13 +408,8 @@ public final class PropertyHelper {
         }
 
         if (fileName != null) {
-            path =
-                    ResourceManager
-                            .getRootProject()
-                            .getFullPath()
-                            .append(getItemTypedPath(property))
-                            .append(getItemStatePath(property))
-                            .append(fileName);
+            path = ResourceManager.getRootProject().getFullPath().append(getItemTypedPath(property))
+                    .append(getItemStatePath(property)).append(fileName);
         }
 
         return path;
@@ -485,11 +469,7 @@ public final class PropertyHelper {
             URI propURI = eResource.getURI();
             if (propURI.isPlatform()) {
                 propPath = new Path(propURI.toPlatformString(true)).removeLastSegments(1);
-                typedPath =
-                        ResourceManager
-                                .getRootProject()
-                                .getFullPath()
-                                .append(PropertyHelper.getItemTypedPath(property));
+                typedPath = ResourceManager.getRootProject().getFullPath().append(PropertyHelper.getItemTypedPath(property));
 
                 IPath itemPath = propPath.makeRelativeTo(typedPath);
 
@@ -692,11 +672,8 @@ public final class PropertyHelper {
         if (property != null && property.getItem() != null) {
             EElementEName elementEName = FactoriesUtil.EElementEName.getElementEName(property.getItem());
             if (elementEName != null) {
-                URI appendFileExtension =
-                        property.eResource()
-                                .getURI()
-                                .trimFileExtension()
-                                .appendFileExtension(elementEName.getFileExt());
+                URI appendFileExtension = property.eResource().getURI().trimFileExtension()
+                        .appendFileExtension(elementEName.getFileExt());
                 if (appendFileExtension.isFile()) {
                     return appendFileExtension.toFileString();
                 } else if (appendFileExtension.isPlatform()) {

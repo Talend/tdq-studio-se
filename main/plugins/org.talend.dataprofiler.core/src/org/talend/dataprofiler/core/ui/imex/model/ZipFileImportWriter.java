@@ -62,6 +62,18 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
     /*
      * (non-Javadoc)
      * 
+     * @see
+     * org.talend.dataprofiler.core.ui.imex.model.FileSystemImportWriter#backUPWorksapce(org.eclipse.core.runtime.IPath)
+     */
+    @Override
+    protected File backUPWorksapce(IPath workspacePath) {
+        // no need to create a backup here because the folder is already created by the unzip action
+        return workspacePath.toFile();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.talend.dataprofiler.core.ui.imex.model.FileSystemImportWriter#postFinish()
      */
     @Override

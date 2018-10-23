@@ -82,7 +82,6 @@ import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.TaggedValue;
-import orgomg.cwmx.analysis.informationreporting.Report;
 
 /**
  * DOC bZhou class global comment. Detailled comment
@@ -111,20 +110,9 @@ public class ItemRecord {
 
     private IRepositoryViewObject conflictObject;
 
-    private List<Dependency> clientDepenList;
-
-    private List<Dependency> supplierDepenList;
-
-    private List<IFile> clientDepenFileList;
-
-    private List<IFile> supplierDepenFileList;
-
-    // two type of conflict name and uuid
-    private EConflictType eConflictType;
-
     private Set<File> dependencySet = new HashSet<File>();
 
-    private List<ImportMessage> errors = new ArrayList<ImportMessage>();
+    private List<String> errors = new ArrayList<String>();
 
     private ItemRecord parent;
 
@@ -664,27 +652,7 @@ public class ItemRecord {
      */
     public void addError(String error) {
         String err = (elementEName != null) ? "[" + elementEName.name() + "]" + error : error; //$NON-NLS-1$ //$NON-NLS-2$
-        this.errors.add(new ImportMessage(err, EMessageType.ERROR));
-    }
-
-    /**
-     * Add dependency error
-     * 
-     * @param error the content of dependency error message
-     */
-    public void addDependencyError(String error) {
-        String err = (elementEName != null) ? "[" + elementEName.name() + "]" + error : error; //$NON-NLS-1$ //$NON-NLS-2$
-        this.errors.add(new ImportMessage(err, EMessageType.DEPENDENCYERROR));
-    }
-
-    /**
-     * zshen Comment method "addWarn".
-     * 
-     * @param warn
-     */
-    public void addWarn(String warnItem) {
-        String warn = (elementEName != null) ? "[" + elementEName.name() + "]" + warnItem : warnItem; //$NON-NLS-1$ //$NON-NLS-2$
-        this.errors.add(new ImportMessage(warn, EMessageType.WARN));
+        this.errors.add(err);
     }
 
     /**
@@ -701,36 +669,8 @@ public class ItemRecord {
      * 
      * @return the errors
      */
-    public List<ImportMessage> getErrors() {
+    public List<String> getErrors() {
         return this.errors;
-    }
-
-    /**
-     * 
-     */
-    public List<String> getErrorMessage() {
-        List<String> errorMessage = new ArrayList<String>();
-        for (ImportMessage message : this.getErrors()) {
-            if (EMessageType.ERROR == message.getType() || EMessageType.DEPENDENCYERROR == message.getType()) {
-                errorMessage.add(message.toString());
-            }
-        }
-        return errorMessage;
-    }
-
-    /**
-     * 
-     */
-    public List<String> getErrorMessage(boolean isOrverWrite) {
-        List<String> errorMessage = new ArrayList<String>();
-        for (ImportMessage message : this.getErrors()) {
-            if (isOrverWrite && EMessageType.ERROR == message.getType()) {
-                errorMessage.add(message.toString());
-            } else if (!isOrverWrite && EMessageType.DEPENDENCYERROR == message.getType()) {
-                errorMessage.add(message.toString());
-            }
-        }
-        return errorMessage;
     }
 
     /**
@@ -739,30 +679,7 @@ public class ItemRecord {
      * @return
      */
     public boolean isValid() {
-        for (ImportMessage importMessage : errors) {
-            if (EMessageType.WARN == importMessage.getType()) {
-                continue;
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Judge whether there are some errors or warns need to show
-     * 
-     * @return
-     */
-    public boolean existMessageToShow() {
-        return !errors.isEmpty();
-    }
-
-    /**
-     * Judge whether there are only some warns need to show
-     */
-    public boolean onlyWarnToShow() {
-        return existMessageToShow() && isValid();
+        return errors.isEmpty();
     }
 
     /**
@@ -831,15 +748,11 @@ public class ItemRecord {
                 return StringUtils.EMPTY;
             } else {
                 String name = file.getName();
-                if (name.equals(EResourceConstant.DATA_PROFILING.getName())
-                        || name.equals(EResourceConstant.LIBRARIES.getName())
-                        || name.equals(EResourceConstant.METADATA.getName())
-                        || name.equals(EResourceConstant.ANALYSIS.getName())
-                        || name.equals(EResourceConstant.REPORTS.getName())
-                        || name.equals(EResourceConstant.CONTEXT.getName())
+                if (name.equals(EResourceConstant.DATA_PROFILING.getName()) || name.equals(EResourceConstant.LIBRARIES.getName())
+                        || name.equals(EResourceConstant.METADATA.getName()) || name.equals(EResourceConstant.ANALYSIS.getName())
+                        || name.equals(EResourceConstant.REPORTS.getName()) || name.equals(EResourceConstant.CONTEXT.getName())
                         || name.equals(EResourceConstant.HADOOP_CLUSTER.getName())
-                        || name.equals(EResourceConstant.EXCHANGE.getName())
-                        || name.equals(EResourceConstant.RULES.getName())
+                        || name.equals(EResourceConstant.EXCHANGE.getName()) || name.equals(EResourceConstant.RULES.getName())
                         || name.equals(EResourceConstant.SYSTEM_INDICATORS.getName())
                         || name.equals(EResourceConstant.JRXML_TEMPLATE.getName())
                         || name.equals(EResourceConstant.USER_DEFINED_INDICATORS.getName())
@@ -934,6 +847,7 @@ public class ItemRecord {
                         return !pathStr.contains(EResourceConstant.SYSTEM_INDICATORS_OVERVIEW.getPath());
                     }
 
+
                     return true;
                 }
             }
@@ -972,24 +886,6 @@ public class ItemRecord {
     }
 
     /**
-     * Find checked record
-     * 
-     * @param filereturn
-     */
-    public static ItemRecord findCheckedRecord(ItemRecord[] checkedRecords, File findFile) {
-        ItemRecord findRecord = ItemRecord.findRecord(findFile);
-        if (findRecord == null) {
-            return null;
-        }
-        for (ItemRecord record : checkedRecords) {
-            if (findRecord.getFile().getAbsolutePath().equals(record.getFile().getAbsolutePath())) {
-                return record;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Getter for allItemRecords.
      * 
      * @return the allItemRecords
@@ -1016,110 +912,4 @@ public class ItemRecord {
         this.conflictObject = conflictObject;
     }
 
-    /**
-     * Getter for eConflictType.
-     * 
-     * @return the eConflictType
-     */
-    protected EConflictType geteConflictType() {
-        return this.eConflictType;
-    }
-
-    /**
-     * Sets the eConflictType.
-     * 
-     * @param eConflictType the eConflictType to set
-     */
-    protected void seteConflictType(EConflictType eConflictType) {
-        this.eConflictType = eConflictType;
-    }
-
-    /**
-     * Getter for clientDepenList.
-     * 
-     * @return the clientDepenList
-     */
-    protected List<Dependency> getClientDepenList() {
-        if (clientDepenList == null) {
-            clientDepenList = new ArrayList<Dependency>();
-        }
-        return this.clientDepenList;
-    }
-
-    /**
-     * Getter for supplierDepenList.
-     * 
-     * @return the supplierDepenList
-     */
-    protected List<Dependency> getSupplierDepenList() {
-        if (supplierDepenList == null) {
-            supplierDepenList = new ArrayList<Dependency>();
-        }
-        return this.supplierDepenList;
-    }
-
-    /**
-     * Getter for clientDepenFileList.
-     * 
-     * @return the clientDepenFileList
-     */
-    protected List<IFile> getClientDepenFileList() {
-        if (clientDepenFileList == null) {
-            clientDepenFileList = new ArrayList<IFile>();
-        }
-        return this.clientDepenFileList;
-    }
-
-    /**
-     * Getter for supplierDepenFileList.
-     * 
-     * @return the supplierDepenFileList
-     */
-    protected List<IFile> getSupplierDepenFileList() {
-        if (supplierDepenFileList == null) {
-            supplierDepenFileList = new ArrayList<IFile>();
-        }
-        return this.supplierDepenFileList;
-    }
-
-    /**
-     * Judge whether current record is emf element
-     */
-    public boolean isEMFValid() {
-        return this.getElement() != null;
-    }
-
-    public boolean needMergeDependency() {
-        return this.getSupplierDepenFileList().size() > 0 || this.getClientDepenFileList().size() > 0;
-    }
-
-    /**
-     * Judge whether there is a name confilct exist
-     */
-    public boolean isInvalidNAMEConflictExist() {
-        if (EConflictType.NAME == this.eConflictType
-                && (this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
-                        .getElement() instanceof Report)) {
-            return true;
-        } else if (EConflictType.UUIDBUTNAME == this.eConflictType
-                && !(this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
-                        .getElement() instanceof Report)) {
-            // analysis connection and report do that first then we will do others
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Judge whether it is the case which need to rename first
-     */
-    public boolean isNeedToRenameFirst() {
-        if (EConflictType.UUIDBUTNAME == this.eConflictType
-                && (this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
-                        .getElement() instanceof Report)) {
-            // analysis connection and report do that first then we will do others
-            return true;
-        }
-        return false;
-    }
 }
