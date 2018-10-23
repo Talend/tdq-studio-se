@@ -168,8 +168,6 @@ public class FileSystemImportWriter implements IImportWriter {
 
             checkDependency(record);
 
-            checkBuiltInMode(record);
-
             if (!isOverWrite && record.getConflictObject() != null) {
                 record.addError(DefaultMessagesImpl.getString(
                         "FileSystemImproWriter.hasConflictObject", record.getName()));//$NON-NLS-1$ 
@@ -181,38 +179,6 @@ public class FileSystemImportWriter implements IImportWriter {
         }
 
         return inValidRecords.toArray(new ItemRecord[inValidRecords.size()]);
-    }
-
-    /**
-     * Check regex/sql pattern on column analysis.
-     * Check regex pattern on columnSet analysis.
-     */
-    private void checkBuiltInMode(ItemRecord record) {
-        IRepositoryViewObject conflictObject = record.getConflictObject();
-        if (conflictObject == null) {
-            // return if no conflict exist
-            return;
-        }
-        Property property = conflictObject.getProperty();
-        ModelElement modelElement = PropertyHelper.getModelElement(property);
-        if (modelElement instanceof Analysis) {
-            for (Indicator indicator : ((Analysis) modelElement).getResults().getIndicators()) {
-                if (indicator instanceof AllMatchIndicator) {
-                    List<RegexpMatchingIndicator> compositeIndicators =
-                            ((AllMatchIndicator) indicator).getCompositeRegexMatchingIndicators();
-                    for (Indicator ind : compositeIndicators) {
-                        if (ind.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
-                            record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
-                                    ind.getName(), modelElement.getName()));
-                        }
-                    }
-                } else if (indicator instanceof PatternMatchingIndicator
-                        && indicator.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
-                    record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
-                            indicator.getName(), modelElement.getName()));
-                }
-            }
-        }
     }
 
     /**
@@ -840,13 +806,11 @@ public class FileSystemImportWriter implements IImportWriter {
                             Iterator<ModelElement> elementIterator = clientDependency.getSupplier().iterator();
                             while (elementIterator.hasNext()) {
                                 ModelElement next = elementIterator.next();
-                                Property property = PropertyHelper.getProperty(next);
-
-                                if (property == null) {
-                                    property = PropertyHelper.getProperty(clientDependency);
-                                }
                                 IFile modelElementIfile =
-                                        WorkspaceUtils.getModelElementResource(property.eResource().getURI());
+                                        WorkspaceUtils.getModelElementResource(PropertyHelper
+                                                .getProperty(next)
+                                                .eResource()
+                                                .getURI());
                                 record.getSupplierDepenFileList().add(modelElementIfile);
                             }
                         }
@@ -1423,8 +1387,8 @@ public class FileSystemImportWriter implements IImportWriter {
                         && sysPatternUri.lastSegment().equals(oldPatternUri.lastSegment())) {
                     itPatterns.remove();
                     indParameters.getDataValidDomain().getPatterns().add(sysPattern);
-                    log.info("Pattern '" + sysPattern.getName() + "' is updated in Analysis '" + analysis.getName() //$NON-NLS-1$ //$NON-NLS-2$
-                            + "'"); //$NON-NLS-1$
+                    log.info("Pattern '" + sysPattern.getName() + "' is updated in Analysis '" + analysis.getName()
+                            + "'");
                     break;
                 }
             }
