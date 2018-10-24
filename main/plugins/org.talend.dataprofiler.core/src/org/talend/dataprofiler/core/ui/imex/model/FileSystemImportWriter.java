@@ -1924,7 +1924,6 @@ public class FileSystemImportWriter implements IImportWriter {
                 }
             }
         }
-
         ItemRecord.clear();
         // delete the temp folder
         deleteTempProjectFolder();

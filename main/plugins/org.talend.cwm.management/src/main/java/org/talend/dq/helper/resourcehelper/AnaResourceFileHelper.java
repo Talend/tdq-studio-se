@@ -19,17 +19,17 @@ import org.talend.commons.emf.FactoriesUtil;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.util.AnalysisSwitch;
 import org.talend.resource.ResourceManager;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC rli class global comment. Detailled comment
  */
-public final class AnaResourceFileHelper extends ResourceFileMap {
+public final class AnaResourceFileHelper extends ResourceFileMap<Analysis> {
 
     private static AnaResourceFileHelper instance;
 
     AnalysisSwitch<Analysis> analysisSwitch = new AnalysisSwitch<Analysis>() {
 
+        @Override
         public Analysis caseAnalysis(Analysis object) {
             return object;
         }
@@ -54,7 +54,7 @@ public final class AnaResourceFileHelper extends ResourceFileMap {
      */
     public Analysis findAnalysis(IFile file) {
         if (checkFile(file)) {
-            return (Analysis) getModelElement(file);
+            return getModelElement(file);
         }
 
         return null;
@@ -86,7 +86,8 @@ public final class AnaResourceFileHelper extends ResourceFileMap {
      * @see org.talend.dq.helper.resourcehelper.ResourceFileMap#doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
-    public ModelElement doSwitch(EObject object) {
+    public Analysis doSwitch(EObject object) {
         return analysisSwitch.doSwitch(object);
     }
+
 }

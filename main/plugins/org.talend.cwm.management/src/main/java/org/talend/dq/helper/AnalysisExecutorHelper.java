@@ -76,8 +76,9 @@ public final class AnalysisExecutorHelper {
     public static ITDQRepositoryService getTDQService() {
         if (tdqRepositoryService == null) {
             if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-                tdqRepositoryService = (ITDQRepositoryService) org.talend.core.GlobalServiceRegister.getDefault().getService(
-                        ITDQRepositoryService.class);
+                tdqRepositoryService =
+                        (ITDQRepositoryService) org.talend.core.GlobalServiceRegister.getDefault().getService(
+                                ITDQRepositoryService.class);
             }
         }
         return tdqRepositoryService;
@@ -138,12 +139,13 @@ public final class AnalysisExecutorHelper {
         return (parentSchema == null) ? null : dbmsLanguage.quote(parentSchema.getName());
     }
 
-    public static FileInputDelimited createFileInputDelimited(DelimitedFileConnection delimitedFileconnection) throws IOException {
+    public static FileInputDelimited createFileInputDelimited(DelimitedFileConnection delimitedFileconnection)
+            throws IOException {
         return createFileInputDelimited(delimitedFileconnection, Integer.MAX_VALUE);
     }
 
-    public static FileInputDelimited createFileInputDelimited(DelimitedFileConnection delimitedFileconnection, int limit)
-            throws IOException {
+    public static FileInputDelimited
+            createFileInputDelimited(DelimitedFileConnection delimitedFileconnection, int limit) throws IOException {
         String rowSeparator = JavaSqlFactory.getRowSeparatorValue(delimitedFileconnection);
         String encoding = JavaSqlFactory.getEncoding(delimitedFileconnection);
         String fieldSeparatorValue = JavaSqlFactory.getFieldSeparatorValue(delimitedFileconnection);
@@ -162,8 +164,8 @@ public final class AnalysisExecutorHelper {
 
         return new FileInputDelimited(ParameterUtil.trimParameter(path), ParameterUtil.trimParameter(encoding),
                 ParameterUtil.trimParameter(StringUtils.loadConvert(fieldSeparatorValue, languageName)),
-                ParameterUtil.trimParameter(StringUtils.loadConvert(rowSeparator, languageName)), isSkipeEmptyRow, headValue,
-                footValue, limitValue < limit ? limitValue : limit, -1, isSpliteRecord);
+                ParameterUtil.trimParameter(StringUtils.loadConvert(rowSeparator, languageName)), isSkipeEmptyRow,
+                headValue, footValue, limitValue < limit ? limitValue : limit, -1, isSpliteRecord);
     }
 
     /**
@@ -304,7 +306,8 @@ public final class AnalysisExecutorHelper {
             }
             // Hot copy to built-in definition.
             deepCopiedDefinition.getSupplierDependency().clear();
-            // TDQ-10737 Because 'BuiltInIndicatorDefinition' is a containment reference, need to Clear these 3 non-containment
+            // TDQ-10737 Because 'BuiltInIndicatorDefinition' is a containment reference, need to Clear these 3
+            // non-containment
             // reference list
             deepCopiedDefinition.getCategories().clear();
             deepCopiedDefinition.getAggregatedDefinitions().clear();
@@ -364,8 +367,8 @@ public final class AnalysisExecutorHelper {
             return rc; // Won't check if the indicator is not pattern matching indicator.
         }
         if (indicator instanceof AllMatchIndicator) {
-            List<RegexpMatchingIndicator> compositeIndicators = ((AllMatchIndicator) indicator)
-                    .getCompositeRegexMatchingIndicators();
+            List<RegexpMatchingIndicator> compositeIndicators =
+                    ((AllMatchIndicator) indicator).getCompositeRegexMatchingIndicators();
             for (Indicator ind : compositeIndicators) {
                 rc = checkMatchingIndicator(ind); // Pattern matching & all match indicator from column set analysis.
                 if (!rc.isOk()) {
@@ -458,7 +461,8 @@ public final class AnalysisExecutorHelper {
      * @param isRunAnaResultok - the running result of the analysis is ok or not
      * @param errorMessage - the error message
      */
-    public static void setExecutionInfoInAnalysisResult(Analysis analysis, boolean isRunAnaResultok, String errorMessage) {
+    public static void
+            setExecutionInfoInAnalysisResult(Analysis analysis, boolean isRunAnaResultok, String errorMessage) {
         final ExecutionInformations resultMetadata = analysis.getResults().getResultMetadata();
         resultMetadata.setLastRunOk(isRunAnaResultok);
         resultMetadata.setMessage(errorMessage);

@@ -19,17 +19,17 @@ import org.talend.commons.emf.FactoriesUtil;
 import org.talend.dataquality.domain.pattern.Pattern;
 import org.talend.dataquality.domain.pattern.util.PatternSwitch;
 import org.talend.resource.ResourceManager;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC rli class global comment. Detailled comment
  */
-public final class PatternResourceFileHelper extends ResourceFileMap {
+public final class PatternResourceFileHelper extends ResourceFileMap<Pattern> {
 
     private static PatternResourceFileHelper instance;
 
     PatternSwitch<Pattern> patternSwitch = new PatternSwitch<Pattern>() {
 
+        @Override
         public Pattern casePattern(Pattern object) {
             return object;
         }
@@ -54,7 +54,7 @@ public final class PatternResourceFileHelper extends ResourceFileMap {
      */
     public Pattern findPattern(IFile file) {
         if (checkFile(file)) {
-            return (Pattern) getModelElement(file);
+            return getModelElement(file);
         }
 
         return null;
@@ -86,7 +86,7 @@ public final class PatternResourceFileHelper extends ResourceFileMap {
      * @see org.talend.dq.helper.resourcehelper.ResourceFileMap#doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
-    public ModelElement doSwitch(EObject object) {
+    public Pattern doSwitch(EObject object) {
         return patternSwitch.doSwitch(object);
     }
 }

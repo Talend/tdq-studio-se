@@ -19,18 +19,18 @@ import org.talend.commons.emf.FactoriesUtil;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.util.ConnectionSwitch;
 import org.talend.resource.ResourceManager;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * This class help the '.prv' file to store the corresponding DataProvider value.
  * 
  */
-public final class PrvResourceFileHelper extends ResourceFileMap {
+public final class PrvResourceFileHelper extends ResourceFileMap<Connection> {
 
     private static PrvResourceFileHelper instance;
 
     ConnectionSwitch<Connection> connectionSwitch = new ConnectionSwitch<Connection>() {
 
+        @Override
         public Connection caseConnection(Connection object) {
             return object;
         };
@@ -55,7 +55,7 @@ public final class PrvResourceFileHelper extends ResourceFileMap {
      */
     public Connection findProvider(IFile file) {
         if (checkFile(file)) {
-            return (Connection) getModelElement(file);
+            return getModelElement(file);
         }
 
         return null;
@@ -91,7 +91,7 @@ public final class PrvResourceFileHelper extends ResourceFileMap {
      * @see org.talend.dq.helper.resourcehelper.ResourceFileMap#doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
-    public ModelElement doSwitch(EObject object) {
+    public Connection doSwitch(EObject object) {
         return connectionSwitch.doSwitch(object);
     }
 }

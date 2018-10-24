@@ -69,27 +69,28 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
     @Override
     public ReturnCode save(final Item item, final boolean careDependency) {
         ReturnCode rc = new ReturnCode();
-        RepositoryWorkUnit<Object> repositoryWorkUnit = new RepositoryWorkUnit<Object>("save Indicator Definition item") { //$NON-NLS-1$
+        RepositoryWorkUnit<Object> repositoryWorkUnit =
+                new RepositoryWorkUnit<Object>("save Indicator Definition item") { //$NON-NLS-1$
 
-            @Override
-            protected void run() throws LoginException, PersistenceException {
-                TDQIndicatorDefinitionItem indicatorItem = (TDQIndicatorDefinitionItem) item;
-                IndicatorDefinition indiDefinition = indicatorItem.getIndicatorDefinition();
-                String oldName = indiDefinition.getLabel();
-                indiDefinition.setLabel(indiDefinition.getName());
-                // updateProperty(indiDefinition);
-                // MOD yyi 2012-02-07 TDQ-4621:Update dependencies when careDependency is true.
-                if (careDependency) {
-                    saveWithDependencies(indicatorItem, indiDefinition);
-                } else {
-                    saveWithoutDependencies(indicatorItem, indiDefinition);
-                }
+                    @Override
+                    protected void run() throws LoginException, PersistenceException {
+                        TDQIndicatorDefinitionItem indicatorItem = (TDQIndicatorDefinitionItem) item;
+                        IndicatorDefinition indiDefinition = indicatorItem.getIndicatorDefinition();
+                        String oldName = indiDefinition.getLabel();
+                        indiDefinition.setLabel(indiDefinition.getName());
+                        // updateProperty(indiDefinition);
+                        // MOD yyi 2012-02-07 TDQ-4621:Update dependencies when careDependency is true.
+                        if (careDependency) {
+                            saveWithDependencies(indicatorItem, indiDefinition);
+                            updateDependencies(indiDefinition);
+                        } else {
+                            saveWithoutDependencies(indicatorItem, indiDefinition);
+                        }
 
-                updateDependencies(indiDefinition);
-                checkNameUpdate(oldName, item);
-            }
+                        checkNameUpdate(oldName, item);
+                    }
 
-        };
+                };
         repositoryWorkUnit.setAvoidUnloadResources(true);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(repositoryWorkUnit);
         try {
@@ -99,7 +100,6 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
             rc.setOk(Boolean.FALSE);
             rc.setMessage(e.getMessage());
         }
-
 
         return rc;
     }
@@ -113,8 +113,10 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
     private void checkNameUpdate(String oldName, Item item) {
         String newName = item.getProperty().getLabel();
         if (!StringUtils.equals(newName, oldName)) {
-            IndicatorDefinition oldIndicatorDefinition = DefinitionHandler.getInstance().getIndicatorDefinition(oldName);
-            IndicatorDefinition newIndicatorDefinition = DefinitionHandler.getInstance().getIndicatorDefinition(newName);
+            IndicatorDefinition oldIndicatorDefinition =
+                    DefinitionHandler.getInstance().getIndicatorDefinition(oldName);
+            IndicatorDefinition newIndicatorDefinition =
+                    DefinitionHandler.getInstance().getIndicatorDefinition(newName);
             if (newIndicatorDefinition == null && oldIndicatorDefinition != null) {
                 DefinitionHandler.getInstance().reloadAllUDIs();
             }
@@ -138,8 +140,8 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
         // if IndicatorDefinition have client depencency, add codes here
         IndicatorDefinition definition = (IndicatorDefinition) element;
         Property property = PropertyHelper.getProperty(definition);
-        List<IRepositoryViewObject> listIndicatorDependency = DependenciesHandler.getInstance().getIndicatorDependency(
-                new RepositoryViewObject(property));
+        List<IRepositoryViewObject> listIndicatorDependency =
+                DependenciesHandler.getInstance().getIndicatorDependency(new RepositoryViewObject(property));
         for (IRepositoryViewObject viewObject : listIndicatorDependency) {
             Item item = viewObject.getProperty().getItem();
             if (item instanceof TDQAnalysisItem) {
@@ -197,7 +199,8 @@ public class IndicatorDefinitionWriter extends AElementPersistance {
             return;
         }
         if (property != null) {
-            property.setDisplayName(org.talend.cwm.management.i18n.Messages.getString(element.getName().replace(' ', '.')));
+            property.setDisplayName(org.talend.cwm.management.i18n.Messages.getString(element.getName().replace(' ',
+                    '.')));
         }
     }
 

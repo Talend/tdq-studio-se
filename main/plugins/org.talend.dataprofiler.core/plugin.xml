@@ -1770,6 +1770,12 @@
            name="Add Regular Expression Matching Mysql 8 Task"
            version="7.1.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.RemoveBuiltInPatternTask"
+           id="org.talend.dataprofiler.core.remove.builtin.pattern"
+           name="remove built in mode about pattern"
+           version="7.2.1">
+     </workspacetask>
   </extension>
   
   <extension

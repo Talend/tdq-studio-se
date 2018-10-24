@@ -22,12 +22,11 @@ import org.talend.commons.emf.FactoriesUtil;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.definition.util.DefinitionSwitch;
 import org.talend.resource.ResourceManager;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC xqliu class global comment. Detailled comment MOD mzhao 13676,split system indicators. 2010-07-08
  */
-public final class IndicatorResourceFileHelper extends ResourceFileMap {
+public final class IndicatorResourceFileHelper extends ResourceFileMap<IndicatorDefinition> {
 
     private static IndicatorResourceFileHelper instance;
 
@@ -53,7 +52,7 @@ public final class IndicatorResourceFileHelper extends ResourceFileMap {
 
     public IndicatorDefinition findIndDefinition(IFile file) {
         if (checkFile(file)) {
-            return (IndicatorDefinition) getModelElement(file);
+            return getModelElement(file);
         }
 
         return null;
@@ -65,10 +64,9 @@ public final class IndicatorResourceFileHelper extends ResourceFileMap {
      * 
      * @return
      */
-    @SuppressWarnings("unchecked")
     public List<IndicatorDefinition> getAllSysIs() {
         IFolder parentFolder = ResourceManager.getSystemIndicatorFolder();
-        return (List<IndicatorDefinition>) getAllElement(parentFolder);
+        return getAllElement(parentFolder);
     }
 
     /**
@@ -77,10 +75,9 @@ public final class IndicatorResourceFileHelper extends ResourceFileMap {
      * 
      * @return
      */
-    @SuppressWarnings("unchecked")
     public Collection<IndicatorDefinition> getAllUDIs() {
         IFolder parentFolder = ResourceManager.getUDIFolder();
-        return (List<IndicatorDefinition>) getAllElement(parentFolder);
+        return getAllElement(parentFolder);
     }
 
     /*
@@ -109,7 +106,7 @@ public final class IndicatorResourceFileHelper extends ResourceFileMap {
      * @see org.talend.dq.helper.resourcehelper.ResourceFileMap#doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
-    public ModelElement doSwitch(EObject object) {
+    public IndicatorDefinition doSwitch(EObject object) {
         return indicatorSwitch.doSwitch(object);
     }
 }

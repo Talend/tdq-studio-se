@@ -24,13 +24,12 @@ import org.talend.dataquality.reports.AnalysisMap;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.dataquality.reports.util.ReportsSwitch;
 import org.talend.resource.ResourceManager;
-import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
 
 /**
  * DOC rli class global comment. Detailled comment
  */
-public final class RepResourceFileHelper extends ResourceFileMap {
+public final class RepResourceFileHelper extends ResourceFileMap<TdReport> {
 
     private static RepResourceFileHelper instance;
 
@@ -55,7 +54,7 @@ public final class RepResourceFileHelper extends ResourceFileMap {
 
     public TdReport findReport(IFile file) {
         if (checkFile(file)) {
-            return (TdReport) getModelElement(file);
+            return getModelElement(file);
         }
 
         return null;
@@ -107,7 +106,7 @@ public final class RepResourceFileHelper extends ResourceFileMap {
      * @see org.talend.dq.helper.resourcehelper.ResourceFileMap#doSwitch(org.eclipse.emf.ecore.EObject)
      */
     @Override
-    public ModelElement doSwitch(EObject object) {
+    public TdReport doSwitch(EObject object) {
         return reportSwitch.doSwitch(object);
     }
 

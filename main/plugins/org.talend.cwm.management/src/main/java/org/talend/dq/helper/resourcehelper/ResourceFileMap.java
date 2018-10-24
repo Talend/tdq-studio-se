@@ -40,7 +40,7 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  * DOC rli class global comment. Detailled comment
  * 
  */
-public abstract class ResourceFileMap {
+public abstract class ResourceFileMap<T extends ModelElement> {
 
     private static Logger log = Logger.getLogger(ResourceFileMap.class);
 
@@ -111,7 +111,7 @@ public abstract class ResourceFileMap {
      * @param IFile
      * @return
      */
-    public final ModelElement getModelElement(IFile file) {
+    public final T getModelElement(IFile file) {
         return getModelElement(getFileResource(file));
     }
 
@@ -121,7 +121,7 @@ public abstract class ResourceFileMap {
      * @param resource
      * @return
      */
-    public final ModelElement getModelElement(Resource resource) {
+    public final T getModelElement(Resource resource) {
         if (resource != null) {
             EList<EObject> contents = resource.getContents();
             if (contents.isEmpty()) {
@@ -133,7 +133,7 @@ public abstract class ResourceFileMap {
             }
 
             for (EObject object : contents) {
-                ModelElement switchObject = doSwitch(object);
+                T switchObject = doSwitch(object);
                 if (switchObject != null) {
                     return switchObject;
                 }
@@ -149,12 +149,12 @@ public abstract class ResourceFileMap {
      * @param parentFolder
      * @return
      */
-    public List<? extends ModelElement> getAllElement(IFolder parentFolder) {
-        List<ModelElement> elementList = new ArrayList<ModelElement>();
+    public List<T> getAllElement(IFolder parentFolder) {
+        List<T> elementList = new ArrayList<T>();
         try {
             List<IFile> allIFiles = searchAllIFiles(parentFolder);
             // MOD qiongli 2011-4-19.bug 20566,avoid NPE
-            ModelElement mod = null;
+            T mod = null;
             for (IFile file : allIFiles) {
                 mod = getModelElement(file);
                 if (mod != null) {
@@ -175,7 +175,7 @@ public abstract class ResourceFileMap {
      * 
      * @return
      */
-    public List<? extends ModelElement> getAllElement() {
+    public List<T> getAllElement() {
         return getAllElement(getTypedFolder());
     }
 
@@ -212,7 +212,7 @@ public abstract class ResourceFileMap {
 
     public abstract IFolder getTypedFolder();
 
-    public abstract ModelElement doSwitch(EObject object);
+    public abstract T doSwitch(EObject object);
 
     protected abstract boolean checkFile(IFile file);
 

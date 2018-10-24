@@ -12,7 +12,7 @@ import org.talend.commons.emf.FactoriesUtil;
 import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
-public class ContextResourceFileHelper extends ResourceFileMap {
+public class ContextResourceFileHelper extends ResourceFileMap<ModelElement> {
 
     private static ContextResourceFileHelper instance;
 
