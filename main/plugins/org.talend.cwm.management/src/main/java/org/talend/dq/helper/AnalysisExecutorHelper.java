@@ -242,11 +242,6 @@ public final class AnalysisExecutorHelper {
                 // Built-in indicator already exist.
                 continue;
             }
-            // check pattern matching indicator
-            rc = checkPatternMatchingIndicator(indicator);
-            if (!rc.isOk()) {
-                break;
-            }
             // Check Indicators
             rc = checkIndicator(indicator);
             if (!rc.isOk()) {

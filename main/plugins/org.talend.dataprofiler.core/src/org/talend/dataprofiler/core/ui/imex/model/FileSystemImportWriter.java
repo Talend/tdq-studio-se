@@ -373,53 +373,71 @@ public class FileSystemImportWriter implements IImportWriter {
         // If set this parameter will delete the object when finished the wizard.
 
         boolean isIdSame = p1.getId().equals(p2.getId());
+        // if property id is different then compre with xmi:id of item
+        if (!isIdSame) {
+            ModelElement modelElement1 = PropertyHelper.getModelElement(p1);
+            String uriFragment1 = modelElement1.eResource().getURIFragment(modelElement1);
+            ModelElement modelElement2 = PropertyHelper.getModelElement(p2);
+            String uriFragment2 = modelElement2.eResource().getURIFragment(modelElement2);
+            isIdSame = uriFragment1.equals(uriFragment2);
+        }
         boolean isNameSame =
                 WorkspaceUtils.normalize(p1.getLabel()).equalsIgnoreCase(WorkspaceUtils.normalize(p2.getLabel()));
+
         boolean isSamePath = true;
+        // same item and name need to check path
         URI uri1 = p1.eResource().getURI();
         URI uri2 = p2.eResource().getURI();
         IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-        for (int j = 1, size = uri1.segmentCount(); j < size; ++j) {
+        // only check path don't check name
+        for (int j = 1, size = uri1.segmentCount(); j < size - 1; ++j) {
             if (root.getLocation().segment(j) != null && root.getLocation().segment(j).equals(uri1.segment(j))) {
                 continue;
             } else if (uri1.segment(j).equals(this.tempFolder.getName())) {
                 // continue and next one should be project name
                 continue;
-            } else if (!uri1.decode(uri1.segment(j)).equals(
-                    uri2.decode(uri2.segment((uri2.segmentCount()) - (uri1.segmentCount() - j))))) {
+            } else if (!URI.decode(uri1.segment(j)).equals(
+                    URI.decode(uri2.segment(uri2.segmentCount() - (uri1.segmentCount() - j))))) {
                 isSamePath = false;
                 break;
             }
-            // uri1.segment(j).equals(uri2.segment(j)) then continue
         }
 
+        // same item different name case
         if (isIdSame && !isNameSame) {
             record.setConflictObject(confilctObject);
             record.seteConflictType(EConflictType.UUIDBUTNAME);
+
             if (record.isInvalidNAMEConflictExist()) {
                 record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.needSameNameConflictObject", //$NON-NLS-1$
                         record.getName()));
+            } else if (!isSamePath) {
+                record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.needSamePathConflictObject", //$NON-NLS-1$
+                        record.getName()));
             } else {
+                // replace message needed by warn
                 record
                         .addWarn(DefaultMessagesImpl
                                 .getString(
                                         "FileSystemImproWriter.sameUUIDDifferentNameReplace", record.getName(), record.getConflictObject().getLabel(), record.getName())); //$NON-NLS-1$
             }
-            // replace message needed by warn
             return true;
+            // same item and name case
         } else if (isIdSame) {
             record.setConflictObject(confilctObject);
             record.seteConflictType(EConflictType.UUID);
+
             if (!isSamePath) {
                 record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.needSamePathConflictObject", //$NON-NLS-1$
                         record.getName()));
             } else {
+                // replace message needed by warn
                 record
                         .addWarn(DefaultMessagesImpl.getString(
                                 "FileSystemImproWriter.sameUUIDReplace", record.getName())); //$NON-NLS-1$
             }
-            // replace message needed by warn
             return true;
+            // different item same name case
         } else if (isNameSame) {
             record.setConflictObject(confilctObject);
             record.seteConflictType(EConflictType.NAME);
@@ -634,15 +652,13 @@ public class FileSystemImportWriter implements IImportWriter {
                                 if (object != null) {
                                     Property conflictProperty = object.getProperty();
                                     ModelElement modEle = record.getElement();
-                                    if (isConnection(modEle) || isAnalysis(modEle) || isReport(modEle)) {
-                                        if (record.isNeedToRenameFirst()) {
-                                            conflictProperty.setLabel(modEle.getName());
-                                            ElementWriterFactory
-                                                    .getInstance()
-                                                    .create(conflictProperty.getItem())
-                                                    .save(conflictProperty.getItem(), true);
-                                            record.seteConflictType(EConflictType.UUID);
-                                        }
+                                    if (record.isNeedToRenameFirst()) {
+                                        conflictProperty.setLabel(modEle.getName());
+                                        ElementWriterFactory
+                                                .getInstance()
+                                                .create(conflictProperty.getItem())
+                                                .save(conflictProperty.getItem(), true);
+                                        record.seteConflictType(EConflictType.UUID);
                                     }
                                 }
                             }
@@ -1798,6 +1814,7 @@ public class FileSystemImportWriter implements IImportWriter {
     private void removeInvalidDependency(ModelElement modelElement) {
         // remove invalid supplier depenedences,e.g,remove some invalid analyses in connection file .
         // remove from model
+        boolean needSaveResource = false;
         EList<Dependency> supplierDependencys = modelElement.getSupplierDependency();
         for (Dependency dependency : supplierDependencys) {
             EList<ModelElement> clients = dependency.getClient();
@@ -1807,6 +1824,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 if (client == null || client.eIsProxy()) {
                     // remove client here
                     dependencyIterator.remove();
+                    needSaveResource = true;
                 }
             }
         }
@@ -1818,6 +1836,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 EObject eObject = iterator.next();
                 if (eObject instanceof Dependency && !supplierDependencys.contains(eObject)) {
                     iterator.remove();
+                    needSaveResource = true;
                 }
             }
         }
@@ -1829,7 +1848,7 @@ public class FileSystemImportWriter implements IImportWriter {
             // If dependency is empty then remove dependency directly
             if (suppliers.isEmpty()) {
                 ClientDependencyIterator.remove();
-                continue;
+                needSaveResource = true;
             }
             // else remove the elemet from dependency
             Iterator<ModelElement> suppLiterator = suppliers.iterator();
@@ -1837,11 +1856,12 @@ public class FileSystemImportWriter implements IImportWriter {
                 ModelElement supplier = suppLiterator.next();
                 if (supplier == null || supplier.eIsProxy()) {
                     suppLiterator.remove();
+                    needSaveResource = true;
                 }
             }
         }
 
-        if (!supplierDependencys.isEmpty() && modEResource != null) {
+        if (needSaveResource) {
             EMFSharedResources.getInstance().saveResource(modEResource);
         }
     }

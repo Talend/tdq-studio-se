@@ -266,8 +266,7 @@ public class ItemRecord {
      */
     private void computeDependencies(ModelElement mElement) {
         if (isJRXml()) {
-            Collection<TdReport> allReports =
-                    (Collection<TdReport>) RepResourceFileHelper.getInstance().getAllElement();
+            Collection<TdReport> allReports = RepResourceFileHelper.getInstance().getAllElement();
             for (TdReport report : allReports) {
                 // MOD yyi 2012-02-20 TDQ-4545 TDQ-4701: Change to relative path comparing.
                 IPath pathRepFile = RepResourceFileHelper.findCorrespondingFile(report).getLocation();
@@ -1097,9 +1096,7 @@ public class ItemRecord {
      * Judge whether there is a name confilct exist
      */
     public boolean isInvalidNAMEConflictExist() {
-        if (EConflictType.NAME == this.eConflictType
-                && (this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
-                        .getElement() instanceof Report)) {
+        if (EConflictType.NAME == this.eConflictType) {
             return true;
         } else if (EConflictType.UUIDBUTNAME == this.eConflictType
                 && !(this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
