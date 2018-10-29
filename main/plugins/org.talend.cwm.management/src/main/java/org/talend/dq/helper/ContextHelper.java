@@ -274,8 +274,9 @@ public final class ContextHelper {
         String schema = ReportHelper.getSchema(tdReport);
         String user = ReportHelper.getUser(tdReport);
         String password = ReportHelper.getPassword(tdReport);
+        String paramter = ReportHelper.getParameter(tdReport);
         return isContextVar(of) || isContextVar(logo) || isContextVar(host) || isContextVar(port) || isContextVar(sid)
-                || isContextVar(schema) || isContextVar(user) || isContextVar(password);
+                || isContextVar(schema) || isContextVar(user) || isContextVar(password) || isContextVar(paramter);
     }
 
     /**
