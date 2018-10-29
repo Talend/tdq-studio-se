@@ -45,7 +45,6 @@ import org.talend.dataprofiler.core.ui.editor.preview.model.states.freq.BenfordL
 import org.talend.dataprofiler.core.ui.editor.preview.model.states.pattern.PatternStatisticsStateTest;
 import org.talend.dataprofiler.core.ui.imex.ExportWizardPageTest;
 import org.talend.dataprofiler.core.ui.imex.FileTreeLabelProviderTest;
-import org.talend.dataprofiler.core.ui.imex.model.FileSystemImportWriterTest;
 import org.talend.dataprofiler.core.ui.imex.model.ItemRecordTest;
 import org.talend.dataprofiler.core.ui.utils.ComparatorsFactoryTest;
 import org.talend.dataprofiler.core.ui.utils.ModelElementIndicatorRuleTest;
@@ -63,17 +62,18 @@ import org.talend.metadata.managment.SwitchContextGroupNameImplTest;
 @RunWith(Suite.class)
 @SuiteClasses({ TalendCWMServiceTest.class, WorkspaceResourceHelperTest.class, IndicatorDefinitionFileHelperTest.class,
         CreateBenforLawIndicatorTaskTest.class, SplitSysIndicatorTaskTest.class, UpdateIndicatorForHiveTaskTest.class,
-        UpdateMsSqlToJdbcTaskTest.class, ExportFactoryTest.class, ImportFactoryTest.class, TDQResourceChangeHandlerTest.class,
-        TOPRepositoryServiceTest.class, AnalysisHandleTest.class, DBConnectionDuplicateHandleTest.class,
-        ExportConnectionToTOSActionRealTest.class, ImportObjectTest.class, AbstractCommonActionProviderRealProjectTest.class,
-        AbstractCommonActionProviderTest.class, DrillDownEditorInputTest.class, AnalysisColumnTreeViewerTest.class,
-        BenfordLawFrequencyStateTest.class, PatternStatisticsStateTest.class, ChartTableFactoryTest.class,
-        InidcatorUnitTest.class, FileSystemImportWriterTest.class, ExportWizardPageTest.class,
-        ResourceViewLabelProviderTest.class, MultiColAnalysisCreationTest.class, CorePluginTest.class,
-        SwitchContextGroupNameImplTest.class, ComparatorsFactoryTest.class, ModelElementIndicatorRuleTest.class,
-        RepNodeUtilsTest.class, UDIUtilsTest.class, WorkbenchUtilsTest.class, FileTreeLabelProviderTest.class,
-        TextIndicatorForNetezzaTest.class, USStateCodesPatternRegexTest.class, DrillDownEditorInputRealTest.class,
-        ItemRecordTest.class, MatchWizardTest.class, SemanticDiscoveryActionProviderTest.class })
+        UpdateMsSqlToJdbcTaskTest.class, ExportFactoryTest.class, ImportFactoryTest.class,
+        TDQResourceChangeHandlerTest.class, TOPRepositoryServiceTest.class, AnalysisHandleTest.class,
+        DBConnectionDuplicateHandleTest.class, ExportConnectionToTOSActionRealTest.class, ImportObjectTest.class,
+        AbstractCommonActionProviderRealProjectTest.class, AbstractCommonActionProviderTest.class,
+        DrillDownEditorInputTest.class, AnalysisColumnTreeViewerTest.class, BenfordLawFrequencyStateTest.class,
+        PatternStatisticsStateTest.class, ChartTableFactoryTest.class, InidcatorUnitTest.class,
+        ExportWizardPageTest.class, ResourceViewLabelProviderTest.class, MultiColAnalysisCreationTest.class,
+        CorePluginTest.class, SwitchContextGroupNameImplTest.class, ComparatorsFactoryTest.class,
+        ModelElementIndicatorRuleTest.class, RepNodeUtilsTest.class, UDIUtilsTest.class, WorkbenchUtilsTest.class,
+        FileTreeLabelProviderTest.class, TextIndicatorForNetezzaTest.class, USStateCodesPatternRegexTest.class,
+        DrillDownEditorInputRealTest.class, ItemRecordTest.class, MatchWizardTest.class,
+        SemanticDiscoveryActionProviderTest.class })
 public class AllDataProfilerCoreTests {
 
 }

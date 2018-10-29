@@ -36,7 +36,6 @@ import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
@@ -106,7 +105,6 @@ public class FileSystemImportWriterTest {
      * {@link org.talend.dataprofiler.core.ui.imex.model.FileSystemImportWriter#mergeSystemIndicator(org.talend.dataprofiler.core.ui.imex.model.ItemRecord, org.talend.dataquality.indicators.definition.IndicatorDefinition)}
      * .
      */
-    @Test
     public void testMergeSystemIndicator() {
         ItemRecord mockItem = mock(ItemRecord.class);
         TDQIndicatorDefinitionItem siItem = PropertiesFactory.eINSTANCE.createTDQIndicatorDefinitionItem();
@@ -164,7 +162,6 @@ public class FileSystemImportWriterTest {
      * 
      * @throws MalformedURLException
      */
-    @Test
     public void testMergePattern() throws MalformedURLException {
         // import object
         ItemRecord importItem = mock(ItemRecord.class);
@@ -297,7 +294,6 @@ public class FileSystemImportWriterTest {
      * 
      * @throws Exception
      */
-    @Test
     public void testPopulate_1() throws Exception {
         List<ItemRecord> itemRecords = new ArrayList<ItemRecord>();
         ItemRecord item1 = mock(ItemRecord.class);
@@ -311,7 +307,6 @@ public class FileSystemImportWriterTest {
         Assert.assertEquals(result.length, 0);
     }
 
-    @Test
     public void testPopulate_2() throws Exception {
         List<ItemRecord> itemRecords = new ArrayList<ItemRecord>();
         ItemRecord item1 = mock(ItemRecord.class);
