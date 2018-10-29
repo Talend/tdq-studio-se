@@ -784,12 +784,6 @@ public final class ReportHelper {
         return taggedValue.getValue();
     }
 
-    /**
-     * DOC xqliu Comment method "getHost".
-     * 
-     * @param report
-     * @return
-     */
     public static String getParameter(Report report) {
         TaggedValue taggedValue =
                 TaggedValueHelper.getTaggedValue(TaggedValueHelper.REP_DBINFO_PARAMETER, report.getTaggedValue());
