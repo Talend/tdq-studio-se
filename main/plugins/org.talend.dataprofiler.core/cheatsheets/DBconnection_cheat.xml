@@ -7,7 +7,7 @@
    </intro>
    <item title="Create the Database Connection" dialog="true" skip="false">
       <description>
-         To open the <b>DB Connection</b> wizard, expand the <b>Metadata</b> node. Then, right click <b>DB connections</b> and select <b>Create DB Connection</b>(or click the link below).
+         To open the <b>DB Connection</b> wizard, expand the <b>Metadata</b> node. Then, right click <b>DB connections</b> and select <b>Create connection</b>(or click the link below).
 
 This wizard prompts you to provide the connection metadata and authentication information and creates a connection to your DBMS (DataBase Management System). Upon completion, the database content is added to the <b>DQ Repository</b> tree view.
       </description>

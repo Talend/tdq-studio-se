@@ -66,6 +66,7 @@ import org.talend.dq.nodes.hadoopcluster.HiveOfHCConnectionNode;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
+import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
@@ -105,6 +106,15 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
             if (node.getLabel().equals(EResourceConstant.EXCHANGE.getName())) {
                 return ImageLib.getImage(ImageLib.EXCHANGE);
             }
+            
+            if (node.getType().equals(ENodeType.SYSTEM_FOLDER)) {
+                if (EResourceConstant.REFERENCED_PROJECT.getName().equals(node.getProperties(EProperties.LABEL))) {
+                    return ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
+                }
+            } else if (node.getType().equals(ENodeType.REFERENCED_PROJECT)) {
+                return ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
+            }
+
             if (node instanceof DBConnectionRepNode) {
                 image = ImageProvider.getImage(node.getIcon());
                 if (!RepositoryNodeHelper.isSupportedConnection(node) || isNeedAddDriverConnection(node)) {
