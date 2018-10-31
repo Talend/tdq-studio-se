@@ -345,8 +345,13 @@ public class FileSystemImportWriter implements IImportWriter {
             try {
                 ERepositoryObjectType itemType = ERepositoryObjectType.getItemType(property.getItem());
                 List<IRepositoryViewObject> allObjects = ProxyRepositoryFactory.getInstance().getAll(itemType, true);
+                boolean compareNameAndPropertyOnly = false;
+                if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT == itemType
+                        || ERepositoryObjectType.TDQ_JRAXML_ELEMENT == itemType) {
+                    compareNameAndPropertyOnly = true;
+                }
                 for (IRepositoryViewObject object : allObjects) {
-                    if (isConflict(property, object, record)) {
+                    if (isConflict(property, object, record, compareNameAndPropertyOnly)) {
                         // dependency error is invalid for overWrite case
                         if (!isIndicator && itemType != ERepositoryObjectType.CONTEXT && !isOverWrite) {
                             List<IRepositoryViewObject> supplierDependency =
@@ -368,21 +373,46 @@ public class FileSystemImportWriter implements IImportWriter {
         }
     }
 
-    private boolean isConflict(Property p1, IRepositoryViewObject confilctObject, ItemRecord record) {
+    private boolean isConflict(Property p1, IRepositoryViewObject confilctObject, ItemRecord record,
+            boolean compareNameAndPropertyOnly) {
         Property p2 = confilctObject.getProperty();
-        // If set this parameter will delete the object when finished the wizard.
 
+        // If set this parameter will delete the object when finished the wizard.
         boolean isIdSame = p1.getId().equals(p2.getId());
+        // for source sql file and jrxml case
+        boolean isNameSame =
+                WorkspaceUtils.normalize(p1.getLabel()).equalsIgnoreCase(WorkspaceUtils.normalize(p2.getLabel()));
+        if (compareNameAndPropertyOnly) {
+            if (isIdSame) {
+                record.setConflictObject(confilctObject);
+                record.seteConflictType(EConflictType.UUID);
+                if (!isNameSame) {
+                    record.addWarn(DefaultMessagesImpl.getString("FileSystemImproWriter.sameUUIDDifferentNameReplace", //$NON-NLS-1$
+                            record.getName(), record.getConflictObject().getLabel(), record.getName()));
+                } else {
+                    record.addWarn(DefaultMessagesImpl.getString("FileSystemImproWriter.sameUUIDReplace", //$NON-NLS-1$
+                            record.getName()));
+                }
+            } else if (isNameSame) {
+                record.setConflictObject(confilctObject);
+                record.seteConflictType(EConflictType.UUID);
+                record.addWarn(DefaultMessagesImpl.getString("FileSystemImproWriter.hasNameConflictObject", //$NON-NLS-1$
+                        record.getName()));
+            }
+            return isNameSame;
+        }
+
         // if property id is different then compre with xmi:id of item
         if (!isIdSame) {
             ModelElement modelElement1 = PropertyHelper.getModelElement(p1);
-            String uriFragment1 = modelElement1.eResource().getURIFragment(modelElement1);
             ModelElement modelElement2 = PropertyHelper.getModelElement(p2);
-            String uriFragment2 = modelElement2.eResource().getURIFragment(modelElement2);
-            isIdSame = uriFragment1.equals(uriFragment2);
+            if (modelElement1 != null && modelElement2 != null) {
+                // source file or jrxml case never come here
+                String uriFragment1 = modelElement1.eResource().getURIFragment(modelElement1);
+                String uriFragment2 = modelElement2.eResource().getURIFragment(modelElement2);
+                isIdSame = uriFragment1.equals(uriFragment2);
+            }
         }
-        boolean isNameSame =
-                WorkspaceUtils.normalize(p1.getLabel()).equalsIgnoreCase(WorkspaceUtils.normalize(p2.getLabel()));
 
         boolean isSamePath = true;
         // same item and name need to check path

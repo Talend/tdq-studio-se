@@ -433,6 +433,8 @@ public class ImportWizardPage extends WizardPage {
             this.setMessage(Messages.getString("ImportWizardPage.replaceWarn"), ERROR); //$NON-NLS-1$
         } else {
             setErrorMessage(null);
+            // restore error message if no error here
+            this.setMessage(StringUtils.EMPTY, NONE);
         }
 
         updatePageStatus();
