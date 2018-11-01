@@ -277,7 +277,7 @@ public abstract class AbstractMatchAnaysisTableSection extends AbstractSectionCo
         labelGd = new GridData();
         labelGd.horizontalAlignment = SWT.RIGHT;
         String buttonText = DefaultMessagesImpl.getString("AbstractMatchAnaysisTableSection.visulize_button_text"); //$NON-NLS-1$
-        labelGd.widthHint = buttonText.length() * 10;
+        labelGd.widthHint = buttonText.length() * 15;
         final Button refresh = new Button(refreshButtonComposite, SWT.NONE);
         refresh.setToolTipText(DefaultMessagesImpl.getString("AbstractMatchAnaysisTableSection.visulize_button_tooltip")); //$NON-NLS-1$
         refresh.setText(buttonText);
