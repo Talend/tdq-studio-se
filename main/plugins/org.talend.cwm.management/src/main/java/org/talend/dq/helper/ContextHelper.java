@@ -340,11 +340,9 @@ public final class ContextHelper {
      * compare the oldvalue with the : deleted/renamed context parameter: - if it is deleted, return the context
      * parameter's value - if it is renamed, return the new name
      * 
-     * @param string
-     * @param eList
-     * 
+     * @param eList context list
      * @param contextManager
-     * @param numberOfConnections
+     * @param old name of the parameter
      */
     public static String getChangedValue(EList<ContextType> contexts, JobContextManager contextManager,
             String oldValue) {
