@@ -77,7 +77,6 @@ public class TdqContextViewComposite extends ContextComposite {
         if (manager != null && manager instanceof JobContextManager) {
             ((JobContextManager) manager).addNewName(newName, oldName);
         }
-        // tdqContextView.getCurrentPage().
     }
 
     @Override
