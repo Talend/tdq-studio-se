@@ -12,8 +12,11 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.views.context;
 
+import java.util.Set;
+
 import org.eclipse.gef.commands.CommandStack;
 import org.eclipse.swt.widgets.Composite;
+import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.process.IContextManager;
 import org.talend.core.ui.context.ContextComposite;
 import org.talend.dataprofiler.core.ui.editor.SupportContextEditor;
@@ -66,5 +69,22 @@ public class TdqContextViewComposite extends ContextComposite {
     @Override
     public CommandStack getCommandStack() {
         return this.commandStack;
+    }
+
+    @Override
+    public void switchSettingsView(String oldName, String newName) {
+        IContextManager manager = this.getContextManager();
+        if (manager != null && manager instanceof JobContextManager) {
+            ((JobContextManager) manager).addNewName(newName, oldName);
+        }
+        // tdqContextView.getCurrentPage().
+    }
+
+    @Override
+    public void onContextRemoveParameter(IContextManager contextManager, Set<String> paramNames, String sourceId) {
+        if (contextManager != null && contextManager instanceof JobContextManager) {
+            ((JobContextManager) contextManager).getLostParameters().addAll(paramNames);
+        }
+        super.onContextRemoveParameter(contextManager, paramNames, sourceId);
     }
 }

@@ -45,6 +45,7 @@ import org.talend.commons.utils.WorkspaceUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
+import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.PropertiesPackage;
@@ -89,10 +90,13 @@ import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefini
 import org.talend.dataquality.properties.TDQBusinessRuleItem;
 import org.talend.dataquality.properties.TDQIndicatorDefinitionItem;
 import org.talend.dataquality.properties.TDQPatternItem;
+import org.talend.dataquality.reports.TdReport;
 import org.talend.dataquality.rules.DQRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParserRule;
 import org.talend.dataquality.rules.WhereRule;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
+import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.dq.CWMPlugin;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
@@ -112,6 +116,7 @@ import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwmx.analysis.informationreporting.Report;
 
 /**
  * DOC bZhou class global comment. Detailled comment
@@ -252,6 +257,26 @@ public class FileSystemImportWriter implements IImportWriter {
      */
     private boolean isDBConnection(ModelElement element) {
         return element instanceof DatabaseConnection;
+    }
+
+    /**
+     * judge if the record is a Analysis or not.
+     * 
+     * @param element
+     * @return
+     */
+    private boolean isAnalysis(ModelElement element) {
+        return element instanceof Analysis;
+    }
+
+    /**
+     * judge if the record is a Analysis or not.
+     * 
+     * @param element
+     * @return
+     */
+    private boolean isReport(ModelElement element) {
+        return element instanceof Report;
     }
 
     /**
@@ -480,7 +505,7 @@ public class FileSystemImportWriter implements IImportWriter {
             @Override
             protected void run() {
                 try {
-
+                    List<String> importedContext = new ArrayList<String>();
                     for (ItemRecord record : fRecords) {
 
                         if (fMonitor.isCanceled()) {
@@ -540,6 +565,10 @@ public class FileSystemImportWriter implements IImportWriter {
 
                                 }
                             }
+                            // Added TDQ-15353, need to check the context if any in analysis/report
+                            if (isAnalysis(modEle) || isReport(modEle)) {
+                                clearContextIfNotImported(record, importedContext);
+                            }
 
                             if (isDelete) {
                                 updateFiles.clear();
@@ -587,6 +616,61 @@ public class FileSystemImportWriter implements IImportWriter {
                 } catch (Exception e) {
                     log.error(e, e);
                 }
+            }
+
+            // need to check every context id: go through every context parameters in analysis/report, if its contextid
+            // : the context is not in the imported list,then clear it.
+            private void clearContextIfNotImported(ItemRecord record, List<String> importedContext) {
+                List<ContextType> contexts = null;
+
+                if (isAnalysis(record.getElement())) {
+                    contexts = ((Analysis) record.getElement()).getContextType();
+                } else if (isReport(record.getElement())) {
+                    contexts = ((TdReport) record.getElement()).getContext();
+                }
+
+                if (contexts != null && !contexts.isEmpty()) {
+                    // store <context id, isimported = true>
+                    Map<String, Boolean> contextIdMap = new HashMap<String, Boolean>();
+                    boolean isModified = false;
+
+                    for (ContextType contextType : contexts) {
+                        Iterator<?> contextParams = contextType.getContextParameter().iterator();
+                        while (contextParams.hasNext()) {
+                            ContextParameterType contextParameterType = (ContextParameterType) contextParams.next();
+                            String repositoryContextId = contextParameterType.getRepositoryContextId();
+                            Boolean contextImported = contextIdMap.get(repositoryContextId);
+                            if (contextImported == null) {
+                                contextImported = findContextInImportList(repositoryContextId, importedContext);
+                                contextIdMap.put(repositoryContextId, contextImported);
+                            }
+                            if (!contextImported) {
+                                contextParameterType.setRepositoryContextId(null);
+                                isModified = true;
+                            }
+                        }
+                    }
+
+                    if (isModified) {
+                        try {
+                            ElementWriterFactory.getInstance().create(record.getElement()).save(record.getElement());
+                        } catch (Exception e) {
+                            log.error(e);
+                        }
+                    }
+                }
+            }
+
+            // only need to go through all records once to find all selected contexts.
+            private Boolean findContextInImportList(String repositoryContextId, List<String> importedContext) {
+                if (importedContext.isEmpty()) {
+                    for (ItemRecord record : fRecords) {
+                        if (record.getProperty().getItem() instanceof ContextItem) {
+                            importedContext.add(record.getProperty().getId());
+                        }
+                    }
+                }
+                return importedContext.contains(repositoryContextId);
             }
 
         };
@@ -1109,9 +1193,9 @@ public class FileSystemImportWriter implements IImportWriter {
     }
 
     private void doMigration(IProgressMonitor monitor) {
-        // when monitor is null, it means doing cancel, no need refresh
+        ResourceService.refreshStructure();
+
         if (!commTasks.isEmpty() && monitor != null) {
-            ResourceService.refreshStructure();
             MigrationTaskManager.doMigrationTask(commTasks, monitor);
         }
     }

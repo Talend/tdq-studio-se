@@ -67,9 +67,9 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.ui.part.FileEditorInput;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
-import org.talend.core.model.process.IContextManager;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
@@ -120,6 +120,7 @@ import org.talend.utils.sugars.ReturnCode;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
  * DOC rli class global comment. Detailled comment
@@ -1510,6 +1511,34 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
         createDataFilterSection(form1, anasisDataComp, false);
     }
 
+    // check if data filter/ number of connection: use the context parameter
+    // and when its parameter named changed, the field need to update too.
+    @Override
+    public void updateFieldWhichUseContext() {
+        Analysis analysis = getCurrentModelElement();
+        JobContextManager contextManager = (JobContextManager) currentEditor.getContextManager();
+
+        String numberOfConnections = getAnalysisHandler().getNumberOfConnectionsPerAnalysisWithContext();
+        if (ContextHelper.isContextVar(numberOfConnections)) {
+            String changedValue = ContextHelper.getChangedValue(analysis.getContextType(), contextManager, numberOfConnections);
+            if (StringUtils.isNotBlank(changedValue)) {
+                TaggedValue taggedValue = TaggedValueHelper.getTaggedValue(
+                        TdqAnalysisConnectionPool.NUMBER_OF_CONNECTIONS_PER_ANALYSIS, analysis.getTaggedValue());
+                if (taggedValue != null) {
+                    taggedValue.setValue(changedValue);
+                }
+                numberOfConnectionsPerAnalysisText.setText(changedValue);
+            }
+        }
+        if (ContextHelper.isContextVar(dataFilterComp.getDataFilterString())) {
+            String changedValue = ContextHelper.getChangedValue(analysis.getContextType(), contextManager,
+                    dataFilterComp.getDataFilterString());
+            if (StringUtils.isNotBlank(changedValue)) {
+                dataFilterComp.getDataFilterText().setText(changedValue);
+            }
+        }
+    }
+
     /*
      * (non-Javadoc)
      * 
@@ -1519,7 +1548,8 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
     protected void saveContext() {
         // save contexts
         Analysis analysis = getCurrentModelElement();
-        IContextManager contextManager = currentEditor.getContextManager();
+        JobContextManager contextManager = (JobContextManager) currentEditor.getContextManager();
+
         contextManager.saveToEmf(analysis.getContextType());
         analysis.setDefaultContext(getDefaultContextGroupName((SupportContextEditor) currentEditor));
         AnalysisHelper.setLastRunContext(currentEditor.getLastRunContextGroupName(), analysis);

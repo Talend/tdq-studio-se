@@ -699,4 +699,8 @@ public abstract class AbstractMetadataFormPage extends AbstractFormPage {
 
     protected abstract void init(FormEditor editor);
 
+    public void updateFieldWhichUseContext() {
+        // currently, for analysis and report need to implement this.
+    }
+
 }

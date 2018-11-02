@@ -13,6 +13,7 @@
 package org.talend.dataprofiler.core.helper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,17 +31,24 @@ import org.talend.core.model.process.IContext;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.ui.context.view.AbstractContextView;
 import org.talend.core.ui.context.view.Contexts;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.dataprofiler.core.ui.editor.SupportContextEditor;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
 import org.talend.dataprofiler.core.ui.views.context.TdqContextView;
+import org.talend.dataquality.analysis.Analysis;
+import org.talend.dataquality.helpers.AnalysisHelper;
+import org.talend.dataquality.helpers.ReportHelper;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
+import org.talend.dq.analysis.connpool.TdqAnalysisConnectionPool;
+import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.ReportRepNode;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.resource.EResourceConstant;
+import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
  * created by msjian on 2014-6-19 Detailled comment
@@ -110,6 +118,7 @@ public final class ContextViewHelper {
             for (AnalysisRepNode anaNode : anaList) {
                 EList<ContextType> contextList = anaNode.getAnalysis().getContextType();
                 if (findAndUpdateContext(contextList, contextItem, contextManager)) {
+                    findAndUpdateFieldUseContext(anaNode.getAnalysis(), contextManager);
                     ElementWriterFactory.getInstance().createAnalysisWrite().save(anaNode.getAnalysis());
                     // refresh the analysis
                     WorkbenchUtils.refreshCurrentAnalysisEditor(anaNode.getAnalysis().getName());
@@ -122,6 +131,7 @@ public final class ContextViewHelper {
             for (ReportRepNode repNode : repList) {
                 EList<ContextType> contextList = ((TdReport) repNode.getReport()).getContext();
                 if (findAndUpdateContext(contextList, contextItem, contextManager)) {
+                    findAndUpdateFieldUseContext((TdReport) repNode.getReport(), contextManager);
                     ElementWriterFactory.getInstance().createReportWriter().save(repNode.getReport());
                     // refresh the report
                     WorkbenchUtils.refreshCurrentReportEditor(repNode.getReport().getName());
@@ -226,7 +236,83 @@ public final class ContextViewHelper {
             }
         }
     }
-    
+
+    private static void findAndUpdateFieldUseContext(Analysis analysis, JobContextManager contextManager) {
+        findAndUpdateTaggedValue(analysis.getTaggedValue(), TdqAnalysisConnectionPool.NUMBER_OF_CONNECTIONS_PER_ANALYSIS,
+                contextManager);
+        // check "data filter" in analysis
+        String dataFilter = AnalysisHelper.getStringDataFilter(analysis);
+        if (ContextHelper.isContextVar(dataFilter)) {
+            String changedValue = ContextHelper.checkRenamedContextParameter(contextManager, dataFilter);
+            if (StringUtils.isNotBlank(changedValue)) {
+                AnalysisHelper.setStringDataFilter(analysis, changedValue);
+            }
+        }
+    }
+
+    private static void findAndUpdateTaggedValue(List<TaggedValue> values, String tagName, JobContextManager contextManager) {
+        TaggedValue tagValue = TaggedValueHelper.getTaggedValue(tagName, values);
+        if (ContextHelper.isContextVar(tagValue.getValue())) {
+            String changedName = ContextHelper.checkRenamedContextParameter(contextManager, tagValue.getValue());
+            if (StringUtils.isNotBlank(changedName)) {
+                tagValue.setValue(changedName);
+            }
+        }
+    }
+
+    private static Map<String, String> findAndUpdateTaggedValueWithNewName(List<TaggedValue> values, String tagName,
+            JobContextManager contextManager) {
+        TaggedValue tagValue = TaggedValueHelper.getTaggedValue(tagName, values);
+        if (ContextHelper.isContextVar(tagValue.getValue())) {
+            String changedName = ContextHelper.checkRenamedContextParameter(contextManager, tagValue.getValue());
+            if (StringUtils.isNotBlank(changedName)) {
+                Map<String, String> nameMap = new HashMap<String, String>();
+                nameMap.put(tagValue.getValue(), changedName);
+                tagValue.setValue(changedName);
+                return nameMap;
+            }
+        }
+        return null;
+    }
+
+    private static String[] reportContextTagValues = { TaggedValueHelper.OUTPUT_FOLDER_TAG, TaggedValueHelper.REP_DBINFO_USER,
+            TaggedValueHelper.REP_DBINFO_PASSWORD };
+
+    private static String[] reportContextDBTagValues = { TaggedValueHelper.REP_DBINFO_DBNAME, TaggedValueHelper.REP_DBINFO_HOST,
+            TaggedValueHelper.REP_DBINFO_PORT };
+
+    private static void findAndUpdateFieldUseContext(TdReport report, JobContextManager contextManager) {
+        for (String tagName : reportContextTagValues) {
+            findAndUpdateTaggedValue(report.getTaggedValue(), tagName, contextManager);
+        }
+
+        // url = server:port/database, so any one changed will need to update url.
+        TaggedValue urlTagValue = TaggedValueHelper.getTaggedValue(TaggedValueHelper.REP_DBINFO_URL, report.getTaggedValue());
+        for (String tagName : reportContextDBTagValues) {
+            Map<String, String> nameMap = findAndUpdateTaggedValueWithNewName(report.getTaggedValue(), tagName, contextManager);
+            if (nameMap != null) {
+                String oldUrl = urlTagValue.getValue();
+                String oldName = nameMap.keySet().iterator().next();
+                urlTagValue.setValue(oldUrl.replace(oldName, nameMap.get(oldName)));
+            }
+        }
+
+        // password
+        if (ReportHelper.getPasswordContext(report)) {
+            String changedName = ContextHelper.checkRenamedContextParameter(contextManager, ReportHelper.getPassword(report));
+            if (StringUtils.isNotBlank(changedName)) {
+                ReportHelper.setPassword(changedName, report, true);
+            }
+        }
+        // logoFile
+        if (ContextHelper.isContextVar(report.getLogo())) {
+            String changedName = ContextHelper.checkRenamedContextParameter(contextManager, report.getLogo());
+            if (StringUtils.isNotBlank(changedName)) {
+                report.setLogo(changedName);
+            }
+        }
+    }
+
     public static List<String> getImportedListContextNames(List<ContextType> importContextList){
         List<String> importNames = new ArrayList<String>();
         List<String> importIds = new ArrayList<String>();

@@ -130,6 +130,7 @@ public class ContextComposite extends Composite {
                         JobContextManager jobContextManager = (JobContextManager) contextManager;
                         if (jobContextManager.isModified() && currentEditor.getMasterPage() != null) {
                             currentEditor.getMasterPage().setDirty(true);
+                            currentEditor.getMasterPage().updateFieldWhichUseContext();
                         }
                     }
                 }
