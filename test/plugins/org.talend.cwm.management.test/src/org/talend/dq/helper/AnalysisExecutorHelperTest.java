@@ -12,10 +12,7 @@
 // ============================================================================
 package org.talend.dq.helper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -39,7 +36,6 @@ import org.talend.dataquality.properties.TDQAnalysisItem;
 import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.utils.sugars.ReturnCode;
-
 import orgomg.cwm.objectmodel.core.Package;
 
 /**
@@ -81,7 +77,8 @@ public class AnalysisExecutorHelperTest {
         tdColumn.setOwner(tdTable);
         tdColumn.setName("columnName"); //$NON-NLS-1$
 
-        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MSSQLDEFAULTURL.getLanguage(), null);
+        DbmsLanguage dbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MSSQLDEFAULTURL.getLanguage(), null);
 
         Package schema = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createSchema();// mock(Schema.class);
         schema.setName("schemaName"); //$NON-NLS-1$
@@ -110,8 +107,8 @@ public class AnalysisExecutorHelperTest {
         tdColumn.setOwner(tdTable);
         tdColumn.setName("columnName"); //$NON-NLS-1$
 
-        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
-                SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage(), null);
+        DbmsLanguage dbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage(), null);
 
         Package schema = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createSchema();// mock(Schema.class);
         schema.setName("schemaName"); //$NON-NLS-1$
@@ -135,7 +132,8 @@ public class AnalysisExecutorHelperTest {
         tdColumn.setOwner(tdTable);
         tdColumn.setName("columnName"); //$NON-NLS-1$
 
-        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.SYBASEDEFAULTURL.getLanguage(), null);
+        DbmsLanguage dbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.SYBASEDEFAULTURL.getLanguage(), null);
 
         Package schema = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createSchema();// mock(Schema.class);
         schema.setName("schemaName");
@@ -163,7 +161,8 @@ public class AnalysisExecutorHelperTest {
         tdColumn.setOwner(tdTable);
         tdColumn.setName("columnName"); //$NON-NLS-1$
 
-        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.DB2DEFAULTURL.getLanguage(), null);
+        DbmsLanguage dbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.DB2DEFAULTURL.getLanguage(), null);
 
         Package catalog = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createCatalog();// mock(Catalog.class);
         catalog.setName("catalogName"); //$NON-NLS-1$
@@ -187,7 +186,8 @@ public class AnalysisExecutorHelperTest {
         tdColumn.setOwner(tdTable);
         tdColumn.setName("columnName"); //$NON-NLS-1$
 
-        DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MYSQLDEFAULTURL.getLanguage(), null);
+        DbmsLanguage dbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MYSQLDEFAULTURL.getLanguage(), null);
 
         Package catalog = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createCatalog();// mock(Catalog.class);
         catalog.setName("catalogName"); //$NON-NLS-1$
@@ -200,7 +200,8 @@ public class AnalysisExecutorHelperTest {
     @Test
     public void testCheckPatternDependencyFiles() {
         // Load analysis item/property model from test file.
-        String anaPropertyFile = "/data/builtin/pattern_with_dep/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
+        String anaPropertyFile =
+                "/data/builtin/pattern_with_dep/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
         Resource anaPropertyResource = getPlatformResource(anaPropertyFile);
         Analysis ana = null;
         Property anaProperty = null;
@@ -221,11 +222,25 @@ public class AnalysisExecutorHelperTest {
         if (ana.getResults().getIndicators() == null) {
             Assert.fail("The indicators of analysis is null!");
         }
-        assertTrue(ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getBuiltInPatterns().size() == 0);
+        assertTrue(ana
+                .getResults()
+                .getIndicators()
+                .get(0)
+                .getParameters()
+                .getDataValidDomain()
+                .getBuiltInPatterns()
+                .size() == 0);
 
         ReturnCode rc = AnalysisExecutorHelper.check(ana);
         assertTrue(rc.isOk());
-        assertTrue(ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0);
+        assertTrue(ana
+                .getResults()
+                .getIndicators()
+                .get(0)
+                .getParameters()
+                .getDataValidDomain()
+                .getBuiltInPatterns()
+                .size() == 0);
         ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getBuiltInPatterns().clear();
         EMFUtil.saveResource(ana.eResource());
     }
@@ -246,7 +261,8 @@ public class AnalysisExecutorHelperTest {
     @Test
     public void testCheckPatternWithOutDependencyFiles() {
         // Load analysis item/property model from test file.
-        String anaPropertyFile = "/data/builtin/pattern_without_dep/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
+        String anaPropertyFile =
+                "/data/builtin/pattern_without_dep/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
         Resource anaPropertyResource = getPlatformResource(anaPropertyFile);
         Analysis ana = null;
         Property anaProperty = null;
@@ -267,17 +283,34 @@ public class AnalysisExecutorHelperTest {
         if (ana.getResults().getIndicators() == null) {
             Assert.fail("The indicators of analysis is null!");
         }
-        assertTrue(ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getPatterns().get(0).getName() == null);
+        assertTrue(ana
+                .getResults()
+                .getIndicators()
+                .get(0)
+                .getParameters()
+                .getDataValidDomain()
+                .getPatterns()
+                .get(0)
+                .getName() == null);
 
         ReturnCode rc = AnalysisExecutorHelper.check(ana);
         assertTrue(rc.isOk());
-        assertTrue(ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getPatterns().get(0).getName() == null);
+        assertTrue(ana
+                .getResults()
+                .getIndicators()
+                .get(0)
+                .getParameters()
+                .getDataValidDomain()
+                .getPatterns()
+                .get(0)
+                .getName() == null);
     }
 
     @Test
     public void testCheckPatternWithOutDependencyFilesAndBuiltIn() {
         // Load analysis item/property model from test file.
-        String anaPropertyFile = "/data/builtin/pattern_without_dep_builtin/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
+        String anaPropertyFile =
+                "/data/builtin/pattern_without_dep_builtin/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
         Resource anaPropertyResource = getPlatformResource(anaPropertyFile);
         Analysis ana = null;
         Property anaProperty = null;
@@ -298,11 +331,27 @@ public class AnalysisExecutorHelperTest {
         if (ana.getResults().getIndicators() == null) {
             Assert.fail("The indicators of analysis is null!");
         }
-        assertTrue(ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getPatterns().get(0).getName() == null);
+        assertTrue(ana
+                .getResults()
+                .getIndicators()
+                .get(0)
+                .getParameters()
+                .getDataValidDomain()
+                .getPatterns()
+                .get(0)
+                .getName() == null);
 
         ReturnCode rc = AnalysisExecutorHelper.check(ana);
-        assertFalse(rc.isOk());
-        assertTrue(ana.getResults().getIndicators().get(0).getParameters().getDataValidDomain().getPatterns().get(0).getName() == null);
+        assertTrue(rc.isOk());
+        assertTrue(ana
+                .getResults()
+                .getIndicators()
+                .get(0)
+                .getParameters()
+                .getDataValidDomain()
+                .getPatterns()
+                .get(0)
+                .getName() == null);
     }
 
     @Ignore
@@ -354,7 +403,8 @@ public class AnalysisExecutorHelperTest {
     @Test
     public void testCheckIndicatorWithOutDependencyFilesAndBuiltIn() {
         // Load analysis item/property model from test file.
-        String anaPropertyFile = "/data/builtin/indicator_without_dep_builtin/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
+        String anaPropertyFile =
+                "/data/builtin/indicator_without_dep_builtin/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
         Resource anaPropertyResource = getPlatformResource(anaPropertyFile);
         Analysis ana = null;
         Property anaProperty = null;
@@ -389,7 +439,8 @@ public class AnalysisExecutorHelperTest {
     @Test
     public void testCheckIndicatorWithOutDependencyFiles() {
         // Load analysis item/property model from test file.
-        String anaPropertyFile = "/data/builtin/indicator_without_dep/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
+        String anaPropertyFile =
+                "/data/builtin/indicator_without_dep/TDQ_Data_Profiling/Analyses/patternMatchAna_0.1.properties"; //$NON-NLS-1$
         Resource anaPropertyResource = getPlatformResource(anaPropertyFile);
         Analysis ana = null;
         Property anaProperty = null;
