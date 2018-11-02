@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
+import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.dataquality.analysis.Analysis;
@@ -334,4 +335,60 @@ public final class ContextHelper {
         String dataFilter = AnalysisHelper.getStringDataFilter(analysis, index);
         return ContextHelper.getAnalysisContextValue(analysis, dataFilter);
     }
+
+    /**
+     * compare the oldvalue with the : deleted/renamed context parameter: - if it is deleted, return the context
+     * parameter's value - if it is renamed, return the new name
+     * 
+     * @param string
+     * @param eList
+     * 
+     * @param contextManager
+     * @param numberOfConnections
+     */
+    public static String getChangedValue(EList<ContextType> contexts, JobContextManager contextManager,
+            String oldValue) {
+        String newParamName = checkRenamedContextParameter(contextManager, oldValue);
+        String paramName = removeContextPreffix(oldValue);
+        if (StringUtils.isNotEmpty(newParamName)) {
+            return newParamName;
+        }
+        // if delete parameter
+        Set<String> removedParameters = contextManager.getLostParameters();
+        if (removedParameters.contains(paramName)) {
+            return ContextHelper.getContextValue(contexts, contextManager.getDefaultContext().getName(),
+                    ContextHelper.addContetPreffix(paramName));
+        }
+        return null;
+    }
+
+    public static String checkRenamedContextParameter(JobContextManager contextManager, String paramNameWithContext) {
+        Map<String, String> nameMap = contextManager.getNameMap();
+        String paramName = removeContextPreffix(paramNameWithContext);
+        // if renamed parameter
+        if (nameMap != null && nameMap.size() > 0) {
+            for (Map.Entry<String, String> entry : nameMap.entrySet()) {
+                if (paramName.equals(entry.getValue())) {
+                    return addContetPreffix(entry.getKey());
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * if the string contains the context preffix, remove it and return the parameter name only.
+     * 
+     * @param strWithContext
+     * @return
+     */
+    public static String removeContextPreffix(String strWithContext) {
+        return strWithContext == null ? null : strWithContext.substring(CONTEXT_PREFFIX.length(),
+                strWithContext.length());
+    }
+
+    public static String addContetPreffix(String paramName) {
+        return paramName == null ? null : CONTEXT_PREFFIX + paramName;
+    }
+
 }
