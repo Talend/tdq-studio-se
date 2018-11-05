@@ -100,7 +100,9 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                handleTSwooshButtonSelection();
+                if (tSwooshButton.getSelection()) {
+                    handleTSwooshButtonSelection();
+                }
             }
 
         });
@@ -110,7 +112,9 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                handleVSRButtonSelection();
+                if (vsrButton.getSelection()) {
+                    handleVSRButtonSelection();
+                }
             }
 
         });
@@ -128,7 +132,6 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
         algorithmName = RecordMatcherType.simpleVSRMatcher.name();
         matchRuleDef.setRecordLinkageAlgorithm(algorithmName);
         removeAllSurvivorship();
-        // survivorshipDefinitionSection.removeAllSurvivorship();
         listeners.firePropertyChange(MatchAnalysisConstant.ISDIRTY_PROPERTY, RecordMatcherType.T_SwooshAlgorithm.name(),
                 RecordMatcherType.simpleVSRMatcher.name());
     }
