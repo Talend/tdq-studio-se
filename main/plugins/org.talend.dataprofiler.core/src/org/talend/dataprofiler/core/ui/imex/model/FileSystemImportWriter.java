@@ -1109,9 +1109,9 @@ public class FileSystemImportWriter implements IImportWriter {
     }
 
     private void doMigration(IProgressMonitor monitor) {
-        ResourceService.refreshStructure();
-
+        // when monitor is null, it means doing cancel, no need refresh
         if (!commTasks.isEmpty() && monitor != null) {
+            ResourceService.refreshStructure();
             MigrationTaskManager.doMigrationTask(commTasks, monitor);
         }
     }
