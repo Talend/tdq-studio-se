@@ -32,6 +32,8 @@ import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.ui.runtime.image.ImageProvider;
 import org.talend.commons.ui.runtime.image.OverlayImageProvider;
 import org.talend.core.GlobalServiceRegister;
+import org.talend.core.context.Context;
+import org.talend.core.context.RepositoryContext;
 import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.MDMConnection;
@@ -42,6 +44,7 @@ import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IReferencedProjectService;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.helper.ConnectionHelper;
@@ -163,6 +166,14 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
 
             if (node.getObject() != null) {
                 ERepositoryStatus repositoryStatus = node.getObject().getRepositoryStatus();
+                Context ctx = CoreRuntimePlugin.getInstance().getContext();
+                RepositoryContext rc = (RepositoryContext) ctx.getProperty(Context.REPOSITORY_CONTEXT_KEY);
+
+                if (rc.isEditableAsReadOnly()) {
+                    if (repositoryStatus == ERepositoryStatus.LOCK_BY_USER) {
+                        repositoryStatus = ERepositoryStatus.DEFAULT;
+                    }
+                }
                 Image image2 = OverlayImageProvider.getImageWithStatus(image, repositoryStatus);
 
                 ERepositoryStatus informationStatus = node.getObject().getInformationStatus();
