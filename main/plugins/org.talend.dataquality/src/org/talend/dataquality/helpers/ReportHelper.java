@@ -784,6 +784,15 @@ public final class ReportHelper {
         return taggedValue.getValue();
     }
 
+    public static String getParameter(Report report) {
+        TaggedValue taggedValue =
+                TaggedValueHelper.getTaggedValue(TaggedValueHelper.REP_DBINFO_PARAMETER, report.getTaggedValue());
+        if (taggedValue == null) {
+            return PluginConstant.EMPTY_STRING;
+        }
+        return taggedValue.getValue();
+    }
+
     /**
      * DOC xqliu Comment method "getLastRunContext".
      * 
@@ -945,6 +954,10 @@ public final class ReportHelper {
      */
     public static boolean setHost(String host, Report report) {
         return TaggedValueHelper.setTaggedValue(report, TaggedValueHelper.REP_DBINFO_HOST, host);
+    }
+
+    public static boolean setParameter(String parameter, Report report) {
+        return TaggedValueHelper.setTaggedValue(report, TaggedValueHelper.REP_DBINFO_PARAMETER, parameter);
     }
 
     /**
