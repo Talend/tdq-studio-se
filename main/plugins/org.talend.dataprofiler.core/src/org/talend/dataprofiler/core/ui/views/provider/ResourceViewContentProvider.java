@@ -206,11 +206,11 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
             }
         }
 
+        IRepositoryViewObject viewObject = node.getObject();
+        String label = viewObject == null ? null : viewObject.getLabel();
         if (children.size() <= 0) {
             // ~23220
             List<EResourceConstant> resContants = new ArrayList<EResourceConstant>();
-            IRepositoryViewObject viewObject = node.getObject();
-            String label = viewObject == null ? null : viewObject.getLabel();
             if (EResourceConstant.DATA_PROFILING.getName().equals(label)) {
                 resContants.add(EResourceConstant.ANALYSIS);
                 if (PluginChecker.isTDQLoaded()) {
@@ -262,8 +262,19 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
         if (node instanceof ContextFolderRepNode) {
             children = ((ContextFolderRepNode) node).getChildren();
         }
-
+        if (inFixOrder(label)) {
+            // TDQ-16041 no need to sort for system nodes( first and second level)
+            return children.toArray();
+        }
         return sortRepositoryNode(children.toArray());
+    }
+
+    private boolean inFixOrder(String label) {
+        if (EResourceConstant.DATA_PROFILING.getName().equals(label) || EResourceConstant.LIBRARIES.getName().equals(label)
+                || EResourceConstant.METADATA.getName().equals(label)) {
+            return true;
+        }
+        return false;
     }
 
     private Object[] createWorkspaceRootChildren(Object element) throws CoreException {
