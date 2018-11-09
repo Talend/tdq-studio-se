@@ -262,14 +262,15 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
         if (node instanceof ContextFolderRepNode) {
             children = ((ContextFolderRepNode) node).getChildren();
         }
-        if (inFixOrder(label)) {
+        if (isFixOrder(label)) {
             // TDQ-16041 no need to sort for system nodes( first and second level)
             return children.toArray();
         }
         return sortRepositoryNode(children.toArray());
     }
 
-    private boolean inFixOrder(String label) {
+    // can not use ERepositoryObjectType.TDQ_DATA_PROFILING to judge, here, all type = FOLDER...
+    private boolean isFixOrder(String label) {
         if (EResourceConstant.DATA_PROFILING.getName().equals(label) || EResourceConstant.LIBRARIES.getName().equals(label)
                 || EResourceConstant.METADATA.getName().equals(label)) {
             return true;
