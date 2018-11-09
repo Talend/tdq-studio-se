@@ -34,14 +34,6 @@
             required="true"
             uripath="platform:/plugin/org.talend.libraries.jdbc.sqlite3/lib/sqlitejdbc-v056.jar">
       </libraryNeeded>
-      <libraryNeeded
-            context="Postgresql wizard"
-            language="java"
-            message="Wizard use for TOP"
-            name="postgresql-8.3-603.jdbc3.jar" mvn_uri="mvn:org.talend.libraries/postgresql-8.3-603.jdbc3/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.jdbc.postgresql/lib/postgresql-8.3-603.jdbc3.jar">
-      </libraryNeeded>
        <libraryNeeded
             context="Jtds wizard"
             language="java"
@@ -865,7 +857,174 @@
             id="commons-logging-1.2.jar"
             name="commons-logging-1.2.jar" mvn_uri="mvn:commons-logging/commons-logging/1.2"
             uripath="platform:/plugin/org.talend.libraries.hadoop.hdp.2.3/lib/commons-logging-1.2.jar">
-      </libraryNeeded>      
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 3.0 dbwizard"
+            language="java"
+            message="Vertica 3.0 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica_3.0_jdk_5/6.0.0"
+            name="vertica_3.0_jdk_5.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 3.5 dbwizard"
+            language="java"
+            message="Vertica 3.5 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica_3.5_jdk_5/6.0.0"
+            name="vertica_3.5_jdk_5.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 4.0 dbwizard"
+            language="java"
+            message="Vertica 4.0 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica_4.0_jdk_5/6.0.0"
+            name="vertica_4.0_jdk_5.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 4.1 dbwizard"
+            language="java"
+            message="Vertica 4.1 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica_4.1.7_jdk_5/6.0.0"
+            name="vertica_4.1.7_jdk_5.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 5.1 dbwizard"
+            language="java"
+            message="Vertica 5.1 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica_5.1.6_jdk_5/6.0.0"
+            name="vertica_5.1.6_jdk_5.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 9 dbwizard"
+            language="java"
+            message="Needed for Vertica 9 jdbc jar"
+            mvn_uri="mvn:org.talend.libraries/vertica-jdbc-9.0.0-0/6.0.0"
+            name="vertica-jdbc-9.0.0-0.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 6.0 dbwizard"
+            language="java"
+            message="Vertica 6.0 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica-jdk5-6.0.2-0/6.0.0"
+            name="vertica-jdk5-6.0.2-0.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 6.1 dbwizard"
+            language="java"
+            message="Vertica 6.1 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica-jdk5-6.1.2-0/6.0.0"
+            name="vertica-jdk5-6.1.2-0.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Vertica 7.0 dbwizard"
+            language="java"
+            message="Vertica 7.0 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica-jdbc-7.0.1-0/6.0.0"
+            name="vertica-jdbc-7.0.1-0.jar"
+            required="true">
+      </libraryNeeded> 
+      <libraryNeeded
+            context="Vertica 7.1 dbwizard"
+            language="java"
+            message="Vertica 7.1 dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/vertica-jdbc-7.1.2-0/6.0.0"
+            name="vertica-jdbc-7.1.2-0.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Informix dbwizard"
+            language="java"
+            message="Informix dbwizard for TOP"
+            mvn_uri="mvn:org.talend.libraries/ifxjdbc/6.0.0"
+            name="ifxjdbc.jar"
+            required="true">
+      </libraryNeeded> 
+      <libraryNeeded
+            context="Postgresql 8 wizard"
+            language="java"
+            message="Postgresql 8 wizard for TOP"
+            mvn_uri="mvn:postgresql/postgresql/8.4-703.jdbc4"
+            name="postgresql-8.4-703.jdbc4.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Postgresql 9+ wizard"
+            language="java"
+            message="Postgresql 9+ wizard for TOP"
+            mvn_uri="mvn:org.postgresql/postgresql/42.2.5"
+            name="postgresql-42.2.5.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Redshift or Redshift SSO wizard"
+            language="java"
+            message="Redshift wizard or Redshift SSO for TOP"
+            mvn_uri="mvn:com.amazon.redshift/redshift-jdbc42-no-awssdk/1.2.16.1027"
+            name="redshiftJDBC42-no-awssdk-1.2.16.1027.jar"
+            required="true">
+      </libraryNeeded>
+      <libraryNeeded
+            context="Redshift SSO wizard"
+            language="java"
+            message="Redshift SSO wizard for TOP"
+            mvn_uri="mvn:com.amazonaws/aws-java-sdk/1.11.406"
+            name="aws-java-sdk-1.11.406.jar"
+            required="true">
+      </libraryNeeded>
+        <libraryNeeded
+              context="Oracle 8 dbwizard for TOP"
+              language="java"
+              message="Oracle 8 dbwizard for TOP"
+              mvn_uri="mvn:org.talend.libraries/ojdbc12/6.0.0"
+              name="ojdbc12.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="Oracle 9 dbwizard"
+              language="java"
+              message="Oracle 9 dbwizard for TOP"
+              mvn_uri="mvn:org.talend.libraries/ojdbc14-9i/6.0.0"
+              name="ojdbc14-9i.jar"
+              required="true">
+        </libraryNeeded>
+      <libraryNeeded
+              context="Oracle 10 dbwizard"
+              language="java"
+              message="Oracle 10 dbwizard for TOP"
+              name="ojdbc14.jar" mvn_uri="mvn:org.talend.libraries/ojdbc14/6.0.0" 
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="Oracle 11 dbwizard for TOP"
+              language="java"
+              message="Oracle 11 dbwizard for TOP"
+              mvn_uri="mvn:org.talend.libraries/ojdbc6/6.0.0"
+              name="ojdbc6.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="Oracle 12 dbwizard "
+              language="java"
+              message="Oracle 12 dbwizard for TOP"
+              mvn_uri="mvn:org.talend.libraries/ojdbc7/6.0.0"
+              name="ojdbc7.jar"
+              required="true">
+        </libraryNeeded>
+        <libraryNeeded
+              context="Oracle 18 dbwizard"
+              language="java"
+              message="Oracle 18 dbwizard for TOP"
+              mvn_uri="mvn:com.oracle.jdbc/ojdbc8/12.2.0.1"
+              name="ojdbc8-12.2.0.1.jar"
+              required="true">
+        </libraryNeeded>
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
