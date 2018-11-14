@@ -37,7 +37,7 @@ public class SoundexFrequencyExplorer extends FrequencyStatisticsExplorer {
         // MOD zshen 11005: SQL syntax error for all analysis on Informix databases in Talend Open Profiler
 
         String resultSql = null;
-        // MOD klliu 0013242: set soundex indicator for null field,drill down will get NP
+        // MOD klliu 0013242: set soundex indicator for null field,drill down will get NPE
         if (entity.getKey() != null) {
             resultSql = dbmsLanguage.getFreqRowsStatement(this.columnName, getFullyQualifiedTableName(column), entity.getKey()
                     .toString());
@@ -57,8 +57,7 @@ public class SoundexFrequencyExplorer extends FrequencyStatisticsExplorer {
         String function = getFunction();
 
         // MOD zshen bug 11005 sometimes(when instead of soundex() with some sql),the Variable named "function" is not
-        // is
-        // colName.
+        // is colName.
         if (function != null
                 && (DbmsLanguageFactory.isInfomix(this.dbmsLanguage.getDbmsName()) || DbmsLanguageFactory
                         .isOracle(this.dbmsLanguage.getDbmsName()))) {
