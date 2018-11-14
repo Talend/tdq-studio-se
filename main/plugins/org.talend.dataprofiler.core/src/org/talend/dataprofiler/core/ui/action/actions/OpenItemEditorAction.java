@@ -342,7 +342,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                         throw ExceptionFactory.getInstance().createBusinessException(reportItem.getFilename());
                     }
                 }
-                editorID = "org.talend.dataprofiler.core.tdq.ui.editor.report.ReportEditror"; //$NON-NLS-1$
+                editorID = "org.talend.dataprofiler.core.tdq.ui.editor.report.ReportEditor"; //$NON-NLS-1$
             } else if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)
                     || ERepositoryObjectType.TDQ_JRAXML_ELEMENT.getKey().equals(key)) {
                 IPath append = WorkbenchUtils.getFilePath(repViewObj.getRepositoryNode());

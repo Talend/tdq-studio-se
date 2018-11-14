@@ -64,7 +64,7 @@ public final class ContextViewHelper {
         if (!(part instanceof SupportContextEditor)) {
             testedPart = part.getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
         }
-        // only for ReportEditror and AnalysisEditor
+        // only for ReportEditor and AnalysisEditor
         if (testedPart instanceof SupportContextEditor) {
             SupportContextEditor currentEditor = (SupportContextEditor) testedPart;
             Contexts.setTitle(currentEditor.getTitle());
