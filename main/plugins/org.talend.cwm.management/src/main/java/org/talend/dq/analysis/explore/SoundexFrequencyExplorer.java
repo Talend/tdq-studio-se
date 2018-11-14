@@ -29,7 +29,7 @@ public class SoundexFrequencyExplorer extends FrequencyStatisticsExplorer {
 
     // this should support all the database type's definitions in the soundex indicators.
     private static final String REGEX =
-            "SELECT.*\\s*MAX\\((.*)\\)\\s*,( )+(SOUNDEX|NYSIIS)\\(.*\\)\\s*,( )+COUNT\\(\\*\\)\\s*(AS|as)?\\s*\\w*\\s*,( )+COUNT\\(DISTINCT .*\\)\\s*(AS|as)?\\s*\\w*\\s*( )+FROM"; //$NON-NLS-1$
+            "SELECT.*\\s*MAX\\((.*)\\)\\s*,( )*(SOUNDEX|NYSIIS)\\(.*\\)\\s*,( )*COUNT\\(\\*\\)\\s*(AS|as)?\\s*\\w*\\s*,( )*COUNT\\(DISTINCT .*\\)\\s*(AS|as)?\\s*\\w*\\s*( )+FROM"; //$NON-NLS-1$
 
     @Override
     protected String getFreqRowsStatement() {
