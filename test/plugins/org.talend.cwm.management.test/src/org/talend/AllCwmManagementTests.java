@@ -36,6 +36,7 @@ import org.talend.dq.analysis.explore.FunctionFrequencyStatExplorerTest;
 import org.talend.dq.analysis.explore.PatternExplorerRealTest;
 import org.talend.dq.analysis.explore.RowMatchExplorerTest;
 import org.talend.dq.analysis.explore.SimpleStatisticsExplorerTest;
+import org.talend.dq.analysis.explore.SoundexFrequencyExplorerTest;
 import org.talend.dq.analysis.explore.SummaryStastictisExplorerRealTest;
 import org.talend.dq.analysis.explore.SummaryStastictisExplorerTest;
 import org.talend.dq.analysis.explore.TextStatisticsExplorerTest;
@@ -83,7 +84,7 @@ import org.talend.dq.writer.AElementPersistanceRealTest;
         CWMPluginTest.class, MessagesTest.class, SoftwareSystemManagerTest.class, DependenciesHandlerTest.class,
         ConnectionUtilsTest.class, AnalysisFolderRepNodeTest.class, ColumnAnalysisSqlExecutorTest.class, EObjectHelperTest.class,
         TeradataDbmsLanguageTest.class, AnalysisRecordGroupingUtilsTest.class, FunctionFrequencyStatExplorerTest.class,
-        AnalysisHandlerTest.class })
+        AnalysisHandlerTest.class, SoundexFrequencyExplorerTest.class })
 public class AllCwmManagementTests {
 
 }

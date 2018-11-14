@@ -27,7 +27,9 @@ import org.talend.dq.dbms.DbmsLanguageFactory;
  */
 public class SoundexFrequencyExplorer extends FrequencyStatisticsExplorer {
 
-    private static final String REGEX = "SELECT.*\\s*MAX\\((.*)\\)\\s*, (SOUNDEX|NYSIIS)\\(.*\\)\\s*, COUNT\\(\\*\\)\\s*(AS|as)?\\s*\\w*\\s*, COUNT\\(DISTINCT .*\\)\\s*(AS|as)?\\s*\\w*\\s* FROM"; //$NON-NLS-1$
+    // this should support all the database type's definitions in the soundex indicators.
+    private static final String REGEX =
+            "SELECT.*\\s*MAX\\((.*)\\)\\s*,( )+(SOUNDEX|NYSIIS)\\(.*\\)\\s*,( )+COUNT\\(\\*\\)\\s*(AS|as)?\\s*\\w*\\s*,( )+COUNT\\(DISTINCT .*\\)\\s*(AS|as)?\\s*\\w*\\s*( )+FROM"; //$NON-NLS-1$
 
     @Override
     protected String getFreqRowsStatement() {
@@ -35,7 +37,7 @@ public class SoundexFrequencyExplorer extends FrequencyStatisticsExplorer {
         // MOD zshen 11005: SQL syntax error for all analysis on Informix databases in Talend Open Profiler
 
         String resultSql = null;
-        // MOD klliu 0013242: set soundex indicator for null field,drill down will get NPE
+        // MOD klliu 0013242: set soundex indicator for null field,drill down will get NP
         if (entity.getKey() != null) {
             resultSql = dbmsLanguage.getFreqRowsStatement(this.columnName, getFullyQualifiedTableName(column), entity.getKey()
                     .toString());
@@ -81,9 +83,10 @@ public class SoundexFrequencyExplorer extends FrequencyStatisticsExplorer {
 
         Pattern p = Pattern.compile(REGEX, Pattern.CASE_INSENSITIVE);
         Matcher matcher = p.matcher(instantiatedSQL);
-        matcher.find();
-        String group = matcher.group(1);
-        return group;
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null; // normally, should not come to here
     }
 
     @Override
