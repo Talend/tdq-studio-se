@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorInput;
@@ -325,8 +326,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
     public void createConnBindWidget(Composite parentComp) {
         // ~ MOD mzhao 2009-05-05,Bug 6587.
         Composite labelButtonClient = toolkit.createComposite(parentComp, SWT.NONE);
-        GridLayout labelButtonClientLayout = new GridLayout();
-        labelButtonClientLayout.numColumns = 4;
+        GridLayout labelButtonClientLayout = new GridLayout(4, true);
         labelButtonClient.setLayout(labelButtonClientLayout);
 
         toolkit.createLabel(labelButtonClient, DefaultMessagesImpl.getString("AbstractMetadataFormPage.connBind")); //$NON-NLS-1$
@@ -338,10 +338,8 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
 
         // tell the TableCombo that I want 2 blank columns auto sized.
         connCombo.defineColumns(2);
-
         // set which column will be used for the selected item.
         connCombo.setDisplayColumnIndex(0);
-        connCombo.setSize(SWT.DEFAULT, SWT.DEFAULT);
 
         // add listener
         // connCombo = new TableCombo(labelButtonClient, SWT.BORDER);
@@ -525,7 +523,10 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
                 connCombo.select(connIdx);
             }
         }
-
+        ScrollBar horizontalBar = connCombo.getTable().getHorizontalBar();
+        if (horizontalBar != null) {
+            horizontalBar.setVisible(false);
+        }
         setSampleDataShowWayStatus();
     }
 
@@ -582,7 +583,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      * @param index
      */
     protected void addItemToCombo(IRepositoryNode repNode, int index) {
-        TableItem ti = new TableItem(connCombo.getTable(), SWT.NONE);
+        TableItem ti = new TableItem(connCombo.getTable(), SWT.HORIZONTAL);
         String displayName = RepositoryNodeHelper.getAnalysisConComboDisplayName(repNode);
         String connectionType = RepositoryNodeHelper.getConnectionType(repNode);
         ti.setText(new String[] { displayName, connectionType });
