@@ -21,11 +21,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQItemService;
+import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
+import org.talend.cwm.relational.RelationalFactory;
 import org.talend.cwm.relational.TdColumn;
+import org.talend.cwm.relational.TdExpression;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.indicators.IndicatorParameters;
 import org.talend.dataquality.indicators.IndicatorsFactory;
 import org.talend.dataquality.indicators.SoundexFreqIndicator;
+import org.talend.dataquality.indicators.definition.DefinitionFactory;
+import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.dq.helper.UnitTestBuildHelper;
@@ -89,6 +94,20 @@ public class SoundexFrequencyExplorerTest {
         IndicatorParameters indicatorParameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
         indicatorParameters.setDateParameters(null);
         indicator.setParameters(indicatorParameters);
+
+        // create indicator definition
+        IndicatorDefinition indicatorDefinition = DefinitionFactory.eINSTANCE.createIndicatorDefinition();
+        indicatorDefinition.setLabel("Soundex Frequency Table"); //$NON-NLS-1$
+
+        // create TdExpression
+        TdExpression createTdExpression = RelationalFactory.eINSTANCE.createTdExpression();
+        String sqlGenericExpressionBody =
+                "SELECT MAX(<%=__COLUMN_NAMES__%>), SOUNDEX(<%=__COLUMN_NAMES__%>),  COUNT(*), COUNT(DISTINCT <%=__COLUMN_NAMES__%>) FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY SOUNDEX(<%=__COLUMN_NAMES__%>) ORDER BY COUNT(DISTINCT <%=__COLUMN_NAMES__%>) DESC , COUNT(*) DESC"; //$NON-NLS-1$
+        createTdExpression.setBody(sqlGenericExpressionBody);
+        createTdExpression.setLanguage(SupportDBUrlType.POSTGRESQLEFAULTURL.getDBKey());
+        indicatorDefinition.getSqlGenericExpression().add(createTdExpression);
+        indicator.setIndicatorDefinition(indicatorDefinition);
+
         return indicator;
     }
 
