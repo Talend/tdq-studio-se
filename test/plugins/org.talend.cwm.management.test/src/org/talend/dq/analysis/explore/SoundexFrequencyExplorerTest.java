@@ -22,6 +22,7 @@ import org.junit.Test;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.ITDQItemService;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.RelationalFactory;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdExpression;
@@ -31,8 +32,6 @@ import org.talend.dataquality.indicators.IndicatorsFactory;
 import org.talend.dataquality.indicators.SoundexFreqIndicator;
 import org.talend.dataquality.indicators.definition.DefinitionFactory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
-import org.talend.dq.dbms.DbmsLanguage;
-import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.dq.helper.UnitTestBuildHelper;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
 
@@ -44,8 +43,6 @@ public class SoundexFrequencyExplorerTest {
     private SoundexFrequencyExplorer freqExp;
 
     private Analysis ana;
-
-    DbmsLanguage dbLanguage = DbmsLanguageFactory.createDbmsLanguage("PostgreSQL"); //$NON-NLS-1$
 
     /**
      * DOC msjian Comment method "setUp".
@@ -68,20 +65,25 @@ public class SoundexFrequencyExplorerTest {
      */
     @Test
     public void testGetFreqRowsStatement_1() {
-        SoundexFreqIndicator indicator = createSoundexFreqIndicator("gender", "VARCHAR", Types.VARCHAR); //$NON-NLS-1$ //$NON-NLS-2$
+        TaggedValueHelper.setTaggedValue(ana.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_NAME,
+                SupportDBUrlType.POSTGRESQLEFAULTURL.getDBKey());
+        TaggedValueHelper
+                .setTaggedValue(ana.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_VERSION, "10.5"); //$NON-NLS-1$
+        freqExp = new SoundexFrequencyExplorer();
+        freqExp.setAnalysis(ana);
 
+        SoundexFreqIndicator indicator = createSoundexFreqIndicator("gender", "VARCHAR", Types.VARCHAR); //$NON-NLS-1$ //$NON-NLS-2$
         ChartDataEntity chartDataEntity = new ChartDataEntity(indicator, "M", "2"); //$NON-NLS-1$  //$NON-NLS-2$
         chartDataEntity.setLabelNull(false);
         chartDataEntity.setKey("M"); //$NON-NLS-1$
         assertFalse(chartDataEntity.isLabelNull());
-
-        freqExp = new SoundexFrequencyExplorer();
-        freqExp.setAnalysis(ana);
         freqExp.setEnitty(chartDataEntity);
 
-        String clause = freqExp.getFreqRowsStatement();
+        String instantiatedClause = freqExp.getInstantiatedClause();
+        assertEquals("SOUNDEX(\"gender\") = SOUNDEX('M')", instantiatedClause); //$NON-NLS-1$
 
-        assertEquals("SELECT * FROM TDQ_CALENDAR WHERE  (SOUNDEX(\"gender\") = SOUNDEX('M'))", clause); //$NON-NLS-1$
+        String FreqRowsStatement = freqExp.getFreqRowsStatement();
+        assertEquals("SELECT * FROM TDQ_CALENDAR WHERE  " + instantiatedClause, FreqRowsStatement); //$NON-NLS-1$
     }
 
     private SoundexFreqIndicator createSoundexFreqIndicator(String columnName, String tdSqlName, int javaType) {
