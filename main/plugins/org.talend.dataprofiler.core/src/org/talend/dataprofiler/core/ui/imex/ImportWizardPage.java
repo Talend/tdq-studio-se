@@ -148,8 +148,13 @@ public class ImportWizardPage extends WizardPage {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                setDirState(isDirState());
-                setArchState(!isDirState());
+                // keep do one time for every method when every time switch between two radios
+                if (dirBTN == e.getSource()) {
+                    setDirState(isDirState());
+                }
+                if (archBTN == e.getSource()) {
+                    setArchState(!isDirState());
+                }
             }
         };
 
