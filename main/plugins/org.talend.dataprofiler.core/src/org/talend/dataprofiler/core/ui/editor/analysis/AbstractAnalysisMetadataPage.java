@@ -326,7 +326,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
     public void createConnBindWidget(Composite parentComp) {
         // ~ MOD mzhao 2009-05-05,Bug 6587.
         Composite labelButtonClient = toolkit.createComposite(parentComp, SWT.NONE);
-        GridLayout labelButtonClientLayout = new GridLayout(4, true);
+        GridLayout labelButtonClientLayout = new GridLayout(4, false);
         labelButtonClient.setLayout(labelButtonClientLayout);
 
         toolkit.createLabel(labelButtonClient, DefaultMessagesImpl.getString("AbstractMetadataFormPage.connBind")); //$NON-NLS-1$
