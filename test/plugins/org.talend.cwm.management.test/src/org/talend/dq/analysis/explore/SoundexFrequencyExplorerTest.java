@@ -118,7 +118,7 @@ public class SoundexFrequencyExplorerTest {
                 "SELECT MAX(<%=__COLUMN_NAMES__%>), SOUNDEX(<%=__COLUMN_NAMES__%>),  COUNT(*), COUNT(DISTINCT <%=__COLUMN_NAMES__%>) FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY SOUNDEX(<%=__COLUMN_NAMES__%>) ORDER BY COUNT(DISTINCT <%=__COLUMN_NAMES__%>) DESC , COUNT(*) DESC"; //$NON-NLS-1$
         createTdExpression.setBody(sqlGenericExpressionBody);
         createTdExpression.setLanguage(POSTGRESQL);
-        indicatorDefinition.getSqlGenericExpression().add(createTdExpression);
+        indicator.getInstantiatedExpressions().add(createTdExpression);
         indicator.setIndicatorDefinition(indicatorDefinition);
 
         return indicator;
