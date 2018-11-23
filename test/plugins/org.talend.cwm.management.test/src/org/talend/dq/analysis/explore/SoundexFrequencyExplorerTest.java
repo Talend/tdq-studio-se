@@ -115,7 +115,7 @@ public class SoundexFrequencyExplorerTest {
         // create TdExpression
         TdExpression createTdExpression = RelationalFactory.eINSTANCE.createTdExpression();
         String sqlGenericExpressionBody =
-                "SELECT MAX(<%=__COLUMN_NAMES__%>), SOUNDEX(<%=__COLUMN_NAMES__%>),  COUNT(*), COUNT(DISTINCT <%=__COLUMN_NAMES__%>) FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY SOUNDEX(<%=__COLUMN_NAMES__%>) ORDER BY COUNT(DISTINCT <%=__COLUMN_NAMES__%>) DESC , COUNT(*) DESC"; //$NON-NLS-1$
+                "SELECT MAX(\"gender\"), SOUNDEX(\"gender\"),  COUNT(*), COUNT(DISTINCT \"gender\") FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY SOUNDEX(\"gender\") ORDER BY COUNT(DISTINCT \"gender\") DESC , COUNT(*) DESC"; //$NON-NLS-1$
         createTdExpression.setBody(sqlGenericExpressionBody);
         createTdExpression.setLanguage(POSTGRESQL);
         indicator.getInstantiatedExpressions().add(createTdExpression);
