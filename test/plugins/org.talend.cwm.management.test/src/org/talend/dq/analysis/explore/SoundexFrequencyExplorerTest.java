@@ -94,7 +94,7 @@ public class SoundexFrequencyExplorerTest {
         assertEquals("SOUNDEX(\"gender\") = SOUNDEX('M')", instantiatedClause); //$NON-NLS-1$
 
         String FreqRowsStatement = freqExp.getFreqRowsStatement();
-        assertEquals("SELECT * FROM TDQ_CALENDAR WHERE  " + instantiatedClause, FreqRowsStatement); //$NON-NLS-1$
+        assertEquals("SELECT * FROM \"TDQ_CALENDAR\" WHERE  (SOUNDEX(\"gender\") = SOUNDEX('M')) ", FreqRowsStatement); //$NON-NLS-1$
     }
 
     private SoundexFreqIndicator createSoundexFreqIndicator(String columnName, String tdSqlName, int javaType) {
