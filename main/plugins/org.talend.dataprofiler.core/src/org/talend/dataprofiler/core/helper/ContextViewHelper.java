@@ -60,13 +60,12 @@ public final class ContextViewHelper {
     }
 
     public static void updateContextView(IWorkbenchPart part) {
-        IWorkbenchPart testedPart = part;
         if (!(part instanceof SupportContextEditor)) {
-            testedPart = part.getSite().getWorkbenchWindow().getActivePage().getActiveEditor();
+            return;
         }
-        // only for ReportEditor and AnalysisEditor
-        if (testedPart instanceof SupportContextEditor) {
-            SupportContextEditor currentEditor = (SupportContextEditor) testedPart;
+        // only for ReportEditror and AnalysisEditor
+        if (part instanceof SupportContextEditor) {
+            SupportContextEditor currentEditor = (SupportContextEditor) part;
             Contexts.setTitle(currentEditor.getTitle());
             currentEditor.updateContextView();
         }
@@ -77,8 +76,16 @@ public final class ContextViewHelper {
         if (page != null) {
             IViewPart view = page.findView(AbstractContextView.CTX_ID_TDQ);
             if (view != null && view instanceof TdqContextView) {
+                refreshView((TdqContextView) view);
                 ((TdqContextView) view).reset();
             }
+        }
+    }
+
+    private static void refreshView(AbstractContextView view) {
+        if (view != null) {
+            view.setPartName("");
+            view.refresh();
         }
     }
 
