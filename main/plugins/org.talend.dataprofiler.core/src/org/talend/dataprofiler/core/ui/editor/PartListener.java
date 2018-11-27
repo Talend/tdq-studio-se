@@ -24,6 +24,7 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IFileEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.dataprofiler.core.helper.ContextViewHelper;
 import org.talend.dq.helper.PropertyHelper;
 
@@ -60,7 +61,9 @@ public class PartListener implements IPartListener {
     }
 
     public void partActivated(IWorkbenchPart part) {
-        ContextViewHelper.updateContextView(part);
+        if (CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
+            ContextViewHelper.updateContextView(part);
+        }
     }
 
     public void partBroughtToTop(IWorkbenchPart part) {
@@ -68,12 +71,10 @@ public class PartListener implements IPartListener {
     }
 
     public void partClosed(IWorkbenchPart part) {
-        // do nothing here
+        ContextViewHelper.resetContextView();
     }
 
     public void partDeactivated(IWorkbenchPart part) {
-        ContextViewHelper.resetContextView();
-
     }
 
     public void partOpened(IWorkbenchPart part) {
