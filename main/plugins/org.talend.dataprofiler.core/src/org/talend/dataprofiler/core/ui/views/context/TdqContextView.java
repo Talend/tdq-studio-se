@@ -250,7 +250,9 @@ public class TdqContextView extends AbstractContextView {
         super.reset();
         this.currentItem = null;
         this.currentPage = null;
-        this.contextComposite.getContextTableComposite().refresh();
+        if (contextComposite != null && contextComposite.getContextTableComposite() != null) {
+            this.contextComposite.getContextTableComposite().refresh();
+        }
     }
 
 }
