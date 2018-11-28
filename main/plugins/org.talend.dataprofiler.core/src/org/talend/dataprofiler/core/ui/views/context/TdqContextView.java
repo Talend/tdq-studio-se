@@ -244,4 +244,13 @@ public class TdqContextView extends AbstractContextView {
             setEditorDirty(part);
         }
     }
+
+    @Override
+    public void reset() {
+        super.reset();
+        this.currentItem = null;
+        this.currentPage = null;
+        this.contextComposite.getContextTableComposite().refresh();
+    }
+
 }
