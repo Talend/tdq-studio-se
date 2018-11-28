@@ -75,6 +75,7 @@ import org.talend.dataprofiler.migration.IMigrationTask;
 import org.talend.dataprofiler.migration.IWorkspaceMigrationTask.MigrationTaskType;
 import org.talend.dataprofiler.migration.manager.MigrationTaskManager;
 import org.talend.dataquality.analysis.Analysis;
+import org.talend.dataquality.analysis.AnalysisResult;
 import org.talend.dataquality.domain.pattern.Pattern;
 import org.talend.dataquality.domain.pattern.PatternComponent;
 import org.talend.dataquality.domain.pattern.PatternFactory;
@@ -115,6 +116,7 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -216,21 +218,23 @@ public class FileSystemImportWriter implements IImportWriter {
     }
 
     private void checkBuintInOnAnalysis(ItemRecord record, ModelElement modelElement) {
-
-        for (Indicator indicator : ((Analysis) modelElement).getResults().getIndicators()) {
-            if (indicator instanceof AllMatchIndicator) {
-                List<RegexpMatchingIndicator> compositeIndicators =
-                        ((AllMatchIndicator) indicator).getCompositeRegexMatchingIndicators();
-                for (Indicator ind : compositeIndicators) {
-                    if (ind.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
-                        record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
-                                ind.getName(), modelElement.getName()));
+        AnalysisResult results = ((Analysis) modelElement).getResults();
+        if (results != null && results.getIndicators() != null) {
+            for (Indicator indicator : results.getIndicators()) {
+                if (indicator instanceof AllMatchIndicator) {
+                    List<RegexpMatchingIndicator> compositeIndicators =
+                            ((AllMatchIndicator) indicator).getCompositeRegexMatchingIndicators();
+                    for (Indicator ind : compositeIndicators) {
+                        if (ind.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
+                            record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
+                                    ind.getName(), modelElement.getName()));
+                        }
                     }
+                } else if (indicator instanceof PatternMatchingIndicator
+                        && indicator.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
+                    record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
+                            indicator.getName(), modelElement.getName()));
                 }
-            } else if (indicator instanceof PatternMatchingIndicator
-                    && indicator.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
-                        indicator.getName(), modelElement.getName()));
             }
         }
     }
