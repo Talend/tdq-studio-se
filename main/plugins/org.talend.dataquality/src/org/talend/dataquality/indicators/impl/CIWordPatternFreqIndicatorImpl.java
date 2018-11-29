@@ -33,6 +33,7 @@ public class CIWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected CIWordPatternFreqIndicatorImpl() {
@@ -42,6 +43,7 @@ public class CIWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -58,6 +60,7 @@ public class CIWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
     @Override
     public boolean handle(Object data) {
         if (data == null) {
+            super.handle(data);
             return false;
         }
         String sentence = data.toString();
@@ -71,4 +74,4 @@ public class CIWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
         Object object = wordPatternRecognizer.getValuePattern(name.toString()).toArray()[0];
         return object == null ? null : object.toString();
     }
-} //CIWordPatternFreqIndicatorImpl
+} // CIWordPatternFreqIndicatorImpl
