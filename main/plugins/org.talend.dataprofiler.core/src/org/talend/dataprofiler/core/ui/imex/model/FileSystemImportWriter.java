@@ -115,6 +115,7 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -1038,8 +1039,10 @@ public class FileSystemImportWriter implements IImportWriter {
             private Boolean findContextInImportList(String repositoryContextId, List<String> importedContext) {
                 if (importedContext.isEmpty()) {
                     for (ItemRecord record : fRecords) {
-                        if (record.getProperty().getItem() instanceof ContextItem) {
-                            importedContext.add(record.getProperty().getId());
+                        if (record.getProperty() != null && record.getProperty().getItem() != null) {
+                            if (record.getProperty().getItem() instanceof ContextItem) {
+                                importedContext.add(record.getProperty().getId());
+                            }
                         }
                     }
                 }
