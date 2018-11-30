@@ -50,7 +50,6 @@ public abstract class FrequencyTableState extends AbstractTableTypeStates {
     @Override
     public ChartDataEntity[] getDataEntity() {
         List<ChartDataEntity> dataEnities = new ArrayList<ChartDataEntity>();
-        boolean withRowCountIndicator = isWithRowCountIndicator();
 
         for (IndicatorUnit unit : units) {
             if (unit.isExcuted()) {
@@ -62,9 +61,12 @@ public abstract class FrequencyTableState extends AbstractTableTypeStates {
 
                 for (int i = 0; i < numOfShown; i++) {
                     FrequencyExt freqExt = frequencyExt[i];
-                    String keyLabel = FrequencyTypeStateUtil.getKeyLabel(freqExt, FrequencyTypeStateUtil.MAX_KEY_LENGTH);
+                    String keyLabel =
+                            FrequencyTypeStateUtil.getKeyLabel(freqExt, FrequencyTypeStateUtil.MAX_KEY_LENGTH);
+                    // Because we can get row count from current indicator so that no need to rowCountIndicator exist
+                    // here
                     dataEnities.add(FrequencyTypeStateUtil.createChartEntity(unit.getIndicator(), freqExt, keyLabel,
-                            withRowCountIndicator));
+                            true));
                 }
             } else {
                 // TDQ-11422: before analysis run turn to Analysis Results page, there should show nothing data
@@ -92,8 +94,9 @@ public abstract class FrequencyTableState extends AbstractTableTypeStates {
     @Override
     protected TableStructureEntity getTableStructure() {
         TableStructureEntity entity = new TableStructureEntity();
-        entity.setFieldNames(new String[] {
-                DefaultMessagesImpl.getString("FrequencyTypeStates.value"), DefaultMessagesImpl.getString("FrequencyTypeStates.count"), "%" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        entity
+                .setFieldNames(new String[] {
+                        DefaultMessagesImpl.getString("FrequencyTypeStates.value"), DefaultMessagesImpl.getString("FrequencyTypeStates.count"), "%" }); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         entity.setFieldWidths(new Integer[] { 200, 150, 150 });
         return entity;
     }

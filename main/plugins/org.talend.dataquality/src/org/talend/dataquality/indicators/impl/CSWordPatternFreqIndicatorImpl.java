@@ -33,6 +33,7 @@ public class CSWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected CSWordPatternFreqIndicatorImpl() {
@@ -42,6 +43,7 @@ public class CSWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -58,6 +60,7 @@ public class CSWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
     @Override
     public boolean handle(Object data) {
         if (data == null) {
+            super.handle(data);
             return false;
         }
         String sentence = data.toString();
@@ -72,4 +75,4 @@ public class CSWordPatternFreqIndicatorImpl extends FrequencyIndicatorImpl imple
         return object == null ? null : object.toString();
     }
 
-} //CSWordPatternFreqIndicatorImpl
+} // CSWordPatternFreqIndicatorImpl

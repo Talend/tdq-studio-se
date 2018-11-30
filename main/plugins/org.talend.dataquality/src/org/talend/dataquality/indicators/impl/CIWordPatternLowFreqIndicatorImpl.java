@@ -33,6 +33,7 @@ public class CIWordPatternLowFreqIndicatorImpl extends FrequencyIndicatorImpl im
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected CIWordPatternLowFreqIndicatorImpl() {
@@ -42,6 +43,7 @@ public class CIWordPatternLowFreqIndicatorImpl extends FrequencyIndicatorImpl im
     /**
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -58,6 +60,7 @@ public class CIWordPatternLowFreqIndicatorImpl extends FrequencyIndicatorImpl im
     @Override
     public boolean handle(Object data) {
         if (data == null) {
+            super.handle(data);
             return false;
         }
         String sentence = data.toString();
@@ -72,4 +75,4 @@ public class CIWordPatternLowFreqIndicatorImpl extends FrequencyIndicatorImpl im
         return object == null ? null : object.toString();
     }
 
-} //CIWordPatternLowFreqIndicatorImpl
+} // CIWordPatternLowFreqIndicatorImpl
