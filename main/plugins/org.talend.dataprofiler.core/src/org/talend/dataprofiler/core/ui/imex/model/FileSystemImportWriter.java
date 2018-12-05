@@ -116,7 +116,6 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
-
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -780,6 +779,11 @@ public class FileSystemImportWriter implements IImportWriter {
                                         }
                                     }
 
+                            // Added TDQ-15353, need to check the context if any in analysis/report
+                            if (isAnalysis(modEle) || isReport(modEle)) {
+                                clearContextIfNotImported(record, importedContext);
+                            }
+
                                     if (isDelete) {
                                         updateFiles.clear();
                                         updateFilesCoverd.clear();
@@ -810,17 +814,12 @@ public class FileSystemImportWriter implements IImportWriter {
                                         for (File file : updateFilesCoverd) {
                                             update(file, true);
                                         }
-                                    }
-
-                            // Added TDQ-15353, need to check the context if any in analysis/report
-                            if (isAnalysis(modEle) || isReport(modEle)) {
-                                clearContextIfNotImported(record, importedContext);
                             }
-                                } else {
-                                    for (String error : record.getErrorMessage()) {
-                                        log.error(error);
-                                    }
-                                }
+                        } else {
+                            for (String error : record.getErrorMessage()) {
+                                log.error(error);
+                            }
+                        }
 
                                 fMonitor.worked(++work);
                             }
