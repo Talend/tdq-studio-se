@@ -47,7 +47,6 @@ import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.database.EDatabaseTypeName;
-import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.metadata.IMetadataConnection;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -61,6 +60,7 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.compare.exception.ReloadCompareException;
@@ -745,8 +745,10 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * Go through every analysis and reports, to find if it imported the current context, and update the context value
      * in it
      */
-    public void updateAllContextInAnalysisAndReport(ContextItem contextItem, JobContextManager contextManager) {
-        ContextViewHelper.updateAllContextInAnalysisAndReport(contextItem, contextManager);
+    public void updateAllContextInAnalysisAndReport(RepositoryUpdateManager ruManager, Object parameter, boolean isUpdated) {
+        if (parameter instanceof ContextItem) {
+            ContextViewHelper.updateAllContextInAnalysisAndReport(ruManager, (ContextItem) parameter, isUpdated);
+        }
     }
 
 }

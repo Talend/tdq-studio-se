@@ -363,6 +363,11 @@ public final class ContextHelper {
 
     public static String checkRenamedContextParameter(JobContextManager contextManager, String paramNameWithContext) {
         Map<String, String> nameMap = contextManager.getNameMap();
+
+        return checkRenamedContextParameter(nameMap, paramNameWithContext);
+    }
+
+    public static String checkRenamedContextParameter(Map<String, String> nameMap, String paramNameWithContext) {
         String paramName = removeContextPreffix(paramNameWithContext);
         // if renamed parameter
         if (nameMap != null && nameMap.size() > 0) {
