@@ -23,9 +23,12 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
+import org.talend.core.IRepositoryContextService;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.DqRepositoryViewService;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
+import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SchemaHelper;
 import org.talend.cwm.helper.SwitchHelpers;
@@ -684,8 +687,27 @@ public abstract class AbstractSchemaEvaluator<T> extends Evaluator<T> {
             if (catalog != null) {
                 try {
                     getConnection().setCatalog(catalog.getName());
-                    List<Schema> schemas = MetadataFillFactory.getDBInstance(getDataManager()).fillSchemaToCatalog(
-                            getDataManager(), getConnection().getMetaData(), catalog, null);
+                    Connection databaseConnection = getDataManager();
+                    DatabaseConnection origValueConn = null;
+                    if (databaseConnection.isContextMode()) {
+                        IRepositoryContextService repositoryContextService = CoreRuntimePlugin.getInstance()
+                                .getRepositoryContextService();
+                        if (repositoryContextService != null) {
+                            String contextName = databaseConnection.getContextName();
+                            if (contextName == null) {
+                                origValueConn = repositoryContextService.cloneOriginalValueConnection(
+                                        (DatabaseConnection) databaseConnection, true);
+                            } else {
+                                origValueConn = repositoryContextService.cloneOriginalValueConnection(
+                                        (DatabaseConnection) databaseConnection, false, contextName);
+                            }
+                        }
+                    } else {
+                        origValueConn = (DatabaseConnection) databaseConnection;
+                    }
+
+                    List<Schema> schemas = MetadataFillFactory.getDBInstance(origValueConn).fillSchemaToCatalog(origValueConn,
+                            getConnection().getMetaData(), catalog, null);
                     if (schemas != null) {
                         for (Schema tdSchema : schemas) {
                             if (tdSchema.getName().equals(schema.getName())) {
