@@ -41,6 +41,7 @@ public class OracleDbmsLanguage extends DbmsLanguage {
      */
     OracleDbmsLanguage() {
         super(DbmsLanguage.ORACLE);
+        setProperties();
     }
 
     /**
@@ -52,6 +53,20 @@ public class OracleDbmsLanguage extends DbmsLanguage {
      */
     OracleDbmsLanguage(String dbmsType, ProductVersion dbVersion) {
         super(dbmsType, dbVersion);
+        setProperties();
+    }
+
+    /**
+     * @Description:Set 'oracle.jdbc.J2EE13Compliant' to true.So that ResultSet.getObject method returns
+     * 'java.sql.Timestamp' instead of 'oracle.sql.TIMESTAMP'
+     *
+     */
+    private void setProperties() {
+        String propName = "oracle.jdbc.J2EE13Compliant";
+        String property = System.getProperties().getProperty(propName);
+        if (property == null || !"true".equals(property)) {
+            System.getProperties().setProperty(propName, "true");
+        }
     }
 
     /*
