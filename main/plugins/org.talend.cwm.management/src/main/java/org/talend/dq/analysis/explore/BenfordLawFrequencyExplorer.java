@@ -16,7 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
+import org.talend.cwm.helper.SwitchHelpers;
+import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.helpers.AnalysisHelper;
+import org.talend.utils.sql.Java2SqlType;
+import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * return the where clause for benford law indicator, but for different DB type, the clause is different.
@@ -75,6 +79,15 @@ public class BenfordLawFrequencyExplorer extends FrequencyStatisticsExplorer {
      */
     @Override
     protected boolean NotShowMenu() {
-        return AnalysisHelper.isJavaExecutionEngine(this.analysis);
+        if (AnalysisHelper.isJavaExecutionEngine(this.analysis)) {
+            return true;
+        }
+        // no need menu on a Date type column.
+        ModelElement analyzedElement = indicator.getAnalyzedElement();
+        TdColumn tdColumn = SwitchHelpers.COLUMN_SWITCH.doSwitch(analyzedElement);
+        if (tdColumn != null && Java2SqlType.isDateInSQL(tdColumn.getSqlDataType().getJavaDataType())) {
+            return true;
+        }
+        return false;
     }
 }
