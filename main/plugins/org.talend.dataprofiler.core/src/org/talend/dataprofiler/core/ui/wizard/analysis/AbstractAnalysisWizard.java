@@ -15,6 +15,7 @@ package org.talend.dataprofiler.core.ui.wizard.analysis;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFolder;
 import org.talend.dataprofiler.core.CorePlugin;
+import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.analysis.MatchAnalysisEditor;
@@ -47,6 +48,7 @@ public abstract class AbstractAnalysisWizard extends AbstractWizard {
 
     public AbstractAnalysisWizard(AnalysisParameter parameter) {
         this.parameter = parameter;
+        setWindowTitle(DefaultMessagesImpl.getString("CreateNewAnalysisWizard.createNewAnalysis")); //$NON-NLS-1$
     }
 
     public ModelElement initCWMResourceBuilder() {

@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.properties.Item;
 import org.talend.cwm.dependencies.DependenciesHandler;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.dqrule.DQRuleUtilities;
@@ -29,11 +29,13 @@ import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.IndicatorsFactory;
 import org.talend.dataquality.indicators.RowCountIndicator;
 import org.talend.dataquality.indicators.sql.WhereRuleIndicator;
+import org.talend.dataquality.properties.TDQBusinessRuleItem;
+import org.talend.dataquality.rules.DQRule;
 import org.talend.dataquality.rules.WhereRule;
 import org.talend.dq.analysis.parameters.AnalysisFilterParameter;
 import org.talend.dq.analysis.parameters.NamedColumnSetAnalysisParameter;
-import org.talend.dq.helper.resourcehelper.DQRuleResourceFileHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
+import org.talend.dq.nodes.RuleRepNode;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.utils.sugars.TypedReturnCode;
@@ -180,10 +182,13 @@ public class TableAnalysisWizard extends AbstractAnalysisWizard {
         if (objects != null) {
             List<WhereRule> wrList = new ArrayList<WhereRule>();
             for (Object object : objects) {
-                if (object instanceof IFile) {
-                    WhereRule wr = DQRuleResourceFileHelper.getInstance().findWhereRule((IFile) object);
-                    if (wr != null) {
-                        wrList.add(wr);
+                if (object instanceof RuleRepNode) {
+                    Item item = ((RuleRepNode) object).getObject().getProperty().getItem();
+                    if (item instanceof TDQBusinessRuleItem) {
+                        DQRule dqrule = ((TDQBusinessRuleItem) item).getDqrule();
+                        if (dqrule instanceof WhereRule) {
+                            wrList.add((WhereRule) dqrule);
+                        }
                     }
                 }
             }

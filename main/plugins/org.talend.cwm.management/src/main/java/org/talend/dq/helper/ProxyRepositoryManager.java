@@ -12,11 +12,15 @@
 // ============================================================================
 package org.talend.dq.helper;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.LoginException;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
@@ -28,8 +32,11 @@ import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.ui.IReferencedProjectService;
+import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.ProjectManager;
 import org.talend.repository.RepositoryWorkUnit;
+import org.talend.repository.model.RepositoryNode;
+import org.talend.resource.EResourceConstant;
 
 /**
  * DOC qiongli class global comment. Detailled comment <br/>
@@ -212,4 +219,22 @@ public class ProxyRepositoryManager {
         }
         return null;
     }
+
+    public IFolder getFolderFromReferenceProject(EResourceConstant type) {
+        if (!ProxyRepositoryManager.getInstance().isLocalProject() && !ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+            java.util.Set<Project> allProjects = ProxyRepositoryManager.getInstance().getAllProjects();
+            List<RepositoryNode> allMetaNodes = new ArrayList<RepositoryNode>();
+            for (Project project : allProjects) {
+                if (project.isMainProject()) {
+                    continue;
+                }
+                IProject findProject = ReponsitoryContextBridge.findProject(project.getLabel());
+                if (findProject != null) {
+                    return findProject.getFolder(new Path(type.getPath()));
+                }
+            }
+        }
+        return null;
+    }
+
 }
