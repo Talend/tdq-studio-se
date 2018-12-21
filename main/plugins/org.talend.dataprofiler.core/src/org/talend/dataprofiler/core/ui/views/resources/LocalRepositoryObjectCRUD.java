@@ -374,7 +374,9 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
 
         try {
             IRepositoryNode[] selectedRepositoryNodes = getSelectedRepositoryNodes();
-
+            if (targetNode instanceof DQRepositoryNode && !((DQRepositoryNode) targetNode).getProject().isMainProject()) {
+                return isHandleOK;
+            }
             // do some checks before moving.
             for (IRepositoryNode sourceNode : selectedRepositoryNodes) {
                 // MOD msjian 2012-10-23 TDQ-5614: when the node is locked, tell user can not move.
@@ -382,6 +384,12 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
                     return isHandleOK;
                 }
                 // TDQ-5614 ~
+                if (!targetNode.getContentType().equals(sourceNode.getContentType())) {
+                    return isHandleOK;
+                }
+                if (sourceNode instanceof DQRepositoryNode && !((DQRepositoryNode) sourceNode).getProject().isMainProject()) {
+                    return isHandleOK;
+                }
             }
 
             // do move.
