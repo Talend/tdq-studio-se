@@ -14,15 +14,18 @@ package org.talend.dq.analysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.cwm.dependencies.DependenciesHandler;
+import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdTable;
+import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.helpers.IndicatorHelper;
 import org.talend.dataquality.indicators.CompositeIndicator;
@@ -32,7 +35,11 @@ import org.talend.utils.sugars.TypedReturnCode;
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwm.objectmodel.core.Package;
+import orgomg.cwm.resource.relational.ColumnSet;
 import orgomg.cwm.resource.relational.NamedColumnSet;
+import orgomg.cwm.resource.relational.RelationalPackage;
+import orgomg.cwm.resource.relational.Table;
 
 /**
  * DOC xqliu class global comment. Detailled comment
@@ -153,4 +160,37 @@ public class TableAnalysisHandler extends AnalysisHandler {
     public EList<ModelElement> getAnalyzedTables() {
         return analysis.getContext().getAnalysedElements();
     }
+    
+    @Override
+    public String getCatalogNames() {
+        List<String> catalogNames = new ArrayList<String>();
+        
+        for (ModelElement element : getAnalyzedColumns()) {
+            if (element instanceof Table) {
+                ColumnSet columnSet = (ColumnSet) element;
+                Package schema = ColumnSetHelper.getParentCatalogOrSchema(columnSet);
+                if (schema == null) {
+                    continue;
+                }
+                if (RelationalPackage.eINSTANCE.getCatalog().equals(schema.eClass()) && !catalogNames.contains(schema.getName())) {
+                    catalogNames.add(schema.getName());
+                } else {
+                    Package catalog = ColumnSetHelper.getParentCatalogOrSchema(schema);
+                    if (catalog != null && !catalogNames.contains(schema.getName())) {
+                        catalogNames.add(catalog.getName());
+                    }
+                }
+            }
+        }
+        if (!catalogNames.isEmpty()) {
+            StringBuilder strBuilder = new StringBuilder();
+            for (String catalog : catalogNames) {
+                strBuilder.append(catalog);
+                strBuilder.append(PluginConstant.SPACE_STRING);
+            }
+            return strBuilder.toString();
+        }
+        return PluginConstant.EMPTY_STRING;
+    }
+
 }
