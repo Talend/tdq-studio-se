@@ -35,16 +35,52 @@ list="net.sourceforge.sqlexplorer net.sourceforge.sqlexplorer.nl \
  org.talend.dataprofiler.top.chart org.talend.dataprofiler.top.chart.nl"
 version="6.5.1" # overwrite this variable
 revision_suffix="20171215_1808-EP" # overwrite this variable
+revision_suffix_sqlexplorer="20181018_1137" # overwrite this variable
+revision_suffix_sqlexplorer_nl="20181018_1137" # overwrite this variable
+revision_suffix_top_chart="20181018_1137" # overwrite this variable
+revision_suffix_top_chart_nl="20181018_1137" # overwrite this variable
 repo_id="talend-update"
 repo_url="https://talend-update.talend.com/nexus/content/repositories/libraries"
 
-for element in $list
-do
-	echo "----------------------------------------------------"
-	echo "|     " ${element}_${version} "     |"
-	echo "----------------------------------------------------"
-	mvn deploy:deploy-file -DpomFile=${element}.pom \
-      -Dfile=${element}_${version}.${revision_suffix}.jar \
-      -DrepositoryId=$repo_id \
-      -Durl=$repo_url
-done
+#for element in $list
+#do
+#	echo "----------------------------------------------------"
+#	echo "|     " ${element}_${version} "     |"
+#	echo "----------------------------------------------------"
+#	mvn deploy:deploy-file -DpomFile=${element}.pom \
+#      -Dfile=${element}_${version}.${revision_suffix}.jar \
+#      -DrepositoryId=$repo_id \
+#      -Durl=$repo_url
+#done
+
+echo "----------------------------------------------------"
+echo "|     " net.sourceforge.sqlexplorer_${version} "     |"
+echo "----------------------------------------------------"
+mvn deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.pom \
+  -Dfile=net.sourceforge.sqlexplorer_${version}.${revision_suffix_sqlexplorer}.jar \
+  -DrepositoryId=$repo_id \
+  -Durl=$repo_url
+
+echo "----------------------------------------------------"
+echo "|     " net.sourceforge.sqlexplorer.nl_${version} "     |"
+echo "----------------------------------------------------"
+mvn deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.nl.pom \
+  -Dfile=net.sourceforge.sqlexplorer.nl_${version}.${revision_suffix_sqlexplorer_nl}.jar \
+  -DrepositoryId=$repo_id \
+  -Durl=$repo_url
+
+echo "----------------------------------------------------"
+echo "|     " org.talend.dataprofiler.top.chart_${version} "     |"
+echo "----------------------------------------------------"
+mvn deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.pom \
+  -Dfile=org.talend.dataprofiler.top.chart_${version}.${revision_suffix_top_chart}.jar \
+  -DrepositoryId=$repo_id \
+  -Durl=$repo_url
+
+echo "----------------------------------------------------"
+echo "|     " org.talend.dataprofiler.top.chart.nl_${version} "     |"
+echo "----------------------------------------------------"
+mvn deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.nl.pom \
+  -Dfile=org.talend.dataprofiler.top.chart.nl_${version}.${revision_suffix_top_chart_nl}.jar \
+  -DrepositoryId=$repo_id \
+  -Durl=$repo_url
