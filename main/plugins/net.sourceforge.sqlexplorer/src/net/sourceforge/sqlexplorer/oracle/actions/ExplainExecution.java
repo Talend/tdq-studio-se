@@ -47,7 +47,7 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableLayout;
-import org.eclipse.jface.viewers.TableTreeViewer;
+import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -57,6 +57,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.Tree;
+import org.eclipse.swt.widgets.TreeColumn;
 
 public class ExplainExecution extends AbstractSQLExecution {
 
@@ -116,15 +118,15 @@ public class ExplainExecution extends AbstractSQLExecution {
                     Composite pp = new Composite(composite, 0);
                     pp.setLayout(new FillLayout());
                     pp.setLayoutData(new GridData(1808));
-                    TableTreeViewer tv = new TableTreeViewer(pp, 0x10800);
-                    Table table = tv.getTableTree().getTable();
+                    TreeViewer tv = new TreeViewer(pp, 0x10800);
+                    Tree table = tv.getTree();
                     table.setLinesVisible(true);
                     table.setHeaderVisible(true);
-                    TableColumn tc = new TableColumn(table, 0);
+                    TreeColumn tc = new TreeColumn(table, 0);
                     tc.setText("");
-                    tc = new TableColumn(table, 0);
+                    tc = new TreeColumn(table, 0);
                     tc.setText("Cost");
-                    tc = new TableColumn(table, 0);
+                    tc = new TreeColumn(table, 0);
                     tc.setText("Cardinality");
                     TableLayout tableLayout = new TableLayout();
                     tableLayout.addColumnData(new ColumnWeightData(6, 150, true));

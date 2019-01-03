@@ -140,7 +140,8 @@ public class ModelElementMatchEngine extends DefaultMatchEngine {
         if (origin != null) {
             originEObjects = Iterators.concat(Iterators.singletonIterator(origin), scope.getCoveredEObjects(origin.eResource()));
         } else {
-            originEObjects = Collections.emptyIterator();
+        	
+            originEObjects = Collections.EMPTY_SET.iterator();
         }
 
         getEObjectMatcher().createMatches(comparison, leftEObjects, rightEObjects, originEObjects, monitor);
