@@ -33,7 +33,7 @@ import org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMa
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchCellModifier;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.cellEditor.jarFileCellEditor;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.MatchAnalysisTableContentProvider;
-import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.MatchAndSurvivorCellModifer;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.definition.MatchAndSurvivorDefinitionCellModifer;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.definition.MatchKeyAndSurvivorLabelProvider;
 import org.talend.dataquality.record.linkage.ui.composite.utils.MatchRuleAnlaysisUtils;
 import org.talend.dataquality.record.linkage.utils.HandleNullEnum;
@@ -65,7 +65,7 @@ public class MatchKeyAndSurvivorshipTableViewer extends AbstractMatchAnalysisTab
 
     @Override
     protected AbstractMatchCellModifier<MatchKeyAndSurvivorDefinition> getTableCellModifier() {
-        return new MatchAndSurvivorCellModifer(this);
+        return new MatchAndSurvivorDefinitionCellModifer(this);
     }
 
     /**
@@ -98,7 +98,8 @@ public class MatchKeyAndSurvivorshipTableViewer extends AbstractMatchAnalysisTab
     }
 
     @Override
-    public void removeElement(MatchKeyAndSurvivorDefinition msDedefinition, List<MatchKeyAndSurvivorDefinition> matchKeys) {
+    public void removeElement(MatchKeyAndSurvivorDefinition msDedefinition,
+            List<MatchKeyAndSurvivorDefinition> matchKeys) {
         Iterator<MatchKeyAndSurvivorDefinition> matchKeyIterator = matchKeys.iterator();
         while (matchKeyIterator.hasNext()) {
             MatchKeyAndSurvivorDefinition keyDef = matchKeyIterator.next();
@@ -109,7 +110,8 @@ public class MatchKeyAndSurvivorshipTableViewer extends AbstractMatchAnalysisTab
                 // survivorkey list;
                 SurvivorshipKeyDefinition survivorShipKey = msDedefinition.getSurvivorShipKey();
                 MatchRuleDefinition matchRuleDef = (MatchRuleDefinition) survivorShipKey.eContainer();
-                ((MatchRule) msDedefinition.getMatchKey().eContainer()).getMatchKeys().remove(msDedefinition.getMatchKey());
+                ((MatchRule) msDedefinition.getMatchKey().eContainer()).getMatchKeys().remove(
+                        msDedefinition.getMatchKey());
                 matchRuleDef.getSurvivorshipKeys().remove(survivorShipKey);
                 break;
             }
@@ -128,8 +130,8 @@ public class MatchKeyAndSurvivorshipTableViewer extends AbstractMatchAnalysisTab
 
     @Override
     public void addContextMenu() {
-        MatchRuleActionGroup<MatchKeyAndSurvivorDefinition> actionGroup = new MatchRuleActionGroup<MatchKeyAndSurvivorDefinition>(
-                this);
+        MatchRuleActionGroup<MatchKeyAndSurvivorDefinition> actionGroup =
+                new MatchRuleActionGroup<MatchKeyAndSurvivorDefinition>(this);
         actionGroup.fillContextMenu(new MenuManager());
     }
 

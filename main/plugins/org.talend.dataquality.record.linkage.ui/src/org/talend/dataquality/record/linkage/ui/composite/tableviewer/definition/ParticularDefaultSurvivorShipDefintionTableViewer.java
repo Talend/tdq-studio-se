@@ -45,7 +45,8 @@ public class ParticularDefaultSurvivorShipDefintionTableViewer extends Particula
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer#getCellEditor(java
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer#getCellEditor
+     * (java
      * .util.List, java.util.List)
      */
     @Override
@@ -55,13 +56,11 @@ public class ParticularDefaultSurvivorShipDefintionTableViewer extends Particula
             {
                 switch (i) {
 
-                case 0:
-                    editors[i] = new TextCellEditor(innerTable);
-                    break;
                 case 1:
-                    editors[i] = new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
+                    editors[i] =
+                            new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
                     break;
-                case 2:
+                default:
                     editors[i] = new TextCellEditor(innerTable);
 
                 }
@@ -85,7 +84,8 @@ public class ParticularDefaultSurvivorShipDefintionTableViewer extends Particula
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer#getTableCellModifier
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer#
+     * getTableCellModifier
      * ()
      */
     @Override
@@ -97,7 +97,8 @@ public class ParticularDefaultSurvivorShipDefintionTableViewer extends Particula
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer#createNewKeyDefinition
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipTableViewer#
+     * createNewKeyDefinition
      * (java.lang.String)
      */
     @Override

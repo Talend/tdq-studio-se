@@ -35,7 +35,9 @@ public class ParticularDefaultSurvivorshipLabelProvider extends DefaultSurvivors
                 return pdskd.getColumn();
             case 1:
                 return SurvivorShipAlgorithmEnum.getTypeBySavedValue(pdskd.getFunction().getAlgorithmType()).getValue();
-            case 2:
+            case 2: // MatchAnalysisConstant.REFERENCE_COLUMN
+                return pdskd.getFunction().getReferenceColumn();
+            case 3:
                 return pdskd.getFunction().getAlgorithmParameters();
             }
         }

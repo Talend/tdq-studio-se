@@ -38,7 +38,9 @@ public class DefaultSurvivorshipLabelProvider extends LabelProvider implements I
                 return skd.getDataType();
             case 1:
                 return SurvivorShipAlgorithmEnum.getTypeBySavedValue(skd.getFunction().getAlgorithmType()).getValue();
-            case 2:
+            case 2: // MatchAnalysisConstant.REFERENCE_COLUMN
+                return skd.getFunction().getReferenceColumn();
+            case 3:
                 return skd.getFunction().getAlgorithmParameters();
             }
         }

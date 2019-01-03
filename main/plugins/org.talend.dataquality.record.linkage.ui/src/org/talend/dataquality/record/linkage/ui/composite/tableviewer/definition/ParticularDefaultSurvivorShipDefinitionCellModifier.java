@@ -15,6 +15,7 @@ package org.talend.dataquality.record.linkage.ui.composite.tableviewer.definitio
 import org.eclipse.swt.widgets.TableItem;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchAnalysisTableViewer;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
 
@@ -37,7 +38,8 @@ public class ParticularDefaultSurvivorShipDefinitionCellModifier extends Particu
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier#canModify(java
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier#canModify
+     * (java
      * .lang.Object, java.lang.String)
      */
     @Override
@@ -52,7 +54,8 @@ public class ParticularDefaultSurvivorShipDefinitionCellModifier extends Particu
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier#getValue(java.
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier#getValue(
+     * java.
      * lang.Object, java.lang.String)
      */
     @Override
@@ -68,14 +71,15 @@ public class ParticularDefaultSurvivorShipDefinitionCellModifier extends Particu
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier#modify(java.lang
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.ParticularDefaultSurvivorShipCellModifier#modify(java
+     * .lang
      * .Object, java.lang.String, java.lang.Object)
      */
     @Override
     public void modify(Object element, String property, Object value) {
         if (element instanceof TableItem) {
-            ParticularDefaultSurvivorshipDefinitions pdskd = (ParticularDefaultSurvivorshipDefinitions) ((TableItem) element)
-                    .getData();
+            ParticularDefaultSurvivorshipDefinitions pdskd =
+                    (ParticularDefaultSurvivorshipDefinitions) ((TableItem) element).getData();
             String newColumnName = String.valueOf(value);
             if (MatchAnalysisConstant.PRECOLUMN.equalsIgnoreCase(property)) {
                 pdskd.setColumn(newColumnName);
@@ -84,6 +88,16 @@ public class ParticularDefaultSurvivorShipDefinitionCellModifier extends Particu
             }
         }
         super.modify(element, property, value);
+    }
+
+    @Override
+    protected Object getReferenceColumnValue(ParticularDefaultSurvivorshipDefinitions pskd) {
+        return pskd.getFunction().getReferenceColumn();
+    }
+
+    @Override
+    protected String convertColIndex2Name(String newValue, ColumnsDateFilter colDateFilter) {
+        return newValue;
     }
 
 }

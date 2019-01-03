@@ -2679,13 +2679,22 @@ public interface RulesPackage extends EPackage {
     int ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS = 1;
 
     /**
+     * The feature id for the '<em><b>Reference Column</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int ALGORITHM_DEFINITION__REFERENCE_COLUMN = 2;
+
+    /**
      * The number of structural features of the '<em>Algorithm Definition</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int ALGORITHM_DEFINITION_FEATURE_COUNT = 2;
+    int ALGORITHM_DEFINITION_FEATURE_COUNT = 3;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.rules.impl.MatchRuleImpl <em>Match Rule</em>}' class.
@@ -4039,6 +4048,17 @@ public interface RulesPackage extends EPackage {
     EAttribute getAlgorithmDefinition_AlgorithmParameters();
 
     /**
+     * Returns the meta object for the attribute '{@link org.talend.dataquality.rules.AlgorithmDefinition#getReferenceColumn <em>Reference Column</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Reference Column</em>'.
+     * @see org.talend.dataquality.rules.AlgorithmDefinition#getReferenceColumn()
+     * @see #getAlgorithmDefinition()
+     * @generated
+     */
+    EAttribute getAlgorithmDefinition_ReferenceColumn();
+
+    /**
      * Returns the meta object for class '{@link org.talend.dataquality.rules.MatchRule <em>Match Rule</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -4552,6 +4572,14 @@ public interface RulesPackage extends EPackage {
          * @generated
          */
         EAttribute ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS = eINSTANCE.getAlgorithmDefinition_AlgorithmParameters();
+
+        /**
+         * The meta object literal for the '<em><b>Reference Column</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute ALGORITHM_DEFINITION__REFERENCE_COLUMN = eINSTANCE.getAlgorithmDefinition_ReferenceColumn();
 
         /**
          * The meta object literal for the '{@link org.talend.dataquality.rules.impl.MatchRuleImpl <em>Match Rule</em>}' class.

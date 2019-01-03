@@ -86,6 +86,7 @@ import org.talend.dataquality.record.linkage.ui.composite.utils.MatchRuleAnlaysi
 import org.talend.dataquality.record.linkage.ui.section.AnaMatchSurvivorSection;
 import org.talend.dataquality.record.linkage.ui.section.AnalysisSelectionAlgorithmSection;
 import org.talend.dataquality.record.linkage.ui.section.BlockingKeySection;
+import org.talend.dataquality.record.linkage.ui.section.DefaultSurvivorshipSection;
 import org.talend.dataquality.record.linkage.ui.section.MatchParameterSection;
 import org.talend.dataquality.record.linkage.ui.section.MatchingKeySection;
 import org.talend.dataquality.record.linkage.ui.section.definition.DefaultSurvivorshipDefinitionSection;
@@ -210,20 +211,22 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
 
     private void createSelectRecordLinkageSection() {
         selectAlgorithmSection = new AnalysisSelectionAlgorithmSection(form, topComp, toolkit);
-        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils
-                .getRecordMatchIndicatorFromAna(getCurrentModelElement());
+        RecordMatchingIndicator recordMatchingIndicator =
+                MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(getCurrentModelElement());
         selectAlgorithmSection.setMatchRuleDef(recordMatchingIndicator.getBuiltInMatchRuleDefinition());
         selectAlgorithmSection.createChooseAlgorithmCom();
         selectAlgorithmSection.addPropertyChangeListener(this);
-        selectAlgorithmSection.getSection().setExpanded(getExpandedStatus(selectAlgorithmSection.getSection().getText()));
+        selectAlgorithmSection.getSection().setExpanded(
+                getExpandedStatus(selectAlgorithmSection.getSection().getText()));
         registerSection(selectAlgorithmSection.getSection());
     }
 
     private void createMatchAndSurvivorKeySection() {
-        matchAndSurvivorKeySection = new AnaMatchSurvivorSection(form, topComp, Section.TWISTIE | Section.TITLE_BAR
-                | Section.EXPANDED, toolkit, getCurrentModelElement());
-        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils
-                .getRecordMatchIndicatorFromAna(getCurrentModelElement());
+        matchAndSurvivorKeySection =
+                new AnaMatchSurvivorSection(form, topComp, Section.TWISTIE | Section.TITLE_BAR | Section.EXPANDED,
+                        toolkit, getCurrentModelElement());
+        RecordMatchingIndicator recordMatchingIndicator =
+                MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(getCurrentModelElement());
         matchAndSurvivorKeySection.setMatchRuleDef(recordMatchingIndicator.getBuiltInMatchRuleDefinition());
         matchAndSurvivorKeySection.setAddColumn(!selectAlgorithmSection.isVSRMode());
         matchAndSurvivorKeySection.setColumnNameInput(getAllColumnsToKeyMap());
@@ -231,7 +234,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         registerSection(matchAndSurvivorKeySection.getSection());
         matchAndSurvivorKeySection.addPropertyChangeListener(this);
         matchAndSurvivorKeySection.changeSectionDisStatus(!selectAlgorithmSection.isVSRMode());
-        matchAndSurvivorKeySection.getSection().setExpanded(getExpandedStatus(matchAndSurvivorKeySection.getSection().getText()));
+        matchAndSurvivorKeySection.getSection().setExpanded(
+                getExpandedStatus(matchAndSurvivorKeySection.getSection().getText()));
         matchAndSurvivorKeySection.setIsNeedSubChart(true);
         selectAlgorithmSection.setAnaMatchSurvivorSection(matchAndSurvivorKeySection);
         if (selectAlgorithmSection.isVSRMode()) {
@@ -243,10 +247,11 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
     }
 
     private void createDefaultSurvivorshipSection() {
-        defaultSurvivorshipDefinitionSection = new DefaultSurvivorshipDefinitionSection(form, topComp, toolkit);
-        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils
-                .getRecordMatchIndicatorFromAna(getCurrentModelElement());
+        defaultSurvivorshipDefinitionSection = new DefaultSurvivorshipSection(form, topComp, toolkit);
+        RecordMatchingIndicator recordMatchingIndicator =
+                MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(getCurrentModelElement());
         defaultSurvivorshipDefinitionSection.setMatchRuleDef(recordMatchingIndicator.getBuiltInMatchRuleDefinition());
+        defaultSurvivorshipDefinitionSection.setColumnNameInput(getAllColumnsToKeyMap());
         defaultSurvivorshipDefinitionSection.createContent();
         registerSection(defaultSurvivorshipDefinitionSection.getSection());
         defaultSurvivorshipDefinitionSection.addPropertyChangeListener(this);
@@ -261,8 +266,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
      */
     private void createParticularDefaultSurvivorshipSection() {
         particularDefaultSurvivorshipSection = new ParticularDefSurshipDefinitionSection(form, topComp, toolkit);
-        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils
-                .getRecordMatchIndicatorFromAna(getCurrentModelElement());
+        RecordMatchingIndicator recordMatchingIndicator =
+                MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(getCurrentModelElement());
         particularDefaultSurvivorshipSection.setMatchRuleDef(recordMatchingIndicator.getBuiltInMatchRuleDefinition());
         particularDefaultSurvivorshipSection.setColumnNameInput(getAllColumnsToKeyMap());
         particularDefaultSurvivorshipSection.createContent();
@@ -280,12 +285,14 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
     private void createMatchParameterSection() {
         // Added TDQ-10655 hide the store on disk on TOP.
         if (PluginChecker.isTDQLoaded()) {
-            MatchParameterSection matchParameterSection = new MatchParameterSection(form, topComp, Section.TWISTIE
-                    | Section.TITLE_BAR | Section.EXPANDED, toolkit, getCurrentModelElement());
+            MatchParameterSection matchParameterSection =
+                    new MatchParameterSection(form, topComp, Section.TWISTIE | Section.TITLE_BAR | Section.EXPANDED,
+                            toolkit, getCurrentModelElement());
             matchParameterSection.addPropertyChangeListener(this);
             matchParameterSection.createParameterCom();
             registerSection(matchParameterSection.getSection());
-            matchParameterSection.getSection().setExpanded(getExpandedStatus(matchParameterSection.getSection().getText()));
+            matchParameterSection.getSection().setExpanded(
+                    getExpandedStatus(matchParameterSection.getSection().getText()));
         }
     }
 
@@ -294,8 +301,9 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
      * 
      */
     private void createMatchingKeySection() {
-        matchingKeySection = new MatchingKeySection(form, topComp, Section.TWISTIE | Section.TITLE_BAR | Section.EXPANDED,
-                toolkit, getCurrentModelElement());
+        matchingKeySection =
+                new MatchingKeySection(form, topComp, Section.TWISTIE | Section.TITLE_BAR | Section.EXPANDED, toolkit,
+                        getCurrentModelElement());
         matchingKeySection.addPropertyChangeListener(this);
         matchingKeySection.setColumnNameInput(getAllColumnsToKeyMap());
         matchingKeySection.createContent();
@@ -313,8 +321,9 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
      * 
      */
     private void createBlockingKeySection() {
-        blockingKeySection = new BlockingKeySection(form, topComp, Section.TWISTIE | Section.TITLE_BAR | Section.EXPANDED,
-                toolkit, getCurrentModelElement());
+        blockingKeySection =
+                new BlockingKeySection(form, topComp, Section.TWISTIE | Section.TITLE_BAR | Section.EXPANDED, toolkit,
+                        getCurrentModelElement());
         blockingKeySection.addPropertyChangeListener(this);
         blockingKeySection.setColumnNameInput(getAllColumnsToKeyMap());
         blockingKeySection.createContent();
@@ -327,7 +336,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
      * create Data Section.
      */
     private void createDataSection() {
-        dataSampleSection = createSection(form, topComp, DefaultMessagesImpl.getString("MatchMasterDetailsPage.DataSample"));//$NON-NLS-1$
+        dataSampleSection =
+                createSection(form, topComp, DefaultMessagesImpl.getString("MatchMasterDetailsPage.DataSample"));//$NON-NLS-1$
         dataSampleparentComposite = toolkit.createComposite(dataSampleSection);
         GridLayout dataSampleLayout = new GridLayout(1, Boolean.TRUE);
         dataSampleparentComposite.setLayout(dataSampleLayout);
@@ -383,8 +393,9 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         titleComposite.setLayout(layout);
         analyzeDataLabel = new Label(titleComposite, SWT.NONE);
         final int analysisColumnSize = analysisHandler.getAnalyzedColumns().size();
-        final RepositoryNode firstColumnNode = analysisColumnSize > 0 ? RepositoryNodeHelper.recursiveFind(analysisHandler
-                .getAnalyzedColumns().get(0)) : null;
+        final RepositoryNode firstColumnNode =
+                analysisColumnSize > 0 ? RepositoryNodeHelper
+                        .recursiveFind(analysisHandler.getAnalyzedColumns().get(0)) : null;
         // register: refresh the dataprovider combobox when the name of the data provider is changed.
         refreshDataProiverLabel = new EventReceiver() {
 
@@ -396,8 +407,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
                 return true;
             }
         };
-        EventManager.getInstance().register(getCurrentModelElement(), EventEnum.DQ_MATCH_ANALYSIS_REFRESH_DATAPROVIDER_LABEL,
-                refreshDataProiverLabel);
+        EventManager.getInstance().register(getCurrentModelElement(),
+                EventEnum.DQ_MATCH_ANALYSIS_REFRESH_DATAPROVIDER_LABEL, refreshDataProiverLabel);
         if (analysisColumnSize > 0 && firstColumnNode != null) {
             updateAnalyzeDataLabel(firstColumnNode);
         } else if (analysisColumnSize > 0 && firstColumnNode == null) {
@@ -422,7 +433,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
                     if (dqview == null) {
                         return;
                     }
-                    ModelElement column = RepositoryNodeHelper.getModelElementFromRepositoryNode(analysedElements.get(0));
+                    ModelElement column =
+                            RepositoryNodeHelper.getModelElementFromRepositoryNode(analysedElements.get(0));
                     ModelElement container = (ModelElement) (column.eContainer());
                     RepositoryNode recursiveFind = RepositoryNodeHelper.recursiveFind(container);
                     if (recursiveFind == null) {
@@ -465,12 +477,14 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         GridLayout keySelectionCompLayout = new GridLayout(2, Boolean.TRUE);
         keySelectionComp.setLayout(keySelectionCompLayout);
 
-        selectBlockKeyBtn = toolkit.createButton(keySelectionComp,
-                DefaultMessagesImpl.getString("MatchMasterDetailsPage.SelectBlockingKeyButton"), SWT.TOGGLE);//$NON-NLS-1$
+        selectBlockKeyBtn =
+                toolkit.createButton(keySelectionComp,
+                        DefaultMessagesImpl.getString("MatchMasterDetailsPage.SelectBlockingKeyButton"), SWT.TOGGLE);//$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).applyTo(selectBlockKeyBtn);
 
-        selectMatchKeyBtn = toolkit.createButton(keySelectionComp,
-                DefaultMessagesImpl.getString("MatchMasterDetailsPage.SelectMatchingKeyButton"), SWT.TOGGLE); //$NON-NLS-1$
+        selectMatchKeyBtn =
+                toolkit.createButton(keySelectionComp,
+                        DefaultMessagesImpl.getString("MatchMasterDetailsPage.SelectMatchingKeyButton"), SWT.TOGGLE); //$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.TOP).applyTo(selectMatchKeyBtn);
 
         addListenerForSelectKeyButton();
@@ -574,7 +588,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
 
     private void setAllColumnColorToBlack() {
         for (ModelElement column : getSelectedColumnsFromHandler()) {
-            sampleTable.changeColumnHeaderLabelColor(column.getName(), GUIHelper.COLOR_BLACK, PluginConstant.EMPTY_STRING);
+            sampleTable.changeColumnHeaderLabelColor(column.getName(), GUIHelper.COLOR_BLACK,
+                    PluginConstant.EMPTY_STRING);
         }
         sampleTable.setNatTableFont(sampleTable.getNatTable());
         sampleTable.refresh();
@@ -585,11 +600,13 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         GridLayout dataSelectionCompLayout = new GridLayout(3, Boolean.TRUE);
         dataSelectionComp.setLayout(dataSelectionCompLayout);
 
-        Button createConnectionBtn = toolkit.createButton(dataSelectionComp,
-                DefaultMessagesImpl.getString("MatchMasterDetailsPage.CreateConnectionButton"), SWT.NONE);//$NON-NLS-1$
+        Button createConnectionBtn =
+                toolkit.createButton(dataSelectionComp,
+                        DefaultMessagesImpl.getString("MatchMasterDetailsPage.CreateConnectionButton"), SWT.NONE);//$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).applyTo(createConnectionBtn);
-        Button selectDataBtn = toolkit.createButton(dataSelectionComp,
-                DefaultMessagesImpl.getString("MatchMasterDetailsPage.SelectDataButton"), SWT.NONE);//$NON-NLS-1$
+        Button selectDataBtn =
+                toolkit.createButton(dataSelectionComp,
+                        DefaultMessagesImpl.getString("MatchMasterDetailsPage.SelectDataButton"), SWT.NONE);//$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.TOP).applyTo(selectDataBtn);
 
         //Button suggestBtn = toolkit.createButton(dataSelectionComp, "Suggest", SWT.NONE);//$NON-NLS-1$
@@ -599,9 +616,11 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
 
             @Override
             public void mouseDown(MouseEvent e) {
-                ConnectionWizard connectionWizard = new ConnectionWizard(PlatformUI.getWorkbench(), dataSampleparentComposite);
+                ConnectionWizard connectionWizard =
+                        new ConnectionWizard(PlatformUI.getWorkbench(), dataSampleparentComposite);
                 connectionWizard.setForcePreviousAndNextButtons(true);
-                WizardDialog dialog = new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), connectionWizard);
+                WizardDialog dialog =
+                        new WizardDialog(PlatformUI.getWorkbench().getDisplay().getActiveShell(), connectionWizard);
                 dialog.setPageSize(500, 200);
                 dialog.open();
             }
@@ -676,7 +695,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
 
     class SuggestionGenerator {
 
-        public MatchRuleDefinition generate(List<BlockKeyDefinition> listBlockKey, List<MatchKeyDefinition> listMatchRules) {
+        public MatchRuleDefinition generate(List<BlockKeyDefinition> listBlockKey,
+                List<MatchKeyDefinition> listMatchRules) {
 
             MatchRuleDefinition matchRuleDefinition = RulesFactory.eINSTANCE.createMatchRuleDefinition();
             // block keys
@@ -723,8 +743,9 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         GridLayout dataQueryCompLayout = new GridLayout(4, Boolean.FALSE);
         dataQueryComp.setLayout(dataQueryCompLayout);
 
-        Button refreshDataBtn = toolkit.createButton(dataQueryComp,
-                DefaultMessagesImpl.getString("MatchMasterDetailsPage.RefreshDataButton"), SWT.NONE);//$NON-NLS-1$
+        Button refreshDataBtn =
+                toolkit.createButton(dataQueryComp,
+                        DefaultMessagesImpl.getString("MatchMasterDetailsPage.RefreshDataButton"), SWT.NONE);//$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(refreshDataBtn);
 
         refreshDataBtn.addMouseListener(new MouseAdapter() {
@@ -736,8 +757,9 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         });
 
         // create the input to control how many rows will be loaded.
-        Label rowLoadedLabel = toolkit.createLabel(dataQueryComp,
-                DefaultMessagesImpl.getString("MatchMasterDetailsPage.ControlRowsLabel"), SWT.NONE); //$NON-NLS-1$
+        Label rowLoadedLabel =
+                toolkit.createLabel(dataQueryComp,
+                        DefaultMessagesImpl.getString("MatchMasterDetailsPage.ControlRowsLabel"), SWT.NONE); //$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(rowLoadedLabel);
         rowLoadedText = toolkit.createText(dataQueryComp, null, SWT.BORDER);
         GridDataFactory.fillDefaults().align(SWT.LEFT, SWT.CENTER).applyTo(rowLoadedText);
@@ -781,10 +803,11 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
     @Override
     protected void setSampleDataShowWayStatus() {
         DataManager connection = analysisHandler.getConnection();
-        boolean isNotSupportRandom = connection != null
-                && (connection instanceof DelimitedFileConnection || ((connection instanceof DatabaseConnection) && (ConnectionHelper
-                        .isInformix((DatabaseConnection) connection) || ConnectionHelper
-                        .isSybase((DatabaseConnection) connection))));
+        boolean isNotSupportRandom =
+                connection != null
+                        && (connection instanceof DelimitedFileConnection || ((connection instanceof DatabaseConnection) && (ConnectionHelper
+                                .isInformix((DatabaseConnection) connection) || ConnectionHelper
+                                .isSybase((DatabaseConnection) connection))));
         sampleDataShowWayCombo.setEnabled(!isNotSupportRandom);
     }
 
@@ -865,8 +888,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
                 return true;
             }
         };
-        EventManager.getInstance().register(analysisHandler.getAnalysis(), EventEnum.DQ_MATCH_ANALYSIS_REFRESH_WITH_RESULT,
-                refreshTableDataReceiver);
+        EventManager.getInstance().register(analysisHandler.getAnalysis(),
+                EventEnum.DQ_MATCH_ANALYSIS_REFRESH_WITH_RESULT, refreshTableDataReceiver);
     }
 
     /*
@@ -886,13 +909,15 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
 
         if (dataManager != null) {
             // only when "new connection" will give the new connection to this method
-            dialog = new MetadataAndColumnSelectionDialog(
-                    Display.getCurrent().getActiveShell(),
-                    DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections"), dataManager, DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections")); //$NON-NLS-1$ //$NON-NLS-2$
+            dialog =
+                    new MetadataAndColumnSelectionDialog(
+                            Display.getCurrent().getActiveShell(),
+                            DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections"), dataManager, DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections")); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
-            dialog = new MetadataAndColumnSelectionDialog(
-                    Display.getCurrent().getActiveShell(),
-                    DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections"), oldSelectedColumns, DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections")); //$NON-NLS-1$ //$NON-NLS-2$
+            dialog =
+                    new MetadataAndColumnSelectionDialog(
+                            Display.getCurrent().getActiveShell(),
+                            DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections"), oldSelectedColumns, DefaultMessagesImpl.getString("ColumnMasterDetailsPage.columnSelections")); //$NON-NLS-1$ //$NON-NLS-2$
         }
         if (dialog.open() == Window.OK) {
             Object[] selectedResult = dialog.getResult();
@@ -995,15 +1020,18 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
      */
     private void addColumnGivenIndex(IRepositoryNode selectedOne, int positionInNewSelectColumns) {
         if (selectAlgorithmSection.isVSRMode()) {
-            matchingKeySection.addColumn(((ColumnRepNode) selectedOne).getMetadataColumnRepositoryObject().getTdColumn(),
-                    positionInNewSelectColumns);
+            matchingKeySection.addColumn(((ColumnRepNode) selectedOne)
+                    .getMetadataColumnRepositoryObject()
+                    .getTdColumn(), positionInNewSelectColumns);
         } else {
-            matchAndSurvivorKeySection.addColumn(((ColumnRepNode) selectedOne).getMetadataColumnRepositoryObject().getTdColumn(),
-                    positionInNewSelectColumns);
+            matchAndSurvivorKeySection.addColumn(((ColumnRepNode) selectedOne)
+                    .getMetadataColumnRepositoryObject()
+                    .getTdColumn(), positionInNewSelectColumns);
         }
         blockingKeySection.addColumn(((ColumnRepNode) selectedOne).getMetadataColumnRepositoryObject().getTdColumn(),
                 positionInNewSelectColumns);
-        this.particularDefaultSurvivorshipSection.addColumn(((ColumnRepNode) selectedOne).getMetadataColumnRepositoryObject()
+        this.particularDefaultSurvivorshipSection.addColumn(((ColumnRepNode) selectedOne)
+                .getMetadataColumnRepositoryObject()
                 .getTdColumn(), positionInNewSelectColumns);
     }
 
@@ -1152,7 +1180,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
         subPanel.setLayoutData(layoutDataFillBoth);
         subPanel.setLayout(new GridLayout(1, true));
 
-        DataSampleTable.TControl tControl = sampleTable.createTable(subPanel, getSelectedColumnsFromHandler(), listOfData);
+        DataSampleTable.TControl tControl =
+                sampleTable.createTable(subPanel, getSelectedColumnsFromHandler(), listOfData);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(tControl.getControl());
 
         // when refresh the data, the dataSampleSection's width is not 0
@@ -1462,8 +1491,8 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
             return rc;
         }
 
-        RecordMatchingIndicator recordMatchingIndicator = MatchRuleAnlaysisUtils
-                .getRecordMatchIndicatorFromAna(getCurrentModelElement());
+        RecordMatchingIndicator recordMatchingIndicator =
+                MatchRuleAnlaysisUtils.getRecordMatchIndicatorFromAna(getCurrentModelElement());
         EList<MatchRule> matchRules = recordMatchingIndicator.getBuiltInMatchRuleDefinition().getMatchRules();
         if (matchRules.size() > 0) {
             MatchRule matchRule = matchRules.get(0);
@@ -1508,10 +1537,11 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
 
             if (checkResultStatus.isOk()) {
                 if (TaggedValueHelper.getValueBoolean(SQLExecutor.STORE_ON_DISK_KEY, getCurrentModelElement())) {
-                    if (StringUtils
-                            .isBlank(TaggedValueHelper.getValueString(SQLExecutor.TEMP_DATA_DIR, getCurrentModelElement()))) {
+                    if (StringUtils.isBlank(TaggedValueHelper.getValueString(SQLExecutor.TEMP_DATA_DIR,
+                            getCurrentModelElement()))) {
                         checkResultStatus.setOk(false);
-                        checkResultStatus.setMessage(DefaultMessagesImpl.getString("MatchMasterDetailsPage.invalidTempFolder")); //$NON-NLS-1$
+                        checkResultStatus.setMessage(DefaultMessagesImpl
+                                .getString("MatchMasterDetailsPage.invalidTempFolder")); //$NON-NLS-1$
                     }
                 }
             }
@@ -1580,9 +1610,10 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
     @Override
     public void dispose() {
         // unregister the event after create the connection
-        EventManager.getInstance()
-                .clearEvent(this.dataSampleparentComposite, EventEnum.DQ_SELECT_ELEMENT_AFTER_CREATE_CONNECTION);
-        EventManager.getInstance().clearEvent(analysisHandler.getAnalysis(), EventEnum.DQ_MATCH_ANALYSIS_REFRESH_WITH_RESULT);
+        EventManager.getInstance().clearEvent(this.dataSampleparentComposite,
+                EventEnum.DQ_SELECT_ELEMENT_AFTER_CREATE_CONNECTION);
+        EventManager.getInstance().clearEvent(analysisHandler.getAnalysis(),
+                EventEnum.DQ_MATCH_ANALYSIS_REFRESH_WITH_RESULT);
         EventManager.getInstance().clearEvent(analysisHandler.getAnalysis(),
                 EventEnum.DQ_MATCH_ANALYSIS_REFRESH_DATAPROVIDER_LABEL);
 

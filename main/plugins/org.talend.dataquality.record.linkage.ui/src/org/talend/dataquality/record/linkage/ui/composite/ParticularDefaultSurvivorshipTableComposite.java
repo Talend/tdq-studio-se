@@ -41,6 +41,7 @@ public class ParticularDefaultSurvivorshipTableComposite extends
     protected void initHeaders() {
         headers.add(MatchAnalysisConstant.PRECOLUMN);
         headers.add(MatchAnalysisConstant.FUNCTION);
+        headers.add(MatchAnalysisConstant.REFERENCE_COLUMN);
         headers.add(MatchAnalysisConstant.PARAMETER);
     }
 
@@ -58,7 +59,8 @@ public class ParticularDefaultSurvivorshipTableComposite extends
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.DefaultSurvivorshipTableComposite#setInput(org.eclipse.emf.common.util
+     * org.talend.dataquality.record.linkage.ui.composite.DefaultSurvivorshipTableComposite#setInput(org.eclipse.emf.common
+     * .util
      * .EList)
      */
     public void setTableViewerInput(EList<ParticularDefaultSurvivorshipDefinitions> inputs) {
@@ -82,7 +84,8 @@ public class ParticularDefaultSurvivorshipTableComposite extends
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.AbsMatchAnalysisTableComposite#removeKeyDefinition(java.lang.Object,
+     * org.talend.dataquality.record.linkage.ui.composite.AbsMatchAnalysisTableComposite#removeKeyDefinition(java.lang.
+     * Object,
      * java.util.List)
      */
     @Override
@@ -95,7 +98,8 @@ public class ParticularDefaultSurvivorshipTableComposite extends
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.AbsMatchAnalysisTableComposite#removeKeyDefinition(java.lang.String,
+     * org.talend.dataquality.record.linkage.ui.composite.AbsMatchAnalysisTableComposite#removeKeyDefinition(java.lang.
+     * String,
      * java.util.List)
      */
     @Override
@@ -107,7 +111,8 @@ public class ParticularDefaultSurvivorshipTableComposite extends
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.AbsMatchAnalysisTableComposite#moveDownKeyDefinition(java.lang.Object,
+     * org.talend.dataquality.record.linkage.ui.composite.AbsMatchAnalysisTableComposite#moveDownKeyDefinition(java.lang.
+     * Object,
      * java.util.List)
      */
     @Override

@@ -42,7 +42,8 @@ public abstract class FrequencyTypeStates extends AbstractChartTypeStates {
 
     @Override
     public Object getChart(Object dataset) {
-        return TOPChartUtils.getInstance().createBarChartByKCD(DefaultMessagesImpl.getString("TopChartFactory.count"), dataset); //$NON-NLS-1$
+        return TOPChartUtils.getInstance().createBarChartByKCD(
+                DefaultMessagesImpl.getString("TopChartFactory.count"), dataset); //$NON-NLS-1$
     }
 
     public ICustomerDataset getCustomerDataset() {
@@ -59,18 +60,20 @@ public abstract class FrequencyTypeStates extends AbstractChartTypeStates {
 
                 for (int i = 0; i < numOfShown; i++) {
                     FrequencyExt freqExt = frequencyExt[i];
-                    String keyLabel = FrequencyTypeStateUtil.getKeyLabel(freqExt, FrequencyTypeStateUtil.MAX_KEY_LENGTH);
+                    String keyLabel =
+                            FrequencyTypeStateUtil.getKeyLabel(freqExt, FrequencyTypeStateUtil.MAX_KEY_LENGTH);
 
                     setValueToDataset(customerdataset, freqExt, keyLabel);
 
-                    ChartDataEntity entity = FrequencyTypeStateUtil.createChartEntity(unit.getIndicator(), freqExt, keyLabel,
-                            withRowCountIndicator);
+                    ChartDataEntity entity =
+                            FrequencyTypeStateUtil.createChartEntity(unit.getIndicator(), freqExt, keyLabel, true);
 
                     customerdataset.addDataEntity(entity);
                 }
             } else {
-                ChartDataEntity entity = FrequencyTypeStateUtil.createChartEntity(unit.getIndicator(), null,
-                        SpecialValueDisplay.EMPTY_FIELD, false);
+                ChartDataEntity entity =
+                        FrequencyTypeStateUtil.createChartEntity(unit.getIndicator(), null,
+                                SpecialValueDisplay.EMPTY_FIELD, false);
                 FrequencyExt fre = new FrequencyExt();
                 fre.setValue(0l);
                 fre.setFrequency(0d);
@@ -89,7 +92,8 @@ public abstract class FrequencyTypeStates extends AbstractChartTypeStates {
      * @param freqExt
      * @param keyLabel
      */
-    protected void setValueToDataset(CustomerDefaultCategoryDataset customerdataset, FrequencyExt freqExt, String keyLabel) {
+    protected void setValueToDataset(CustomerDefaultCategoryDataset customerdataset, FrequencyExt freqExt,
+            String keyLabel) {
         customerdataset.addValue(freqExt.getValue(), "1", keyLabel); //$NON-NLS-1$
     }
 
@@ -101,8 +105,6 @@ public abstract class FrequencyTypeStates extends AbstractChartTypeStates {
         return FrequencyTypeStateUtil.isWithRowCountIndicator(units);
     }
 
-
-    
     /**
      * Sets the isSupportDynamicChart.
      * 
@@ -115,6 +117,5 @@ public abstract class FrequencyTypeStates extends AbstractChartTypeStates {
     protected abstract void sortIndicator(FrequencyExt[] frequencyExt);
 
     protected abstract String getTitle();
-
 
 }

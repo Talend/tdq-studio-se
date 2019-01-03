@@ -14,11 +14,15 @@ package org.talend.dataquality.record.linkage.ui.composite.tableviewer;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnPixelData;
+import org.eclipse.jface.viewers.ComboBoxCellEditor;
 import org.eclipse.jface.viewers.IBaseLabelProvider;
 import org.eclipse.jface.viewers.IContentProvider;
 import org.eclipse.jface.viewers.TableLayout;
@@ -437,6 +441,24 @@ public abstract class AbstractMatchAnalysisTableViewer<T> extends TableViewer {
         } else {
             keyList.add(indexForElement, keyDef);
         }
+    }
+
+    protected ComboBoxCellEditor createColumnCombEditor(List<MetadataColumn> columnList,
+            Predicate<MetadataColumn> filter) {
+        List<String> colArrayList = new ArrayList<String>();
+        for (MetadataColumn metaCol : columnList) {
+            if (filter == null || filter.test(metaCol)) {
+                colArrayList.add(metaCol.getName() == null ? StringUtils.EMPTY : metaCol.getName());
+            }
+        }
+        String[] colArray = colArrayList.toArray(new String[colArrayList.size()]);
+
+        ComboBoxCellEditor comboEditor = new ComboBoxCellEditor(innerTable, colArray, SWT.READ_ONLY);
+        if (colArray.length > 0) {
+            comboEditor.setValue(0);
+        }
+
+        return comboEditor;
     }
 
 }

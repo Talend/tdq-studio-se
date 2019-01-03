@@ -22,6 +22,7 @@ import org.talend.dataquality.rules.RulesPackage;
  * <ul>
  *   <li>{@link org.talend.dataquality.rules.impl.AlgorithmDefinitionImpl#getAlgorithmType <em>Algorithm Type</em>}</li>
  *   <li>{@link org.talend.dataquality.rules.impl.AlgorithmDefinitionImpl#getAlgorithmParameters <em>Algorithm Parameters</em>}</li>
+ *   <li>{@link org.talend.dataquality.rules.impl.AlgorithmDefinitionImpl#getReferenceColumn <em>Reference Column</em>}</li>
  * </ul>
  * </p>
  *
@@ -67,6 +68,26 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
      * @ordered
      */
     protected String algorithmParameters = ALGORITHM_PARAMETERS_EDEFAULT;
+
+    /**
+     * The default value of the '{@link #getReferenceColumn() <em>Reference Column</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getReferenceColumn()
+     * @generated
+     * @ordered
+     */
+    protected static final String REFERENCE_COLUMN_EDEFAULT = null;
+
+    /**
+     * The cached value of the '{@link #getReferenceColumn() <em>Reference Column</em>}' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getReferenceColumn()
+     * @generated
+     * @ordered
+     */
+    protected String referenceColumn = REFERENCE_COLUMN_EDEFAULT;
 
     /**
      * <!-- begin-user-doc -->
@@ -134,6 +155,27 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
      * <!-- end-user-doc -->
      * @generated
      */
+    public String getReferenceColumn() {
+        return referenceColumn;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setReferenceColumn(String newReferenceColumn) {
+        String oldReferenceColumn = referenceColumn;
+        referenceColumn = newReferenceColumn;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, RulesPackage.ALGORITHM_DEFINITION__REFERENCE_COLUMN, oldReferenceColumn, referenceColumn));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
@@ -141,6 +183,8 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
                 return getAlgorithmType();
             case RulesPackage.ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS:
                 return getAlgorithmParameters();
+            case RulesPackage.ALGORITHM_DEFINITION__REFERENCE_COLUMN:
+                return getReferenceColumn();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -158,6 +202,9 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
                 return;
             case RulesPackage.ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS:
                 setAlgorithmParameters((String)newValue);
+                return;
+            case RulesPackage.ALGORITHM_DEFINITION__REFERENCE_COLUMN:
+                setReferenceColumn((String)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -177,6 +224,9 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
             case RulesPackage.ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS:
                 setAlgorithmParameters(ALGORITHM_PARAMETERS_EDEFAULT);
                 return;
+            case RulesPackage.ALGORITHM_DEFINITION__REFERENCE_COLUMN:
+                setReferenceColumn(REFERENCE_COLUMN_EDEFAULT);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -193,6 +243,8 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
                 return ALGORITHM_TYPE_EDEFAULT == null ? algorithmType != null : !ALGORITHM_TYPE_EDEFAULT.equals(algorithmType);
             case RulesPackage.ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS:
                 return ALGORITHM_PARAMETERS_EDEFAULT == null ? algorithmParameters != null : !ALGORITHM_PARAMETERS_EDEFAULT.equals(algorithmParameters);
+            case RulesPackage.ALGORITHM_DEFINITION__REFERENCE_COLUMN:
+                return REFERENCE_COLUMN_EDEFAULT == null ? referenceColumn != null : !REFERENCE_COLUMN_EDEFAULT.equals(referenceColumn);
         }
         return super.eIsSet(featureID);
     }
@@ -211,6 +263,8 @@ public class AlgorithmDefinitionImpl extends EObjectImpl implements AlgorithmDef
         result.append(algorithmType);
         result.append(", algorithmParameters: ");
         result.append(algorithmParameters);
+        result.append(", referenceColumn: ");
+        result.append(referenceColumn);
         result.append(')');
         return result.toString();
     }

@@ -94,7 +94,7 @@ public class FrequencyTypeStateUtil {
         } else if (indicator instanceof BenfordLawFrequencyIndicator) {
             entity.setPercent(freqExt.getFrequency());
         } else {
-            Double percent = isWithRowCountIndicator ? freqExt.getFrequency() : Double.NaN;
+            Double percent = true ? freqExt.getFrequency() : Double.NaN;
             entity.setPercent(percent);
         }
         return entity;

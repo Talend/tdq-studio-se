@@ -15,8 +15,10 @@ package org.talend.dataquality.record.linkage.ui.composite.tableviewer;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 
 /**
  * created by zshen on Sep 13, 2013 Detailled comment
@@ -65,6 +67,33 @@ public abstract class AbstractMatchCellModifier<T> implements ICellModifier {
      */
     public void setTableViewer(AbstractMatchAnalysisTableViewer<T> tableViewer) {
         this.tableViewer = tableViewer;
+    }
+
+    protected String convertColIndex2Name(String newValue, ColumnsDateFilter colDateFilter) {
+        int idx = Integer.parseInt(newValue);
+        if (columnList == null || columnList.isEmpty()) {
+            return null;
+        }
+        if (idx == -1) {
+            return null;
+        }
+        int index = 0;
+        for (MetadataColumn metaColumn : columnList) {
+            if (metaColumn == null) {
+                return null;
+            }
+            if (StringUtils.equals(metaColumn.getName(), newValue)) {
+                return null;
+            }
+            if (colDateFilter != null && !colDateFilter.test(metaColumn)) {
+                continue;
+            }
+            if (idx == index) {
+                return metaColumn.getName();
+            }
+            index++;
+        }
+        return null;
     }
 
 }

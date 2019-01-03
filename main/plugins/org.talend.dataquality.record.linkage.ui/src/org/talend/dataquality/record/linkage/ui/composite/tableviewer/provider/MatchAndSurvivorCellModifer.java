@@ -20,6 +20,7 @@ import org.talend.dataquality.record.linkage.constant.TokenizedResolutionMethod;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchAnalysisTableViewer;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchCellModifier;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.definition.MatchKeyAndSurvivorDefinition;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 import org.talend.dataquality.record.linkage.utils.HandleNullEnum;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
@@ -56,6 +57,9 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
                 if (AttributeMatcherType.CUSTOM.name().equals(mkd.getMatchKey().getAlgorithm().getAlgorithmType())) {
                     return false;
                 }
+            } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
+                return isSurvivorShipAlgorithm(mkd, SurvivorShipAlgorithmEnum.MOST_ANCIENT)
+                        || isSurvivorShipAlgorithm(mkd, SurvivorShipAlgorithmEnum.MOST_RECENT);
             }
             return true;
         }
@@ -81,7 +85,8 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
         if (MatchAnalysisConstant.HANDLE_NULL.equalsIgnoreCase(property)) {
             return HandleNullEnum.getTypeByValue(mkd.getMatchKey().getHandleNull()).ordinal();
         } else if (MatchAnalysisConstant.MATCHING_TYPE.equalsIgnoreCase(property)) {
-            // TDQ-13070: fix when click the have selected "Custom" Function, the show text is changed to others(t-swoosh)
+            // TDQ-13070: fix when click the have selected "Custom" Function, the show text is changed to
+            // others(t-swoosh)
             return AttributeMatcherType.valueOf(mkd.getMatchKey().getAlgorithm().getAlgorithmType()).ordinal();
         } else if (MatchAnalysisConstant.CUSTOM_MATCHER.equalsIgnoreCase(property)) {
             return mkd.getMatchKey().getAlgorithm().getAlgorithmParameters();
@@ -101,15 +106,39 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
         } else if (MatchAnalysisConstant.THRESHOLD.equalsIgnoreCase(property)) {
             return String.valueOf(mkd.getMatchKey().getThreshold());
         } else if (MatchAnalysisConstant.FUNCTION.equalsIgnoreCase(property)) {
-            return SurvivorShipAlgorithmEnum.getTypeBySavedValue(mkd.getSurvivorShipKey().getFunction().getAlgorithmType())
-                    .getIndex();
+            return SurvivorShipAlgorithmEnum.getTypeBySavedValue(
+                    mkd.getSurvivorShipKey().getFunction().getAlgorithmType()).getIndex();
         } else if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
             return mkd.getSurvivorShipKey().getFunction().getAlgorithmParameters();
         } else if (MatchAnalysisConstant.TOKENIZATION_TYPE.equalsIgnoreCase(property)) {
-            return TokenizedResolutionMethod.getTypeByValueWithDefault(mkd.getMatchKey().getTokenizationType()).ordinal();
+            return TokenizedResolutionMethod
+                    .getTypeByValueWithDefault(mkd.getMatchKey().getTokenizationType())
+                    .ordinal();
+        } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
+            return getReferenceColumnValue(mkd);
         }
         return null;
 
+    }
+
+    protected Object getReferenceColumnValue(MatchKeyAndSurvivorDefinition mkd) {
+        int colIdx = 0;
+        String referenceColumn = mkd.getSurvivorShipKey().getFunction().getReferenceColumn();
+        boolean isReferenceColumnExist = true;
+        if (StringUtils.isEmpty(referenceColumn)) {
+            isReferenceColumnExist = false;
+        }
+        for (MetadataColumn metaColumn : columnList) {
+            ColumnsDateFilter dateColFilter = new ColumnsDateFilter();
+            if (!dateColFilter.test(metaColumn)) {
+                continue;
+            }
+            if (metaColumn.getName().equals(isReferenceColumnExist ? mkd.getMatchKey().getColumn() : referenceColumn)) {
+                break;
+            }
+            colIdx++;
+        }
+        return colIdx;
     }
 
     /*
@@ -165,19 +194,13 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
                 matchKey.setName(newValue);
                 mkd.getSurvivorShipKey().setName(newValue);
             } else if (MatchAnalysisConstant.INPUT_COLUMN.equalsIgnoreCase(property)) {
-                int idx = Integer.valueOf(newValue);
-                if (columnList == null || columnList.isEmpty()) {
+                String metaColumnName = convertColIndex2Name(newValue, null);
+                if (metaColumnName == null) {
                     return;
+                    // no modify anything
                 }
-                MetadataColumn metaColumn = columnList.get(idx);
-                if (metaColumn == null) {
-                    return;
-                }
-                if (StringUtils.equals(metaColumn.getName(), newValue)) {
-                    return;
-                }
-                matchKey.setColumn(metaColumn.getName());
-                mkd.getSurvivorShipKey().setColumn(metaColumn.getName());
+                matchKey.setColumn(metaColumnName);
+                mkd.getSurvivorShipKey().setColumn(metaColumnName);
                 // added TDQ-9296, nodify the change to let the upper layer know this
                 tableViewer.noticeColumnSelectChange();
             } else if (MatchAnalysisConstant.THRESHOLD.equalsIgnoreCase(property)) {
@@ -193,23 +216,24 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
                     // revert user change at here so don't need do anything
                 }
             } else if (MatchAnalysisConstant.FUNCTION.equalsIgnoreCase(property)) {
-                SurvivorShipAlgorithmEnum valueByIndex = SurvivorShipAlgorithmEnum.getTypeByIndex(Integer.valueOf(newValue)
-                        .intValue());
+                SurvivorShipAlgorithmEnum valueByIndex =
+                        SurvivorShipAlgorithmEnum.getTypeByIndex(Integer.valueOf(newValue).intValue());
                 if (StringUtils.equals(mkd.getSurvivorShipKey().getFunction().getAlgorithmType(),
                         valueByIndex.getComponentValueName())) {
                     return;
                 }
                 mkd.getSurvivorShipKey().getFunction().setAlgorithmType(valueByIndex.getComponentValueName());
-                if (!(isSurvivorShipAlgorithm(mkd, SurvivorShipAlgorithmEnum.MOST_TRUSTED_SOURCE) | (isSurvivorShipAlgorithm(mkd,
-                        SurvivorShipAlgorithmEnum.CONCATENATE)))) {
+                if (!(isSurvivorShipAlgorithm(mkd, SurvivorShipAlgorithmEnum.MOST_TRUSTED_SOURCE) | (isSurvivorShipAlgorithm(
+                        mkd, SurvivorShipAlgorithmEnum.CONCATENATE)))) {
                     mkd.getSurvivorShipKey().getFunction().setAlgorithmParameters(StringUtils.EMPTY);
-                    // MOD mzhao 2014-7-22 there will be an exception here, when switching the surv functions. Confirmed
-                    // with haibo (MDM team), removed this code.
-                    // CellEditor[] cellEditors = tableViewer.getCellEditors();
-                    // if (cellEditors.length == 9) {
-                    // cellEditors[7].setValue(StringUtils.EMPTY);
-                    // }
                 }
+            } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
+                String metaColumnName = convertColIndex2Name(newValue, new ColumnsDateFilter());
+                if (metaColumnName == null) {
+                    return;
+                    // no modify anything
+                }
+                mkd.getSurvivorShipKey().getFunction().setReferenceColumn(metaColumnName);
             } else if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
                 mkd.getSurvivorShipKey().getFunction().setAlgorithmParameters(newValue);
             } else if (MatchAnalysisConstant.TOKENIZATION_TYPE.equalsIgnoreCase(property)) {
@@ -224,4 +248,5 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
             tableViewer.update(mkd, null);
         }
     }
+
 }

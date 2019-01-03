@@ -28,6 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.record.linkage.ui.action.MatchRuleActionGroup;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.DefaultSurvivorshipLabelProvider;
 import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
@@ -114,12 +115,18 @@ public class DefaultSurvivorShipTableViewer extends AbstractMatchAnalysisTableVi
                 switch (i) {
 
                 case 0:
-                    editors[i] = new ComboBoxCellEditor(innerTable, DefaultSurvivorShipDataTypeEnum.getAllTypes(), SWT.READ_ONLY);
+                    editors[i] =
+                            new ComboBoxCellEditor(innerTable, DefaultSurvivorShipDataTypeEnum.getAllTypes(),
+                                    SWT.READ_ONLY);
                     break;
                 case 1:
-                    editors[i] = new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
+                    editors[i] =
+                            new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
                     break;
-                case 2:
+                case 2:// MatchAnalysisConstant.REFERENCE_COLUMN show date type only
+                    editors[i] = createColumnCombEditor(columnList, new ColumnsDateFilter());
+                    break;
+                case 3:
                     editors[i] = new TextCellEditor(innerTable);
 
                 }
