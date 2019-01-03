@@ -1531,7 +1531,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
                 numberOfConnectionsPerAnalysisText.setText(changedValue);
             }
         }
-        if (ContextHelper.isContextVar(dataFilterComp.getDataFilterString())) {
+        if (dataFilterComp != null && ContextHelper.isContextVar(dataFilterComp.getDataFilterString())) {
             String changedValue = ContextHelper.getChangedValue(analysis.getContextType(), contextManager,
                     dataFilterComp.getDataFilterString());
             if (StringUtils.isNotBlank(changedValue)) {

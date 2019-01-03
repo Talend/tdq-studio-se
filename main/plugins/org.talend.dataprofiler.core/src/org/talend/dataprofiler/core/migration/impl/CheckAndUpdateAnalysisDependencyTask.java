@@ -177,6 +177,7 @@ public class CheckAndUpdateAnalysisDependencyTask extends AbstractWorksapceUpdat
     private void saveFile(File needSaveFile, Document doc) {// 将Document输出到文件
         TransformerFactory transFactory = TransformerFactory.newInstance();
         try {
+            transFactory.setFeature(javax.xml.XMLConstants.FEATURE_SECURE_PROCESSING, Boolean.TRUE);
             Transformer transformer = transFactory.newTransformer();
             Source xmlSource = new DOMSource(doc);
             Result result = new StreamResult(needSaveFile);

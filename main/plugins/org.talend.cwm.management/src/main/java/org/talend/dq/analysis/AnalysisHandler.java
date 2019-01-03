@@ -171,14 +171,27 @@ public class AnalysisHandler {
      * @return the schema names concatenated or the empty string (never null)
      */
     public String getSchemaNames() {
-        String str = PluginConstant.EMPTY_STRING;
+        List<String> schemaNames = new ArrayList<String>();
+
         for (ColumnSet columnSet : getColumnSets()) {
             Package schema = ColumnSetHelper.getParentCatalogOrSchema(columnSet);
             if (schema != null && RelationalPackage.eINSTANCE.getSchema().equals(schema.eClass())) {
-                str = str + schema.getName() + " "; //$NON-NLS-1$
+                if (!schemaNames.contains(schema.getName())) {
+                    schemaNames.add(schema.getName());
+                }
             }
         }
-        return str;
+
+        if (!schemaNames.isEmpty()) {
+            StringBuilder strBuilder = new StringBuilder();
+            for (String catalog : schemaNames) {
+                strBuilder.append(catalog);
+                strBuilder.append(PluginConstant.SPACE_STRING);
+            }
+            return strBuilder.toString();
+        }
+
+        return PluginConstant.EMPTY_STRING;
     }
 
     /**
