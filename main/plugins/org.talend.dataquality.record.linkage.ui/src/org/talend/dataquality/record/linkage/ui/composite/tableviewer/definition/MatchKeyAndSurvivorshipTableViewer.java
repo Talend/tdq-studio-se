@@ -160,7 +160,9 @@ public class MatchKeyAndSurvivorshipTableViewer extends AbstractMatchAnalysisTab
         skd.setName(columnName);
         AlgorithmDefinition createAlgorithmDefinition = RulesFactory.eINSTANCE.createAlgorithmDefinition();
         createAlgorithmDefinition.setAlgorithmType(SurvivorShipAlgorithmEnum.getTypeByIndex(3).getComponentValueName());
+        createAlgorithmDefinition.setReferenceColumn(columnName);
         skd.setFunction(createAlgorithmDefinition);
+        skd.setColumn(columnName);
         skd.setAllowManualResolution(true);
         return skd;
     }

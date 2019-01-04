@@ -409,12 +409,16 @@ public class AnalysisRecordGroupingUtils {
 
     private static String findColumnIndex(Map<MetadataColumn, String> columnMap, String referenceColumn,
             String inputColumn) {
+        String compareColName = referenceColumn;
+        if (StringUtils.isEmpty(inputColumn)) {
+            compareColName = inputColumn;
+        }
         for (MetadataColumn metaColumn : columnMap.keySet()) {
-            if (metaColumn.getName().equals(referenceColumn)) {
+            if (metaColumn.getName().equals(compareColName)) {
                 return columnMap.get(metaColumn);
             }
         }
-        return inputColumn;
+        return "0"; //$NON-NLS-1$
     }
 
     /**
@@ -569,7 +573,9 @@ public class AnalysisRecordGroupingUtils {
         }
         for (SurvivorshipKeyDefinition surKey : surKeyList) {
             AnalysisRecordGroupingUtils.survivKeyColumn = surKey.getColumn();
-            if (surKey != null && survivKeyColumn.equals(inputColumn)) {
+            if (survivKeyColumn == null) {
+                matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, "0"); //$NON-NLS-1$
+            } else if (surKey != null && survivKeyColumn != null && survivKeyColumn.equals(inputColumn)) {
                 String referenceColumn = surKey.getFunction().getReferenceColumn();
                 if (referenceColumn == null) {
                     referenceColumn = inputColumn;
