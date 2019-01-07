@@ -31,6 +31,7 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.record.linkage.ui.action.MatchRuleActionGroup;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.ParticularDefaultSurvivorshipLabelProvider;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
@@ -115,7 +116,7 @@ public class ParticularDefaultSurvivorShipTableViewer extends
             {
                 switch (i) {
 
-                case 0:
+                case 0:// MatchAnalysisConstant.INPUT_COLUMN
                     String[] cols = new String[columnList.size()];
                     int idx = 0;
                     for (MetadataColumn metaCol : columnList) {
@@ -123,10 +124,14 @@ public class ParticularDefaultSurvivorShipTableViewer extends
                     }
                     editors[i] = new ComboBoxCellEditor(innerTable, cols, SWT.READ_ONLY);
                     break;
-                case 1:
-                    editors[i] = new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
+                case 1:// MatchAnalysisConstant.survivorship function
+                    editors[i] =
+                            new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
                     break;
-                case 2:
+                case 2:// MatchAnalysisConstant.REFERENCE_COLUMN show date type only
+                    editors[i] = createColumnCombEditor(columnList, new ColumnsDateFilter());
+                    break;
+                case 3:// MatchAnalysisConstant.PARAMETER
                     editors[i] = new TextCellEditor(innerTable);
 
                 }
@@ -142,7 +147,8 @@ public class ParticularDefaultSurvivorShipTableViewer extends
 
     @Override
     protected ParticularDefaultSurvivorshipDefinitions createNewKeyDefinition(String columnName) {
-        ParticularDefaultSurvivorshipDefinitions pskd = RulesFactory.eINSTANCE.createParticularDefaultSurvivorshipDefinitions();
+        ParticularDefaultSurvivorshipDefinitions pskd =
+                RulesFactory.eINSTANCE.createParticularDefaultSurvivorshipDefinitions();
         AlgorithmDefinition createAlgorithmDefinition = RulesFactory.eINSTANCE.createAlgorithmDefinition();
         createAlgorithmDefinition.setAlgorithmType(SurvivorShipAlgorithmEnum.getTypeByIndex(3).getComponentValueName());
         pskd.setFunction(createAlgorithmDefinition);
@@ -153,7 +159,8 @@ public class ParticularDefaultSurvivorShipTableViewer extends
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchAnalysisTableViewer#removeElement(java.lang
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchAnalysisTableViewer#removeElement(java
+     * .lang
      * .Object, java.util.List)
      */
     @Override
@@ -224,7 +231,8 @@ public class ParticularDefaultSurvivorShipTableViewer extends
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchAnalysisTableViewer#addEditingSupportForColumn
+     * org.talend.dataquality.record.linkage.ui.composite.tableviewer.AbstractMatchAnalysisTableViewer#
+     * addEditingSupportForColumn
      * (org.eclipse.swt.widgets.TableColumn, java.lang.String)
      */
     @Override

@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.emf.common.util.EList;
 import org.talend.commons.exception.BusinessException;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
@@ -41,6 +42,7 @@ import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.RulesPackage;
+import org.talend.dataquality.rules.SurvivorshipKeyDefinition;
 import org.talend.dq.analysis.adapter.AnalysisMatchParameterAdapter;
 import org.talend.dq.helper.CustomAttributeMatcherHelper;
 
@@ -50,6 +52,8 @@ import org.talend.dq.helper.CustomAttributeMatcherHelper;
 public class AnalysisRecordGroupingUtils {
 
     public static final String ESCAPE_CHARACTER = "\\"; //$NON-NLS-1$
+
+    private static String survivKeyColumn;
 
     /**
      * get Complete Column Schema.
@@ -79,10 +83,12 @@ public class AnalysisRecordGroupingUtils {
         MetadataColumn dummyScoreColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         dummyScoreColumn.setName(MatchAnalysisConstant.SCORE);
         columnNameList.add(dummyScoreColumn);
-        MetadataColumn dummyGRPQualityColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        MetadataColumn dummyGRPQualityColumn =
+                ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         dummyGRPQualityColumn.setName(MatchAnalysisConstant.GRP_QUALITY);
         columnNameList.add(dummyGRPQualityColumn);
-        MetadataColumn dummyAtrrScoresColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        MetadataColumn dummyAtrrScoresColumn =
+                ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         dummyAtrrScoresColumn.setName(MatchAnalysisConstant.ATTRIBUTE_SCORES);
         columnNameList.add(dummyAtrrScoresColumn);
         return columnNameList.toArray(new MetadataColumn[columnNameList.size()]);
@@ -113,10 +119,12 @@ public class AnalysisRecordGroupingUtils {
         MetadataColumn dummyScoreColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         dummyScoreColumn.setName(MatchAnalysisConstant.SCORE);
         columnNameList.add(dummyScoreColumn);
-        MetadataColumn dummyGRPQualityColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        MetadataColumn dummyGRPQualityColumn =
+                ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         dummyGRPQualityColumn.setName(MatchAnalysisConstant.GRP_QUALITY);
         columnNameList.add(dummyGRPQualityColumn);
-        MetadataColumn dummyAtrrScoresColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        MetadataColumn dummyAtrrScoresColumn =
+                ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         dummyAtrrScoresColumn.setName(MatchAnalysisConstant.ATTRIBUTE_SCORES);
         columnNameList.add(dummyAtrrScoresColumn);
         return columnNameList.toArray(new MetadataColumn[columnNameList.size()]);
@@ -134,12 +142,13 @@ public class AnalysisRecordGroupingUtils {
      * @param attributeName
      * @return
      */
-    public static Map<String, String> getMatchKeyMap(String column, String algoType, String algoParameter, int confidentWeight,
-            double attrThreshold, Map<MetadataColumn, String> columnIndexMap, double matchInterval, String attributeName,
-            String handleNull) {
-        return getMatchKeyMap(column, algoType, algoParameter, confidentWeight, attrThreshold, columnIndexMap, matchInterval,
-                attributeName, handleNull, null);// The jar path is null when the matcher's algorithm is not a type of
-                                                 // "custom"
+    public static Map<String, String> getMatchKeyMap(String column, String algoType, String algoParameter,
+            int confidentWeight, double attrThreshold, Map<MetadataColumn, String> columnIndexMap,
+            double matchInterval, String attributeName, String handleNull) {
+        return getMatchKeyMap(column, algoType, algoParameter, confidentWeight, attrThreshold, columnIndexMap,
+                matchInterval, attributeName, handleNull, null);// The jar path is null when the matcher's algorithm is
+                                                                // not a type of
+                                                                // "custom"
     }
 
     /**
@@ -156,12 +165,13 @@ public class AnalysisRecordGroupingUtils {
      * @param jarPath
      * @return
      */
-    public static Map<String, String> getMatchKeyMap(String column, String algoType, String algoParameter, int confidentWeight,
-            double attrThreshold, Map<MetadataColumn, String> columnIndexMap, double matchInterval, String attributeName,
-            String handleNull, String jarPath) {
-        Map<String, String> matchKeyMap = getMatchKeyMap(column, algoType, algoParameter, confidentWeight, attrThreshold,
-                columnIndexMap, matchInterval, attributeName, null, handleNull, jarPath, null);// the last one parameter need to
-                                                                                               // be check by junit
+    public static Map<String, String> getMatchKeyMap(String column, String algoType, String algoParameter,
+            int confidentWeight, double attrThreshold, Map<MetadataColumn, String> columnIndexMap,
+            double matchInterval, String attributeName, String handleNull, String jarPath) {
+        Map<String, String> matchKeyMap =
+                getMatchKeyMap(column, algoType, algoParameter, confidentWeight, attrThreshold, columnIndexMap,
+                        matchInterval, attributeName, null, handleNull, jarPath, null);// the last one parameter need to
+                                                                                       // be check by junit
         return matchKeyMap;
     }
 
@@ -181,9 +191,10 @@ public class AnalysisRecordGroupingUtils {
      * @param jarPath
      * @return
      */
-    public static Map<String, String> getMatchKeyMap(String column, String algoType, String algoParameter, int confidentWeight,
-            double attrThreshold, Map<MetadataColumn, String> columnIndexMap, double matchInterval, String attributeName,
-            String matchKeyName, String handleNull, String jarPath, String tokenizationType) {
+    public static Map<String, String> getMatchKeyMap(String column, String algoType, String algoParameter,
+            int confidentWeight, double attrThreshold, Map<MetadataColumn, String> columnIndexMap,
+            double matchInterval, String attributeName, String matchKeyName, String handleNull, String jarPath,
+            String tokenizationType) {
         Map<String, String> matchKeyMap = new HashMap<String, String>();
         for (MetadataColumn metaCol : columnIndexMap.keySet()) {
             if (metaCol.getName().equals(column)) {
@@ -209,8 +220,8 @@ public class AnalysisRecordGroupingUtils {
      * 
      * @return
      */
-    public static Map<String, String> getBlockingKeyMap(String column, String preAlgo, String preAlgValue, String algorithm,
-            String algorithmValue, String postAlgo, String postAlgoValue) {
+    public static Map<String, String> getBlockingKeyMap(String column, String preAlgo, String preAlgValue,
+            String algorithm, String algorithmValue, String postAlgo, String postAlgoValue) {
         Map<String, String> blockKeyDefMap = new HashMap<String, String>();
         blockKeyDefMap.put(MatchAnalysisConstant.PRECOLUMN, column);
         blockKeyDefMap.put(MatchAnalysisConstant.PRE_ALGO, preAlgo);
@@ -274,7 +285,8 @@ public class AnalysisRecordGroupingUtils {
      * @param recordMatchingIndicator
      */
     public static void createAppliedBlockKeyByGenKey(RecordMatchingIndicator recordMatchingIndicator) {
-        List<AppliedBlockKey> appliedBlockKeys = recordMatchingIndicator.getBuiltInMatchRuleDefinition().getAppliedBlockKeys();
+        List<AppliedBlockKey> appliedBlockKeys =
+                recordMatchingIndicator.getBuiltInMatchRuleDefinition().getAppliedBlockKeys();
         appliedBlockKeys.clear();
         List<BlockKeyDefinition> blockKeyDefs = recordMatchingIndicator.getBuiltInMatchRuleDefinition().getBlockKeys();
         if (blockKeyDefs != null && blockKeyDefs.size() > 0) {
@@ -292,7 +304,8 @@ public class AnalysisRecordGroupingUtils {
      * @return
      */
     public static List<Map<String, String>> getBlockKeySchema(RecordMatchingIndicator recordMatchingIndicator) {
-        List<AppliedBlockKey> appliedBlockKeys = recordMatchingIndicator.getBuiltInMatchRuleDefinition().getAppliedBlockKeys();
+        List<AppliedBlockKey> appliedBlockKeys =
+                recordMatchingIndicator.getBuiltInMatchRuleDefinition().getAppliedBlockKeys();
 
         List<Map<String, String>> blockKeySchema = new ArrayList<Map<String, String>>();
         for (KeyDefinition keyDef : appliedBlockKeys) {
@@ -302,7 +315,8 @@ public class AnalysisRecordGroupingUtils {
             if (StringUtils.equals(PluginConstant.BLOCK_KEY, column)) {
                 // If there exist customized block key defined, get the key
                 // parameters.
-                List<BlockKeyDefinition> blockKeyDefs = recordMatchingIndicator.getBuiltInMatchRuleDefinition().getBlockKeys();
+                List<BlockKeyDefinition> blockKeyDefs =
+                        recordMatchingIndicator.getBuiltInMatchRuleDefinition().getBlockKeys();
                 for (BlockKeyDefinition blockKeyDef : blockKeyDefs) {
                     Map<String, String> blockKeyDefMap = new HashMap<String, String>();
                     blockKeyDefMap.putAll(getCustomizedBlockKeyParameter(blockKeyDef, blockKeyDef.getColumn()));
@@ -331,8 +345,9 @@ public class AnalysisRecordGroupingUtils {
         String algorithmValue = blockKeydef.getAlgorithm().getAlgorithmParameters();
         String postAlgo = blockKeydef.getPostAlgorithm().getAlgorithmType();
         String postAlgValue = blockKeydef.getPostAlgorithm().getAlgorithmParameters();
-        Map<String, String> blockKeyDefMap = AnalysisRecordGroupingUtils.getBlockingKeyMap(column, preAlgo, preAlgoValue,
-                algorithm, algorithmValue, postAlgo, postAlgValue);
+        Map<String, String> blockKeyDefMap =
+                AnalysisRecordGroupingUtils.getBlockingKeyMap(column, preAlgo, preAlgoValue, algorithm, algorithmValue,
+                        postAlgo, postAlgValue);
         return blockKeyDefMap;
     }
 
@@ -344,13 +359,17 @@ public class AnalysisRecordGroupingUtils {
      * @param analysisMatchRecordGrouping
      * @throws BusinessException
      */
-    public static void setRuleMatcher(Map<MetadataColumn, String> columnMap, RecordMatchingIndicator recordMatchingIndicator,
-            AnalysisMatchRecordGrouping analysisMatchRecordGrouping) throws BusinessException {
+    public static void setRuleMatcher(Map<MetadataColumn, String> columnMap,
+            RecordMatchingIndicator recordMatchingIndicator, AnalysisMatchRecordGrouping analysisMatchRecordGrouping)
+            throws BusinessException {
         List<MatchRule> matchRules = recordMatchingIndicator.getBuiltInMatchRuleDefinition().getMatchRules();
-
+        EList<SurvivorshipKeyDefinition> survivorshipKeys =
+                recordMatchingIndicator.getBuiltInMatchRuleDefinition().getSurvivorshipKeys();
         // Column index list store all the indices.
         List<String> allColumnIndice = new ArrayList<String>();
-        for (MatchRule matcher : matchRules) {
+        for (int matcherIndex = 0; matcherIndex < matchRules.size(); matcherIndex++) {
+            MatchRule matcher = matchRules.get(matcherIndex);
+            SurvivorshipKeyDefinition surKey = null;
             if (matcher == null) {
                 continue;
             }
@@ -361,14 +380,17 @@ public class AnalysisRecordGroupingUtils {
                 // column,throw exception, do not continue
                 if (matchDef.getColumn() == null || StringUtils.EMPTY.equals(matchDef.getColumn())) {
                     BusinessException businessException = new BusinessException();
-                    businessException.setAdditonalMessage(Messages.getString("MatchAnalysisExecutor.NoColumnInMatchKey", //$NON-NLS-1$
+                    businessException.setAdditonalMessage(Messages.getString(
+                            "MatchAnalysisExecutor.NoColumnInMatchKey", //$NON-NLS-1$
                             matchDef.getName()));
                     throw businessException;
                 }
                 String algorithmType = matchDef.getAlgorithm().getAlgorithmType();
-                Map<String, String> matchKeyMap = getMatchKeyMap(columnMap, matcher, matchDef, algorithmType);
+                Map<String, String> matchKeyMap =
+                        getMatchKeyMap(columnMap, matcher, matchDef, algorithmType, survivorshipKeys);
                 addMatchKeyOrderbyColumnIdx(currentRuleMatcher, matchKeyMap);
                 currentColumnIndice.add(matchKeyMap.get(IRecordGrouping.COLUMN_IDX));
+
             }
 
             if (allColumnIndice.isEmpty()) {
@@ -378,10 +400,25 @@ public class AnalysisRecordGroupingUtils {
                 }
 
             } else {
-                refineMatcherWithDummy(analysisMatchRecordGrouping, allColumnIndice, currentColumnIndice, currentRuleMatcher);
+                refineMatcherWithDummy(analysisMatchRecordGrouping, allColumnIndice, currentColumnIndice,
+                        currentRuleMatcher);
             }
             analysisMatchRecordGrouping.addRuleMatcher(currentRuleMatcher);
         }
+    }
+
+    private static String findColumnIndex(Map<MetadataColumn, String> columnMap, String referenceColumn,
+            String inputColumn) {
+        String compareColName = referenceColumn;
+        if (StringUtils.isEmpty(inputColumn)) {
+            compareColName = inputColumn;
+        }
+        for (MetadataColumn metaColumn : columnMap.keySet()) {
+            if (metaColumn.getName().equals(compareColName)) {
+                return columnMap.get(metaColumn);
+            }
+        }
+        return "0"; //$NON-NLS-1$
     }
 
     /**
@@ -397,16 +434,20 @@ public class AnalysisRecordGroupingUtils {
     public static void initialMatchGrouping(Map<MetadataColumn, String> columnMap,
             RecordMatchingIndicator recordMatchingIndicator, AnalysisMatchRecordGrouping analysisMatchRecordGrouping)
             throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-        if (recordMatchingIndicator.getBuiltInMatchRuleDefinition().getRecordLinkageAlgorithm()
+        if (recordMatchingIndicator
+                .getBuiltInMatchRuleDefinition()
+                .getRecordLinkageAlgorithm()
                 .equals(RecordMatcherType.simpleVSRMatcher.name())) {
+            // vsr case
             analysisMatchRecordGrouping.setRecordLinkAlgorithm(RecordMatcherType.simpleVSRMatcher);
             analysisMatchRecordGrouping.initialize();
         } else {
+            // swoosh case
             analysisMatchRecordGrouping.setRecordLinkAlgorithm(RecordMatcherType.T_SwooshAlgorithm);
             analysisMatchRecordGrouping.setOrginalInputColumnSize(columnMap.size() + 1);
             analysisMatchRecordGrouping.initialize();
-            SurvivorShipAlgorithmParams survivorShipAlgorithmParams = createSurvivorShipAlgorithmParams(
-                    analysisMatchRecordGrouping, recordMatchingIndicator, columnMap);
+            SurvivorShipAlgorithmParams survivorShipAlgorithmParams =
+                    createSurvivorShipAlgorithmParams(analysisMatchRecordGrouping, recordMatchingIndicator, columnMap);
             analysisMatchRecordGrouping.setSurvivorShipAlgorithmParams(survivorShipAlgorithmParams);
         }
     }
@@ -431,7 +472,8 @@ public class AnalysisRecordGroupingUtils {
     /**
      * 
      * DOC zshen Comment method "createSurvivorShipAlgorithmParams".
-     * Same with {@link SurvivorshipUtils#createSurvivorShipAlgorithmParams(AnalysisMatchRecordGrouping, List, List, Map, Map)} so
+     * Same with
+     * {@link SurvivorshipUtils#createSurvivorShipAlgorithmParams(AnalysisMatchRecordGrouping, List, List, Map, Map)} so
      * that any modify need to synchronization them with same time
      * 
      * @param analysisMatchRecordGrouping
@@ -442,8 +484,8 @@ public class AnalysisRecordGroupingUtils {
     public static SurvivorShipAlgorithmParams createSurvivorShipAlgorithmParams(
             AnalysisMatchRecordGrouping analysisMatchRecordGrouping, RecordMatchingIndicator recordMatchingIndicator,
             Map<MetadataColumn, String> columnMap) {
-        return SurvivorshipUtils.createSurvivorShipAlgorithmParams(new AnalysisMatchParameterAdapter(analysisMatchRecordGrouping,
-                recordMatchingIndicator, columnMap));
+        return SurvivorshipUtils.createSurvivorShipAlgorithmParams(new AnalysisMatchParameterAdapter(
+                analysisMatchRecordGrouping, recordMatchingIndicator, columnMap));
     }
 
     /**
@@ -456,17 +498,21 @@ public class AnalysisRecordGroupingUtils {
      * @param defSurvDef
      */
     private static void putNewSurvFunc(Map<MetadataColumn, String> columnMap,
-            SurvivorShipAlgorithmParams survivorShipAlgorithmParams, Map<Integer, SurvivorshipFunction> defaultSurvRules,
-            MetadataColumn metaColumn, DefaultSurvivorshipDefinition defSurvDef) {
+            SurvivorShipAlgorithmParams survivorShipAlgorithmParams,
+            Map<Integer, SurvivorshipFunction> defaultSurvRules, MetadataColumn metaColumn,
+            DefaultSurvivorshipDefinition defSurvDef) {
         SurvivorshipFunction survFunc = survivorShipAlgorithmParams.new SurvivorshipFunction();
         survFunc.setParameter(defSurvDef.getFunction().getAlgorithmParameters());
-        survFunc.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(defSurvDef.getFunction()
+        survFunc.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(defSurvDef
+                .getFunction()
                 .getAlgorithmType()));
         defaultSurvRules.put(Integer.valueOf(columnMap.get(metaColumn)), survFunc);
     }
 
-    private static void refineMatcherWithDummy(AnalysisMatchRecordGrouping analysisMatchRecordGrouping,
-            List<String> allColumnIndice, List<String> currentColumnIndice, List<Map<String, String>> currentRuleMatcher) {
+    private static void
+            refineMatcherWithDummy(AnalysisMatchRecordGrouping analysisMatchRecordGrouping,
+                    List<String> allColumnIndice, List<String> currentColumnIndice,
+                    List<Map<String, String>> currentRuleMatcher) {
         List<List<Map<String, String>>> multiMatchRules = analysisMatchRecordGrouping.getMultiMatchRules();
         // Refine the other matchers with dummy matcher
         for (Map<String, String> matchKey : currentRuleMatcher) {
@@ -505,23 +551,44 @@ public class AnalysisRecordGroupingUtils {
     }
 
     private static Map<String, String> getMatchKeyMap(Map<MetadataColumn, String> columnMap, MatchRule matcher,
-            MatchKeyDefinition matchDef, String algorithmType) {
+            MatchKeyDefinition matchDef, String algorithmType, EList<SurvivorshipKeyDefinition> surKeyList) {
         Map<String, String> matchKeyMap = null;
+        String inputColumn = matchDef.getColumn();
         if (AttributeMatcherType.get(algorithmType) == AttributeMatcherType.CUSTOM) {
-            matchKeyMap = AnalysisRecordGroupingUtils.getMatchKeyMap(matchDef.getColumn(), algorithmType, matchDef.getAlgorithm()
-                    .getAlgorithmParameters(), matchDef.getConfidenceWeight(), matchDef.getThreshold(), columnMap, matcher
-                    .getMatchInterval(), matchDef.getColumn(), matchDef.getName(), matchDef.getHandleNull(),
-                    CustomAttributeMatcherHelper.getFullJarPath(matchDef.getAlgorithm().getAlgorithmParameters()), null);
+            matchKeyMap =
+                    AnalysisRecordGroupingUtils.getMatchKeyMap(inputColumn, algorithmType, matchDef
+                            .getAlgorithm()
+                            .getAlgorithmParameters(), matchDef.getConfidenceWeight(), matchDef.getThreshold(),
+                            columnMap, matcher.getMatchInterval(), inputColumn, matchDef.getName(), matchDef
+                                    .getHandleNull(), CustomAttributeMatcherHelper.getFullJarPath(matchDef
+                                    .getAlgorithm()
+                                    .getAlgorithmParameters()), null);
         } else {
-            matchKeyMap = AnalysisRecordGroupingUtils.getMatchKeyMap(matchDef.getColumn(), algorithmType, matchDef.getAlgorithm()
-                    .getAlgorithmParameters(), matchDef.getConfidenceWeight(), matchDef.getThreshold(), columnMap, matcher
-                    .getMatchInterval(), matchDef.getColumn(), matchDef.getName(), matchDef.getHandleNull(), null, matchDef
-                    .getTokenizationType());
+            matchKeyMap =
+                    AnalysisRecordGroupingUtils.getMatchKeyMap(inputColumn, algorithmType, matchDef
+                            .getAlgorithm()
+                            .getAlgorithmParameters(), matchDef.getConfidenceWeight(), matchDef.getThreshold(),
+                            columnMap, matcher.getMatchInterval(), inputColumn, matchDef.getName(), matchDef
+                                    .getHandleNull(), null, matchDef.getTokenizationType());
+        }
+        for (SurvivorshipKeyDefinition surKey : surKeyList) {
+            AnalysisRecordGroupingUtils.survivKeyColumn = surKey.getColumn();
+            if (survivKeyColumn == null) {
+                matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, "0"); //$NON-NLS-1$
+            } else if (surKey != null && survivKeyColumn != null && survivKeyColumn.equals(inputColumn)) {
+                String referenceColumn = surKey.getFunction().getReferenceColumn();
+                if (referenceColumn == null) {
+                    referenceColumn = inputColumn;
+                }
+                String referenceColumnIndex = findColumnIndex(columnMap, referenceColumn, survivKeyColumn);
+                matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, referenceColumnIndex);
+            }
         }
         return matchKeyMap;
     }
 
-    private static void addMatchKeyOrderbyColumnIdx(List<Map<String, String>> currentRuleMatcher, Map<String, String> matchKeyMap) {
+    private static void addMatchKeyOrderbyColumnIdx(List<Map<String, String>> currentRuleMatcher,
+            Map<String, String> matchKeyMap) {
         int index = 0;
         for (Map<String, String> currentMatchKey : currentRuleMatcher) {
             int currColIdx = Integer.valueOf(currentMatchKey.get(IRecordGrouping.COLUMN_IDX));

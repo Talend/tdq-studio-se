@@ -693,6 +693,15 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
      * <!-- end-user-doc -->
      * @generated
      */
+    public EAttribute getAlgorithmDefinition_ReferenceColumn() {
+        return (EAttribute)algorithmDefinitionEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getMatchRule() {
         return matchRuleEClass;
     }
@@ -877,6 +886,7 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         algorithmDefinitionEClass = createEClass(ALGORITHM_DEFINITION);
         createEAttribute(algorithmDefinitionEClass, ALGORITHM_DEFINITION__ALGORITHM_TYPE);
         createEAttribute(algorithmDefinitionEClass, ALGORITHM_DEFINITION__ALGORITHM_PARAMETERS);
+        createEAttribute(algorithmDefinitionEClass, ALGORITHM_DEFINITION__REFERENCE_COLUMN);
 
         matchRuleEClass = createEClass(MATCH_RULE);
         createEReference(matchRuleEClass, MATCH_RULE__MATCH_KEYS);
@@ -1012,6 +1022,7 @@ public class RulesPackageImpl extends EPackageImpl implements RulesPackage {
         initEClass(algorithmDefinitionEClass, AlgorithmDefinition.class, "AlgorithmDefinition", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getAlgorithmDefinition_AlgorithmType(), theEcorePackage.getEString(), "algorithmType", null, 0, 1, AlgorithmDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getAlgorithmDefinition_AlgorithmParameters(), theEcorePackage.getEString(), "algorithmParameters", null, 0, 1, AlgorithmDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEAttribute(getAlgorithmDefinition_ReferenceColumn(), theEcorePackage.getEString(), "referenceColumn", null, 0, 1, AlgorithmDefinition.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(matchRuleEClass, MatchRule.class, "MatchRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getMatchRule_MatchKeys(), this.getMatchKeyDefinition(), null, "matchKeys", null, 0, -1, MatchRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

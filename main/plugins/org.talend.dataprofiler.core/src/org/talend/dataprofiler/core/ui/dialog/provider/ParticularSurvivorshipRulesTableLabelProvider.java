@@ -11,10 +11,10 @@
 //
 // ============================================================================
 package org.talend.dataprofiler.core.ui.dialog.provider;
-import java.util.HashMap;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  * The lable provider of particular survivorship rules table
@@ -33,7 +33,8 @@ public class ParticularSurvivorshipRulesTableLabelProvider extends MatchRulesTab
     /*
      * (non-Javadoc)
      * 
-     * @see org.talend.dataprofiler.core.ui.dialog.provider.MatchRulesTableLabelProvider#getColumnText(java.lang.Object, int)
+     * @see org.talend.dataprofiler.core.ui.dialog.provider.MatchRulesTableLabelProvider#getColumnText(java.lang.Object,
+     * int)
      */
     @Override
     public String getColumnText(Object element, int columnIndex) {
@@ -47,7 +48,10 @@ public class ParticularSurvivorshipRulesTableLabelProvider extends MatchRulesTab
         case 1: // survivorship function
             result = rule.get(SURVIVORSHIP_FUNCTION);
             break;
-        case 2: // parameter
+        case 2: // REFERENCE COLUMN
+            result = rule.get(REFERENCE_COLUMN);
+            break;
+        case 3: // parameter
             result = rule.get(PARAMETER);
             break;
         }

@@ -488,6 +488,10 @@
       <genClasses ecoreClass="dataquality.ecore#//indicators/BenfordLawFrequencyIndicator"/>
       <genClasses ecoreClass="dataquality.ecore#//indicators/EastAsiaPatternFreqIndicator"/>
       <genClasses ecoreClass="dataquality.ecore#//indicators/EastAsiaPatternLowFreqIndicator"/>
+      <genClasses ecoreClass="dataquality.ecore#//indicators/CSWordPatternFreqIndicator"/>
+      <genClasses ecoreClass="dataquality.ecore#//indicators/CSWordPatternLowFreqIndicator"/>
+      <genClasses ecoreClass="dataquality.ecore#//indicators/CIWordPatternFreqIndicator"/>
+      <genClasses ecoreClass="dataquality.ecore#//indicators/CIWordPatternLowFreqIndicator"/>
       <nestedGenPackages prefix="Schema" basePackage="org.talend.dataquality.indicators"
           disposableProviderFactory="true" ecorePackage="dataquality.ecore#//indicators/schema">
         <genClasses ecoreClass="dataquality.ecore#//indicators/schema/SchemaIndicator">
@@ -841,6 +845,7 @@
       <genClasses ecoreClass="dataquality.ecore#//rules/AlgorithmDefinition">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//rules/AlgorithmDefinition/algorithmType"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//rules/AlgorithmDefinition/algorithmParameters"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//rules/AlgorithmDefinition/referenceColumn"/>
       </genClasses>
       <genClasses ecoreClass="dataquality.ecore#//rules/MatchRule">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//rules/MatchRule/matchKeys"/>

@@ -24,8 +24,11 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.record.linkage.constant.AttributeMatcherType;
 import org.talend.dataquality.record.linkage.constant.TokenizedResolutionMethod;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.cellEditor.jarFileCellEditor;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.definition.MatchKeyAndSurvivorDefinition;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.definition.MatchKeyAndSurvivorshipTableViewer;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.AnaMatchKeyAndSurvLabelProvider;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.provider.MatchAndSurvivorCellModifer;
 import org.talend.dataquality.record.linkage.utils.HandleNullEnum;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
 import org.talend.dataquality.rules.MatchRule;
@@ -72,15 +75,7 @@ public class AnaMatchKeyAndSurvTableViewer extends MatchKeyAndSurvivorshipTableV
             // used for MDM T-swoosh
             switch (i) {
             case 1:// MatchAnalysisConstant.INPUT_COLUMN
-                String[] colArray = new String[columnList.size()];
-                int idx = 0;
-                for (MetadataColumn metaCol : columnList) {
-                    colArray[idx++] = metaCol.getName() == null ? "" : metaCol.getName();
-                }
-                editors[i] = new ComboBoxCellEditor(innerTable, colArray, SWT.READ_ONLY);
-                if (colArray.length > 0) {
-                    ((ComboBoxCellEditor) editors[i]).setValue(0);
-                }
+                editors[i] = createColumnCombEditor(columnList, null);
                 break;
             case 2:// MatchAnalysisConstant.MATCHING_TYPE
                 editors[i] = new ComboBoxCellEditor(innerTable, AttributeMatcherType.getAllTypes(), SWT.READ_ONLY);
@@ -97,12 +92,21 @@ public class AnaMatchKeyAndSurvTableViewer extends MatchKeyAndSurvivorshipTableV
             case 8:// MatchAnalysisConstant.FUNCTION
                 editors[i] = new ComboBoxCellEditor(innerTable, SurvivorShipAlgorithmEnum.getAllTypes(), SWT.READ_ONLY);
                 break;
-            default:// MatchAnalysisConstant.THRESHOLD MatchAnalysisConstant.CONFIDENCE_WEIGHT and MatchAnalysisConstant.PARAMETER
+            case 9:// MatchAnalysisConstant.REFERENCE_COLUMN show date type only
+                editors[i] = createColumnCombEditor(columnList, new ColumnsDateFilter());
+                break;
+            default:// MatchAnalysisConstant.THRESHOLD MatchAnalysisConstant.CONFIDENCE_WEIGHT and
+                    // MatchAnalysisConstant.PARAMETER
                 editors[i] = new TextCellEditor(innerTable);
             }
 
         }
         return editors;
+    }
+
+    @Override
+    protected AbstractMatchCellModifier<MatchKeyAndSurvivorDefinition> getTableCellModifier() {
+        return new MatchAndSurvivorCellModifer(this);
     }
 
 }

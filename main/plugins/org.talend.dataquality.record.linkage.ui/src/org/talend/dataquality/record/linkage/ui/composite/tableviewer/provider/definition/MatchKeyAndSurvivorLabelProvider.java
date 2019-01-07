@@ -49,7 +49,9 @@ public class MatchKeyAndSurvivorLabelProvider extends MatchRuleLabelProvider {
             case 1:// MatchAnalysisConstant.MATCHING_TYPE
                 return AttributeMatcherType.valueOf(mkd.getMatchKey().getAlgorithm().getAlgorithmType()).getLabel();
             case 2:// MatchAnalysisConstant.CUSTOM_MATCHER
-                return CustomAttributeMatcherClassNameConvert.getClassName(mkd.getMatchKey().getAlgorithm()
+                return CustomAttributeMatcherClassNameConvert.getClassName(mkd
+                        .getMatchKey()
+                        .getAlgorithm()
                         .getAlgorithmParameters());
             case 3:// MatchAnalysisConstant.TOKENIZATION_TYPE
                 return String.valueOf(mkd.getMatchKey().getTokenizationType());
@@ -60,9 +62,11 @@ public class MatchKeyAndSurvivorLabelProvider extends MatchRuleLabelProvider {
             case 6:// MatchAnalysisConstant.HANDLE_NULL
                 return mkd.getMatchKey().getHandleNull();
             case 7:// MatchAnalysisConstant.FUNCTION
-                return SurvivorShipAlgorithmEnum.getTypeBySavedValue(mkd.getSurvivorShipKey().getFunction().getAlgorithmType())
-                        .getValue();
-            case 8:// MatchAnalysisConstant.PARAMETER
+                return SurvivorShipAlgorithmEnum.getTypeBySavedValue(
+                        mkd.getSurvivorShipKey().getFunction().getAlgorithmType()).getValue();
+            case 8: // MatchAnalysisConstant.REFERENCE_COLUMN
+                return mkd.getSurvivorShipKey().getFunction().getReferenceColumn();
+            case 9:// MatchAnalysisConstant.PARAMETER
                 return mkd.getSurvivorShipKey().getFunction().getAlgorithmParameters();
 
             }

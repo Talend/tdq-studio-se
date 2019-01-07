@@ -63,13 +63,22 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
     public List<SurvivorshipFunction> getAllSurvivorshipFunctions() {
         List<SurvivorshipFunction> survFunctions = new ArrayList<SurvivorshipFunction>();
         // Survivorship functions.
-        List<SurvivorshipKeyDefinition> survivorshipKeyDefs = recordMatchingIndicator.getBuiltInMatchRuleDefinition()
-                .getSurvivorshipKeys();
+        List<SurvivorshipKeyDefinition> survivorshipKeyDefs =
+                recordMatchingIndicator.getBuiltInMatchRuleDefinition().getSurvivorshipKeys();
         for (SurvivorshipKeyDefinition survDef : survivorshipKeyDefs) {
             SurvivorshipFunction func = new SurvivorShipAlgorithmParams().new SurvivorshipFunction();
             func.setSurvivorShipKey(survDef.getName());
             func.setParameter(survDef.getFunction().getAlgorithmParameters());
-            func.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(survDef.getFunction().getAlgorithmType()));
+            func.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(survDef
+                    .getFunction()
+                    .getAlgorithmType()));
+            String referenceColumn = survDef.getFunction().getReferenceColumn();
+            for (MetadataColumn metaColumn : columnMap.keySet()) {
+                if (metaColumn.getName().equals(referenceColumn)) {
+                    func.setReferenceColumnIndex(Integer.valueOf(columnMap.get(metaColumn)));
+                    func.setReferenceColumnName(referenceColumn);
+                }
+            }
             survFunctions.add(func);
         }
         return survFunctions;
@@ -84,16 +93,17 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
     public Map<Integer, SurvivorshipFunction> getDefaultSurviorShipRules() {
         Map<Integer, SurvivorshipFunction> defaultSurvRules = new HashMap<Integer, SurvivorshipFunction>();
         // Set default survivorship functions.
-        List<DefaultSurvivorshipDefinition> defSurvDefs = recordMatchingIndicator.getBuiltInMatchRuleDefinition()
-                .getDefaultSurvivorshipDefinitions();
+        List<DefaultSurvivorshipDefinition> defSurvDefs =
+                recordMatchingIndicator.getBuiltInMatchRuleDefinition().getDefaultSurvivorshipDefinitions();
         // consisder ParticularDefaultSurvivorshipDefinitions too
-        EList<ParticularDefaultSurvivorshipDefinitions> particularDefaultSurvivorshipDefinitions = recordMatchingIndicator
-                .getBuiltInMatchRuleDefinition().getParticularDefaultSurvivorshipDefinitions();
+        EList<ParticularDefaultSurvivorshipDefinitions> particularDefaultSurvivorshipDefinitions =
+                recordMatchingIndicator.getBuiltInMatchRuleDefinition().getParticularDefaultSurvivorshipDefinitions();
         for (MetadataColumn metaColumn : columnMap.keySet()) {
             String dataTypeName = metaColumn.getTalendType();
             for (ParticularDefaultSurvivorshipDefinitions pdefaultSurvivdef : particularDefaultSurvivorshipDefinitions) {
                 if (pdefaultSurvivdef.getColumn().equals(metaColumn.getName())) {
                     putNewSurvFunc(columnMap, defaultSurvRules, metaColumn, pdefaultSurvivdef);
+                    // add reference column
                     break;
                 }
             }
@@ -129,15 +139,36 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
             DefaultSurvivorshipDefinition defSurvDef) {
         SurvivorshipFunction survFunc = new SurvivorShipAlgorithmParams().new SurvivorshipFunction();
         survFunc.setParameter(defSurvDef.getFunction().getAlgorithmParameters());
-        survFunc.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(defSurvDef.getFunction()
+        survFunc.setSurvivorShipAlgoEnum(SurvivorShipAlgorithmEnum.getTypeBySavedValue(defSurvDef
+                .getFunction()
                 .getAlgorithmType()));
+        survFunc.setReferenceColumnName(defSurvDef.getFunction().getReferenceColumn());
+        Integer findIndex = findIndex(columnMap, defSurvDef.getFunction().getReferenceColumn());
+        if (findIndex != null) {
+            survFunc.setReferenceColumnIndex(findIndex);
+        }
+        survFunc.setReferenceColumnName(defSurvDef.getFunction().getReferenceColumn());
         defaultSurvRules.put(Integer.valueOf(columnMap.get(metaColumn)), survFunc);
+    }
+
+    private static Integer findIndex(Map<MetadataColumn, String> columnMap2, String referenceColumn) {
+        if (columnMap2 == null || referenceColumn == null) {
+            return null;
+        }
+        for (MetadataColumn currentCol : columnMap2.keySet()) {
+            if (referenceColumn.equals(currentCol.getName())) {
+                return Integer.valueOf(columnMap2.get(currentCol));
+            }
+        }
+        return null;
     }
 
     /*
      * (non-Javadoc)
      * 
-     * @see org.talend.dataquality.record.linkage.grouping.adapter.MatchParameterAdapter#getSurvivorshipAlgosMap(java.util.Map)
+     * @see
+     * org.talend.dataquality.record.linkage.grouping.adapter.MatchParameterAdapter#getSurvivorshipAlgosMap(java.util
+     * .Map)
      */
     @Override
     public Map<IRecordMatcher, SurvivorshipFunction[]> getSurvivorshipAlgosMap(
@@ -157,7 +188,8 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
                 String matcherType = mkDef.get(IRecordGrouping.MATCHING_TYPE);
                 if (AttributeMatcherType.DUMMY.name().equalsIgnoreCase(matcherType)) {
                     // Find the func from default survivorship rule.
-                    surFuncsInMatcher[idx] = colIdx2DefaultSurvFunc.get(Integer.valueOf(mkDef.get(IRecordGrouping.COLUMN_IDX)));
+                    surFuncsInMatcher[idx] =
+                            colIdx2DefaultSurvFunc.get(Integer.valueOf(mkDef.get(IRecordGrouping.COLUMN_IDX)));
                     if (surFuncsInMatcher[idx] == null) {
                         // Use CONCATENATE by default if not specified .
                         surFuncsInMatcher[idx] = new SurvivorShipAlgorithmParams().new SurvivorshipFunction();

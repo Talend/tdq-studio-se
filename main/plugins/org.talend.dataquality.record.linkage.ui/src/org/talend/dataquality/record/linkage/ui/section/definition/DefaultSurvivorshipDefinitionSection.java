@@ -29,7 +29,9 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.ScrolledForm;
 import org.eclipse.ui.forms.widgets.Section;
+import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.record.linkage.ui.composite.DefaultSurvivorshipTableComposite;
+import org.talend.dataquality.record.linkage.ui.composite.definition.DefaultSurvivorshipDefinitionTableComposite;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.sorter.KeyDefinitionTableViewerSorter;
 import org.talend.dataquality.record.linkage.ui.composite.utils.MatchRuleAnlaysisUtils;
 import org.talend.dataquality.record.linkage.ui.i18n.internal.DefaultMessagesImpl;
@@ -83,6 +85,11 @@ public class DefaultSurvivorshipDefinitionSection extends AbstractMatchAnaysisTa
         tableComposite.addPropertyChangeListener(this);
         tableComposite.setLayout(gridLayout);
         tableComposite.setLayoutData(data);
+        if (columnMap != null) {
+            ArrayList<MetadataColumn> columnList = new ArrayList<MetadataColumn>();
+            columnList.addAll(columnMap.keySet());
+            tableComposite.setColumnList(columnList);
+        }
         tableComposite.createContent();
         section.setExpanded(true);
         tableComposite.serViewerSorter(createTableViewerSorter());
@@ -98,7 +105,7 @@ public class DefaultSurvivorshipDefinitionSection extends AbstractMatchAnaysisTa
      * @return
      */
     protected DefaultSurvivorshipTableComposite createTableComposite(Composite ruleComp) {
-        return new DefaultSurvivorshipTableComposite(ruleComp, SWT.NO_FOCUS);
+        return new DefaultSurvivorshipDefinitionTableComposite(ruleComp, SWT.NO_FOCUS);
     }
 
     /**
@@ -181,12 +188,12 @@ public class DefaultSurvivorshipDefinitionSection extends AbstractMatchAnaysisTa
                 return;
             }
             List<DefaultSurvivorshipDefinition> currentElements = this.matchRuleDef.getDefaultSurvivorshipDefinitions();
-            List<DefaultSurvivorshipDefinition> defaultSurvivorshipKeyDefinitionlist = ((StructuredSelection) selectItems)
-                    .toList();
+            List<DefaultSurvivorshipDefinition> defaultSurvivorshipKeyDefinitionlist =
+                    ((StructuredSelection) selectItems).toList();
             for (int index = defaultSurvivorshipKeyDefinitionlist.size() - 1; 0 <= index; index--) {
                 if (!isSameWithCurrentModel(
-                        currentElements.get(currentElements.size() - defaultSurvivorshipKeyDefinitionlist.size() + index),
-                        defaultSurvivorshipKeyDefinitionlist.get(index))) {
+                        currentElements.get(currentElements.size() - defaultSurvivorshipKeyDefinitionlist.size()
+                                + index), defaultSurvivorshipKeyDefinitionlist.get(index))) {
                     continue;
                 }
                 DefaultSurvivorshipDefinition next = defaultSurvivorshipKeyDefinitionlist.get(index);
@@ -209,8 +216,8 @@ public class DefaultSurvivorshipDefinitionSection extends AbstractMatchAnaysisTa
                 return;
             }
             List<DefaultSurvivorshipDefinition> currentElements = this.matchRuleDef.getDefaultSurvivorshipDefinitions();
-            List<DefaultSurvivorshipDefinition> defaultSurvivorshipKeyDefinitionlist = ((StructuredSelection) selectItems)
-                    .toList();
+            List<DefaultSurvivorshipDefinition> defaultSurvivorshipKeyDefinitionlist =
+                    ((StructuredSelection) selectItems).toList();
             for (int index = 0; index < defaultSurvivorshipKeyDefinitionlist.size(); index++) {
                 if (!isSameWithCurrentModel(currentElements.get(index), defaultSurvivorshipKeyDefinitionlist.get(index))) {
                     continue;
@@ -254,9 +261,10 @@ public class DefaultSurvivorshipDefinitionSection extends AbstractMatchAnaysisTa
             String algorithmType = dsd.getFunction().getAlgorithmType();
             if (!MatchRuleAnlaysisUtils.isSurvivorShipFunctionConsistentWithType(algorithmType, dsd.getDataType())) {
                 returnCode.setOk(false);
-                String message = DefaultMessagesImpl.getString(
-                        "DefaultSurvivorshipDefinitionSection.survivorshipFunctionNotMatch", dsd.getDataType(), //$NON-NLS-1$
-                        SurvivorShipAlgorithmEnum.getTypeBySavedValue(algorithmType).getValue());
+                String message =
+                        DefaultMessagesImpl.getString(
+                                "DefaultSurvivorshipDefinitionSection.survivorshipFunctionNotMatch", dsd.getDataType(), //$NON-NLS-1$
+                                SurvivorShipAlgorithmEnum.getTypeBySavedValue(algorithmType).getValue());
                 returnCode.setMessage(DefaultMessagesImpl.getString("MatchingKeySection.invalidSurvivorshipFunction", //$NON-NLS-1$
                         getSectionName(), message));
                 return returnCode;

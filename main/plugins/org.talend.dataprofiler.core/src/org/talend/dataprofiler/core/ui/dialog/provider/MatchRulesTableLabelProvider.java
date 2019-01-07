@@ -43,6 +43,8 @@ public class MatchRulesTableLabelProvider extends LabelProvider implements ITabl
 
     public static final String SURVIVORSHIP_FUNCTION = "SURVIVORSHIP_FUNCTION"; //$NON-NLS-1$
 
+    public static final String REFERENCE_COLUMN = "REFERENCE_COLUMN"; //$NON-NLS-1$
+
     public static final String PARAMETER = "PARAMETER"; //$NON-NLS-1$
 
     public static final String TOKENIZATION_TYPE = "TOKENIZATION_TYPE"; //$NON-NLS-1$ The Value should keep same with MatchAnalysisConstant.TOKENIZATION_TYPE
@@ -104,7 +106,10 @@ public class MatchRulesTableLabelProvider extends LabelProvider implements ITabl
         case 8: // survivorship function
             result = rule.get(SURVIVORSHIP_FUNCTION);
             break;
-        case 9: // parameter
+        case 9: // survivorship function
+            result = rule.get(REFERENCE_COLUMN);
+            break;
+        case 10: // parameter
             result = rule.get(PARAMETER);
             break;
         }

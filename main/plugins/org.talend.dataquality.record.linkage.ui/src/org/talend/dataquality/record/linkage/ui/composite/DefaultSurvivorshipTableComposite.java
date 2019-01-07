@@ -41,6 +41,7 @@ public class DefaultSurvivorshipTableComposite extends AbsMatchAnalysisTableComp
     protected void initHeaders() {
         headers.add(MatchAnalysisConstant.DATA_TYPE);
         headers.add(MatchAnalysisConstant.FUNCTION);
+        headers.add(MatchAnalysisConstant.REFERENCE_COLUMN);
         headers.add(MatchAnalysisConstant.PARAMETER);
     }
 
@@ -48,7 +49,7 @@ public class DefaultSurvivorshipTableComposite extends AbsMatchAnalysisTableComp
     protected void createTable() {
         tableViewer = createTableViewer();
         tableViewer.addPropertyChangeListener(this);
-        ((DefaultSurvivorShipTableViewer) tableViewer).initTable(headers);
+        ((DefaultSurvivorShipTableViewer) tableViewer).initTable(headers, columnList, false);
     }
 
     /**

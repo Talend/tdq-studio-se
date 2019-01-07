@@ -17,6 +17,7 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.swt.widgets.TableItem;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.dataquality.record.linkage.ui.composite.tableviewer.editingSupport.FunctionEditingSupport;
+import org.talend.dataquality.record.linkage.ui.composite.tableviewer.filter.ColumnsDateFilter;
 import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
@@ -39,12 +40,15 @@ public class ParticularDefaultSurvivorShipCellModifier extends
     @Override
     public boolean canModify(Object element, String property) {
         if (element != null && element instanceof ParticularDefaultSurvivorshipDefinitions) {
+            ParticularDefaultSurvivorshipDefinitions pdsd = (ParticularDefaultSurvivorshipDefinitions) element;
             if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
-                ParticularDefaultSurvivorshipDefinitions pdsd = (ParticularDefaultSurvivorshipDefinitions) element;
                 return isSurvivorShipAlgorithm(pdsd, SurvivorShipAlgorithmEnum.MOST_TRUSTED_SOURCE)
                         | isSurvivorShipAlgorithm(pdsd, SurvivorShipAlgorithmEnum.CONCATENATE);
             } else if (MatchAnalysisConstant.PRECOLUMN.equalsIgnoreCase(property)) {
                 return columnList.size() > 0;
+            } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
+                return isSurvivorShipAlgorithm(pdsd, SurvivorShipAlgorithmEnum.MOST_ANCIENT)
+                        || isSurvivorShipAlgorithm(pdsd, SurvivorShipAlgorithmEnum.MOST_RECENT);
             } else {
                 return true;
             }
@@ -52,7 +56,8 @@ public class ParticularDefaultSurvivorShipCellModifier extends
         return false;
     }
 
-    private boolean isSurvivorShipAlgorithm(ParticularDefaultSurvivorshipDefinitions pdsd, SurvivorShipAlgorithmEnum algorithm) {
+    private boolean isSurvivorShipAlgorithm(ParticularDefaultSurvivorshipDefinitions pdsd,
+            SurvivorShipAlgorithmEnum algorithm) {
         return pdsd.getFunction().getAlgorithmType().equals(algorithm.getComponentValueName());
     }
 
@@ -78,8 +83,30 @@ public class ParticularDefaultSurvivorShipCellModifier extends
         } else if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
             String algorithmParameters = pskd.getFunction().getAlgorithmParameters();
             return algorithmParameters == null ? StringUtils.EMPTY : algorithmParameters;
+        } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
+            return getReferenceColumnValue(pskd);
         }
         return null;
+    }
+
+    protected Object getReferenceColumnValue(ParticularDefaultSurvivorshipDefinitions pskd) {
+        int colIdx = 0;
+        String referenceColumn = pskd.getFunction().getReferenceColumn();
+        boolean isReferenceColumnExist = true;
+        if (StringUtils.isEmpty(referenceColumn)) {
+            isReferenceColumnExist = false;
+        }
+        for (MetadataColumn metaColumn : columnList) {
+            ColumnsDateFilter dateColFilter = new ColumnsDateFilter();
+            if (!dateColFilter.test(metaColumn)) {
+                continue;
+            }
+            if (metaColumn.getName().equals(isReferenceColumnExist ? pskd.getColumn() : referenceColumn)) {
+                break;
+            }
+            colIdx++;
+        }
+        return colIdx;
     }
 
     /*
@@ -89,12 +116,11 @@ public class ParticularDefaultSurvivorShipCellModifier extends
      */
     @Override
     public void modify(Object element, String property, Object value) {
+        ParticularDefaultSurvivorshipDefinitions pdskd =
+                (ParticularDefaultSurvivorshipDefinitions) ((TableItem) element).getData();
         if (element instanceof TableItem) {
-            ParticularDefaultSurvivorshipDefinitions pdskd = (ParticularDefaultSurvivorshipDefinitions) ((TableItem) element)
-                    .getData();
             String newValue = String.valueOf(value);
             if (MatchAnalysisConstant.PRECOLUMN.equalsIgnoreCase(property)) {
-
                 if (Integer.parseInt(newValue) == -1) {
                     return;
                 }
@@ -109,14 +135,21 @@ public class ParticularDefaultSurvivorShipCellModifier extends
                     resetFunction(pdskd);
                 }
             } else if (MatchAnalysisConstant.FUNCTION.equalsIgnoreCase(property)) {
-                SurvivorShipAlgorithmEnum valueByIndex = SurvivorShipAlgorithmEnum.getTypeByIndex(Integer.valueOf(newValue)
-                        .intValue());
+                SurvivorShipAlgorithmEnum valueByIndex =
+                        SurvivorShipAlgorithmEnum.getTypeByIndex(Integer.valueOf(newValue).intValue());
                 if (StringUtils.equals(pdskd.getFunction().getAlgorithmType(), valueByIndex.getComponentValueName())) {
                     return;
                 }
                 setFunction(pdskd, valueByIndex);
             } else if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
                 pdskd.getFunction().setAlgorithmParameters(newValue);
+            } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
+                String metaColumnName = convertColIndex2Name(newValue, new ColumnsDateFilter());
+                if (metaColumnName == null) {
+                    return;
+                    // no modify anything
+                }
+                pdskd.getFunction().setReferenceColumn(metaColumnName);
             } else {
                 return;
             }
@@ -132,8 +165,8 @@ public class ParticularDefaultSurvivorShipCellModifier extends
      */
     private void setFunction(ParticularDefaultSurvivorshipDefinitions pdskd, SurvivorShipAlgorithmEnum functionEnum) {
         pdskd.getFunction().setAlgorithmType(functionEnum.getComponentValueName());
-        if (!(isSurvivorShipAlgorithm(pdskd, SurvivorShipAlgorithmEnum.MOST_TRUSTED_SOURCE) | isSurvivorShipAlgorithm(pdskd,
-                SurvivorShipAlgorithmEnum.CONCATENATE))) {
+        if (!(isSurvivorShipAlgorithm(pdskd, SurvivorShipAlgorithmEnum.MOST_TRUSTED_SOURCE) | isSurvivorShipAlgorithm(
+                pdskd, SurvivorShipAlgorithmEnum.CONCATENATE))) {
             pdskd.getFunction().setAlgorithmParameters(StringUtils.EMPTY);
             CellEditor[] cellEditors = tableViewer.getCellEditors();
             if (cellEditors.length == 3) {
@@ -161,13 +194,11 @@ public class ParticularDefaultSurvivorShipCellModifier extends
      * @return
      */
     private boolean isFunctionInvalid(ParticularDefaultSurvivorshipDefinitions pdskd, String talendType) {
-        String dataType = pdskd.getDataType();
-        DefaultSurvivorShipDataTypeEnum[] functionDataType = SurvivorShipAlgorithmEnum.getTypeBySavedValue(
-                pdskd.getFunction().getAlgorithmType()).getDataType();
+        DefaultSurvivorShipDataTypeEnum[] functionDataType =
+                SurvivorShipAlgorithmEnum.getTypeBySavedValue(pdskd.getFunction().getAlgorithmType()).getDataType();
         if (functionDataType.length == 0 || FunctionEditingSupport.isSupportDataType(functionDataType, talendType)) {
             return false;
         }
         return true;
     }
-
 }
