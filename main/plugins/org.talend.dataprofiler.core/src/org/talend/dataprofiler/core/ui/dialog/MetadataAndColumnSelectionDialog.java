@@ -47,7 +47,9 @@ public class MetadataAndColumnSelectionDialog extends ColumnsSelectWithConstrain
     public MetadataAndColumnSelectionDialog(Shell parent, String title, List<IRepositoryNode> checkedRepoNodes, String message) {
         super(null, parent, title, checkedRepoNodes, message, false);
         // set the root of the tree, must use the RepositoryNode type.
-        setInput(RepositoryNodeHelper.getRootNode(ERepositoryObjectType.METADATA, true));// ResourceManager.getMetadataFolder());
+        setInput(RepositoryNodeHelper.getNodeListWithReferenceProject(ERepositoryObjectType.METADATA));// RepositoryNodeHelper.getRootNode(ERepositoryObjectType.METADATA,
+                                                                                                       // true));//
+                                                                                                       // ResourceManager.getMetadataFolder());
     }
 
     // TDQ-8248: to only show the datamanager in the dialog, after just created this datamanager
