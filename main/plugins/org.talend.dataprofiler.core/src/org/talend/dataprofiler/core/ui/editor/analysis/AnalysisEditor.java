@@ -437,7 +437,7 @@ public class AnalysisEditor extends SupportContextEditor {
                 ReturnCode canRun = canRun();
                 if (!canRun.isOk()) {
                     MessageDialogWithToggle.openError(null,
-                            DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"), canRun//$NON-NLS-1$
+                            DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysisError"), canRun//$NON-NLS-1$
                                     .getMessage());
                     return false;
                 }

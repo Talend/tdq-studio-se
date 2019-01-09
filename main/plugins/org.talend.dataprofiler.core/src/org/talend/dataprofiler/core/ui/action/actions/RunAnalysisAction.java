@@ -193,7 +193,7 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
                 isNeedUnlock = false;
             }
 
-            final WorkspaceJob job = new WorkspaceJob(DefaultMessagesImpl.getString("RunAnalysisAction.RunAnalysis")) { //$NON-NLS-1$
+            final WorkspaceJob job = new WorkspaceJob(DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis")) { //$NON-NLS-1$
 
                 @Override
                 public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
@@ -388,7 +388,8 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
         DataManager datamanager = runItem.getAnalysis().getContext().getConnection();
         if (datamanager == null) {
             log.error(DefaultMessagesImpl.getString("ColumnMasterDetailsPage.NoColumnAssigned", runItem.getAnalysis().getName())); //$NON-NLS-1$
-            MessageDialogWithToggle.openError(null, DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"),//$NON-NLS-1$
+            MessageDialogWithToggle.openError(null,
+                    DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysisError"),//$NON-NLS-1$
                     DefaultMessagesImpl.getString("ColumnMasterDetailsPage.NoColumnAssigned", runItem.getAnalysis().getName()));//$NON-NLS-1$
             return false;
         }
@@ -408,7 +409,8 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
                 CorePlugin.getDefault().refreshDQView(node1.getParent());
             }
             MessageDialog.openError(PlatformUI.getWorkbench().getDisplay().getActiveShell(),
-                    DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"), //$NON-NLS-1$
+ DefaultMessagesImpl
+                    .getString("RunAnalysisAction.runAnalysisError"), //$NON-NLS-1$
                     DefaultMessagesImpl.getString("RunAnalysisAction.error.lockByOthers", runItem.getAnalysis().getName())); //$NON-NLS-1$
             return true;
         } // ~ TDQ-5452
@@ -487,7 +489,7 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
                             runItem.getAnalysis().getName(), executed.getMessage());
                     log.error(errorMessage);
                     MessageDialogWithToggle.openError(shell,
-                            DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysis"), errorMessage); //$NON-NLS-1$
+                            DefaultMessagesImpl.getString("RunAnalysisAction.runAnalysisError"), errorMessage); //$NON-NLS-1$
                 }
             });
         }
