@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="创建新的用户定义的指标">
+   <intro>
+      <description>
+         您可以创建自己的个性化指标，并采用与管理系统指标相同的方式加以管理。本教程将引导您创建用户定义的指标。
+      </description>
+   </intro>
+   <item
+         title="定义用户定义的指标元数据和设置" dialog="true" skip="false">
+      <description>
+         要打开 <b>New Indicator (新指标)</b> 向导，展开 <b>DQ Repository (DQ 存储库)</b> 树视图的 <b>Libraries (库)</b> 节点和 <b>Indicators (指标)</b> 文件夹。右键单击 <b>User Defined Indicators (用户定义的指标)</b> 并选择 <b>New Indicator (新指标)</b>。向导会提示您提供元数据 (名称、用途、描述...)。从 <b>Language Selection (语言选择)</b> 列表中选择数据库类型，然后根据要创建的指标，在 SQL Template (SQL 模板) 字段中输入相应的 SQL 模板语句。完成后，一个编辑器将打开，您可以根据需要查看和修改指标设置。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateUDIAction" pluginId="org.talend.dataprofiler.core" confirm="false">
+      </action>
+   </item>
+   <item
+         title="查看指标设置">
+      <description>
+         您可以查看和修改 <b>Indicator Settings (指标设置)</b> 编辑器中的指标设置。单击 <b>Indicator Definition (指标定义)</b> 以展开编辑器。如要添加指标，单击 <b>[+]</b> 按钮。在 <b>Database (数据库)</b> 下，从列表中选择数据库特定语言；如果查询足够通用，对任何数据库都适用，则选择 <b>ALL_DATABASE_TYPE</b>。在 SQL Template (SQL 模板) 字段中输入相应的 SQL 模板语句。SQL 模板是采用以下变量表示方法的 SQL 查询，例如：<b>&lt;%=__COLUMN_NAMES__%&gt;</b> 替换列，<b>&lt;%=__TABLE_NAME__%&gt;</b> 替换表名，<b>&lt;%=__WHERE_CLAUSE__%&gt;</b> 替换数据筛选器提供的 where 子句，<b>&lt;%=__GROUP_BY_ALIAS__%&gt;</b> 替换 &quot;group by&quot; 完整子句。默认情况下，新指标类别设定为 <b>User Defined Count (用户定义的计数)</b>。根据指标设定返回的输出类型选择相关类别。
+      </description>
+   </item>
+</cheatsheet>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="新しいビジネスルール分析の作成">
+   <intro>
+      <description>
+         この種の分析により、選択したテーブルにビジネスルールを適用することができます。ビジネスルールを作成し、分析プレパレーションの後の段階で作成した分析に割り当てることができます。
+      </description>
+   </intro>
+   <item
+         title="分析メタデータの選択">
+      <description>
+         <b>[Create New Analysis] (新しい分析の作成)</b>ウィザードを開くには、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで<b>Analyses</b>フォルダーを右クリックし、<b>[New Analysis] (新規分析)</b>を選択します。<b>[Table Analysis] (テーブル分析)</b>を展開し、<b>[Business Rule Analysis] (ビジネスルール分析)</b>を選択します(または下のリンクをクリックします)。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。分析するテーブルまたはビューに移動して選択し、適用する<b>[Business Rules] (ビジネスルール)</b>を選択します。完了するとエディターが開き、そこでメタデータを変更し、分析設定をレビューすることができます。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="11">
+      </action>
+   </item>
+   <item
+         title="分析するテーブル/ビューの選択">
+      <description>
+         エディターで<b>[Select tables/views to analyze] (分析するテーブル/ビューの選択)</b>をクリックします(または下のリンクをクリックします)。目的のテーブルまたはビューに移動して選択します。選択したテーブルまたはビューは、エディターの<b>[Analyzed Tables/Views] (分析対象テーブル/ビュー)</b>部分に表示されます。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="11">
+      </action>
+   </item>
+   <item
+         skip="true"
+         title="テーブルにビジネスルールを追加する">
+      <description>
+         テーブルにビジネスルールを追加するには、ルールを追加するテーブルの名前の横にある<b>[Business Rule] (ビジネスルール)</b>アイコンをクリックします。ダイアログボックスが開いたら、目的のビジネスルールに移動して選択します。または、目的のテーブルの名前の横にある左側の<b>[DQ Repository] (DQリポジトリ)</b>ツリービューから、ルールをドロップします。
+      </description>
+   </item>
+   <item
+         title="分析を実行する">
+      <description>
+         分析を実行するには、エディターの左上にある<b>[Run] (実行)</b>ボタンをクリックします(または下のリンクをクリックします)。分析は、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューから実行することもできます。これを行うには、該当する分析を右クリックし、コンテキストメニューが表示されたら<b>[Run] (実行)</b>アイコンをクリックします。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
+   </item>
+</cheatsheet>

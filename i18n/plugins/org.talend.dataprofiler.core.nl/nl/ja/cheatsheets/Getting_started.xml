@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<compositeCheatsheet name="入門">
+   <taskGroup kind="set" name="Start with" skip="false">
+      <intro>
+         この参照シートでは、分析の作成方法を説明しています。
+      </intro>
+      <onCompletion>
+         <b>結論</b>
+      </onCompletion>
+      <task kind="cheatsheet" name="データベース接続分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、データベース接続の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="DBconnection_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="接続のコンテンツの概要分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、データベース接続の概要分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="ConnectionAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="カタログ分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、カタログ分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="CatalogAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="スキーマ分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、スキーマ分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="SchemaAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="冗長性分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、冗長性分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="RedundancyAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="ビジネスルール分析の作成" skip="false">
+         <intro>
+            この種の分析により、選択したテーブルにビジネスルールを適用することができます。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="BusinessRuleAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="一致分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、一致分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="MatchAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="カラム依存分析の作成" skip="false">
+         <intro>
+            この分析により、カラム依存性の変則を見つけることができます。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="FunctionalDependAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="カラムセット分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、カラムセットのコンテンツ分析の作成方法を説明します。分析で計算されるのは、行カウント、重複を除いたカウント、ユニークカウント、重複カウントです。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="ColumnSetAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="カラム分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、カラム分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="ColumnAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="数値コリレーション分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、数値カラムコリレーション分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="NumericalColumnCorrelationAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="名義コリレーション分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、名義カラムコリレーション分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="NominalCorrelationAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="時間コリレーション分析の作成" skip="false">
+         <intro>
+            このチュートリアルでは、時刻カラムコリレーション分析の作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="TimeColumnCorrelationAnalysis_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="ユーザー定義インジケーターの作成" skip="false">
+         <intro>
+            このチュートリアルでは、ユーザー定義インジケーターの作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="UDI_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="SQLパターンの作成" skip="false">
+         <intro>
+            このチュートリアルでは、SQLパターンの作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="PatternSql_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="正規パターンの作成" skip="false">
+         <intro>
+            このチュートリアルでは、正規表現パターンの作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="PatternRegex_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="ビジネスルールの作成" skip="false">
+         <intro>
+            このチュートリアルでは、ビジネスルールの作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="DqRule_cheat.xml">
+         </param>
+      </task>
+      <task kind="cheatsheet" name="SQLファイルの作成" skip="false">
+         <intro>
+            このチュートリアルでは、SQLソースファイルの作成方法を説明します。
+         </intro>
+         <onCompletion>
+            <b>結論</b>
+         </onCompletion>
+         <param name="path" value="SourceFile_cheat.xml">
+         </param>
+      </task>
+   </taskGroup>
+</compositeCheatsheet>
