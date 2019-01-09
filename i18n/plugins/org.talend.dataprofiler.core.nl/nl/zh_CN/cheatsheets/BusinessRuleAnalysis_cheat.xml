@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="创建新的业务规则分析">
+   <intro>
+      <description>
+         通过此类分析，您可以将业务规则应用于选定的表。请注意，您可以创建业务规则并将其分配给在分析准备的后期阶段创建的分析。
+      </description>
+   </intro>
+   <item
+         title="设定分析元数据">
+      <description>
+         要打开 <b>Create New Analysis (创建新分析)</b> 向导，请右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图上的 <b>Analyses (分析)</b> 文件夹并选择 <b>New Analysis (新建分析)</b>。展开 <b>Table Analysis (表分析)</b> 并选择 <b>Business Rule Analysis (业务规则分析)</b> (或单击下方的链接)。向导会提示您提供分析元数据 (名称、用途、描述....)。浏览到并选择要分析的表或视图，然后选择要应用的 <b>Business Rules (业务规则)</b>。完成后，一个编辑器将打开，您可以在其中修改元数据并检查分析设置。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="11">
+      </action>
+   </item>
+   <item
+         title="选择要分析的表或视图">
+      <description>
+         在编辑器中单击 <b>Select tables/views to analyze (选择要分析的表/视图)</b> (或单击下方的链接)。浏览到并选择感兴趣的表或视图。选定的表或视图将显示在编辑器的 <b>Analyzed Tables/Views (已分析表/视图)</b> 部分。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="11">
+      </action>
+   </item>
+   <item
+         skip="true"
+         title="向表中添加规则">
+      <description>
+         要向表中添加业务规则，单击该表名称旁的 <b>Business Rule (业务规则)</b> 图标。在打开的对话框中，浏览到并选择感兴趣的业务规则。或者，从左侧感兴趣表名称旁的 <b>DQ Repository (DQ 存储库)</b> 树视图拖动一项规则。
+      </description>
+   </item>
+   <item
+         title="分析">
+      <description>
+         要执行分析，单击编辑器左上方的 <b>Run (运行)</b> 按钮 (或单击下方的链接)。您也可以从 <b>DQ Repository (DQ 存储库)</b> 树视图运行分析。为此，请右键单击相关分析，然后单击所显示上下文菜单上的 <b>Run (运行)</b> 图标。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
+   </item>
+</cheatsheet>

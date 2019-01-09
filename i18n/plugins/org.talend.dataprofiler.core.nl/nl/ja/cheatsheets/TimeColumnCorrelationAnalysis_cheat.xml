@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="新しい時間コリレーション分析の作成">
+   <intro>
+      <description>
+         このタイプの分析では、名義カラムと日付カラム間のコリレーションを検証し、各変数の開始日と終了日を結果としてガントチャートに表示します。
+      </description>
+   </intro>
+   <item dialog="true"
+         title="分析メタデータの選択">
+      <description>
+         <b>[Create New Analysis] (新しい分析の作成)</b>ウィザードを開くには、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで<b>Analyses</b>フォルダーを右クリックし、<b>[New Analysis] (新規分析)</b>を選択します。<b>[Time Correlation Analysis] (時間コリレーション分析)</b>に移動して選択します。または、名義カラムまたは日付カラムを右クリックし、<b>[Analyze correlation] (コリレーションの分析)</b>を選択します(または、下のリンクをクリックします)。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析設定を定義することができます。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="true" param1="8" param2="2"/>
+   </item>
+   <item
+         title="分析対象カラムの選択">
+      <description>
+         エディターで<b>[Analyzed Columns] (分析対象カラム)</b>をクリックします(または、下のリンクをクリックします)。<b>[Select columns to analyze] (分析するカラムの選択)</b>をクリックし、ダイアログボックスを開きます。そこで、分析する名義および日付カラムに移動して選択します。または、エディターでカラムを<b>[DQ Repository] (DQリポジトリ)</b>ツリービューから<b>[Analyzed Columns] (分析対象カラム)</b>ボックスにドロップすることもできます。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
+      </action>
+   </item>
+   <item
+         skip="true"
+         title="対応するデータマイニングタイプの選択">
+      <description>
+         各カラムの横に、対応する<b>[Data Mining Type] (データマイニングタイプ)</b>ボックスがあります。適切なデータマイニングタイプをリストから選択します。
+      </description>
+   </item>
+   <item
+         title="分析を実行する">
+      <description>
+         分析を実行するには、エディターの左上にある<b>[Run] (実行)</b>アイコンをクリックします。または、<b>[DQ Repository] (DQリポジトリ)</b>ビューで<b>Analyses</b>フォルダーの下にある分析を右クリックし、<b>[Run] (実行)</b>アイコンを選択します(または、下のリンクをクリックします)。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
+      </action>
+   </item>
+</cheatsheet>

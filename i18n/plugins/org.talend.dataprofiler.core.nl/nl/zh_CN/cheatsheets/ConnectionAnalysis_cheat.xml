@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="创建新的连接概览分析">
+   <intro>
+      <description>
+         此类分析旨在让您大致了解数据库的内容。其会针对每个目录或 schema 计算表数目和每个表的行数，同时计算索引数和主键数。
+      </description>
+   </intro>
+   <item title="设定分析元数据" dialog="true" skip="false">
+      <description>
+要打开 <b>Create New Analysis (创建新分析)</b> 向导，请右键单击 <b>DQ Repository (DQ 存储库)</b> 视图上的 <b>Analyses (分析)</b> 并选择 <b>New Analysis (新建分析)</b>。然后展开 <b>Structural Analysis (结构分析)</b> 并选择 <b>Connection Overview Analysis (连接概览分析)</b>。向导会提示您提供分析元数据 (名称、用途、描述...)。从列表中选择感兴趣的连接，然后根据需要在表或视图上设定筛选器。完成后，一个编辑器将打开，您可以在其中修改分析元数据并定义分析设置。      
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateConnectionAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
+      </action>
+   </item>
+   <item title="检查您的设置" dialog="true" skip="true">
+      <description>
+ 如果需要，单击 <b>Connection Analysis (连接分析)</b> 编辑器上的 Analysis Parameters (分析参数)，检查或者修改表或视图筛选器。
+      </description>
+   </item>
+   <item
+         dialog="true"
+         skip="false"
+         title="分析">
+      <description>
+  单击编辑器左上方的 <b>Run (运行)</b> 图标以执行分析。或者，右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图上的分析并单击所显示列表上的 <b>Run (运行)</b> 图标。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
+      </action>      
+   </item>
+</cheatsheet>

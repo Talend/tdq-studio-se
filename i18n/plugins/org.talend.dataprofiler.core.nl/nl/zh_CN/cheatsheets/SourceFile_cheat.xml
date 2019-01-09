@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet
+      title="创建新的 SQL 源文件">
+   <intro
+         href="http://en.wikipedia.org/wiki/Sql">
+      <description>
+         本备忘单将引导您创建新的 SQL 源文件。
+      </description>
+   </intro>
+   <item
+         title="设定文件名和 sql 内容">
+      <description>
+         要打开 <b>New SQL File (新 SQL 文件)</b> 向导，展开 <b>DQ Repository (DQ 存储库)</b> 视图上的 <b>Libraries (库)</b> 节点并右键单击 <b>Source Files (源文件)</b>。单击上下文菜单上的 <b>New SQL File (新 SQL 文件)</b>。也可以单击下方的链接。指定 SQL 文件元数据 (名称和位置)。完成后，一个编辑器将打开，您可以在其中定义 SQL 内容设置。
+      </description>
+      <action class="org.talend.dataprofiler.core.sql.AddSqlFileAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
+   </item>
+</cheatsheet>
