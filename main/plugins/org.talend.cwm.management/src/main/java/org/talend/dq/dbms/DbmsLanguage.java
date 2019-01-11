@@ -1104,7 +1104,8 @@ public class DbmsLanguage {
         }
 
         // TDQ-11558: added by msjian when there is no REDSHIFT definition, we use postgresql first
-        if (language.equals(SupportDBUrlType.REDSHIFT.getLanguage())) {
+        // TDQ-16020: changed by msjian support redshift-sso
+        if (DbmsLanguageFactory.compareDbmsLanguage(language, SupportDBUrlType.REDSHIFT.getLanguage())) {
             return getSqlExpression(indicatorDefinition, SupportDBUrlType.POSTGRESQLEFAULTURL.getLanguage(),
                     sqlGenericExpression, dbVersion);
         }

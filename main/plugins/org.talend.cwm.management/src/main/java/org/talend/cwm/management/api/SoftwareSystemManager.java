@@ -280,8 +280,8 @@ public final class SoftwareSystemManager {
                     }
                 }
                 if (!isExist) {
-                    // TDQ-11558 msjian: because we have "Redshift" and "Hive | Impala" types, so ignore these
-                    if (subtype.equalsIgnoreCase(SupportDBUrlType.REDSHIFT.getLanguage())
+                    // TDQ-11558 msjian: because we have "Redshift(-SSO)" and "Hive | Impala" types, so ignore these
+                    if (subtype.contains(SupportDBUrlType.REDSHIFT.getLanguage())
                             || subtype.equalsIgnoreCase(SupportDBUrlType.IMPALA.getLanguage())
                             || subtype.contains(SupportDBUrlType.HIVEDEFAULTURL.getLanguage())) {
                         continue;

@@ -361,6 +361,11 @@ public final class DbmsLanguageFactory {
             return true;
         }
 
+        // ADD msjian TDQ-16020: support redshift-sso
+        if (StringUtils.contains(lang1, DbmsLanguage.REDSHIFT) && StringUtils.contains(lang2, DbmsLanguage.REDSHIFT)) {
+            return true;
+        }
+
         return StringUtils.contains(StringUtils.upperCase(lang1), StringUtils.upperCase(lang2))
                 || StringUtils.contains(StringUtils.upperCase(lang2), StringUtils.upperCase(lang1));
     }
