@@ -243,7 +243,7 @@ public class ManagedDriver implements Comparable<ManagedDriver> {
         String dbVersion = dbConn.getDbVersionString();
         String userName = dbConn.getUsername();
         userName = userName != null ? userName : PluginConstant.EMPTY_STRING;
-        String message = "fail to regist jdbc driver in SQLExplorer";
+        String message = "fail to register jdbc driver in SQLExplorer";
         if (driverClassName == null || dbType == null || dbType.equalsIgnoreCase(EDatabaseTypeName.HIVE.getXmlName())
                 || dbType.equalsIgnoreCase(EDatabaseTypeName.IMPALA.getXmlName())) {
             log.error(message);
@@ -272,7 +272,7 @@ public class ManagedDriver implements Comparable<ManagedDriver> {
     }
 
     /**
-     * regist jdbc driver except Hive by HotClassLoader.
+     * register jdbc driver except Hive by HotClassLoader.
      * 
      * @param dbConnection
      * @return
@@ -298,7 +298,7 @@ public class ManagedDriver implements Comparable<ManagedDriver> {
             }
         }
         if (jdbcDriver == null) {
-            log.error("fail to regist jdbc driver in SQLExplorer");
+            log.error("fail to register jdbc driver in SQLExplorer");
         }
 
     }
@@ -377,7 +377,7 @@ public class ManagedDriver implements Comparable<ManagedDriver> {
             }
         }
         if (jdbcDriver == null) {
-            log.error("fail to regist Hive jdbc driver in SQLExplorer");
+            log.error("fail to register Hive jdbc driver in SQLExplorer");
         }
 
     }
