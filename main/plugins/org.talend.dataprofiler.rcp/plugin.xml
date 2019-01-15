@@ -720,9 +720,9 @@
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
-            name="commons-collections-3.2.1.jar" mvn_uri="mvn:org.talend.libraries/commons-collections-3.2.1/6.0.0" 
+            name="commons-collections-3.2.2.jar" mvn_uri="mvn:org.talend.libraries/commons-collections-3.2.2/6.0.0" 
             required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.2.1.jar">
+            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.2.2.jar">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
