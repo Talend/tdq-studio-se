@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="创建新的数据库连接">
+   <intro>
+      <description>
+         本教程将引导您创建数据库连接。
+      </description>
+   </intro>
+   <item title="创建数据库连接" dialog="true" skip="false">
+      <description>
+         打开 <b>DB Connection (数据库连接)</b> 向导，展开 <b>Metadata (元数据)</b> 节点。然后，右键单击 <b>DB connections (数据库连接)</b> 并选择 <b>Create DB Connection (创建数据库连接)</b> (或单击下方的链接)。此向导会提示您提供连接元数据和身份验证信息，并创建与 DBMS (数据库管理系统) 的连接。完成后，数据库内容将添加到 <b>DQ Repository (DQ 存储库)</b> 树视图。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateDBConnectionAction" pluginId="org.talend.dataprofiler.core"   confirm="false" param1="0">
+      </action>
+   </item>
+   <item title="数据库内容" dialog="true" skip="false" href="http://en.wikipedia.org/wiki/Database_management_system">
+      <description>
+         注意：无论数据库的名称为何，其所有可访问的内容都显示在 <b>DQ Repository (DQ 存储库)</b> 树视图中。即使您不知道所有目录 (或架构) 的名称，也可以检查其内容。数据库可能包含目录或架构，也可同时包含两者。结构内容取决于 DBMS 的类型。单击上方的问号可获取更多信息。
+      </description>
+   </item>
+</cheatsheet>

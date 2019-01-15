@@ -53,6 +53,7 @@ import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.repository.ui.actions.DeleteAction;
 import org.talend.core.repository.ui.actions.DeleteActionCache;
@@ -90,6 +91,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -889,8 +891,9 @@ public class DQDeleteAction extends DeleteAction {
      */
     @Override
     protected boolean deleteElements(IProxyRepositoryFactory factory, DeleteActionCache deleteActionCache,
-            RepositoryNode currentJobNode) throws PersistenceException, BusinessException {
-        return deleteElements(factory, deleteActionCache, currentJobNode, true);
+            RepositoryNode currentJobNode, List<IRepositoryViewObject> batchDeleteObjectList)
+            throws PersistenceException, BusinessException {
+        return deleteElements(factory, deleteActionCache, currentJobNode, true, batchDeleteObjectList);
     }
 
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cheatsheet title="创建新的列分析">
+   <intro>
+      <description>
+         此类分析旨在检查一组列的内容。 
+      </description>
+   </intro>
+   <item title="设定分析元数据" dialog="true" skip="false">
+      <description>
+         要打开 <b>Create New Analysis (创建新分析)</b> 向导，请右键单击 <b>DQ Repository (DQ 存储库)</b> 视图上的 <b>Analyses (分析)</b> 并选择 <b>New Analysis (新建分析)</b>。然后选择 <b>Column Analysis (列分析)</b> 文件夹下的分析。或者，浏览到并右键单击 <b>DQ Repository (DQ 存储库)</b> 视图树上的列并选择 <b>Analyze (分析)</b>。向导会提示您提供分析元数据 (名称、用途、描述...)。完成后，一个编辑器将打开，您可以在其中修改分析元数据并定义分析设置。 		 		
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="6">
+      </action>
+   </item>
+   <item title="选择要分析的列" dialog="true" skip="false">
+      <description>
+          在编辑器中，单击 <b>Data preview (数据预览)</b> 部分的 <b>Select Data (选择数据)</b> 按钮 (或先单击 <b>New Connection (新建连接)</b>) 打开一个对话框，您可以在其中浏览到并选择要分析的数据。或者，您可以从 <b>DQ Repository (DQ 存储库)</b> 树视图将列拖放到编辑器的 <b>Analyzed Columns (已分析列)</b> 框中。在 <b>Data Mining Type (数据挖掘类型)</b> 下，定义相应列的类型。注意：<b>Nominal (名义)</b> 表示列中包含文本值 (不适用顺序或数学函数)。<b>Interval (间隔)</b> 意味着可以使用数学函数 (例如平均值)。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="6">
+      </action>
+   </item>
+   <item title="选择要计算的指标" dialog="true" skip="false">
+      <description>
+         单击 <b>Data Preview (数据预览)</b> 部分的 <b>Select Indicators (选择指标)</b> 按钮打开 <b>Indicator Selection (指标选择)</b> 对话框。选中对应的复选框 (或单击下方的链接) 以对每个列应用所需的指标。
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.OpenIndicatorSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false">
+      </action>
+   </item>
+   <item
+         skip="true"
+         title="添加用户定义的指标">
+      <description>
+         针对要为其设定 <b>User Defined Indicator (用户定义的指标)</b> 的每列单击 <b>UDI</b> 按钮。在 <b>UDI Selector (UDI 选择器)</b> 对话框中，选中所需指标对应的复选框。
+      </description>
+   </item>
+   <item title="设定指标选项" dialog="true" skip="true">
+      <description>
+         单击要为其定义值的每个指标旁边的 <b>options (选项)</b> 图标 (或单击下方的链接)。默认会选择合理的选项。
+      </description>
+   </item>
+   <item
+         skip="true"
+         title="为每列选择一种模式">
+      <description>
+        对于每列，您可以添加模式指标。有两种模式。常规模式是正则表达式 (并非所有数据库都支持)，SQL 模式是您在 &quot;LIKE&quot; 子句中添加的模式。单击每列旁边的 <b>Add Pattern (添加模式)</b> 按钮，然后浏览到并选择要在显示的对话框中添加的模式。或者，从 <b>DQ Repository (DQ 存储库)</b> 树视图将模式拖放到列上。 		 
+      </description>
+   </item>
+   <item title="对要分析的数据设定筛选器" dialog="true" skip="true">
+      <description>
+这是一个可选步骤。默认会分析所有数据。要筛选数据，请在 <b>Data Filter (数据筛选器)</b> 文本框中写入 SQL &quot;WHERE&quot; 子句。
+      </description>
+   </item>
+   <item title="分析" dialog="true" skip="false">
+      <description>
+		 单击编辑器左上方的 <b>Run (运行)</b> 图标以执行分析。或者，右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图上的分析并单击所显示列表上的 <b>Run (运行)</b> 图标。	        
+      </description>
+      <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
+      </action>
+   </item>
+</cheatsheet>

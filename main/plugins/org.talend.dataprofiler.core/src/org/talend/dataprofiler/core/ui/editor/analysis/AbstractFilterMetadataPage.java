@@ -16,6 +16,7 @@ import java.beans.PropertyChangeEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.forms.IManagedForm;
 import org.eclipse.ui.forms.editor.FormEditor;
+import org.talend.core.model.context.JobContextManager;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.database.DqRepositoryViewService;
 import org.talend.cwm.helper.CatalogHelper;
@@ -39,12 +41,14 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.model.OverviewIndUIElement;
+import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
 import org.talend.dataquality.domain.Domain;
 import org.talend.dataquality.exception.DataprofilerCoreException;
 import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.helpers.DomainHelper;
 import org.talend.dq.analysis.AnalysisHandler;
+import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.utils.sugars.ReturnCode;
 import orgomg.cwm.resource.relational.Catalog;
@@ -243,6 +247,30 @@ public abstract class AbstractFilterMetadataPage extends AbstractAnalysisMetadat
         // Extract saving log function.
         // @see org.talend.dataprofiler.core.ui.editor.analysis.AbstractAnalysisMetadataPage#logSaved(ReturnCode)
         logSaved(saved);
+    }
+
+    @Override
+    public void updateFieldWhichUseContext() {
+        super.updateFieldWhichUseContext();
+        Analysis analysis = getCurrentModelElement();
+        JobContextManager contextManager = (JobContextManager) currentEditor.getContextManager();
+
+        if (tableFilterText != null && ContextHelper.isContextVar(tableFilterText.getText())) {
+            String changedValue = ContextHelper.getChangedValue(analysis.getContextType(), contextManager,
+                    tableFilterText.getText());
+            if (StringUtils.isNotBlank(changedValue)) {
+                tableFilterText.setText(changedValue);
+            }
+        }
+
+        if (viewFilterText != null && ContextHelper.isContextVar(viewFilterText.getText())) {
+            String changedValue = ContextHelper.getChangedValue(analysis.getContextType(), contextManager,
+                    viewFilterText.getText());
+            if (StringUtils.isNotBlank(changedValue)) {
+                viewFilterText.setText(changedValue);
+            }
+        }
+
     }
 
     public void propertyChange(PropertyChangeEvent evt) {

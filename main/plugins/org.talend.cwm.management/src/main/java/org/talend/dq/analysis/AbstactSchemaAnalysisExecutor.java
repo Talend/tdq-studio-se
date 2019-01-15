@@ -19,6 +19,7 @@ import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisParameters;
 import org.talend.dataquality.domain.Domain;
 import org.talend.dataquality.helpers.DomainHelper;
+import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.indicators.AbstractSchemaEvaluator;
 import org.talend.utils.sugars.ReturnCode;
 
@@ -55,9 +56,9 @@ public abstract class AbstactSchemaAnalysisExecutor extends AnalysisExecutor {
         eval.setPooledConnection(POOLED_CONNECTION);
 
         // set filters
-        String tablePattern = getTablePattern(analysis.getParameters());
+        String tablePattern = getTablePattern(analysis);
         eval.setTablePattern(tablePattern);
-        String viewPattern = getViewPattern(analysis.getParameters());
+        String viewPattern = getViewPattern(analysis);
         eval.setViewPattern(viewPattern);
 
         // when to close connection
@@ -71,19 +72,31 @@ public abstract class AbstactSchemaAnalysisExecutor extends AnalysisExecutor {
      * @param parameters
      * @return
      */
-    private String getTablePattern(AnalysisParameters parameters) {
+    private String getTablePattern(Analysis analysis) {
+        AnalysisParameters parameters = analysis.getParameters();
         if (parameters == null) {
             return null;
         }
         EList<Domain> dataFilters = parameters.getDataFilter();
-        return DomainHelper.getTablePattern(dataFilters);
+        String tablePattern = DomainHelper.getTablePattern(dataFilters);
+        if (ContextHelper.isContextVar(tablePattern)) {
+            return ContextHelper.getAnalysisContextValue(analysis, tablePattern);
+        } else {
+            return tablePattern;
+        }
     }
 
-    private String getViewPattern(AnalysisParameters parameters) {
+    private String getViewPattern(Analysis analysis) {
+        AnalysisParameters parameters = analysis.getParameters();
         if (parameters == null) {
             return null;
         }
         EList<Domain> dataFilters = parameters.getDataFilter();
-        return DomainHelper.getViewPattern(dataFilters);
+        String viewPattern = DomainHelper.getViewPattern(dataFilters);
+        if (ContextHelper.isContextVar(viewPattern)) {
+            return ContextHelper.getAnalysisContextValue(analysis, viewPattern);
+        } else {
+            return viewPattern;
+        }
     }
 }

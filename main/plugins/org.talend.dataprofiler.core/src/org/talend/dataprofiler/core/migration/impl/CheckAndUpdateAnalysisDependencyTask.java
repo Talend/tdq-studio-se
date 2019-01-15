@@ -21,7 +21,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -48,12 +47,14 @@ import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dq.writer.EMFSharedResources;
 import org.talend.resource.EResourceConstant;
+import org.talend.utils.xml.XmlUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.Dependency;
@@ -144,7 +145,7 @@ public class CheckAndUpdateAnalysisDependencyTask extends AbstractWorksapceUpdat
         DocumentBuilder db;
         try {
             boolean needSave = false;
-            db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            db = XmlUtils.getSecureDocumentBuilderFactory(false).newDocumentBuilder();
             Document document = db.parse(file);
             Element root = document.getDocumentElement();
             NodeList list = root.getElementsByTagName("indicators"); //$NON-NLS-1$
