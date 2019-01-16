@@ -98,7 +98,7 @@ public class EncryptAndDecryptPasswordTask extends AbstractWorksapceUpdateTask {
                     if (tvObj != null) {
                         TaggedValue tv = (TaggedValue) tvObj;
                         if (TaggedValueHelper.PASSWORD.equals(tv.getTag())) {
-                            tv.setValue(new CryptoHelper(ConnectionHelper.PASSPHRASE).encrypt(tv.getValue()));
+                            tv.setValue(new CryptoHelper(CryptoHelper.PASSPHRASE).encrypt(tv.getValue()));
                         }
                     }
                 }
