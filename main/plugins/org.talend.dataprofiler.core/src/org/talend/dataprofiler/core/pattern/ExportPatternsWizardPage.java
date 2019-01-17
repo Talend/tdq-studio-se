@@ -124,7 +124,6 @@ public class ExportPatternsWizardPage extends WizardPage {
         fileText = new Text(fileComp, SWT.BORDER);
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         fileText.setLayoutData(gridData);
-        fileText.setEditable(false);
 
         Button button = new Button(fileComp, SWT.PUSH);
         button.setText(DefaultMessagesImpl.getString("ExportPatternsWizardPage.browse")); //$NON-NLS-1$
