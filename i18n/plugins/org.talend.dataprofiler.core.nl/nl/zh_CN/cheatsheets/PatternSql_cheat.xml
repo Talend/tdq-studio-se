@@ -10,7 +10,7 @@
    <item
          title="设定 SQL 模式信息和内容">
       <description>
-         要打开 <b>SQL Pattern (SQL 模式)</b> 创建向导，展开 <b>DQ Repository (DQ 存储库)</b> 树视图的 <b>Libraries (库)</b> 节点和 <b>Patterns (模式)</b> 文件夹。右键单击 SQL，然后单击上下文菜单上的 <b>New SQL Pattern (新 SQL 模式)</b>。向导会提示您提供 SQL 模式元数据 (名称、用途、描述和表达式...)。完成后，一个编辑器将打开，您可以在其中修改或添加模式元数据或定义。单击 <b>Pattern Definition (模式定义)</b> 以展开编辑器。在编辑器的这个部分，您可以创建特定于数据库的模式定义。从列表中选择数据库类型，然后在相应的字段中输入表达式。			 
+         要打开 <b>新建SQL模式</b> 创建向导，展开 <b>DQ 存储库</b> 树视图的 <b>库</b> 节点和 <b>模式</b> 文件夹。右键单击 SQL，然后单击上下文菜单上的 <b>新SQL模式</b>。向导会提示您提供 SQL 模式元数据 (名称、用途、描述和表达式...)。完成后，一个编辑器将打开，您可以在其中修改或添加模式元数据或定义。单击 <b>Pattern Definition (模式定义)</b> 以展开编辑器。在编辑器的这个部分，您可以创建特定于数据库的模式定义。从列表中选择数据库类型，然后在相应的字段中输入表达式。
       </description>
       <action class="org.talend.dataprofiler.core.pattern.actions.CreatePatternAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1"/>
    </item>

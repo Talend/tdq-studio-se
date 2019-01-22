@@ -3,13 +3,13 @@
       title="创建新的业务规则">
    <intro>
       <description>
-        打开 <b>New Business Rule (新业务规则)</b> 创建向导，在 DQ Repository (DQ 存储库) 视图的 Libraries (库) 下展开 Rules (规则) 节点。右键单击 SQL 文件夹，然后选择 New Business Rule (新业务规则)。向导会提示您输入规则的元数据 (名称、用途、描述...)。输入要在分析中使用的 WHERE 子句并单击 Finish (完成)。完成后，一个编辑器将打开，您可以在其中设定业务规则信息和内容。
+        打开 <b>新业务规则</b> 创建向导，在<b>DQ 存储库</b> 视图的 <b>库</b> 下展开 <b>规则</b> 节点。右键单击 SQL 文件夹，然后选择 <b>新业务规则</b>。向导会提示您输入规则的元数据 (名称、用途、描述...)。输入要在分析中使用的 WHERE 子句并单击 Finish (完成)。完成后，一个编辑器将打开，您可以在其中设定业务规则信息和内容。
       </description>
    </intro>
    <item
          title="设定业务规则信息和内容">
       <description>
-         在编辑器中，您可以根据需要修改规则元数据。您还可以更改 WHERE 子句或添加新子句以修改业务规则。设定关键性等级以指示业务规则的重要性。要设定联接条件，单击 Join Conditions (联接条件) 以展开编辑器。然后将相关列拖放到框中，并将它们定义为 A 列或 B 列。单击相应列之间的 Operator (操作符) 单元格，然后选择反映要定义联接条件的符号。
+         在编辑器中，您可以根据需要修改规则元数据。您还可以更改 WHERE 子句或添加新子句以修改业务规则。设定关键性等级以指示业务规则的重要性。要设定联接条件，单击 <b>联接条件</b> 以展开编辑器。然后将相关列拖放到框中，并将它们定义为 A 列或 B 列。单击相应列之间的 <b>操作符</b> 单元格，然后选择反映要定义联接条件的符号。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateDQRulesAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
    </item>

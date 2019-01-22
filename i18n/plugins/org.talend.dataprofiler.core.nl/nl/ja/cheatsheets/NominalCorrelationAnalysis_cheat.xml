@@ -9,14 +9,14 @@
    <item dialog="true"
          title="分析メタデータの選択">
       <description>
-         <b>[Create New Analysis] (新しい分析の作成)</b>ウィザードを開くには、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで<b>Analyses</b>フォルダーを右クリックし、<b>[New Analysis] (新規分析)</b>を選択します。ウィザードで<b>[Nominal Correlation Analysis] (名義コリレーション分析)</b>に移動して選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析設定を定義することができます。
+         <b>新しい分析の作成</b>ウィザードを開くには、<b>DQ リポジトリ</b>ツリービューで<b>分析</b>フォルダーを右クリックし、<b>新規分析</b>を選択します。ウィザードで<b>名義コリレーション分析</b>に移動して選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析設定を定義することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="true" param1="8" param2="1"/>
    </item>
    <item
          title="分析対象カラムの選択">
       <description>
-         <b>[Analyzed Columns] (分析対象カラム)</b>をクリックして対応するビューを開きます(または、下のリンクをクリックします)。<b>[Select columns to analyze] (分析するカラムの選択)</b>をクリックし、ダイアログボックスを開きます。そこで、分析する名義および間隔カラムに移動して選択します。
+         <b>分析対象カラム</b>をクリックして対応するビューを開きます(または、下のリンクをクリックします)。<b>分析するカラムの選択</b>をクリックし、ダイアログボックスを開きます。そこで、分析する名義および間隔カラムに移動して選択します。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>
@@ -25,13 +25,13 @@
          skip="true"
          title="対応するデータマイニングタイプの選択">
       <description>
-         各カラムの横に、対応する[Data Mining Type] (データマイニングタイプ)ボックスがあります。該当するデータマイニングタイプをリストから選択します。
+         各カラムの横に、対応する<b>データマイニングタイプ</b>ボックスがあります。該当するデータマイニングタイプをリストから選択します。
       </description>
    </item>
    <item
          title="分析を実行する">
       <description>
-         分析を実行するには、エディターの左上にある<b>[Run] (実行)</b>アイコンをクリックします(または下のリンクをクリックします)。または、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで<b>Analyses</b>フォルダーの下にある分析を右クリックし、コンテキストメニューで[Run] (実行)アイコンを選択します。
+         分析を実行するには、エディターの左上にある<b>実行</b>アイコンをクリックします(または下のリンクをクリックします)。または、<b>DQ リポジトリ</b>ツリービューで<b>分析</b>フォルダーの下にある分析を右クリックし、コンテキストメニューで<b>実行</b>アイコンを選択します。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>
