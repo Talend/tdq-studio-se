@@ -94,7 +94,6 @@ public class ExportUDIWizardPage extends WizardPage {
         fileText = new Text(fileComp, SWT.BORDER);
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         fileText.setLayoutData(gridData);
-        fileText.setEditable(false);
 
         Button button = new Button(fileComp, SWT.PUSH);
         button.setText(DefaultMessagesImpl.getString("ExportUDIWizardPage.browse")); //$NON-NLS-1$

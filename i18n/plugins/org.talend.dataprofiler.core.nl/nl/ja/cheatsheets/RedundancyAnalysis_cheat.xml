@@ -10,28 +10,28 @@
          skip="false" dialog="true"
          title="分析メタデータの選択">
       <description>
-<b>[Create New Analysis] (新しい分析の作成)</b>ウィザードを開くには、<b>[DQ Repository] (DQリポジトリ)</b>ビューで<b>[Analyses] (分析)</b>を右クリックし、<b>[New Analysis] (新規分析)</b>を選択します。<b>[Cross Table Analysis] (クロステーブル分析)</b>を展開し、<b>[Redundancy Analysis] (冗長性分析)</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。         
+<b>新しい分析の作成</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューで<b>分析</b>を右クリックし、<b>新規分析</b>を選択します。<b>クロステーブル分析</b>を展開し、<b>冗長性分析</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1"/>
    </item>
    <item dialog="true"
          title="セットAのカラムの選択">
       <description>
-         <b>[Analyzed Column Set] (分析対象カラムセット)</b>をクリックして対応するビューを開きます(または、下のリンクをクリックします)。<b>[Select columns for set A] (セットAのカラムを選択)</b>をクリックします。ダイアログボックスが開き、そこで最初のカラムセットに移動して選択することができます。
+         <b>分析対象カラムセット</b>をクリックして対応するビューを開きます(または、下のリンクをクリックします)。<b>セットAのカラムを選択</b>をクリックします。ダイアログボックスが開き、そこで最初のカラムセットに移動して選択することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1" param2="0"/>
    </item>
    <item dialog="true"
          title="セットBのカラムの選択">
       <description>
-         <b>[Analyzed Column Sets] (分析対象カラムセット)</b>をクリックして対応するビューを開きます(または、下のリンクをクリックします)。<b>[Select columns for set B] (セットBのカラムを選択)</b>をクリックします。ダイアログボックスが開き、そこで2番目のカラムセットに移動して選択することができます。
+         <b>分析対象カラムセット</b>をクリックして対応するビューを開きます(または、下のリンクをクリックします)。<b>セットBのカラムを選択</b>をクリックします。ダイアログボックスが開き、そこで2番目のカラムセットに移動して選択することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1" param2="1"/>
    </item>
    <item
          title="分析を実行する">
       <description>
-	  エディターの左上にある<b>[Run] (実行)</b>アイコンをクリックし、分析を実行します。または、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで分析を右クリックし、表示されたリストで<b>[Run] (実行)</b>アイコンをクリックします。
+	  エディターの左上にある<b>実行</b>アイコンをクリックし、分析を実行します。または、<b>DQ リポジトリ</b>ツリービューで分析を右クリックし、表示されたリストで<b>実行</b>アイコンをクリックします。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
    </item>

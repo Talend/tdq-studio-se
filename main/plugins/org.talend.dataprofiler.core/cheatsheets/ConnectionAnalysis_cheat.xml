@@ -14,7 +14,7 @@ To open the <b>Create New Analysis</b> wizard, right click <b>Analyses</b> on th
    </item>
    <item title="Review your settings" dialog="true" skip="true">
       <description>
- If required, click Analysis Parameters on the <b>Connection Analysis</b> editor to check or modify filters the table or view filters.
+ If required, click Analysis Parameters on the <b>Connection Overview Analysis</b> editor to check or modify filters the table or view filters.
       </description>
    </item>
    <item

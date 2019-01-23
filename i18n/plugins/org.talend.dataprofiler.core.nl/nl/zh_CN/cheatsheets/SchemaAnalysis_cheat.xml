@@ -9,7 +9,7 @@
    <item skip="false" dialog="true"
          title="选择要分析的 schema">
       <description>
-         请注意，schema 分析仅适用于物理结构中包含 schema 实体的数据库。要打开 <b>Create New Analysis (创建新分析)</b> 向导，请右键单击 <b>DQ Repository (DQ 存储库)</b> 视图上的 <b>Analyses (分析)</b> 并选择 <b>New Analysis (新建分析)</b>。然后展开 <b>Structural Analysis (结构分析)</b> 并选择 <b>Schema Overview Analysis (Schema 概览分析)</b>，以浏览到并选择要分析的 schema。向导会提示您提供 schema 分析元数据 (名称、用途、描述...)。如果需要，使用 SQL 语言添加表或视图筛选器。完成后，一个编辑器将打开，您可以根据需要在其中修改分析元数据或设置。 
+         请注意，schema 分析仅适用于物理结构中包含 schema 实体的数据库。要打开 <b>新建分析</b> 向导，请右键单击 <b>DQ 存储库</b> 视图上的 <b>分析</b> 并选择 <b>新建分析</b>。然后展开 <b>结构分析</b> 并选择 <b>Schema概览分析</b>，以浏览到并选择要分析的 schema。向导会提示您提供 schema 分析元数据 (名称、用途、描述...)。如果需要，使用 SQL 语言添加表或视图筛选器。完成后，一个编辑器将打开，您可以根据需要在其中修改分析元数据或设置。 
 		  
       </description>
        <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core"  param1="5" confirm="false"/>
@@ -18,13 +18,13 @@
          skip="true"
          title="检查您的设置">
       <description>
-         在编辑器中，您可以修改分析元数据或设置。单击 Analysis Parameters (分析参数) 以展开编辑器。在编辑器的这个视图，您可以检查或者修改表或视图筛选器。
+         在编辑器中，您可以修改分析元数据或设置。单击 <b>分析参数</b> 以展开编辑器。在编辑器的这个视图，您可以检查或者修改表或视图筛选器。
       </description>
    </item>
    <item
          title="分析">
       <description>         
-		 单击编辑器左上方的 <b>Run (运行)</b> 图标以执行分析。或者，右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图上的分析并单击所显示列表上的 <b>Run (运行)</b> 图标。		 
+		 单击编辑器左上方的 <b>运行</b> 图标以执行分析。或者，右键单击 <b>DQ 存储库</b> 树视图上的分析并单击所显示列表上的 <b>运行</b> 图标。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
    </item>

@@ -9,14 +9,14 @@
    <item dialog="true"
          title="设定分析元数据">
       <description>
-         要打开 <b>Create New Analysis (创建新分析)</b> 向导，请右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图上的 <b>Analyses (分析)</b> 文件夹并选择 <b>New Analysis (新建分析)</b>。浏览到并选择 <b>Time Correlation Analysis (时间关联性分析)</b>。或者，右键单击名义或日期列并选择 <b>Analyze correlation (分析关联性)</b> (或单击下方的链接)。向导会提示您提供分析元数据 (名称、用途、描述...)。完成后，一个编辑器将打开，您可以在其中定义分析设置。
+         要打开 <b>新建分析</b> 向导，请右键单击 <b>DQ 存储库</b> 树视图上的 <b>分析</b> 文件夹并选择 <b>新建分析</b>。浏览到并选择 <b>时间关联性分析</b>。或者，右键单击名义或日期列并选择 <b>分析关联性</b> (或单击下方的链接)。向导会提示您提供分析元数据 (名称、用途、描述...)。完成后，一个编辑器将打开，您可以在其中定义分析设置。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="true" param1="8" param2="2"/>
    </item>
    <item
          title="选择要分析的列">
       <description>
-         在编辑器中，单击 <b>Analyzed Columns (已分析列)</b> (或单击下方的链接)。然后单击 <b>Select columns to analyze (选择要分析的列)</b> 打开一个对话框，您可以在其中浏览到并选择要分析的名义和日期列。或者，您可以从 <b>DQ Repository (DQ 存储库)</b> 树视图将列拖放到编辑器的 <b>Analyzed Columns (已分析列)</b> 框中。
+         在编辑器中，单击 <b>已分析列</b> (或单击下方的链接)。然后单击 <b>选择要分析的列</b> 打开一个对话框，您可以在其中浏览到并选择要分析的名义和日期列。或者，您可以从 <b>DQ 存储库</b> 树视图将列拖放到编辑器的 <b>已分析列</b> 框中。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>
@@ -25,13 +25,13 @@
          skip="true"
          title="选择合适的数据挖掘类型">
       <description>
-         每列旁边都有一个对应的 <b>Data Mining Type (数据挖掘类型)</b> 框。从列表中选择适当的数据挖掘类型。
+         每列旁边都有一个对应的 <b>数据挖掘类型</b> 框。从列表中选择适当的数据挖掘类型。
       </description>
    </item>
    <item
          title="分析">
       <description>
-         要执行分析，单击编辑器左上方的 <b>Run (运行)</b> 图标。或者，右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图 <b>Analyses (分析)</b> 文件夹下的分析，然后选择 <b>Run (运行)</b> 图标 (或单击下方的链接)。
+         要执行分析，单击编辑器左上方的 <b>运行</b> 图标。或者，右键单击 <b>DQ 存储库</b> 树视图 <b>分析</b> 文件夹下的分析，然后选择 <b>运行</b> 图标 (或单击下方的链接)。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>
