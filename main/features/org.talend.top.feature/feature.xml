@@ -6,6 +6,7 @@
   <license url="http://www.example.com/license">[Enter License Description here.]</license>  
   <requires>
     <import feature="org.eclipse.help" version="0.0.0" match="greaterOrEqual"/>
+    <import feature="org.eclipse.nebula.widgets.nattable.extension.glazedlists.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.eclipse.rcp" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.core.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.hadoop.distribution.feature" version="0.0.0" match="greaterOrEqual"/>
@@ -33,7 +34,6 @@
     <import plugin="org.apache.httpcomponents.httpcore" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.servicemix.bundles.avro" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.eclipse.nebula.widgets.nattable.core" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.eclipse.nebula.widgets.nattable.extension.glazedlists" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.ops4j.pax.url.mvn" version="0.0.0" match="greaterOrEqual"/>
   </requires>
   <plugin id="org.talend.cwm.compare" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
