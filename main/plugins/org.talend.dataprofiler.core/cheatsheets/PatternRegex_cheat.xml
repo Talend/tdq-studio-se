@@ -11,7 +11,7 @@ Please refer to your Database Management System documentation for further detail
          href="http://en.wikipedia.org/wiki/Regular_expression"
          title="Set regex pattern information and content">
       <description>
-         To open the <b>New Regular Pattern</b> creation wizard, expand the <b>Libraries</b> node and the <b>Patterns</b> folder on the <b>DQ Repository</b> Tree view. Right click <b>Regex</b> and then select <b>New Regular Pattern</b> on the context menu. The wizard prompts you to provide the Regex pattern metadata (name, purpose, description and expression...). Upon completion, an editor opens in which you can modify or add to the pattern metadata or definitions.		
+         To open the <b>New Regex Pattern</b> creation wizard, expand the <b>Libraries</b> node and the <b>Patterns</b> folder on the <b>DQ Repository</b> Tree view. Right click <b>Regex</b> and then select <b>New Regular Pattern</b> on the context menu. The wizard prompts you to provide the Regex pattern metadata (name, purpose, description and expression...). Upon completion, an editor opens in which you can modify or add to the pattern metadata or definitions.		
 
 Click <b>Pattern Definition</b> to expand the corresponding view. In this section of the editor, you can create database specific pattern definitions. Select the database type from the list and enter the expression in the corresponding field.	If you click the <b>Test</b> button to the right of the expression, the pattern Test Area opens to the right of the studio. Here, you can test character sequences against the pattern.	 
       </description>

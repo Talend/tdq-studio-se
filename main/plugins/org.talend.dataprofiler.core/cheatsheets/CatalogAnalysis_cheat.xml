@@ -10,7 +10,7 @@
          skip="false" dialog="true"
          title="Select a catalog to analyze">
       <description>
-       Note that catalog analysis is only possible in databases in which catalog entities are part of their physical structure. To open the <b> Create New Analysis </b> wizard, right click the <b>Analyses</b> folder on the <b>DQ Repository</b> tree view and select <b>New Analysis</b>. Expand <b>Structural Analysis</b> and select <b>Catalog Overview Analysis</b>(or click the link below). The wizard prompts you to provide the analysis metadata (name, purpose, description....). Browse to and select a catalog to analyze, and add table or view filters if required. Upon completion an editor opens, in which you can review the analysis settings.
+       Note that catalog overview analysis is only possible in databases in which catalog entities are part of their physical structure. To open the <b> Create New Analysis </b> wizard, right click the <b>Analyses</b> folder on the <b>DQ Repository</b> tree view and select <b>New Analysis</b>. Expand <b>Structural Analysis</b> and select <b>Catalog Overview Analysis</b>(or click the link below). The wizard prompts you to provide the analysis metadata (name, purpose, description....). Browse to and select a catalog to analyze, and add table or view filters if required. Upon completion an editor opens, in which you can review the analysis settings.
       </description>
     <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core"  param1="7" confirm="false"/>
    </item>

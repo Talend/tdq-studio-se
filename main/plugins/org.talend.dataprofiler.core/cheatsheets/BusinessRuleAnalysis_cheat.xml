@@ -19,7 +19,7 @@ Note that you can create Business Rules and assign them to the analysis created 
    <item
          title="Select tables or views to analyze">
       <description>
-         Click <b>Select tables/views to analyze</b> in the editor (or click the link below). Browse to and select the table(s) or view(s) of interest. The tables or views selected appear in the <b>Analyzed Tables/Views</b> part of the editor.
+         Click <b>Select tables/views to analyze</b> in the editor (or click the link below). Browse to and select the table(s) or view(s) of interest. The tables or views selected appear in the <b>Analyzed Tables</b> part of the editor.
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="11">
       </action>

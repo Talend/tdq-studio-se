@@ -10,29 +10,29 @@
    <item dialog="true"
          title="分析メタデータの選択">
       <description>
-        <b>新しい分析の作成</b>ウィザードを開くには、<b>DQ リポジトリ</b>ツリービューで<b>分析</b>フォルダーを右クリックし、<b>新規分析</b>を選択します。ウィザードで<b>数値コリレーション分析</b>に移動して選択します(または、下のリンクをクリックします)。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析設定を定義することができます。
+        <b>新規分析</b>ウィザードを開くには、<b>DQ リポジトリ</b>ツリービューで<b>分析</b>フォルダーを右クリックし、<b>新規分析</b>を選択します。ウィザードで<b>数値コリレーション分析</b>に移動して選択します(または、下のリンクをクリックします)。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析設定を定義することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8" param2="0"/>
    </item>
    <item
          title="分析対象カラムの選択">
       <description>
-         エディターで<b>分析対象カラム</b>をクリックします(または、下のリンクをクリックします)。<b>分析するカラムの選択</b>をクリックし、ダイアログボックスを開きます。そこで、分析する名義および間隔カラムに移動して選択します。または、エディターでカラムを<b>DQ リポジトリ</b>ツリービューから<b>分析対象カラム</b>ボックスにドロップすることもできます。
+         エディターで<b>分析対象カラム</b>をクリックします(または、下のリンクをクリックします)。<b>カラムの選択</b>をクリックし、ダイアログボックスを開きます。そこで、分析する名義および間隔カラムに移動して選択します。または、エディターでカラムを<b>DQ リポジトリ</b>ツリービューから<b>分析対象カラム</b>ボックスにドロップすることもできます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>
    </item>
    <item
          skip="true"
-         title="対応するデータマイニングタイプの選択">
+         title="データマイニングタイプの選択">
       <description>
          各カラムの横に、対応する<b>データマイニングタイプ</b>ボックスがあります。該当するデータマイニングタイプをリストから選択します。
       </description>
    </item>
    <item
-         title="分析を実行する">
+         title="分析の実行">
       <description>
-        分析を実行するには、エディターの左上にある<b>実行</b>アイコンをクリックします。または、<b>DQ リポジトリ</b>ビューで<b>分析</b>フォルダーの下にある分析を右クリックし、<b>実行</b>アイコンを選択します(または、下のリンクをクリックします)。
+        分析を実行するには、エディターの左上にある<b>分析の実行</b>アイコンをクリックします。または、<b>DQ リポジトリ</b>ビューで<b>分析</b>フォルダーの下にある分析を右クリックし、<b>分析の実行</b>アイコンを選択します(または、下のリンクをクリックします)。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>

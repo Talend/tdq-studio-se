@@ -157,7 +157,7 @@
          <param name="path" value="PatternSql_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="创建常规表达模式" skip="false">
+      <task kind="cheatsheet" name="创建正则表达式模式" skip="false">
          <intro>
             本教程将引导您创建正则表达式模式。
          </intro>

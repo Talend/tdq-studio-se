@@ -17,14 +17,14 @@
    <item dialog="true"
          title="选择集合 A 的列">
       <description>
-         单击 <b>分析的列集</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择集合 A 的列</b>。此时一个对话框将打开，您可以在其中浏览到并选择第一个列集合。
+         单击 <b>分析的列集</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择 A 列集</b>。此时一个对话框将打开，您可以在其中浏览到并选择第一个列集合。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1" param2="0"/>
    </item>
    <item dialog="true"
          title="选择集合 B 的列">
       <description>
-         单击 <b>分析的列集</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择集合 B 的列</b>。此时一个对话框将打开，您可以在其中浏览到并选择第二个列集合。
+         单击 <b>分析的列集</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择 B 列集</b>。此时一个对话框将打开，您可以在其中浏览到并选择第二个列集合。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1" param2="1"/>
    </item>

@@ -9,7 +9,7 @@
    <item
          title="定义用户定义的指标元数据和设置" dialog="true" skip="false">
       <description>
-         要打开 <b>新建指标</b> 向导，展开 <b>DQ 存储库</b> 树视图的 <b>库</b> 节点和 <b>指标</b> 文件夹。右键单击 <b>用户定义的指标</b> 并选择 <b>新建指标</b>。向导会提示您提供元数据 (名称、用途、描述...)。从 <b>语言选择</b> 列表中选择数据库类型，然后根据要创建的指标，在 <b>SQL模板</b> 字段中输入相应的 SQL 模板语句。完成后，一个编辑器将打开，您可以根据需要查看和修改指标设置。
+         要打开 <b>新建指标</b> 向导，展开 <b>DQ 存储库</b> 树视图的 <b>库</b> 节点和 <b>指标</b> 文件夹。右键单击 <b>自定义指标</b> 并选择 <b>新建指标</b>。向导会提示您提供元数据 (名称、用途、描述...)。从 <b>语言选择</b> 列表中选择数据库类型，然后根据要创建的指标，在 <b>SQL模板</b> 字段中输入相应的 SQL 模板语句。完成后，一个编辑器将打开，您可以根据需要查看和修改指标设置。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateUDIAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>

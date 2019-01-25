@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cheatsheet
-      title="新しいカラム依存分析の作成">
+      title="新しい関数従属性分析の作成">
    <intro
          href="http://en.wikipedia.org/wiki/Functional_dependency">
       <description>
@@ -10,31 +10,31 @@
    <item
          title="分析メタデータの選択">
       <description>
-       <b>新しい分析の作成</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューで<b>分析</b>を右クリックし、<b>新規分析</b>を選択します。<b>テーブル分析</b>を展開し、<b>機能的な依存性の分析</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。
+       <b>新規分析</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューで<b>分析</b>を右クリックし、<b>新規分析</b>を選択します。<b>テーブル分析</b>を展開し、<b>関数従属性分析</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9">
       </action>
    </item>
    <item
-         title="セットAのカラムの選択">
+         title="Aカラムセットの選択">
       <description>
-         エディターで<b>分析対象のカラムセット</b>をクリックし、対応するビューを開きます。<b>セットAのカラムを選択</b>をクリックします(または、下のリンクをクリックします)。カラム選択ダイアログボックスが開き、そこで目的のカラムに移動して選択することができます。または、カラムを<b>DQ リポジトリ</b>ツリービューからボックスにドロップします。
+         エディターで<b>分析対象のカラムセット</b>をクリックし、対応するビューを開きます。<b>Aカラムセット</b>をクリックします(または、下のリンクをクリックします)。カラム選択ダイアログボックスが開き、そこで目的のカラムに移動して選択することができます。または、カラムを<b>DQ リポジトリ</b>ツリービューからボックスにドロップします。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9" param2="A">
       </action>
    </item>
    <item
-         title="セットBのカラムの選択">
+         title="Bカラムセットの選択">
       <description>
-         エディターで<b>分析対象のカラムセット</b>をクリックし、対応するビューを開きます。<b>セットAのカラムを選択</b>をクリックします(または、下のリンクをクリックします)。カラム選択ダイアログボックスが開き、そこで目的のカラムに移動して選択することができます。または、カラムを<b>DQ リポジトリ</b>ツリービューからボックスにドロップします。
+         エディターで<b>分析対象のカラムセット</b>をクリックし、対応するビューを開きます。<b>Bカラムセット</b>をクリックします(または、下のリンクをクリックします)。カラム選択ダイアログボックスが開き、そこで目的のカラムに移動して選択することができます。または、カラムを<b>DQ リポジトリ</b>ツリービューからボックスにドロップします。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9" param2="B">
       </action>
    </item>
    <item
-         title="分析を実行する">
+         title="分析の実行">
       <description>
-        エディターの左上にある<b>実行</b>アイコンをクリックし、分析を実行します。または、<b>DQ リポジトリ</b>ツリービューで分析を右クリックし、表示されたリストで<b>実行</b>アイコンをクリックします。
+        エディターの左上にある<b>分析の実行</b>アイコンをクリックし、分析を実行します。または、<b>DQ リポジトリ</b>ツリービューで分析を右クリックし、表示されたリストで<b>分析の実行</b>アイコンをクリックします。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
    </item>

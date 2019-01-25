@@ -18,7 +18,7 @@
    <item
          title="选择要分析的左列">
       <description>
-         在编辑器中，单击 <b>分析的列集</b> 打开相应的视图。单击 <b>选择集合 A 的列</b> (或单击下方的链接)。此时列选择对话框将打开，您可以在其中浏览到并选择感兴趣的列。或者，从 <b>DQ 存储库</b> 树视图将列拖放到框中。
+         在编辑器中，单击 <b>分析的列集</b> 打开相应的视图。单击 <b>A 列集</b> (或单击下方的链接)。此时列选择对话框将打开，您可以在其中浏览到并选择感兴趣的列。或者，从 <b>DQ 存储库</b> 树视图将列拖放到框中。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9" param2="A">
       </action>
@@ -26,7 +26,7 @@
    <item
          title="选择要分析的右列">
       <description>
-         在编辑器中，单击 <b>分析的列集</b> 打开相应的视图。单击 <b>选择集合 B 的列</b> (或单击下方的链接)。此时列选择对话框将打开，您可以在其中浏览到并选择感兴趣的列。或者，从 <b>DQ 存储库</b> 树视图将列拖放到框中。
+         在编辑器中，单击 <b>分析的列集</b> 打开相应的视图。单击 <b>B 列集</b> (或单击下方的链接)。此时列选择对话框将打开，您可以在其中浏览到并选择感兴趣的列。或者，从 <b>DQ 存储库</b> 树视图将列拖放到框中。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9" param2="B">
       </action>

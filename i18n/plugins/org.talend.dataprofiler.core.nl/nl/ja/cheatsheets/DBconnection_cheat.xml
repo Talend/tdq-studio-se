@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cheatsheet title="新しいデータベース接続分析の作成">
+<cheatsheet title="新しいデータベース接続の作成">
    <intro>
       <description>
          このチュートリアルでは、データベース接続の作成方法を説明します。
@@ -7,7 +7,7 @@
    </intro>
    <item title="新しいデータベース接続分析の作成" dialog="true" skip="false">
       <description>
-         <b>DB接続</b>ウィザードを開くには、<b>メタデータ</b>ノードを展開します。<b>DB接続</b>を右クリックし、<b>DB接続の作成</b>を選択します(または、下のリンクをクリックします)。接続メタデータと認証情報の入力が求められ、DBMS (DataBase Management System)への接続が作成されます。完了すると、データベースのコンテンツが<b>DQ リポジトリ</b>ツリービューに追加されます。
+         <b>データベース接続</b>ウィザードを開くには、<b>メタデータ</b>ノードを展開します。<b>DB接続</b>を右クリックし、<b>接続定義</b>を選択します(または、下のリンクをクリックします)。接続メタデータと認証情報の入力が求められ、DBMS (DataBase Management System)への接続が作成されます。完了すると、データベースのコンテンツが<b>DQ リポジトリ</b>ツリービューに追加されます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateDBConnectionAction" pluginId="org.talend.dataprofiler.core"   confirm="false" param1="0">
       </action>
