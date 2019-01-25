@@ -20,7 +20,7 @@ The value of a “City” column, for instance, determines the value of a “Cou
    <item
          title="Select the left columns to analyze.">
       <description>
-         In the editor, click <b>Analysed Columns Set</b> to open the corresponding view. Click <b>Select set A columns</b>(or click the link below). The column selection dialog box opens in which you can browse to and select the columns of interest. Alternatively, drop the columns from the <b>DQ Repository</b> tree view onto the box.
+         In the editor, click <b>Analysed Columns Set</b> to open the corresponding view. Click <b>A Column Set</b>(or click the link below). The column selection dialog box opens in which you can browse to and select the columns of interest. Alternatively, drop the columns from the <b>DQ Repository</b> tree view onto the box.
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9" param2="A">
       </action>
@@ -28,7 +28,7 @@ The value of a “City” column, for instance, determines the value of a “Cou
    <item
          title="Select the right columns to analyze.">
       <description>
-         In the editor, click <b>Analysed Columns Set</b> to open the corresponding view. Click <b>Select set A columns</b>(or click the link below). The column selection dialog box opens in which you can browse to and select the columns of interest. Alternatively, drop the columns from the <b>DQ Repository</b> tree view onto the box.        
+         In the editor, click <b>Analysed Columns Set</b> to open the corresponding view. Click <b>B Column Set</b>(or click the link below). The column selection dialog box opens in which you can browse to and select the columns of interest. Alternatively, drop the columns from the <b>DQ Repository</b> tree view onto the box.        
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="9" param2="B">
       </action>

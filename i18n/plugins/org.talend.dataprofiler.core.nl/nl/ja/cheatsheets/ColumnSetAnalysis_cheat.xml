@@ -10,7 +10,7 @@
          skip="false"
          title="分析メタデータの選択">
       <description>
-          <b>[Create New Analysis] (新しい分析の作成)</b>ウィザードを開くには、<b>[DQ Repository] (DQリポジトリ)</b>ビューで<b>[Analyses] (分析)</b>を右クリックし、<b>[New Analysis] (新規分析)</b>を選択します。<b>[Table Analysis] (テーブル分析)</b>を展開し、<b>[Column Set Analysis] (カラム設定分析)</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。 		 		
+          <b>新規分析</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューで<b>分析</b>を右クリックし、<b>新規分析</b>を選択します。<b>テーブル分析</b>を展開し、<b>カラムセット分析</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。
       </description>
        <action class="org.talend.dataprofiler.core.ui.action.actions.CreateNewAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="10">
       </action>
@@ -18,36 +18,36 @@
    <item
          title="分析対象カラムの選択">
       <description>
-        エディターで<b>[Analyzed Columns] (分析対象カラム)</b>をクリックします(または、下のリンクをクリックします)。<b>[Select columns to analyze] (分析するカラムの選択)</b>をクリックし、ダイアログボックスを開きます。そこで、分析するカラムに移動して選択します。または、エディターでカラムを<b>[DQ Repository] (DQリポジトリ)</b>ツリービューから<b>[Analyzed Columns] (分析対象カラム)</b>ボックスにドロップすることもできます。<b>[Data Mining Type] (データマイニングタイプ)</b>の下で、対応するカラムのタイプを定義します。注: <b>[Nominal] (名義)</b>とは、カラムにテキスト値が含まれていることを意味します(位数関数も数学関数も対象外)。<b>[Interval] (間隔)</b>とは、平均などの数学関数が使用できることを意味します。
+        エディターで分析対象カラムを選択します(または、下のリンクをクリックします)。<b>カラムの選択</b>をクリックし、ダイアログボックスを開きます。そこで、分析するカラムに移動して選択します。または、エディターでカラムを<b>DQ リポジトリ</b>ツリービューから分析対象カラムボックスにドロップすることもできます。<b>データマイニングタイプ</b>の下で、対応するカラムのタイプを定義します。注: <b>名義</b>とは、カラムにテキスト値が含まれていることを意味します(位数関数も数学関数も対象外)。<b>間隔</b>とは、平均などの数学関数が使用できることを意味します。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="10">
       </action>
    </item>
    <item
          skip="true"
-         title="インジケーターオのプションを設定する">
+         title="インジケーターオプションの設定">
       <description>
-         パラメーターを設定する各インジケーターの横にある<b>[Options] (オプション)</b>ボタンをクリックします。上限と下限のスレッショルド値を入力します。デフォルトでは、標準のパラメーターが設定されています。
+         パラメーターを設定する各インジケーターの横にある<b>オプション</b>ボタンをクリックします。上限と下限のスレッショルド値を入力します。デフォルトでは、標準のパラメーターが設定されています。
       </description>
    </item>
    <item
          skip="true"
-         title="各カラムにパターンインジケーターを追加する">
+         title="パターンの追加">
       <description>
-   		各カラムにパターンインジケーターを追加することができます。2種類のパターンがあります。正規パターンは正規表現で(一部のデータベースではサポートされていません)、SQLパターンは&quot;LIKE&quot;句に追加するパターンです。各カラムの横の<b>[Add Pattern] (パターンの追加)</b>ボタンをクリックし、ダイアログボックスが表示されたら、追加するパターンに移動して選択します。または、パターンを[Repository] (リポジトリ)ビューからカラムにドロップします。
+   		各カラムにパターンインジケーターを追加することができます。2種類のパターンがあります。正規パターンは正規表現で(一部のデータベースではサポートされていません)、SQLパターンは&quot;LIKE&quot;句に追加するパターンです。各カラムの横の<b>パターンの追加</b>ボタンをクリックし、ダイアログボックスが表示されたら、追加するパターンに移動して選択します。または、パターンを</b>DQ リポジトリ</b>ビューからカラムにドロップします。
       </description>
    </item>
    <item
          skip="true"
-         title="データフィルターを設定する">
+         title="データフィルターの設定">
       <description>
-	  これはオプションの手順です。デフォルトで、すべてのデータが分析されます。データをフィルター処理するには、<b>[Data Filter] (データフィルター)</b>テキストボックスにSQL &quot;WHERE&quot; 句を書き込みます。
+	  これはオプションの手順です。デフォルトで、すべてのデータが分析されます。データをフィルター処理するには、<b>データフィルター</b>テキストボックスにSQL &quot;WHERE&quot; 句を書き込みます。
       </description>
    </item>
    <item
-         title="分析を実行する">
+         title="分析の実行">
       <description>
-		 エディターの左上にある<b>[Run] (実行)</b>アイコンをクリックし、分析を実行します。または、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで分析を右クリックし、表示されたリストで<b>[Run] (実行)</b>アイコンをクリックします。	
+		 エディターの左上にある<b>分析の実行</b>アイコンをクリックし、分析を実行します。または、<b>DQ リポジトリ</b>ツリービューで分析を右クリックし、表示されたリストで<b>分析の実行</b>アイコンをクリックします。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>

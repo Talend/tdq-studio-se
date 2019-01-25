@@ -58,10 +58,7 @@
 			If you have already selected the data to analyze in the previous step, you
 			may skip this step.
 			In the match editor, click the &quot;Select Data&quot;
-			tab. Then browse
-			and
-			select the
-			<b>columns to analyze</b>
+			button. Then browse and select the columns to analyze.
 			In the <b>Limit</b> field, set the number of the data records you want to use as a data sample on which to test the match rule.
 		</description>
         <action class="org.talend.dataprofiler.core.ui.action.actions.SelectDataForMatchAnalysisAction" pluginId="org.talend.dataprofiler.core">
@@ -92,11 +89,11 @@
 	</item>
 	<item title="Define the Match Rule">
 		<description>
-			In the match editor, click the &quot;Select Matching Key&quot; tab. Then
+			In the match editor, click the &quot;Select Matching Key&quot; button. Then
 			click the column header in the data table. Select all
 			attributes required to the match operation the same way. In the <b>Matching Key</b> table, choose the algorithms you want to
 			apply to the comparison (
-			<b>Match Function</b>
+			<b>Matching Function</b>
 			) and the other match parameters.
 			<br/>
 			When done, you can visualize the
@@ -109,7 +106,7 @@
 	</item>
 	<item skip="true" title="Export the Match Rule">
 		<description>
-			Once you test the Match Rule on the sample data and see that it correctly identifies duplicates, you can export it by using the export icon on the toolbar of the match editor or you can export it as a <b>Match Rule</b> item in the <b>DQ Repository</b>. You can use the exported Match Rule in other analyses or in Data Quality matching components.  
+			Once you test the Match Rule on the sample data and see that it correctly identifies duplicates, you can export it by using the export icon on the toolbar of the match editor then it will show as a <b>Match Rule</b> item in the <b>DQ Repository</b>. You can use the exported Match Rule in other analyses or in Data Quality matching components.
 		</description>
 		<action class="org.talend.dataprofiler.core.ui.action.actions.ExportMatchRuleAction" pluginId="org.talend.dataprofiler.core">
 		</action>

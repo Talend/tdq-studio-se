@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<cheatsheet title="新しい接続のコンテンツの概要分析の作成">
+<cheatsheet title="新しいコネクション分析の作成">
    <intro>
       <description>
          この種の分析では、データベースのコンテンツの概要が表示されます。各カタログまたはスキーマのテーブル数とテーブルごとの行数が計算され、インデックスと主キーの数がカウントされます。
@@ -7,24 +7,24 @@
    </intro>
    <item title="分析メタデータの選択" dialog="true" skip="false">
       <description>
-<b>[Create New Analysis] (新しい分析の作成)</b>ウィザードを開くには、<b>[DQ Repository] (DQリポジトリ)</b>ビューで<b>[Analyses] (分析)</b>を右クリックし、<b>[New Analysis] (新規分析)</b>を選択します。<b>[Structural Analysis] (ストラクチャー分析)</b>を展開し、<b>[Connection Overview Analysis] (接続概要の分析)</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。リストから目的の接続を選択し、必要に応じてテーブルまたはビューにフィルターを設定します。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。      
+         <b>新規分析</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューで<b>分析</b>を右クリックし、<b>新規分析</b>を選択します。<b>構造分析</b>を展開し、<b>コネクション分析</b>を選択します。ウィザードから、分析メタデータ(名前、目的、説明...)を入力するように求められます。リストから目的の接続を選択し、必要に応じてテーブルまたはビューにフィルターを設定します。完了するとエディターが開き、そこで分析メタデータを変更し、分析設定を定義することができます。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.CreateConnectionAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>
    </item>
-   <item title="設定をレビューする" dialog="true" skip="true">
+   <item title="分析パラメーターの設定" dialog="true" skip="true">
       <description>
- 必要に応じて、<b>[Connection Analysis] (接続分析)</b>エディターで[Analysis Parameters] (分析パラメーター)をクリックし、テーブルまたはビューがフィルター処理するフィルターを確認または変更します。
+         必要に応じて、接続分析エディターで<b>分析パラメーター</b>をクリックし、テーブルまたはビューがフィルター処理するフィルターを確認または変更します。
       </description>
    </item>
    <item
          dialog="true"
          skip="false"
-         title="分析を実行する">
+         title="分析の実行">
       <description>
-  エディターの左上にある<b>[Run] (実行)</b>アイコンをクリックし、分析を実行します。または、<b>[DQ Repository] (DQリポジトリ)</b>ツリービューで分析を右クリックし、表示されたリストで<b>[Run] (実行)</b>アイコンをクリックします。
+        エディターの左上にある<b>分析の実行</b>アイコンをクリックし、分析を実行します。または、<b>DQ リポジトリ</b>ツリービューで分析を右クリックし、表示されたリストで<b>分析の実行</b>アイコンをクリックします。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
-      </action>      
+      </action>
    </item>
 </cheatsheet>

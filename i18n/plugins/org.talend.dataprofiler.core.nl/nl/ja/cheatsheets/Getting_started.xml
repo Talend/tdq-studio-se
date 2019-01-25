@@ -7,7 +7,7 @@
       <onCompletion>
          <b>結論</b>
       </onCompletion>
-      <task kind="cheatsheet" name="データベース接続分析の作成" skip="false">
+      <task kind="cheatsheet" name="データベース接続の作成" skip="false">
          <intro>
             このチュートリアルでは、データベース接続の作成方法を説明します。
          </intro>
@@ -17,7 +17,7 @@
          <param name="path" value="DBconnection_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="接続のコンテンツの概要分析の作成" skip="false">
+      <task kind="cheatsheet" name="コネクション分析の作成" skip="false">
          <intro>
             このチュートリアルでは、データベース接続の概要分析の作成方法を説明します。
          </intro>
@@ -67,7 +67,7 @@
          <param name="path" value="BusinessRuleAnalysis_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="一致分析の作成" skip="false">
+      <task kind="cheatsheet" name="マッチング分析の作成" skip="false">
          <intro>
             このチュートリアルでは、一致分析の作成方法を説明します。
          </intro>
@@ -77,7 +77,7 @@
          <param name="path" value="MatchAnalysis_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="カラム依存分析の作成" skip="false">
+      <task kind="cheatsheet" name="関数従属性分析の作成" skip="false">
          <intro>
             この分析により、カラム依存性の変則を見つけることができます。
          </intro>
@@ -147,9 +147,9 @@
          <param name="path" value="UDI_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="SQLパターンの作成" skip="false">
+      <task kind="cheatsheet" name="ビジネスルールの作成" skip="false">
          <intro>
-            このチュートリアルでは、SQLパターンの作成方法を説明します。
+            このチュートリアルでは、ビジネスルールの作成方法を説明します。
          </intro>
          <onCompletion>
             <b>結論</b>
@@ -177,7 +177,7 @@
          <param name="path" value="DqRule_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="SQLファイルの作成" skip="false">
+      <task kind="cheatsheet" name="ソースファイルの作成" skip="false">
          <intro>
             このチュートリアルでは、SQLソースファイルの作成方法を説明します。
          </intro>

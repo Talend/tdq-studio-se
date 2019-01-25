@@ -18,9 +18,9 @@
    <item
          title="Select the columns to analyze.">
       <description>
-        In the editor, click <b> Analyzed Columns</b> (or click the link below). Then click <b>Select columns to analyze</b> to open a dialog box in which you can browse to and select the columns to analyze. Alternatively, you can drop the columns from the <b>DQ Repository</b> tree view onto the <b>Analyzed Columns</b> box in the editor. 
+        In the editor, click <b> Analyzed Columns</b> (or click the link below). Then click <b>Select Columns</b> to open a dialog box in which you can browse to and select the columns to analyze. Alternatively, you can drop the columns from the <b>DQ Repository</b> tree view onto the <b>Analyzed Columns</b> box in the editor. 
 		 
-Under <b>Data Mining Type</b>, define the type of the corresponding column. 		 
+Under <b>Datamining Type</b>, define the type of the corresponding column. 		 
 		 
 Note: <b>Nominal</b> means that the column contains textual values (no order or mathematical function applicable). <b>Interval</b> means that mathematical functions (such as the average) can be used.
       </description>
@@ -38,7 +38,7 @@ Note: <b>Nominal</b> means that the column contains textual values (no order or 
          skip="true"
          title="Choose a pattern for each column">
       <description>
-   		For each column, you can add a pattern indicator. There are two kinds of patterns. Regular patterns are regular expressions (not supported by all databases) and SQL patterns are the patterns that you add in a &quot;LIKE&quot; clause. Click the <b>Add Pattern</b> button next to each column, then browse to and select the pattern you want to add in the dialog box which appears. Alternatively, drop a pattern from the Repository view onto a column.
+   		For each column, you can add a pattern indicator. There are two kinds of patterns. Regular patterns are regular expressions (not supported by all databases) and SQL patterns are the patterns that you add in a &quot;LIKE&quot; clause. Click the <b>add pattern</b> button next to each column, then browse to and select the pattern you want to add in the dialog box which appears. Alternatively, drop a pattern from the Repository view onto a column.
       </description>
    </item>
    <item

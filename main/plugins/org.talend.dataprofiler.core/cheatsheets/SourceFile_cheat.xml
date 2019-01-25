@@ -10,7 +10,7 @@
    <item
          title="Set file name and sql content">
       <description>
-         To open the <b>New SQL file</b> wizard, expand the <b>Libraries</b> node on the <b>DQ Repository</b> view and right click <b>Source Files</b>. Click <b>New SQL File</b> on the context menu. Alternatively, click the link below. Indicate the SQL file metadata (name and location). Upon completion, an editor opens in which you can define the SQL content settings.		 		 		 .
+         To open the <b>New SQL File</b> wizard, expand the <b>Libraries</b> node on the <b>DQ Repository</b> view and right click <b>Source Files</b>. Click <b>New SQL File</b> on the context menu. Alternatively, click the link below. Indicate the SQL file metadata (name and location). Upon completion, an editor opens in which you can define the SQL content settings.
       </description>
       <action class="org.talend.dataprofiler.core.sql.AddSqlFileAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
    </item>
