@@ -32,6 +32,8 @@ public class DQRuleLabelProvider extends LabelProvider {
             IRepositoryNode node = (IRepositoryNode) element;
             if (node.getType().equals(ENodeType.SYSTEM_FOLDER)) {
                 return ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
+            } else if (node.getType().equals(ENodeType.SIMPLE_FOLDER)) {
+                return ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
             } else if (node.getType().equals(ENodeType.REPOSITORY_ELEMENT)) {
                 return ImageLib.getImage(ImageLib.DQ_RULE);
             }
