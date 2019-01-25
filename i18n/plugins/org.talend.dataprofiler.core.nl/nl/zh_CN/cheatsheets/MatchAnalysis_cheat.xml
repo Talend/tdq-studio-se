@@ -26,7 +26,7 @@
 
 	<item skip="true" title="选择要分析的数据">
 		<description>
-			如果您已在上一步中选择要分析的数据，则可以跳过此步骤。在匹配编辑器中，单击<b>选择数据</b>按钮。然后在 <b>限制</b> 字段中浏览并选择 <b>要分析的列</b>，设定要用作数据样本以测试匹配规则的数据记录的数量。
+			如果您已在上一步中选择要分析的数据，则可以跳过此步骤。在匹配编辑器中，单击<b>选择数据</b>按钮，浏览并选择要分析的列，然后在 <b>限制</b> 字段中设定要用作数据样本以测试匹配规则的数据记录的数量。
 		</description>
         <action class="org.talend.dataprofiler.core.ui.action.actions.SelectDataForMatchAnalysisAction" pluginId="org.talend.dataprofiler.core">
         </action>
@@ -62,6 +62,5 @@
 		</description>
 	  <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
 	  </action>
-
 	</item>
 </cheatsheet>

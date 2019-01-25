@@ -26,7 +26,7 @@
 
 	<item skip="true" title="データの選択">
 		<description>
-			分析するデータを前の手順で既に選択した場合は、この手順をスキップして構いません。エディターで<b>データの選択</b>タブをクリックします。<b>分析するカラム</b>に移動して選択します。 <b>制限</b>フィールドで、マッチングルールをテストするためのデータサンプルとして使用するデータレコードの数を設定します。
+			分析するデータを前の手順で既に選択した場合は、この手順をスキップして構いません。エディターで<b>データの選択</b>タブをクリックします。分析するカラムに移動して選択します。 <b>制限</b>フィールドで、マッチングルールをテストするためのデータサンプルとして使用するデータレコードの数を設定します。
 		</description>
         <action class="org.talend.dataprofiler.core.ui.action.actions.SelectDataForMatchAnalysisAction" pluginId="org.talend.dataprofiler.core">
         </action>

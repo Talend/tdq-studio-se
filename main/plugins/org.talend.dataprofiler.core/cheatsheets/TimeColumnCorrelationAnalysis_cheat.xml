@@ -16,7 +16,7 @@
    <item
          title="Select columns to analyze">
       <description>
-         In the editor, click <b> Analyzed Columns</b> (or click the link below). Then click <b>Select columns to analyze</b> to open a dialog box in which you can browse to and select the nominal and date columns to analyze. Alternatively, you can drop the columns from the <b>DQ Repository</b> tree view onto the <b>Analyzed Columns</b> box in the editor.
+         In the editor, click <b> Analyzed Columns</b> (or click the link below). Then click <b>Select columns</b> to open a dialog box in which you can browse to and select the nominal and date columns to analyze. Alternatively, you can drop the columns from the <b>DQ Repository</b> tree view onto the <b>Analyzed Columns</b> box in the editor.
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>

@@ -16,7 +16,7 @@
    <item
          title="选择要分析的列">
       <description>
-         单击 <b>被分析列</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择要分析的列</b> 打开一个对话框，您可以在其中浏览到并选择要分析的名义和间隔列。
+         单击 <b>被分析列</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择列</b> 打开一个对话框，您可以在其中浏览到并选择要分析的名义和间隔列。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>
