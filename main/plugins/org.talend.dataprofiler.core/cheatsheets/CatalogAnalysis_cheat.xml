@@ -18,7 +18,7 @@
          skip="true"
          title="Review your settings">
       <description>
-         You can review and modify your settings, if necessary, in the catalog editor. Click <b>Analysis Parameters</b> to modify the table or view filters in the corresponding fields.
+         You can review and modify your settings, if necessary, in the analysis editor. Click <b>Analysis Parameters</b> to modify the table or view filters in the corresponding fields.
       </description>
    </item>
    <item

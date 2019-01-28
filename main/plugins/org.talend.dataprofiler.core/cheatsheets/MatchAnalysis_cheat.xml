@@ -30,8 +30,7 @@
 	</item>
 	<item skip="true" title="Connect to a data source">
 		<description>
-			Create the
-			<b>connection</b>
+			Create the connection
 			to the data source you want to analyze. If you have already defined some metadata
 			that you want to reuse, just skip this step.
 			<br/>
@@ -69,10 +68,10 @@
 		<description>
 			Select the columns that will be used to generate a blocking key. A
 			blocking key is required when you have a lot of data
-			to analyze. In the <b>Data</b> view, click
+			to analyze. In the <b>Data Preview</b> section, click
 			on the
 			<b>Select Blocking Key</b>
-			tab and click the column header in the data table. This will add the columns to the
+			button and click the column header in the data table. This will add the columns to the
 			blocking key table. You need to click at 
 			<b>Select Blocking Key</b>
 			again to finish the selection.
@@ -101,12 +100,11 @@
 			the
 			<b>Chart</b>
 			button. Repeat this step until the configuration is satisfying.
-
 		</description>
 	</item>
 	<item skip="true" title="Export the Match Rule">
 		<description>
-			Once you test the Match Rule on the sample data and see that it correctly identifies duplicates, you can export it by using the export icon on the toolbar of the match editor then it will show as a <b>Match Rule</b> item in the <b>DQ Repository</b>. You can use the exported Match Rule in other analyses or in Data Quality matching components.
+			Once you test the Match Rule on the sample data and see that it correctly identifies duplicates, you can export it by using the export icon on the toolbar of the match editor then it will show under <b>Match</b> folder in the <b>DQ Repository</b>. You can use the exported Match Rule in other analyses or in Data Quality matching components.
 		</description>
 		<action class="org.talend.dataprofiler.core.ui.action.actions.ExportMatchRuleAction" pluginId="org.talend.dataprofiler.core">
 		</action>
@@ -121,6 +119,5 @@
 		</description>
 	  <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
 	  </action>
-
 	</item>
 </cheatsheet>
