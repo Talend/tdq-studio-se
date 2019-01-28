@@ -27,20 +27,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 
-import net.sourceforge.sqlexplorer.Messages;
-import net.sourceforge.sqlexplorer.oracle.actions.explain.ExplainNode;
-import net.sourceforge.sqlexplorer.oracle.actions.explain.ExplainPlanActionGroup;
-import net.sourceforge.sqlexplorer.parsers.Query;
-import net.sourceforge.sqlexplorer.parsers.QueryParser;
-import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
-import net.sourceforge.sqlexplorer.plugin.editors.SQLEditor;
-import net.sourceforge.sqlexplorer.sqleditor.results.ResultsTab;
-import net.sourceforge.sqlexplorer.sqlpanel.AbstractSQLExecution;
-
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.action.IMenuListener;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ITableLabelProvider;
@@ -55,10 +42,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+
+import net.sourceforge.sqlexplorer.Messages;
+import net.sourceforge.sqlexplorer.oracle.actions.explain.ExplainNode;
+import net.sourceforge.sqlexplorer.parsers.Query;
+import net.sourceforge.sqlexplorer.parsers.QueryParser;
+import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
+import net.sourceforge.sqlexplorer.plugin.editors.SQLEditor;
+import net.sourceforge.sqlexplorer.sqleditor.results.ResultsTab;
+import net.sourceforge.sqlexplorer.sqlpanel.AbstractSQLExecution;
 
 public class ExplainExecution extends AbstractSQLExecution {
 
@@ -168,17 +162,17 @@ public class ExplainExecution extends AbstractSQLExecution {
                     for (int i = 0; i < table.getColumnCount(); i++)
                         table.getColumn(i).pack();
 
-                    final ExplainPlanActionGroup actionGroup = new ExplainPlanActionGroup(tv, node.getChildren()[0]);
-                    MenuManager menuManager = new MenuManager("ExplainPlanContextMenu");
-                    menuManager.setRemoveAllWhenShown(true);
-                    org.eclipse.swt.widgets.Menu contextMenu = menuManager.createContextMenu(table);
-                    tv.getControl().setMenu(contextMenu);
-                    menuManager.addMenuListener(new IMenuListener() {
-
-                        public void menuAboutToShow(IMenuManager manager) {
-                            actionGroup.fillContextMenu(manager);
-                        }
-                    });
+//                    final ExplainPlanActionGroup actionGroup = new ExplainPlanActionGroup(tv, node.getChildren()[0]);
+//                    MenuManager menuManager = new MenuManager("ExplainPlanContextMenu");
+//                    menuManager.setRemoveAllWhenShown(true);
+//                    org.eclipse.swt.widgets.Menu contextMenu = menuManager.createContextMenu(table);
+//                    tv.getControl().setMenu(contextMenu);
+//                    menuManager.addMenuListener(new IMenuListener() {
+//
+//                        public void menuAboutToShow(IMenuManager manager) {
+//                            actionGroup.fillContextMenu(manager);
+//                        }
+//                    });
                     composite.layout();
                     composite.redraw();
                 } catch (Exception e) {

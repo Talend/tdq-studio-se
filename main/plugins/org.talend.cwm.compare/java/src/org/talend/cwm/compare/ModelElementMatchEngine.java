@@ -140,7 +140,6 @@ public class ModelElementMatchEngine extends DefaultMatchEngine {
         if (origin != null) {
             originEObjects = Iterators.concat(Iterators.singletonIterator(origin), scope.getCoveredEObjects(origin.eResource()));
         } else {
-        	
             originEObjects = Collections.EMPTY_SET.iterator();
         }
 
