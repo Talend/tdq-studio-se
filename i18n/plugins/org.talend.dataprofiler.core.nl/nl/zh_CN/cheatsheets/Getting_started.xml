@@ -5,14 +5,14 @@
          本备忘单将引导您创建分析。
       </intro>
       <onCompletion>
-         <b>Conclusion (结论)</b>
+         <b>结论</b>
       </onCompletion>
       <task kind="cheatsheet" name="创建数据库连接" skip="false">
          <intro>
             本教程将引导您创建数据库连接。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="DBconnection_cheat.xml">
          </param>
@@ -22,7 +22,7 @@
             本教程将引导您创建数据库连接概览分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="ConnectionAnalysis_cheat.xml">
          </param>
@@ -32,7 +32,7 @@
             本教程将引导您创建目录分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="CatalogAnalysis_cheat.xml">
          </param>
@@ -42,7 +42,7 @@
             本教程将引导您创建 schema 分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="SchemaAnalysis_cheat.xml">
          </param>
@@ -52,7 +52,7 @@
             本教程将引导您创建冗余分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="RedundancyAnalysis_cheat.xml">
          </param>
@@ -62,7 +62,7 @@
             通过此类分析，您可以将业务规则应用于选定的表。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="BusinessRuleAnalysis_cheat.xml">
          </param>
@@ -72,7 +72,7 @@
             本教程将引导您创建匹配分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="MatchAnalysis_cheat.xml">
          </param>
@@ -82,7 +82,7 @@
             此分析可帮助您检测列依赖关系中的异常。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="FunctionalDependAnalysis_cheat.xml">
          </param>
@@ -92,7 +92,7 @@
             本教程将引导您创建对一组列内容的分析。分析将计算行计数、不同计数、唯一计数和重复计数
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="ColumnSetAnalysis_cheat.xml">
          </param>
@@ -102,7 +102,7 @@
             本教程将引导您创建列分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="ColumnAnalysis_cheat.xml">
          </param>
@@ -112,7 +112,7 @@
             本教程将引导您创建数字列关联性分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="NumericalColumnCorrelationAnalysis_cheat.xml">
          </param>
@@ -122,7 +122,7 @@
             本教程将引导您创建名义列关联性分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="NominalCorrelationAnalysis_cheat.xml">
          </param>
@@ -132,7 +132,7 @@
             本教程将引导您创建时间列关联性分析。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="TimeColumnCorrelationAnalysis_cheat.xml">
          </param>
@@ -142,7 +142,7 @@
             本教程将引导您创建用户定义的指标。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="UDI_cheat.xml">
          </param>
@@ -152,7 +152,7 @@
             本教程将引导您创建 SQL 模式。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="PatternSql_cheat.xml">
          </param>
@@ -162,7 +162,7 @@
             本教程将引导您创建正则表达式模式。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="PatternRegex_cheat.xml">
          </param>
@@ -172,7 +172,7 @@
             本教程将引导您创建业务规则。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="DqRule_cheat.xml">
          </param>
@@ -182,7 +182,7 @@
             本教程将引导您创建 SQL 源文件。
          </intro>
          <onCompletion>
-            <b>Conclusion (结论)</b>
+            <b>结论</b>
          </onCompletion>
          <param name="path" value="SourceFile_cheat.xml">
          </param>
