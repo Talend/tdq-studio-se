@@ -587,7 +587,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         if (colName == null) {
             return colName;
         }
-        colName = " CAST(" + colName + " AS CHAR(20)) ";//$NON-NLS-1$//$NON-NLS-2$
+        colName = " CAST(" + colName + " AS CHAR(30)) ";//$NON-NLS-1$//$NON-NLS-2$
         return colName;
     }
 
