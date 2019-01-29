@@ -53,8 +53,6 @@ public class AnalysisRecordGroupingUtils {
 
     public static final String ESCAPE_CHARACTER = "\\"; //$NON-NLS-1$
 
-    private static String survivKeyColumn;
-
     /**
      * get Complete Column Schema.
      * 
@@ -572,7 +570,7 @@ public class AnalysisRecordGroupingUtils {
                                     .getHandleNull(), null, matchDef.getTokenizationType());
         }
         for (SurvivorshipKeyDefinition surKey : surKeyList) {
-            AnalysisRecordGroupingUtils.survivKeyColumn = surKey.getColumn();
+            String survivKeyColumn = surKey.getName();
             if (survivKeyColumn == null) {
                 matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, "0"); //$NON-NLS-1$
             } else if (surKey != null && survivKeyColumn != null && survivKeyColumn.equals(inputColumn)) {

@@ -227,6 +227,11 @@ public class MatchAndSurvivorCellModifer extends AbstractMatchCellModifier<Match
                         mkd, SurvivorShipAlgorithmEnum.CONCATENATE)))) {
                     mkd.getSurvivorShipKey().getFunction().setAlgorithmParameters(StringUtils.EMPTY);
                 }
+                if (!(isSurvivorShipAlgorithm(mkd, SurvivorShipAlgorithmEnum.MOST_RECENT) || isSurvivorShipAlgorithm(
+                        mkd, SurvivorShipAlgorithmEnum.MOST_ANCIENT))) {
+                    mkd.getSurvivorShipKey().getFunction().setReferenceColumn(StringUtils.EMPTY);
+                }
+
             } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {
                 String metaColumnName = convertColIndex2Name(newValue, new ColumnsDateFilter());
                 if (metaColumnName == null) {

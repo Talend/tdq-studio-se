@@ -126,6 +126,10 @@ public class DefaultSurvivorShipCellModifier extends AbstractMatchCellModifier<D
                         cellEditors[2].setValue(StringUtils.EMPTY);
                     }
                 }
+                if (!(isSurvivorShipAlgorithm(dsd, SurvivorShipAlgorithmEnum.MOST_RECENT) || isSurvivorShipAlgorithm(
+                        dsd, SurvivorShipAlgorithmEnum.MOST_ANCIENT))) {
+                    dsd.getFunction().setReferenceColumn(StringUtils.EMPTY);
+                }
             } else if (MatchAnalysisConstant.PARAMETER.equalsIgnoreCase(property)) {
                 dsd.getFunction().setAlgorithmParameters(newValue);
             } else if (MatchAnalysisConstant.REFERENCE_COLUMN.equalsIgnoreCase(property)) {

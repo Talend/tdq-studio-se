@@ -173,6 +173,10 @@ public class ParticularDefaultSurvivorShipCellModifier extends
                 cellEditors[2].setValue(StringUtils.EMPTY);
             }
         }
+        if (!(isSurvivorShipAlgorithm(pdskd, SurvivorShipAlgorithmEnum.MOST_RECENT) || isSurvivorShipAlgorithm(pdskd,
+                SurvivorShipAlgorithmEnum.MOST_ANCIENT))) {
+            pdskd.getFunction().setReferenceColumn(StringUtils.EMPTY);
+        }
 
     }
 
