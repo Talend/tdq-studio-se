@@ -147,9 +147,9 @@
          <param name="path" value="UDI_cheat.xml">
          </param>
       </task>
-      <task kind="cheatsheet" name="ビジネスルールの作成" skip="false">
+      <task kind="cheatsheet" name="SQLパターンの作成" skip="false">
          <intro>
-            このチュートリアルでは、ビジネスルールの作成方法を説明します。
+            このチュートリアルでは、SQLパターンの作成方法を説明します。
          </intro>
          <onCompletion>
             <b>結論</b>

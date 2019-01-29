@@ -30,7 +30,7 @@
          skip="true"
          title="添加用户定义的指标">
       <description>
-         针对要为其设定 <b>用户自定义的指标</b> 的每列单击 <b>UDI</b> 按钮。在 <b>UDI选择器</b> 对话框中，选中所需指标对应的复选框。
+         针对要为其设定 <b>自定义的指标</b> 的每列单击 <b>UDI</b> 按钮。在 <b>UDI选择器</b> 对话框中，选中所需指标对应的复选框。
       </description>
    </item>
    <item title="设定指标选项" dialog="true" skip="true">
