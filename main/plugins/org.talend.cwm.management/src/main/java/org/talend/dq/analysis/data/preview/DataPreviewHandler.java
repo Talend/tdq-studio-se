@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.talend.commons.i18n.internal.DefaultMessagesImpl;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.cwm.db.connection.DatabaseSQLExecutor;
@@ -25,10 +26,9 @@ import org.talend.cwm.db.connection.DelimitedFileSQLExecutor;
 import org.talend.cwm.db.connection.ISQLExecutor;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.relational.TdColumn;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
-
-import com.sun.istack.internal.logging.Logger;
 
 /**
  * DOC zshen class global comment. Detailled comment
@@ -58,7 +58,7 @@ public class DataPreviewHandler {
         } else if (modelElement instanceof TdColumn) {
             connection = ConnectionHelper.getTdDataProvider((TdColumn) modelElement);
         } else {// other case it is not support by now
-            log.warning(DefaultMessagesImpl.getString("DataPreviewHandler.UnSupportType")); //$NON-NLS-1$
+            log.warn(DefaultMessagesImpl.getString("DataPreviewHandler.UnSupportType")); //$NON-NLS-1$
             return new ArrayList<Object[]>();
         }
 
