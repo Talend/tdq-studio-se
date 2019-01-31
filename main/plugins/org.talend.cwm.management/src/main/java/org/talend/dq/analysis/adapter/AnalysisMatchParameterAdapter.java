@@ -31,6 +31,7 @@ import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorShipAlgorit
 import org.talend.dataquality.record.linkage.grouping.swoosh.SurvivorshipUtils;
 import org.talend.dataquality.record.linkage.record.CombinedRecordMatcher;
 import org.talend.dataquality.record.linkage.record.IRecordMatcher;
+import org.talend.dataquality.record.linkage.utils.DefaultSurvivorShipDataTypeEnum;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
 import org.talend.dataquality.rules.DefaultSurvivorshipDefinition;
 import org.talend.dataquality.rules.ParticularDefaultSurvivorshipDefinitions;
@@ -115,7 +116,7 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
             for (DefaultSurvivorshipDefinition defSurvDef : defSurvDefs) {
                 // the column's data type start with id_, so need to add id_ ahead of the default survivorship's data
                 // type before judging if they are equal
-                if (StringUtils.equals(dataTypeName, "id_" + defSurvDef.getDataType()) || StringUtils.equals(defSurvDef.getDataType(), "Number") && JavaTypesManager.isNumber(dataTypeName)) { //$NON-NLS-1$
+                if (isMatchMetadataType(dataTypeName, defSurvDef)) {
                     putNewSurvFunc(columnMap, defaultSurvRules, metaColumn, defSurvDef);
                     break;
                 }
@@ -123,6 +124,21 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
              // one ).
         }
         return defaultSurvRules;
+    }
+
+    /**
+     * duplicate with MatchRuleAnlaysisUtils.isMatchMetadataType()
+     */
+    public boolean isMatchMetadataType(String dataTypeName, DefaultSurvivorshipDefinition defSurvDef) {
+        if (StringUtils.equals(dataTypeName, "id_" + defSurvDef.getDataType())) { //$NON-NLS-1$
+            return true;
+        } else if (StringUtils.equals(defSurvDef.getDataType(), DefaultSurvivorShipDataTypeEnum.STRING.getValue())) {
+            return JavaTypesManager.isString(dataTypeName);
+        } else if (StringUtils.equals(defSurvDef.getDataType(), DefaultSurvivorShipDataTypeEnum.NUMBER.getValue())) {
+            return JavaTypesManager.isNumber(dataTypeName);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -147,7 +163,6 @@ public class AnalysisMatchParameterAdapter extends MatchParameterAdapter {
         if (findIndex != null) {
             survFunc.setReferenceColumnIndex(findIndex);
         }
-        survFunc.setReferenceColumnName(defSurvDef.getFunction().getReferenceColumn());
         defaultSurvRules.put(Integer.valueOf(columnMap.get(metaColumn)), survFunc);
     }
 
