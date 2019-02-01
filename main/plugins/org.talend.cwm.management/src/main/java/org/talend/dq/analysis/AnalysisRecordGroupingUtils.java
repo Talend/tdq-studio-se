@@ -573,7 +573,7 @@ public class AnalysisRecordGroupingUtils {
             String survivKeyColumn = surKey.getName();
             if (survivKeyColumn == null) {
                 matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, "0"); //$NON-NLS-1$
-            } else if (surKey != null && survivKeyColumn != null && survivKeyColumn.equals(inputColumn)) {
+            } else if (surKey != null && survivKeyColumn != null) {
                 String referenceColumn = surKey.getFunction().getReferenceColumn();
                 if (referenceColumn == null) {
                     referenceColumn = inputColumn;

@@ -365,12 +365,19 @@ public class MatchRuleAnlaysisUtils {
      * duplicate with AnalysisMatchParameterAdapter.isMatchMetadataType()
      */
     public static boolean isMatchMetadataType(String dataTypeName, DefaultSurvivorshipDefinition defSurvDef) {
-        if (StringUtils.equals(dataTypeName, "id_" + defSurvDef.getDataType())) { //$NON-NLS-1$
+        return isMatchMetadataType(dataTypeName, defSurvDef.getDataType());
+    }
+
+    /**
+     * duplicate with AnalysisMatchParameterAdapter.isMatchMetadataType()
+     */
+    public static boolean isMatchMetadataType(String talendDataTypeName, String defDataType) {
+        if (StringUtils.equals(talendDataTypeName, "id_" + defDataType)) { //$NON-NLS-1$
             return true;
-        } else if (StringUtils.equals(defSurvDef.getDataType(), DefaultSurvivorShipDataTypeEnum.STRING.getValue())) {
-            return JavaTypesManager.isString(dataTypeName);
-        } else if (StringUtils.equals(defSurvDef.getDataType(), DefaultSurvivorShipDataTypeEnum.NUMBER.getValue())) {
-            return JavaTypesManager.isNumber(dataTypeName);
+        } else if (StringUtils.equals(defDataType, DefaultSurvivorShipDataTypeEnum.STRING.getValue())) {
+            return JavaTypesManager.isString(talendDataTypeName);
+        } else if (StringUtils.equals(defDataType, DefaultSurvivorShipDataTypeEnum.NUMBER.getValue())) {
+            return JavaTypesManager.isNumber(talendDataTypeName);
         } else {
             return false;
         }
