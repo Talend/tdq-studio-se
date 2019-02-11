@@ -75,6 +75,7 @@
   <plugin id="org.talend.dataquality.record.linkage.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.dataquality.sampling" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.dataquality.statistics" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.dataquality.converters" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.dataquality.text.japanese" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.libraries.clearspring.analytics" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.themes.css.talend" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
