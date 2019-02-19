@@ -13,16 +13,8 @@
 package org.talend.dataprofiler.core.ui.wizard.analysis;
 
 import org.eclipse.jface.wizard.WizardDialog;
-import org.talend.core.model.general.Project;
-import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.dataprofiler.core.ui.wizard.AbstractWizardPage;
 import org.talend.dq.analysis.parameters.AnalysisParameter;
-import org.talend.dq.helper.ProxyRepositoryManager;
-import org.talend.dq.helper.RepositoryNodeHelper;
-import org.talend.dq.nodes.DQRepositoryNode;
-import org.talend.repository.ProjectManager;
-import org.talend.repository.model.IRepositoryNode.ENodeType;
-import org.talend.repository.model.RepositoryNode;
 
 /**
  * @author zqin
@@ -96,22 +88,4 @@ public abstract class AbstractAnalysisWizardPage extends AbstractWizardPage {
         return (AnalysisParameter) super.getParameter();
     }
 
-    protected RepositoryNode getNodeListWithReferenceProject(ERepositoryObjectType type) {
-        if (!ProxyRepositoryManager.getInstance().isLocalProject() && !ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-            DQRepositoryNode node = new DQRepositoryNode(null, null, ENodeType.SYSTEM_FOLDER, ProjectManager.getInstance()
-                    .getCurrentProject());
-            node.getChildren().clear();
-
-            java.util.Set<Project> allProjects = ProxyRepositoryManager.getInstance().getAllProjects();
-            for (Project project : allProjects) {
-                RepositoryNode metaRootNode = RepositoryNodeHelper.getRootNode(type, true, project);
-                if (metaRootNode != null) {
-                    node.getChildren().addAll(metaRootNode.getChildren());
-                }
-            }
-            return node;
-        } else {
-            return RepositoryNodeHelper.getRootNode(type, true);
-        }
-    }
 }

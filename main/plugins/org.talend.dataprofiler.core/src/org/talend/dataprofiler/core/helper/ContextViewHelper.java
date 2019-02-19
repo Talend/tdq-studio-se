@@ -166,7 +166,17 @@ public final class ContextViewHelper {
     private static boolean findAndUpdateContext(EList<ContextType> contextList, ContextItem contextItem,
             RepositoryUpdateManager ruManager, boolean isUpdated) {
         boolean isModified = false;
-        if (!ruManager.getRepositoryRemoveGroupContext().isEmpty()) {
+        if (!ruManager.getRepositoryAddGroupContext().isEmpty()) {
+            List<IContext> addGroupContext = ruManager.getRepositoryAddGroupContext().get(contextItem);
+            // add new context group
+            if (!addGroupContext.isEmpty()) {
+                for (IContext addedGroup : addGroupContext) {
+                    contextList.add(duplicateContext(addedGroup));
+                    isModified = true;
+                }
+            }
+        }
+        if (isUpdated && !ruManager.getRepositoryRemoveGroupContext().isEmpty()) {
             // delete context group
             List<IContext> removeGroupContext = ruManager.getRepositoryRemoveGroupContext().get(contextItem);
             if (!removeGroupContext.isEmpty()) {
@@ -175,6 +185,7 @@ public final class ContextViewHelper {
                     for (ContextType context : contextList) {
                         if (StringUtils.equals(removedGroup.getName(), context.getName())) {
                             removedGrps.add(context);
+                            isModified = true;
                             continue;
                         }
                     }

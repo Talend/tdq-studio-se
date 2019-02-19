@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.dataprofiler.core.model.dynamic.DynamicIndicatorModel;
 import org.talend.dataprofiler.core.ui.editor.preview.model.dataset.CustomerDefaultBAWDataset;
 import org.talend.dataprofiler.core.ui.editor.preview.model.states.SummaryStatisticsState;
@@ -72,6 +73,8 @@ public class AnalysisUtils {
                         return false;
                     }// ~
                     return ResourceService.isSubFolder(ResourceManager.getRulesFolder(), folder);
+                } else if (element instanceof DQRepositoryNode) {
+                    return ERepositoryObjectType.TDQ_RULES_SQL.equals(((DQRepositoryNode) element).getContentType());
                 }
                 return false;
             }

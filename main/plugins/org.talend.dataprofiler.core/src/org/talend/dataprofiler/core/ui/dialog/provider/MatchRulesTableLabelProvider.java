@@ -58,16 +58,25 @@ public class MatchRulesTableLabelProvider extends LabelProvider implements ITabl
     public Image getColumnImage(Object element, int columnIndex) {
         Image warn = null;
         Map<String, String> rule = (HashMap<String, String>) element;
-        if (0 == columnIndex && !hasColumnMatch(rule)) {
+        if (getColumnIndex() == columnIndex && !hasColumnMatch(rule, INPUT_COLUMN)
+                || getRefColumnIndex() == columnIndex && !hasColumnMatch(rule, REFERENCE_COLUMN)) {
             warn = PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_WARN_TSK);
         }
         return warn;
     }
 
-    private boolean hasColumnMatch(Map<String, String> rule) {
+    protected int getRefColumnIndex() {
+        return 9;
+    }
+
+    protected int getColumnIndex() {
+        return 0;
+    }
+
+    private boolean hasColumnMatch(Map<String, String> rule, String columnMatchKey) {
         if (inputColumnNames != null) {
             for (String str : inputColumnNames) {
-                if (str.equalsIgnoreCase(rule.get(MATCH_KEY_NAME)) || str.equalsIgnoreCase(rule.get(INPUT_COLUMN))) {
+                if (str.equalsIgnoreCase(rule.get(MATCH_KEY_NAME)) || str.equalsIgnoreCase(rule.get(columnMatchKey))) {
                     return true;
                 }
             }

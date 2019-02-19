@@ -42,6 +42,7 @@ import org.talend.dataquality.record.linkage.utils.MatchAnalysisConstant;
 import org.talend.dataquality.record.linkage.utils.SurvivorShipAlgorithmEnum;
 import org.talend.dataquality.rules.AlgorithmDefinition;
 import org.talend.dataquality.rules.BlockKeyDefinition;
+import org.talend.dataquality.rules.DefaultSurvivorshipDefinition;
 import org.talend.dataquality.rules.KeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
@@ -121,8 +122,9 @@ public class MatchRuleAnlaysisUtils {
             String algorithmValue = blockKeydef.getAlgorithm().getAlgorithmParameters();
             String postAlgo = blockKeydef.getPostAlgorithm().getAlgorithmType();
             String postAlgValue = blockKeydef.getPostAlgorithm().getAlgorithmParameters();
-            Map<String, String> blockKeyDefMap = AnalysisRecordGroupingUtils.getBlockingKeyMap(column, preAlgo, preAlgoValue,
-                    algorithm, algorithmValue, postAlgo, postAlgValue);
+            Map<String, String> blockKeyDefMap =
+                    AnalysisRecordGroupingUtils.getBlockingKeyMap(column, preAlgo, preAlgoValue, algorithm,
+                            algorithmValue, postAlgo, postAlgValue);
             resultListData.add(blockKeyDefMap);
         }
 
@@ -180,7 +182,8 @@ public class MatchRuleAnlaysisUtils {
      */
     public static boolean isEqualsToAdditionalColumn(String columnName) {
         if (MatchAnalysisConstant.GID.equals(columnName) || MatchAnalysisConstant.GRP_QUALITY.equals(columnName)
-                || MatchAnalysisConstant.GROUP_SIZE.equals(columnName) || MatchAnalysisConstant.SCORE.equals(columnName)
+                || MatchAnalysisConstant.GROUP_SIZE.equals(columnName)
+                || MatchAnalysisConstant.SCORE.equals(columnName)
                 || MatchAnalysisConstant.ATTRIBUTE_SCORES.equals(columnName)
                 || MatchAnalysisConstant.BLOCK_KEY.equals(columnName)) {
             return true;
@@ -199,7 +202,8 @@ public class MatchRuleAnlaysisUtils {
         ITDQRepositoryService tdqRepService = null;
 
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-            tdqRepService = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
+            tdqRepService =
+                    (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
         }
         if (tdqRepService != null) {
             tdqRepService.refreshTableWithResult(analysis, resultData);
@@ -342,15 +346,40 @@ public class MatchRuleAnlaysisUtils {
         case LARGEST:
         case SMALLEST:
             // compare column's talend type || compare DefaultSurvivorShipDataTypeEnum own type
-            return JavaTypesManager.isNumber(dataType) || DefaultSurvivorShipDataTypeEnum.NUMBER.getValue().equals(dataType);
+            return JavaTypesManager.isNumber(dataType)
+                    || DefaultSurvivorShipDataTypeEnum.NUMBER.getValue().equals(dataType);
         case LONGEST:
         case SHORTEST:
-            return JavaTypesManager.isString(dataType) || DefaultSurvivorShipDataTypeEnum.STRING.getValue().equals(dataType);
+            return JavaTypesManager.isString(dataType)
+                    || DefaultSurvivorShipDataTypeEnum.STRING.getValue().equals(dataType);
         case PREFER_TRUE:
         case PREFER_FALSE:
-            return JavaTypesManager.isBoolean(dataType) || DefaultSurvivorShipDataTypeEnum.BOOLEAN.getValue().equals(dataType);
+            return JavaTypesManager.isBoolean(dataType)
+                    || DefaultSurvivorShipDataTypeEnum.BOOLEAN.getValue().equals(dataType);
         default:
             return true;
+        }
+    }
+
+    /**
+     * duplicate with AnalysisMatchParameterAdapter.isMatchMetadataType()
+     */
+    public static boolean isMatchMetadataType(String dataTypeName, DefaultSurvivorshipDefinition defSurvDef) {
+        return isMatchMetadataType(dataTypeName, defSurvDef.getDataType());
+    }
+
+    /**
+     * duplicate with AnalysisMatchParameterAdapter.isMatchMetadataType()
+     */
+    public static boolean isMatchMetadataType(String talendDataTypeName, String defDataType) {
+        if (StringUtils.equals(talendDataTypeName, "id_" + defDataType)) { //$NON-NLS-1$
+            return true;
+        } else if (StringUtils.equals(defDataType, DefaultSurvivorShipDataTypeEnum.STRING.getValue())) {
+            return JavaTypesManager.isString(talendDataTypeName);
+        } else if (StringUtils.equals(defDataType, DefaultSurvivorShipDataTypeEnum.NUMBER.getValue())) {
+            return JavaTypesManager.isNumber(talendDataTypeName);
+        } else {
+            return false;
         }
     }
 }

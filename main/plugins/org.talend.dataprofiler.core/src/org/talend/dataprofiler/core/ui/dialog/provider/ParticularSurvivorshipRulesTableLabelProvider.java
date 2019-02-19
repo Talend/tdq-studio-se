@@ -58,4 +58,9 @@ public class ParticularSurvivorshipRulesTableLabelProvider extends MatchRulesTab
         return result;
     }
 
+    @Override
+    protected int getRefColumnIndex() {
+        return 2;
+    }
+
 }

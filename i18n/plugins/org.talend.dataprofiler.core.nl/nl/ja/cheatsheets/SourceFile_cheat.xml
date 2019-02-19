@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cheatsheet
-      title="新しいSQLファイルの作成">
+      title="新しいソースファイルの作成">
    <intro
          href="http://en.wikipedia.org/wiki/Sql">
       <description>
@@ -8,9 +8,9 @@
       </description>
    </intro>
    <item
-         title="SQLファイルを定義する">
+         title="ソースファイルの定義">
       <description>
-         <b>新しいSQLファイル</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューの<b>ライブラリ</b>ノードを展開し、<b>ソースファイル</b>を右クリックします。コンテキストメニューで<b>新しいSQLファイル</b>をクリックします。または、下のリンクをクリックします。SQLファイルメタデータを示します(名前と場所)。完了するとエディターが開き、そこでSQLコンテンツ設定を定義することができます。
+         <b>新規SQLファイル</b>ウィザードを開くには、<b>DQ リポジトリ</b>ビューの<b>ライブラリ</b>ノードを展開し、<b>ソースファイル</b>を右クリックします。コンテキストメニューで<b>新規SQLファイル</b>をクリックします。または、下のリンクをクリックします。SQLファイルメタデータを示します(名前と場所)。完了するとエディターが開き、そこでSQLコンテンツ設定を定義することができます。
       </description>
       <action class="org.talend.dataprofiler.core.sql.AddSqlFileAction" pluginId="org.talend.dataprofiler.core" confirm="false"/>
    </item>

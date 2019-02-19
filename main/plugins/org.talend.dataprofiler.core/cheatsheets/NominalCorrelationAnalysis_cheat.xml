@@ -16,7 +16,7 @@
    <item
          title="Select the columns to analyse">
       <description>
-         Click the <b>Analyzed Columns</b> to open the corresponding view(or click the link below). Then click <b>Select columns to analyze</b> to open a dialog box in which you can browse to and select the nominal and interval columns to analyze.
+         Click the <b>Analyzed Columns</b> to open the corresponding view(or click the link below). Then click <b>Select columns</b> to open a dialog box in which you can browse to and select the nominal and interval columns to analyze.
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>

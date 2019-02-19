@@ -11,7 +11,7 @@ Please refer to your Database Management System documentation for more details.
    <item
          title="Set SQL pattern information and content">
       <description>
-         To open the <b>SQL Pattern</b> creation wizard, expand the <b>Libraries</b> node and the <b>Patterns</b> folder on the <b>DQ Repository</b> Tree view. Right click SQL and then click <b>New SQL Pattern</b> on the context menu. The wizard prompts you to provide the SQL pattern metadata (name, purpose, description and expression...). Upon completion, an editor opens in which you can modify or add to the pattern metadata or definitions.	
+         To open the <b>New SQL Pattern</b> wizard, expand the <b>Libraries</b> node and the <b>Patterns</b> folder on the <b>DQ Repository</b> Tree view. Right click SQL and then click <b>New SQL Pattern</b> on the context menu. The wizard prompts you to provide the SQL pattern metadata (name, purpose, description and expression...). Upon completion, an editor opens in which you can modify or add to the pattern metadata or definitions.	
 
 Click <b>Pattern Definition</b> to expand the editor. In this section of the editor, you can create database specific pattern definitions. Select the database type from the list and enter the expression in the corresponding field.			 
       </description>

@@ -16,7 +16,7 @@
    <item
          title="选择要分析的列">
       <description>
-         单击 <b>已分析列</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择要分析的列</b> 打开一个对话框，您可以在其中浏览到并选择要分析的名义和间隔列。
+         单击 <b>被分析列</b> 打开相应的视图 (或单击下方的链接)。然后单击 <b>选择列</b> 打开一个对话框，您可以在其中浏览到并选择要分析的名义和间隔列。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="8">
       </action>
@@ -31,7 +31,7 @@
    <item
          title="分析">
       <description>
-         要执行分析，单击编辑器左上方的 <b>Run (运行)</b> 图标 (或单击下方的链接)。或者，右键单击 <b>DQ Repository (DQ 存储库)</b> 树视图 <b>Analyses (分析)</b> 文件夹下的分析，然后选择上下文菜单上的 Run (运行) 图标。
+         要执行分析，单击编辑器左上方的 <b>运行</b> 图标 (或单击下方的链接)。或者，右键单击 <b>DQ 存储库</b> 树视图 <b>分析</b> 文件夹下的分析，然后选择上下文菜单上的 <b>运行</b> 图标。
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
       </action>

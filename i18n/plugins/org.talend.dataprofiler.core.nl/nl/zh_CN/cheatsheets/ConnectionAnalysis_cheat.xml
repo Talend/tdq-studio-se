@@ -14,7 +14,7 @@
    </item>
    <item title="检查您的设置" dialog="true" skip="true">
       <description>
- 如果需要，单击 <b>连接概览分析</b> 编辑器上的 分析参数，检查或者修改表或视图筛选器。
+ 如果需要，单击 <b>概览分析</b> 编辑器上的 分析参数，检查或者修改表或视图筛选器。
       </description>
    </item>
    <item

@@ -20,6 +20,7 @@ import org.eclipse.ui.dialogs.ContainerCheckedTreeViewer;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
+import org.talend.dataprofiler.core.ui.utils.AnalysisUtils;
 import org.talend.dataprofiler.core.ui.views.provider.ResourceViewContentProvider;
 import org.talend.dataprofiler.core.ui.wizard.analysis.AbstractAnalysisWizardPage;
 import org.talend.dq.helper.ProxyRepositoryManager;
@@ -70,11 +71,7 @@ public class DQRuleSelectPage extends AbstractAnalysisWizardPage {
         // MOD gdbu 2011-7-25 bug : 23220
         ((ResourceViewContentProvider) cContentProvider).setTreeViewer(cViewer);
 
-        // cViewer.setInput(ResourceManager.getLibrariesFolder());
-        // // ADD mzhao bug TDQ-4188 hide the .svn folders.
-        // cViewer.addFilter(new DQFolderFilter(true));
-        // cViewer.addFilter(new RuleFolderFliter(true));
-        // cViewer.addFilter(AnalysisUtils.createRuleFilter());
+        cViewer.addFilter(AnalysisUtils.createRuleFilter());
 
         setControl(container);
     }
@@ -94,7 +91,7 @@ public class DQRuleSelectPage extends AbstractAnalysisWizardPage {
             }
             return node;
         } else {
-            return RepositoryNodeHelper.getRootNode(type, true);
+            return (RepositoryNode) RepositoryNodeHelper.getLibrariesFolderNode(EResourceConstant.RULES);
         }
     }
 

@@ -14,7 +14,7 @@
 	</item>
 	<item skip="true" title="连接到数据源">
 		<description>
-			创建到您要分析的数据源的 <b>连接</b>。如果您已定义一些要重用的元数据，请跳过此步骤。
+			创建到您要分析的数据源的连接。如果您已定义一些要重用的元数据，请跳过此步骤。
 			<br/>
 			要在编辑器中创建元数据连接，可以单击 <b>匹配分析</b> 编辑器中的 <b>新建连接</b> 按钮。
 			<br/>
@@ -26,7 +26,7 @@
 
 	<item skip="true" title="选择要分析的数据">
 		<description>
-			如果您已在上一步中选择要分析的数据，则可以跳过此步骤。在匹配编辑器中，单击<b>选择数据</b>选项卡。然后在 <b>限制</b> 字段中浏览并选择 <b>要分析的列</b>，设定要用作数据样本以测试匹配规则的数据记录的数量。
+			如果您已在上一步中选择要分析的数据，则可以跳过此步骤。在匹配编辑器中，单击<b>选择数据</b>按钮，浏览并选择要分析的列，然后在 <b>限制</b> 字段中设定要用作数据样本以测试匹配规则的数据记录的数量。
 		</description>
         <action class="org.talend.dataprofiler.core.ui.action.actions.SelectDataForMatchAnalysisAction" pluginId="org.talend.dataprofiler.core">
         </action>
@@ -34,7 +34,7 @@
 
 	<item title="生成阻塞键">
 		<description>
-			选择将用于生成阻塞键的列。当您需要分析大量数据时，需要使用阻塞键。在 <b>数据</b> 视图中，单击 <b>选择阻塞键</b> 选项卡，然后单击数据表中的列标题。这样会将列添加到阻塞键表中。您需要再次单击 <b>选择阻塞键</b> 完成选择。
+			选择将用于生成阻塞键的列。当您需要分析大量数据时，需要使用阻塞键。在 <b>数据</b> 视图中，单击 <b>选择阻塞键</b> 按钮，然后单击数据表中的列标题。这样会将列添加到阻塞键表中。您需要再次单击 <b>选择阻塞键</b> 完成选择。
 			<br/>
 			下一步是指定如何生成键 (选择要提取的字符、要应用于列的算法等)。串联算法结果将生成一个键。
 			<br/>
@@ -43,7 +43,7 @@
 	</item>
 	<item title="定义匹配规则">
 		<description>
-			在匹配编辑器中，单击<b>选择匹配键</b>选项卡。然后单击数据表中的列标题。以相同方式选择匹配运算所需的所有特性。在 <b>匹配键</b> 表中，选择要应用于比较的算法 (<b>匹配函数</b>) 和其他匹配参数。
+			在匹配编辑器中，单击<b>选择匹配键</b>按钮。然后单击数据表中的列标题。以相同方式选择匹配运算所需的所有特性。在 <b>匹配键</b> 表中，选择要应用于比较的算法 (<b>匹配函数</b>) 和其他匹配参数。
 			<br/>
 			完成后，您可以单击 <b>图表</b> 按钮以可视化应用于数据样本的配置的结果。重复此步骤，直至配置满意为止。
 
@@ -51,7 +51,7 @@
 	</item>
 	<item skip="true" title="导出匹配规则">
 		<description>
-			在对示例数据测试匹配规则并观察其已正确识别出重复项后，可以使用匹配编辑器工具栏上的导出图标将其导出，也可以将其导出为 <b>DQ 存储库</b> 中的 <b>匹配规则</b> 项目。您可以在其他分析或 Data Quality 匹配组件中使用导出的匹配规则。  
+			在对示例数据测试匹配规则并观察其已正确识别出重复项后，可以使用匹配编辑器工具栏上的导出图标将其导出，将在 <b>DQ 存储库</b> 中的 <b>匹配规则</b> 生成新项目。您可以在其他分析或 Data Quality 匹配组件中使用导出的匹配规则。  
 		</description>
 		<action class="org.talend.dataprofiler.core.ui.action.actions.ExportMatchRuleAction" pluginId="org.talend.dataprofiler.core">
 		</action>
@@ -62,6 +62,5 @@
 		</description>
 	  <action class="org.talend.dataprofiler.core.ui.action.actions.RunAnalysisAction" pluginId="org.talend.dataprofiler.core" confirm="false">
 	  </action>
-
 	</item>
 </cheatsheet>

@@ -4101,4 +4101,23 @@ public final class RepositoryNodeHelper {
         }
         return ColumnHelper.getColumnOwnerAsColumnSet(column);
     }
+
+    public static RepositoryNode getNodeListWithReferenceProject(ERepositoryObjectType type) {
+        if (!ProxyRepositoryManager.getInstance().isLocalProject() && !ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+            DQRepositoryNode node = new DQRepositoryNode(null, null, ENodeType.SYSTEM_FOLDER, ProjectManager.getInstance()
+                    .getCurrentProject());
+            node.getChildren().clear();
+
+            java.util.Set<Project> allProjects = ProxyRepositoryManager.getInstance().getAllProjects();
+            for (Project project : allProjects) {
+                RepositoryNode metaRootNode = RepositoryNodeHelper.getRootNode(type, true, project);
+                if (metaRootNode != null) {
+                    node.getChildren().addAll(metaRootNode.getChildren());
+                }
+            }
+            return node;
+        } else {
+            return RepositoryNodeHelper.getRootNode(type, true);
+        }
+    }
 }

@@ -32,6 +32,7 @@ import org.talend.dataprofiler.core.ui.filters.HadoopCLusterFolderNodeFilter;
 import org.talend.dataprofiler.core.ui.filters.RecycleBinFilter;
 import org.talend.dataprofiler.core.ui.filters.TDQEEConnectionFolderFilter;
 import org.talend.dataprofiler.core.ui.views.provider.ResourceViewContentProvider;
+import org.talend.dq.helper.RepositoryNodeHelper;
 
 /**
  * DOC mzhao class global comment. This class provide abstract methods for client to add different filter and listener.
@@ -95,7 +96,7 @@ public abstract class AnalysisDPSelectionPage extends AbstractAnalysisWizardPage
         fViewer.setContentProvider(fContentProvider);
         fViewer.setLabelProvider(fLabelProvider);
 
-        fViewer.setInput(getNodeListWithReferenceProject(ERepositoryObjectType.METADATA));
+        fViewer.setInput(RepositoryNodeHelper.getNodeListWithReferenceProject(ERepositoryObjectType.METADATA));
 
         // MOD gdbu 2011-7-25 bug : 23220
         ((ResourceViewContentProvider) fContentProvider).setTreeViewer(fViewer);

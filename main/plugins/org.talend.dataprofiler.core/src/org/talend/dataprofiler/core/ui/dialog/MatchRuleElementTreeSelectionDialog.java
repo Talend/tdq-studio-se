@@ -928,12 +928,12 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
      * @param functionType the type of function
      * @param matchedColumnName the name of column
      * @param dataType the data type of column
-     * @return true if function is valid else false
+     * @return true if function is valid or the dataType is null else false
      */
     private boolean checkFunctionValid(String functionType, String matchedColumnName, String dataType) {
         SurvivorShipAlgorithmEnum functionEnum = SurvivorShipAlgorithmEnum.getTypeBySavedValue(functionType);
         // for most common, no need to check, it fixes all type.
-        if (SurvivorShipAlgorithmEnum.MOST_COMMON.equals(functionEnum)) {
+        if (SurvivorShipAlgorithmEnum.MOST_COMMON.equals(functionEnum) || dataType == null) {
             return true;
         }
         DefaultSurvivorShipDataTypeEnum[] valudDataType = functionEnum.getDataType();

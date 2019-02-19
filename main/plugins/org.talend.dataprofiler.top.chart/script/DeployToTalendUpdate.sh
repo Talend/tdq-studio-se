@@ -56,7 +56,7 @@ repo_url="https://talend-update.talend.com/nexus/content/repositories/libraries"
 echo "----------------------------------------------------"
 echo "|     " net.sourceforge.sqlexplorer_${version} "     |"
 echo "----------------------------------------------------"
-mvn deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.pom \
+mvn -B deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.pom \
   -Dfile=net.sourceforge.sqlexplorer_${version}.${revision_suffix_sqlexplorer}.jar \
   -DrepositoryId=$repo_id \
   -Durl=$repo_url
@@ -64,7 +64,7 @@ mvn deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.pom \
 echo "----------------------------------------------------"
 echo "|     " net.sourceforge.sqlexplorer.nl_${version} "     |"
 echo "----------------------------------------------------"
-mvn deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.nl.pom \
+mvn -B deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.nl.pom \
   -Dfile=net.sourceforge.sqlexplorer.nl_${version}.${revision_suffix_sqlexplorer_nl}.jar \
   -DrepositoryId=$repo_id \
   -Durl=$repo_url
@@ -72,7 +72,7 @@ mvn deploy:deploy-file -DpomFile=net.sourceforge.sqlexplorer.nl.pom \
 echo "----------------------------------------------------"
 echo "|     " org.talend.dataprofiler.top.chart_${version} "     |"
 echo "----------------------------------------------------"
-mvn deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.pom \
+mvn -B deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.pom \
   -Dfile=org.talend.dataprofiler.top.chart_${version}.${revision_suffix_top_chart}.jar \
   -DrepositoryId=$repo_id \
   -Durl=$repo_url
@@ -80,7 +80,7 @@ mvn deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.pom \
 echo "----------------------------------------------------"
 echo "|     " org.talend.dataprofiler.top.chart.nl_${version} "     |"
 echo "----------------------------------------------------"
-mvn deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.nl.pom \
+mvn -B deploy:deploy-file -DpomFile=org.talend.dataprofiler.top.chart.nl.pom \
   -Dfile=org.talend.dataprofiler.top.chart.nl_${version}.${revision_suffix_top_chart_nl}.jar \
   -DrepositoryId=$repo_id \
   -Durl=$repo_url

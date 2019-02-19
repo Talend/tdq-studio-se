@@ -17,14 +17,14 @@ To open the <b>Create New Analysis</b> wizard, right click <b>Analyses</b> on th
    <item dialog="true"
          title="Select columns for set A">
       <description>
-         Click <b>Analyzed Column Set</b> to open the corresponding view (or click the link below). Then click <b>Select columns for set A</b>. A dialog box opens in which you can browse to and select the first set of columns.
+         Click <b>Analyzed Column Sets</b> to open the corresponding view (or click the link below). Then click <b>A Column Set</b>. A dialog box opens in which you can browse to and select the first set of columns.
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1" param2="0"/>
    </item>
    <item dialog="true"
          title="Select columns for set B">
       <description>
-         Click <b>Analyzed Column Sets</b> to open the corresponding view(or click the link below). Then click <b>Select columns for set B</b>. A dialog box opens in which you can browse to and select the second set of columns.
+         Click <b>Analyzed Column Sets</b> to open the corresponding view(or click the link below). Then click <b>B Column Set</b>. A dialog box opens in which you can browse to and select the second set of columns.
       </description>
       <action class="org.talend.dataprofiler.core.ui.action.actions.OpenColumnSelectorAction" pluginId="org.talend.dataprofiler.core" confirm="false" param1="1" param2="1"/>
    </item>
