@@ -112,6 +112,8 @@ public abstract class AbstractFilterMetadataPage extends AbstractAnalysisMetadat
         tableFilterText.setText(latestTableFilterValue);
         tableFilterText.setToolTipText(DefaultMessagesImpl.getString("AbstractFilterMetadataPage.FilterTables")); //$NON-NLS-1$
         GridDataFactory.fillDefaults().grab(true, false).applyTo(tableFilterText);
+        // add shortcut
+        installProposals(tableFilterText);
         tableFilterText.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
@@ -128,6 +130,8 @@ public abstract class AbstractFilterMetadataPage extends AbstractAnalysisMetadat
         viewFilterText.setText(latestViewFilterValue);
         viewFilterText.setToolTipText(DefaultMessagesImpl.getString("AbstractFilterMetadataPage.FilterViews")); //$NON-NLS-1$
         GridDataFactory.fillDefaults().grab(true, false).applyTo(viewFilterText);
+        // add shortcut
+        installProposals(viewFilterText);
         viewFilterText.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
