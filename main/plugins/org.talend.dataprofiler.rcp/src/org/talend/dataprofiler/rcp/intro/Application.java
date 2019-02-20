@@ -28,6 +28,8 @@ import org.eclipse.ui.PlatformUI;
 // import org.eclipse.ui.internal.tweaklets.Tweaklets;
 // import org.eclipse.ui.internal.tweaklets.WorkbenchImplementation;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.utils.network.NetworkUtil;
+import org.talend.commons.utils.network.TalendProxySelector;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.ui.branding.IBrandingService;
@@ -37,6 +39,7 @@ import org.talend.dataprofiler.core.license.LicenseManagement;
 import org.talend.dataprofiler.core.license.LicenseWizard;
 import org.talend.dataprofiler.core.license.LicenseWizardDialog;
 import org.talend.dataprofiler.rcp.i18n.Messages;
+import org.talend.registration.register.proxy.HttpProxyUtil;
 // import org.talend.dataprofiler.rcp.intro.linksbar.Workbench3xImplementation4CoolBar;
 import org.talend.registration.wizards.register.TalendForgeDialog;
 import org.talend.utils.sugars.ReturnCode;
@@ -79,6 +82,10 @@ public class Application implements IApplication {
             }
 
             // Tweaklets.setDefault(WorkbenchImplementation.KEY, new Workbench3xImplementation4CoolBar());
+
+            HttpProxyUtil.initializeHttpProxy();
+            TalendProxySelector.getInstance();
+            NetworkUtil.loadAuthenticator();
 
             int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
             if (returnCode == PlatformUI.RETURN_RESTART) {
