@@ -15,8 +15,8 @@ package org.talend.dataprofiler.core.exception;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.Priority;
-import org.eclipse.swt.widgets.Shell;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 
 /**
  * Implementation of exception handling strategy.<br/>
@@ -50,7 +50,7 @@ public final class ExceptionHandler {
         log.log(priority, message, ex);
 
         if (priority == Level.FATAL) {
-            MessageBoxExceptionHandler.showMessage(ex, new Shell());
+            MessageBoxExceptionHandler.showMessage(ex, DisplayUtils.getDefaultShell(false));
         }
     }
 
@@ -60,7 +60,7 @@ public final class ExceptionHandler {
         log.log(priority, message, ex);
 
         if (priority == Level.FATAL) {
-            MessageBoxExceptionHandler.showMessage(ex, new Shell(), priority, ex.getAdditonalMessage());
+            MessageBoxExceptionHandler.showMessage(ex, DisplayUtils.getDefaultShell(false), priority, ex.getAdditonalMessage());
         }
     }
 

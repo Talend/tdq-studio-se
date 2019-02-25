@@ -28,6 +28,7 @@ import org.eclipse.ui.PlatformUI;
 // import org.eclipse.ui.internal.tweaklets.Tweaklets;
 // import org.eclipse.ui.internal.tweaklets.WorkbenchImplementation;
 import org.talend.commons.exception.BusinessException;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.core.GlobalServiceRegister;
 import org.talend.core.model.utils.TalendPropertiesUtil;
 import org.talend.core.ui.branding.IBrandingService;
@@ -57,7 +58,7 @@ public class Application implements IApplication {
     @Override
     public Object start(IApplicationContext context) {
         Display display = PlatformUI.createDisplay();
-        Shell shell = new Shell(display, SWT.ON_TOP);
+        Shell shell = DisplayUtils.getDefaultShell(false);
         // TDQ-12221: do check before use to make sure can popup the "Connect to TalendForge"
         checkBrowserSupport();
         try {
@@ -118,11 +119,8 @@ public class Application implements IApplication {
             dialog.setTitle(Messages.getString("LicenseWizard.windowTitle")); //$NON-NLS-1$
             if (dialog.open() == WizardDialog.OK) {
                 LicenseManagement.acceptLicense();
-
             } else {
-                shell.dispose();
                 return false;
-
             }
         }
 

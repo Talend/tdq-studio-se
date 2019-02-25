@@ -16,6 +16,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Priority;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.i18n.Messages;
 
 /**
@@ -48,15 +49,13 @@ public final class MessageBoxExceptionHandler {
         Shell messageShell = shell;
         if (messageShell == null) {
             try {
-                messageShell = new Shell();
+                messageShell = DisplayUtils.getDefaultShell(false);
             } catch (Exception e) {
                 // ignore me
             }
         }
 
-        if (messageShell != null) {
-            showMessage(ex, messageShell);
-        }
+        showMessage(ex, messageShell);
     }
 
     public static void process(Throwable ex, Shell shell, String exceptionType) {
@@ -64,7 +63,7 @@ public final class MessageBoxExceptionHandler {
         Shell messageShell = shell;
         if (messageShell == null) {
             try {
-                messageShell = new Shell();
+                messageShell = DisplayUtils.getDefaultShell(false);
             } catch (Exception e) {
                 // ignore me
             }

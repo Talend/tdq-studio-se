@@ -21,7 +21,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Shell;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.resource.ResourceManager;
@@ -59,8 +59,8 @@ public class DeletePatternAction extends Action {
     public void run() {
         IFolder sourceFiles = ResourceManager.getPatternFolder();
         for (IFile file : selectedFiles) {
-            if (MessageDialog.openConfirm(new Shell(), DefaultMessagesImpl
-                    .getString("DeletePatternAction.deleteRegularPatternFile"), //$NON-NLS-1$
+            if (MessageDialog.openConfirm(DisplayUtils.getDefaultShell(false),
+                    DefaultMessagesImpl.getString("DeletePatternAction.deleteRegularPatternFile"), //$NON-NLS-1$
                     DefaultMessagesImpl.getString("DeletePatternAction.areYouDeleteRegularPatternFile", file.getName()))) { //$NON-NLS-1$
                 try {
                     if (file.exists()) {

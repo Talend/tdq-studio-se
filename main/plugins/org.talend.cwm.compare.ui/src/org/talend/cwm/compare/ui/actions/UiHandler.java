@@ -14,7 +14,6 @@ package org.talend.cwm.compare.ui.actions;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.talend.commons.i18n.internal.DefaultMessagesImpl;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -23,6 +22,7 @@ import org.talend.cwm.compare.factory.IUIHandler;
 import org.talend.cwm.compare.i18n.Messages;
 import org.talend.cwm.compare.ui.editor.ModelElementCompareEditorLauncher;
 import org.talend.dataprofiler.core.ui.dialog.message.DeleteModelElementConfirmDialog;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -54,8 +54,8 @@ public class UiHandler implements IUIHandler {
         display.asyncExec(new Runnable() {
             public void run() {
                 String titleMessage = DefaultMessagesImpl.getString("DeleteModelElementConfirmDialog.confirmElementDelete"); //$NON-NLS-1$
-                DeleteModelElementConfirmDialog.showElementImpactDialog(new Shell(display), new ModelElement[] { provider },
-                        titleMessage, Messages.getString("UiHandler.followingAnalysisBeImpact")); //$NON-NLS-1$
+                DeleteModelElementConfirmDialog.showElementImpactDialog(Display.getDefault().getActiveShell(),
+                        new ModelElement[] { provider }, titleMessage, Messages.getString("UiHandler.followingAnalysisBeImpact")); //$NON-NLS-1$
             }
         });
     }

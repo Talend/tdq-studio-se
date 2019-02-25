@@ -49,6 +49,7 @@ import org.eclipse.ui.contexts.IContextService;
 import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
 import org.talend.commons.emf.EMFUtil;
+import org.talend.commons.ui.gmf.util.DisplayUtils;
 import org.talend.commons.ui.runtime.exception.MessageBoxExceptionHandler;
 import org.talend.commons.utils.WorkspaceUtils;
 import org.talend.core.model.metadata.builder.connection.Connection;
@@ -486,7 +487,7 @@ public class PatternTestView extends ViewPart {
                     // TDQ-8637 if the 'selectRegexpTestString' is null,means doesn't implement method
                     // DbmsLanguage.regexLike().should return.
                     if (selectRegexpTestString == null) {
-                        MessageDialog.openInformation(new Shell(),
+                        MessageDialog.openInformation(DisplayUtils.getDefaultShell(false),
                                 DefaultMessagesImpl.getString("PatternTestView.NoSupportTitle"), //$NON-NLS-1$
                                 DefaultMessagesImpl.getString("PatternTestView.NoSupportPatternTest")); //$NON-NLS-1$
                         return;
@@ -537,7 +538,7 @@ public class PatternTestView extends ViewPart {
             }
         }
 
-        MessageDialog.openWarning(new Shell(), "", NO_DATABASE_SELECTEDED); //$NON-NLS-1$
+        MessageDialog.openWarning(DisplayUtils.getDefaultShell(false), "", NO_DATABASE_SELECTEDED); //$NON-NLS-1$
     }
 
     /**
@@ -594,7 +595,7 @@ public class PatternTestView extends ViewPart {
             SqlExplorerUtils.getDefault().runInDQViewer(getDBConnectionFromDBName(dbCombo.getText()), selectRegexpTestString,
                     SqlExplorerUtils.SQLEDITOR_ID);
         } else {
-            MessageDialog.openWarning(new Shell(), "", NO_DATABASE_SELECTEDED); //$NON-NLS-1$
+            MessageDialog.openWarning(DisplayUtils.getDefaultShell(false), "", NO_DATABASE_SELECTEDED); //$NON-NLS-1$
         }
 
     }
@@ -624,7 +625,7 @@ public class PatternTestView extends ViewPart {
                 String messageInfo = DefaultMessagesImpl
                         .getString(
                                 "PatternTestView.modifiedTheRegularExpression", expressionLanguage, dbmsLanguage.getDbmsName(), expressionLanguage, expressionLanguage, dbmsLanguage.getDbmsName()); //$NON-NLS-1$
-                MessageDialog messageDialog = new MessageDialog(new Shell(),
+                MessageDialog messageDialog = new MessageDialog(DisplayUtils.getDefaultShell(false),
                         DefaultMessagesImpl.getString("PatternTestView.warning"), null, messageInfo, MessageDialog.WARNING, //$NON-NLS-1$
                         new String[] { IDialogConstants.YES_LABEL, IDialogConstants.NO_LABEL }, 0);
                 int result = messageDialog.open();
@@ -658,7 +659,7 @@ public class PatternTestView extends ViewPart {
 
             EMFUtil.saveSingleResource(pattern.eResource());
             editorPage.updatePatternDefinitonSection();
-            // MessageDialog.openInformation(new Shell(), "Success",
+            // MessageDialog.openInformation(DisplayUtils.getDefaultShell(false), "Success",
             // "Success to save the pattern '" +
             // pattern.getName()
             // + "'");
