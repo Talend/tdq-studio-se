@@ -422,7 +422,7 @@ public class DataSet {
             return new Long(resultSet.getInt(columnIndex));
 
         case Types.BIGINT:
-            return new Long(resultSet.getLong(columnIndex));
+            return resultSet.getBigDecimal(columnIndex);
 
         case Types.DECIMAL:
         case Types.NUMERIC:
