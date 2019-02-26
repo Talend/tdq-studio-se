@@ -143,7 +143,7 @@ public abstract class AbstractFilterMetadataPage extends AbstractAnalysisMetadat
         // ADD yyi 2011-05-31 16158:add whitespace check for text fields.
         addWhitespaceValidate(tableFilterText, viewFilterText);
         // ADD xqliu 2010-01-04 bug 10190
-        createReloadDatabasesButton(comp2);
+        createReloadDatabasesButton(sectionClient);
         // ~
         analysisParamSection.setClient(sectionClient);
     }
@@ -155,7 +155,9 @@ public abstract class AbstractFilterMetadataPage extends AbstractAnalysisMetadat
      */
     private void createReloadDatabasesButton(Composite sectionClient) {
         if (isConnectionAnalysis()) {
-            reloadDatabasesBtn = new Button(sectionClient, SWT.CHECK);
+            Composite comp = new Composite(sectionClient, SWT.NONE);
+            comp.setLayout(new GridLayout(1, false));
+            reloadDatabasesBtn = new Button(comp, SWT.CHECK);
             reloadDatabasesBtn.setText(DefaultMessagesImpl.getString("AbstractFilterMetadataPage.ReloadDatabases"));//$NON-NLS-1$
             if (DqRepositoryViewService.isComeFromRefrenceProject(this.getTdDataProvider())) {
                 reloadDatabasesBtn.setEnabled(false);
