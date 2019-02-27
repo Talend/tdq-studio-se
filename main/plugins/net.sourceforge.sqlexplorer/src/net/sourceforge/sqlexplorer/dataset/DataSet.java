@@ -419,7 +419,7 @@ public class DataSet {
         case Types.INTEGER:
         case Types.SMALLINT:
         case Types.TINYINT:
-            return new Long(resultSet.getInt(columnIndex));
+            return new Long(resultSet.getLong(columnIndex));
 
         case Types.BIGINT:
             return new Long(resultSet.getLong(columnIndex));
