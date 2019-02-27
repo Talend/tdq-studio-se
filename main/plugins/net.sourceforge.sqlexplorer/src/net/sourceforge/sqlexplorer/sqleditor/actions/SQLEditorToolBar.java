@@ -3,12 +3,6 @@ package net.sourceforge.sqlexplorer.sqleditor.actions;
 import java.sql.SQLException;
 import java.util.LinkedList;
 
-import net.sourceforge.sqlexplorer.dbproduct.Session;
-import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
-import net.sourceforge.sqlexplorer.plugin.editors.SQLEditor;
-import net.sourceforge.sqlexplorer.util.ImageUtil;
-import net.sourceforge.sqlexplorer.util.TextUtil;
-
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -21,8 +15,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
+
+import net.sourceforge.sqlexplorer.dbproduct.Session;
+import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
+import net.sourceforge.sqlexplorer.plugin.editors.SQLEditor;
+import net.sourceforge.sqlexplorer.util.ImageUtil;
+import net.sourceforge.sqlexplorer.util.TextUtil;
 
 /**
  * SQLEditorToolBar controls the toolbar displayed in the editor.
@@ -70,9 +71,13 @@ public class SQLEditorToolBar {
         _coolBar = new CoolBar(parent, SWT.FLAT);
         _coolBarMgr = new CoolBarManager(_coolBar);
 
-        GridData gid = new GridData();
-        gid.horizontalAlignment = GridData.FILL;
-        _coolBar.setLayoutData(gid);
+        // TDQ-15236 msjian: fix Upgrade to Eclipse 4.10.x open editor get error
+        if (parent.getLayout() instanceof GridLayout) {
+            GridData gid = new GridData();
+            gid.horizontalAlignment = GridData.FILL;
+            _coolBar.setLayoutData(gid);
+        }
+        // TDQ-15236~
 
         // initialize default actions
         _defaultToolBarMgr = new ToolBarManager(SWT.FLAT);
