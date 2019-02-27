@@ -22,6 +22,7 @@ import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.CoolBar;
 import org.eclipse.ui.forms.editor.FormEditor;
@@ -52,9 +53,13 @@ public class TdEditorToolBar {
         coolBar = new CoolBar(parent, SWT.FLAT);
         coolBarMgr = new CoolBarManager(coolBar);
 
-        GridData gid = new GridData();
-        gid.horizontalAlignment = GridData.FILL;
-        coolBar.setLayoutData(gid);
+        // TDQ-15236 msjian: fix Upgrade to Eclipse 4.10.x open editor get error
+        if (parent.getLayout() instanceof GridLayout) {
+            GridData gid = new GridData();
+            gid.horizontalAlignment = GridData.FILL;
+            coolBar.setLayoutData(gid);
+        }
+        // TDQ-15236~
 
         // initialize default actions
         defaultToolBarMgr = new ToolBarManager(SWT.FLAT);
