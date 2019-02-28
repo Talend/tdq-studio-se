@@ -124,6 +124,14 @@ public abstract class AbstractNode implements IIndicatorNode {
                 && IndicatorEnum.isSpecialIndicatorEnum(indicatorEnum)) {
             indicatorInstance.setName(this.getLabel());
         }
+
+        // TDQ-10597 msjian : especially for the imported udi, we need to reload their definition to cache.
+        // else later we can not set definition to indicatorInstance and cause can not select it.
+        if (indicatorInstance.getIndicatorDefinition() == null) {
+            DefinitionHandler.getInstance().reloadAllUDIs();
+        }
+        // TDQ-10597~
+
         DefinitionHandler.getInstance().setDefaultIndicatorDefinition(indicatorInstance);
         return indicatorInstance;
     }

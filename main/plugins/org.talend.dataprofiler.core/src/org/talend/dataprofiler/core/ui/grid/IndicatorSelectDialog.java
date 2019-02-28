@@ -260,18 +260,18 @@ public class IndicatorSelectDialog extends TrayDialog implements IIndicatorSelec
             Indicator indicator = indicatorNode.getIndicatorInstance();
             if (indicator != null) {
                 IndicatorDefinition indicatorDefinition = indicator.getIndicatorDefinition();
-                if ("".equals(MetadataHelper.getPurpose(indicatorDefinition))) {
-                    purposeLabel.setText(PURPOSE + " " + indicator.getName());
+                if ("".equals(MetadataHelper.getPurpose(indicatorDefinition))) { //$NON-NLS-1$
+                    purposeLabel.setText(PURPOSE + " " + indicator.getName()); //$NON-NLS-1$
                 } else {
-                    purposeLabel.setText(PURPOSE + " " + MetadataHelper.getPurpose(indicatorDefinition));
+                    purposeLabel.setText(PURPOSE + " " + MetadataHelper.getPurpose(indicatorDefinition)); //$NON-NLS-1$
                 }
-                String description = DESCRIPTION + " " + MetadataHelper.getDescription(indicatorDefinition);
+                String description = DESCRIPTION + " " + MetadataHelper.getDescription(indicatorDefinition); //$NON-NLS-1$
                 descriptionLabel.setText(description);
                 return;
             }
         }
-        purposeLabel.setText(PURPOSE + " " + item.getText());
-        descriptionLabel.setText(DESCRIPTION + " " + item.getText());
+        purposeLabel.setText(PURPOSE + " " + item.getText()); //$NON-NLS-1$
+        descriptionLabel.setText(DESCRIPTION + " " + item.getText()); //$NON-NLS-1$
     }
 
     /**
