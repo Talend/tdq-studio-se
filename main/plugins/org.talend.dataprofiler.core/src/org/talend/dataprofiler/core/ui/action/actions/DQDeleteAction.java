@@ -496,6 +496,10 @@ public class DQDeleteAction extends DeleteAction {
             return false;
         }
 
+        if (ERepositoryObjectType.TDQ_JRAXML_ELEMENT == node.getObjectType()) {
+            nodeWithDependsMap.put(node, dependencies);
+            return true;
+        }
         // ADD msjian TDQ-13165: check the dependency is paired or not
         List<ModelElement> validDependenciesList = new ArrayList<ModelElement>();
         ModelElement deleteModelElement = RepositoryNodeHelper.getModelElementFromRepositoryNode(node);
