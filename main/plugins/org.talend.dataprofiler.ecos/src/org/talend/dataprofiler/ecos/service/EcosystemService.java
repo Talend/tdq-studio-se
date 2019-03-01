@@ -47,11 +47,12 @@ public abstract class EcosystemService {
 
     protected static Logger log = Logger.getLogger(EcosystemService.class);
 
-    public final static String VERSION_LIST_URL = "http://talendforge.org/exchange/top/api/get_version_list.php"; //$NON-NLS-1$
+    public final static String VERSION_LIST_URL = "https://www.talendforge.org/exchange/top/api/get_version_list.php"; //$NON-NLS-1$
 
-    public final static String REVISION_LIST_URL = "http://talendforge.org/exchange/top/api/get_revision_list.php"; //$NON-NLS-1$
+    public final static String REVISION_LIST_URL = "https://www.talendforge.org/exchange/top/api/get_revision_list.php"; //$NON-NLS-1$
 
-    private final static String CATEGORY_LIST_URL = "http://talendforge.org/exchange/top/api/get_category_list.php";//$NON-NLS-1$
+    private final static String CATEGORY_LIST_URL =
+            "https://www.talendforge.org/exchange/top/api/get_category_list.php";//$NON-NLS-1$
 
     private static MultiValueMap versionMap = new MultiValueMap();
 
