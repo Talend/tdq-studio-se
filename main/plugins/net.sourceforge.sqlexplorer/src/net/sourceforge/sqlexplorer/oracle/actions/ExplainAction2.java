@@ -23,6 +23,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+
 import net.sourceforge.sqlexplorer.Messages;
 import net.sourceforge.sqlexplorer.dbproduct.SQLConnection;
 import net.sourceforge.sqlexplorer.dbproduct.Session;
@@ -30,8 +32,6 @@ import net.sourceforge.sqlexplorer.parsers.ParserException;
 import net.sourceforge.sqlexplorer.parsers.QueryParser;
 import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
 import net.sourceforge.sqlexplorer.sqleditor.actions.AbstractEditorAction;
-
-import org.eclipse.jface.dialogs.MessageDialog;
 
 public class ExplainAction2 extends AbstractEditorAction {
 
@@ -48,16 +48,12 @@ public class ExplainAction2 extends AbstractEditorAction {
 
     public void run() {
         try {
-            Session session;
-            SQLConnection connection;
-            Statement stmt;
-            ResultSet rs;
-            session = getSession();
-            if (session == null)
+            Session session = getSession();
+            if (session == null) {
                 return;
-            connection = null;
-            stmt = null;
-            rs = null;
+            }
+            SQLConnection connection = null;
+            ResultSet rs = null;
             boolean createPlanTable;
             boolean notFoundTable;
             connection = session.grabConnection();
@@ -82,12 +78,6 @@ public class ExplainAction2 extends AbstractEditorAction {
                         rs.close();
                     } catch (SQLException e) {
                         SQLExplorerPlugin.error("Cannot close result set", e);
-                    }
-                if (stmt != null)
-                    try {
-                        stmt.close();
-                    } catch (SQLException e) {
-                        SQLExplorerPlugin.error("Cannot close statement", e);
                     }
                 if (connection != null)
                     session.releaseConnection(connection);
@@ -115,26 +105,6 @@ public class ExplainAction2 extends AbstractEditorAction {
                     rs.close();
                 } catch (SQLException e) {
                     SQLExplorerPlugin.error("Cannot close result set", e);
-                }
-            if (stmt != null)
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    SQLExplorerPlugin.error("Cannot close statement", e);
-                }
-            if (connection != null)
-                session.releaseConnection(connection);
-            if (rs != null)
-                try {
-                    rs.close();
-                } catch (SQLException e) {
-                    SQLExplorerPlugin.error("Cannot close result set", e);
-                }
-            if (stmt != null)
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    SQLExplorerPlugin.error("Cannot close statement", e);
                 }
             if (connection != null)
                 session.releaseConnection(connection);

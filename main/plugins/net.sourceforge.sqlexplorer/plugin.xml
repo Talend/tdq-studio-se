@@ -135,6 +135,7 @@
    <extension-point id="nodeDetailTab" name="Database Structure Node Detail Tab" schema="schema/nodeDetailTab.exsd"/>
    <extension-point id="dataSetTableContextAction" name="Table Context Menu Action" schema="schema/dataSetTableContextAction.exsd"/>
    <extension-point id="editorAction" name="SQL Editor Action" schema="schema/editorAction.exsd"/>
+   <extension-point id="explainPlanContextAction" name="Explain Plan Context Action" schema="schema/explainPlanContextAction.exsd"/>
    
    <extension
          id="nodeContextAction"

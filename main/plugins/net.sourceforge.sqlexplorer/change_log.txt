@@ -1,5 +1,31 @@
 change logs from talend
 
+2019-03-5 msjian TDQ-15236: Upgrade to Eclipse 4.10.x
+Enable some sqlExplorer embeded features (Oracle Query Explain Plan, displayTriggers...)
+
+2019-03-01 qiongli TDQ-16642: Can preview unsigned int
+
+2019-02-22 yyin TDQ-16413 preview table which has bigint unsigned columns
+
+2019-01-28 msjian TDQ-15236: Upgrade to Eclipse 4.10.x
+
+2019-01-14 msjian TDQ-16020: fix the jdbc connection get red cross
+
+2019-01-03 chaoMeng TUP-21339: Eclipse upgrade - TOS need to work with eclipse 4.10.0
+
+2018-08-17 qiongli TDQ-15264: disable some composite when user is readonly;
+For read-only user,remove menu on a view of overview analysis;
+For read-only user,remove some menus;
+disable save button in sqlExplore editor.
+
+2018-01-22 qiongli TDQ-14655: support TCOMP database
+
+2017-01-04 msjian bug TDQ-7460: fix a NPE
+
+2016-11-16 msjian bug TDQ-11887: fix hive(hdp20 at least) database can view index/keys well
+
+2016-09-27 msjian bug TDQ-12617: fix the NPE when view keys/index for mssql overview
+
 2016-8-29 msjian bug TDQ-12005: fix Exasol database can view index/keys well
 
 2016-8-24 xqliu bug TDQ-12451 Impala connection can not do Preview
