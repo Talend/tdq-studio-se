@@ -10,4 +10,5 @@
   <sqlGenericExpression xmi:id="_-WEB6YqnEd-SocVM_rHvUg" body="SELECT  &lt;%=__COLUMN_NAMES__%>, COUNT(*) c FROM &lt;%=__TABLE_NAME__%> m &lt;%=__WHERE_CLAUSE__%> GROUP BY &lt;%=__COLUMN_NAMES__%> ORDER BY c DESC" language="AS/400"/>
   <sqlGenericExpression xmi:id="_aXr6cfDwEeGWHa3tvqHwuA" body="SELECT  &lt;%=__COLUMN_NAMES__%>, COUNT(*) c FROM &lt;%=__TABLE_NAME__%> m &lt;%=__WHERE_CLAUSE__%> GROUP BY &lt;%=__COLUMN_NAMES__%> ORDER BY c DESC " language="Hive" version=""/>
   <sqlGenericExpression xmi:id="_FlMVEeR_EeOeL94U98pIGA" body="SELECT &lt;%=__COLUMN_NAMES__%>, COUNT(*) c FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY &lt;%=__GROUP_BY_ALIAS__%> ORDER BY c DESC" language="Informix"/>
+  <sqlGenericExpression xmi:id="_0yZqYz_tEemvD_HQUs7Btg" body="SELECT &lt;%=__COLUMN_NAMES__%>, COUNT(*) c FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY &lt;%=__GROUP_BY_ALIAS__%> ORDER BY c DESC" language="Ingres"/>
 </dataquality.indicators.definition:IndicatorDefinition>

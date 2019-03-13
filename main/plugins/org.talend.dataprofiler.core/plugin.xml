@@ -1770,6 +1770,12 @@
            name="remove built in mode about pattern"
            version="7.2.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.UpdateModeIndicatorForIngresTask"
+           id="org.talend.dataprofiler.core.migration.impl.UpdateModeIndicatorForIngresTask"
+           name="Update Mode Indicator  to add the sql for Ingres db"
+           version="7.2.1">
+     </workspacetask>
   </extension>
   
   <extension
