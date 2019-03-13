@@ -45,6 +45,7 @@ import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
 import org.talend.core.runtime.hd.IHDistribution;
 import org.talend.core.runtime.hd.IHDistributionVersion;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.metadata.managment.connection.manager.DatabaseConnConstants;
@@ -188,7 +189,7 @@ public class AliasAndManaDriverHelper {
         if (ConnectionHelper.isJDBC(dbConnnection) && driverJarPath != null) {
             String[] pathArray = driverJarPath.split(";"); //$NON-NLS-1$
             for (String path : pathArray) {
-                driverJarNameList.add(path);
+                driverJarNameList.add(TalendQuoteUtils.removeQuotes(path));
             }
         } else {
             String databaseType = dbConnnection.getDatabaseType();
