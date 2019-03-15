@@ -145,7 +145,7 @@ public class CheckAndUpdateAnalysisDependencyTask extends AbstractWorksapceUpdat
         DocumentBuilder db;
         try {
             boolean needSave = false;
-            db = XmlUtils.getSecureDocumentBuilderFactory(false).newDocumentBuilder();
+            db = XmlUtils.getSecureDocumentBuilderFactory().newDocumentBuilder();
             Document document = db.parse(file);
             Element root = document.getDocumentElement();
             NodeList list = root.getElementsByTagName("indicators"); //$NON-NLS-1$
