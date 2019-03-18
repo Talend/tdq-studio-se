@@ -39,6 +39,7 @@ import org.eclipse.ui.internal.registry.IActionSetDescriptor;
 import org.talend.dataprofiler.core.ui.perspective.ChangePerspectiveAction;
 import org.talend.dataprofiler.core.ui.perspective.PerspectiveMenuManager;
 import org.talend.dataprofiler.rcp.i18n.Messages;
+import org.talend.dataprofiler.rcp.intro.linksbar.LinkToolbarLabel;
 import org.talend.dataprofiler.rcp.intro.linksbar.LinksToolbarItem;
 
 /**
@@ -137,7 +138,6 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         fileMenu.add(exitAction);
 
         // Window
-
         MenuManager perspMenu = new PerspectiveMenuManager();
         menuBar.add(windowMenu);
         windowMenu.add(perspMenu);
@@ -145,6 +145,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         windowMenu.add(resetPerspectiveAction);
         windowMenu.add(new ShowViewAction());
         windowMenu.add(savePerspectiveAsAction);
+
         // Help
         helpMenu.add(welcomeAction);
         helpMenu.add(helpAction);
@@ -163,7 +164,8 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
             "org.eclipse.jdt.ui.actions.GoToPackage", "org.eclipse.jdt.ui.actions.GoToType", //$NON-NLS-1$ //$NON-NLS-2$
             "org.eclipse.jdt.ui.actions.OpenExternalJavaDoc", "org.eclipse.jdt.ui.actions.OpenSuperImplementation", //$NON-NLS-1$ //$NON-NLS-2$
             "org.eclipse.jdt.ui.actions.CopyQualifiedName", "org.eclipse.jdt.ui.actions.Open", //$NON-NLS-1$ //$NON-NLS-2$
-            "org.eclipse.jdt.ui.actions.OpenTypeHierarchy", "org.eclipse.jdt.ui.actions.OpenCallHierarchy", "org.talend.repository.bootTalendActionSet" }; //$NON-NLS-1$ //$NON-NLS-2$
+            "org.eclipse.jdt.ui.actions.OpenTypeHierarchy", "org.eclipse.jdt.ui.actions.OpenCallHierarchy", //$NON-NLS-1$ //$NON-NLS-2$
+            "org.talend.repository.bootTalendActionSet" }; //$NON-NLS-1$
 
     private void beforefillMenuBar() {
         this.removeAction();
@@ -194,12 +196,30 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
         IToolBarManager toolbar = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
         coolBar.add(new ToolBarContributionItem(toolbar, "switch_persp")); //$NON-NLS-1$
         toolbar.add(new ChangePerspectiveAction(true));
+        coolBar.add(new ToolBarContributionItem(toolbar, "save")); //$NON-NLS-1$
         toolbar.add(ActionFactory.SAVE.create(window));
 
         // add feature:15174
         // Workbench3xImplementation4CoolBar.createLinksToolbarItem(coolBar);
         IToolBarManager toolBarManager = new ToolBarManager(SWT.FLAT | SWT.RIGHT);
-        toolBarManager.add(new LinksToolbarItem());
+
+        toolBarManager
+                .add(new ImageAction(this.window, "icons/demo.png", LinksToolbarItem.LEARN_ORIG_URL, //$NON-NLS-1$
+                        Messages.getString("LinksToolbarItem_0"))); //$NON-NLS-1$
+        toolBarManager
+                .add(new LinkToolbarLabel(LinksToolbarItem.LEARN_URL, Messages.getString("LinksToolbarItem_0"))); //$NON-NLS-1$
+        toolBarManager
+                .add(new ImageAction(this.window, "icons/irc_protocol.png", LinksToolbarItem.ASK_ORIG_URL, //$NON-NLS-1$
+                        Messages.getString("LinksToolbarItem_7"))); //$NON-NLS-1$
+        toolBarManager.add(new LinkToolbarLabel(LinksToolbarItem.ASK_URL, Messages.getString("LinksToolbarItem_7"))); //$NON-NLS-1$
+
+        toolBarManager
+                .add(new ImageAction(this.window, "icons/wizard.png", LinksToolbarItem.UPGRADE_ORIG_URL, //$NON-NLS-1$
+                        Messages.getString("LinksToolbarItem_11"))); //$NON-NLS-1$
+        toolBarManager
+                .add(new LinkToolbarLabel(LinksToolbarItem.UPGRADE_URL,
+                        Messages.getString("LinksToolbarItem_11"))); //$NON-NLS-1$
+
         coolBar.add(new ToolBarContributionItem(toolBarManager, LinksToolbarItem.COOLITEM_LINKS_ID));
     }
 
