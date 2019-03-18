@@ -30,7 +30,7 @@ public class UpdateModeIndicatorForIngresTask extends AbstractWorksapceUpdateTas
                     .addSqlExpression(
                             indiDefinition,
                             INGRES,
-                            "SELECT &lt;%=__COLUMN_NAMES__%>, COUNT(*) c FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY &lt;%=__GROUP_BY_ALIAS__%> ORDER BY c DESC");
+                            "SELECT <%=__COLUMN_NAMES__%>, COUNT(*) c FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY <%=__GROUP_BY_ALIAS__%> ORDER BY c DESC");
 
             result = IndicatorDefinitionFileHelper.save(indiDefinition);
             DefinitionHandler.getInstance().reloadIndicatorsDefinitions();
