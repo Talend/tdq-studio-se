@@ -80,6 +80,7 @@ import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.classloader.TalendURLClassLoader;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -460,7 +461,9 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
                     null);
             putTdExpressToTempMap(javaCombo, expression);
         }
+
         combo.getParent().dispose();
+        // combo.dispose();
 
         if (dataBaseComp.getChildren().length == 1) {
             Control[] children = dataBaseComp.getChildren();
@@ -526,27 +529,29 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      */
     @Override
     protected void updateDatabaseLineForJava(final CCombo combo, TdExpression expression) {
-        Composite detailComp;
         final Composite lineComp = new Composite(dataBaseComp, SWT.NONE);
         lineComp.setLayout(new GridLayout(3, false));
+
         final CCombo dataBaseCombo = createJavaComboBox(lineComp);
         dataBaseCombo.select(combo.getSelectionIndex());
+
         putTdExpressToTempMap(dataBaseCombo, expression);
-        detailComp = new Composite(lineComp, SWT.NONE);
+
+        Composite detailComp = new Composite(lineComp, SWT.NONE);
         detailComp.setLayout(new GridLayout(4, false));
-        widgetMap.put(dataBaseCombo, detailComp);
+
         createDataBaseLineComponent(dataBaseCombo, expression, detailComp);
+
+        widgetMap.put(dataBaseCombo, detailComp);
         // remove the combo in the widgetMap then add new javacombo
         widgetMap.remove(combo);
-
         removeFromTempMap(combo);
+
         // line comp dispose
-        combo.getParent().dispose();
+        combo.dispose();
         // java title dispose
-        if (javaLanguageComp.getChildren().length == 1) {
-            Control[] children = javaLanguageComp.getChildren();
-            children[0].dispose();
-        }
+        javaLanguageComp.dispose();
+
     }
 
     /**
