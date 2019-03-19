@@ -20,20 +20,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.List;
 
-import net.sourceforge.sqlexplorer.IConstants;
-import net.sourceforge.sqlexplorer.Messages;
-import net.sourceforge.sqlexplorer.connections.ConnectionsView;
-import net.sourceforge.sqlexplorer.connections.SessionEstablishedAdapter;
-import net.sourceforge.sqlexplorer.dbproduct.SQLConnection;
-import net.sourceforge.sqlexplorer.dbproduct.Session;
-import net.sourceforge.sqlexplorer.dbproduct.User;
-import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
-import net.sourceforge.sqlexplorer.sessiontree.model.utility.Dictionary;
-import net.sourceforge.sqlexplorer.sqleditor.actions.SQLEditorToolBar;
-import net.sourceforge.sqlexplorer.sqleditor.results.ResultsTab;
-import net.sourceforge.sqlexplorer.sqlpanel.AbstractSQLExecution;
-import net.sourceforge.sqlexplorer.util.PartAdapter2;
-
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -87,6 +73,20 @@ import org.eclipse.ui.part.EditorPart;
 import org.eclipse.ui.part.FileEditorInput;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
+
+import net.sourceforge.sqlexplorer.IConstants;
+import net.sourceforge.sqlexplorer.Messages;
+import net.sourceforge.sqlexplorer.connections.ConnectionsView;
+import net.sourceforge.sqlexplorer.connections.SessionEstablishedAdapter;
+import net.sourceforge.sqlexplorer.dbproduct.SQLConnection;
+import net.sourceforge.sqlexplorer.dbproduct.Session;
+import net.sourceforge.sqlexplorer.dbproduct.User;
+import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
+import net.sourceforge.sqlexplorer.sessiontree.model.utility.Dictionary;
+import net.sourceforge.sqlexplorer.sqleditor.actions.SQLEditorToolBar;
+import net.sourceforge.sqlexplorer.sqleditor.results.ResultsTab;
+import net.sourceforge.sqlexplorer.sqlpanel.AbstractSQLExecution;
+import net.sourceforge.sqlexplorer.util.PartAdapter2;
 
 /**
  * SQLEditor is the top-level Editor component which is registered with Eclipse as the Editor for each new SQL
@@ -822,7 +822,7 @@ public class SQLEditor extends EditorPart implements SwitchableSessionEditor {
      */
     private void onCloseEditor() {
         textEditor.getDocumentProvider().disconnect(getEditorInput());
-        textEditor.setInput(null);
+        // TDQ-16727 close source file editor, get NPE in error log.then remove this: textEditor.setInput(null);
         clearResults();
 
         // ADD msjian TDQ-5952: we should close connections always
