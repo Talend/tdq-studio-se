@@ -13,4 +13,5 @@
   <sqlGenericExpression xmi:id="_b7b5oA7sEeOQRtL-gH7reQ" body="SELECT SUBSTR(TO_CHAR(&lt;%=__COLUMN_NAMES__%>),1,1) , COUNT(*) c FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY SUBSTR(TO_CHAR(&lt;%=__COLUMN_NAMES__%>),1,1) order by SUBSTR(TO_CHAR(&lt;%=__COLUMN_NAMES__%>),1,1)" language="Vertica Database"/>
   <sqlGenericExpression xmi:id="_Mfi2sZOvEeO0QqLsthPghw" body="SELECT cast(SUBSTR(&lt;%=__COLUMN_NAMES__%>,1,1) as char), COUNT(*) c FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY 1 order by 1" language="Netezza"/>
   <sqlGenericExpression xmi:id="_fduYEPMdEeGbk9N0267sfJ" body="SELECT SUBSTRING(&lt;%=__COLUMN_NAMES__%>,1,1), COUNT(*)  FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY 1 order by 1" language="Redshift"/>
+  <sqlGenericExpression xmi:id="_fduYEPMdEeGbk9N0267sfG" body="SELECT substr(&lt;%=__COLUMN_NAMES__%>,1,1), COUNT(*) c FROM &lt;%=__TABLE_NAME__%> t &lt;%=__WHERE_CLAUSE__%> GROUP BY substr(&lt;%=__COLUMN_NAMES__%>,1,1)" language="Google BigQuery"/>
 </dataquality.indicators.definition:IndicatorDefinition>

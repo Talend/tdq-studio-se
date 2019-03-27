@@ -138,7 +138,7 @@ public class FunctionFrequencyStatExplorer extends FrequencyStatisticsExplorer {
             // ~12675
             final EList<CharactersMapping> charactersMapping = indicatorDefinition.getCharactersMapping();
             colName = dbmsLanguage.getPatternFinderFunction(colName, charactersMapping);
-            if (columnName == null) { // no replacement found, try the default one
+            if (colName == null) { // no replacement found, try the default one
                 colName = dbmsLanguage.getPatternFinderDefaultFunction(colName);
             }
         }

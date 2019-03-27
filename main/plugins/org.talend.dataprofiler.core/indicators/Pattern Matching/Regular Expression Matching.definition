@@ -3,7 +3,6 @@
   <taggedValue xmi:id="_-YK6sYqnEd-SocVM_rHvUg" tag="Description" value="counts the number of records matching the given pattern against the number of records that do not match the given pattern"/>
   <taggedValue xmi:id="_-YK6soqnEd-SocVM_rHvUg" tag="Purpose" value="evaluate the number of records that match a regular pattern"/>
   <categories href="../../../.Talend.definition#_tJjIwIDEEd2nDvn5vy_C5A"/>
-  
   <sqlGenericExpression xmi:id="_-YK6s4qnEd-SocVM_rHvUg" body="SELECT COUNT(CASE WHEN &lt;%=__COLUMN_NAMES__%> REGEXP BINARY &lt;%=__PATTERN_EXPR__%> THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="MySQL"/>
   <sqlGenericExpression xmi:id="_p1iyEcOaYtiK1p5zasoEFQ" body="SELECT COUNT(CASE WHEN REGEXP_LIKE(&lt;%=__COLUMN_NAMES__%>,&lt;%=__PATTERN_EXPR__%>,'c') THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="MySQL" version="8.0"/>
   <sqlGenericExpression xmi:id="_-YK6tIqnEd-SocVM_rHvUg" body="SELECT COUNT(CASE WHEN REGEXP_LIKE(&lt;%=__COLUMN_NAMES__%>,&lt;%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Oracle"/>
@@ -11,4 +10,5 @@
   <sqlGenericExpression xmi:id="_uc8wYeLKEeGVkLEAJh_9Ew" body="SELECT COUNT(CASE WHEN &lt;%=__COLUMN_NAMES__%> REGEXP &lt;%=__PATTERN_EXPR__%> THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Hive"/>
   <sqlGenericExpression xmi:id="_T3ufkQ30EeO3zPSr7uIh9w" body="SELECT COUNT(CASE WHEN REGEXP_LIKE(TO_CHAR(&lt;%=__COLUMN_NAMES__%>),&lt;%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Vertica Database"/>
   <sqlGenericExpression xmi:id="_-YK6s4qnEd-SocVM_rHvUj" body="SELECT COUNT(CASE WHEN &lt;%=__COLUMN_NAMES__%> REGEXP_LIKE &lt;%=__PATTERN_EXPR__%> THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="EXASolution"/>
+  <sqlGenericExpression xmi:id="_-YK6s4qnEd-SocVM_rHvUK" body="SELECT COUNT(CASE WHEN REGEXP_CONTAINS(&lt;%=__COLUMN_NAMES__%>,&lt;%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Google BigQuery"/>
 </dataquality.indicators.definition:IndicatorDefinition>
