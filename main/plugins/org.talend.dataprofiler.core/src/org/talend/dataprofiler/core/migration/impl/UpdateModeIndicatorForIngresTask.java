@@ -23,7 +23,7 @@ public class UpdateModeIndicatorForIngresTask extends AbstractWorksapceUpdateTas
 
     @Override
     protected boolean doExecute() throws Exception {
-        boolean result = false;
+        boolean result = true;
         IndicatorDefinition indiDefinition = IndicatorDefinitionFileHelper.getSystemIndicatorByName("Mode");
         if (!IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(indiDefinition, INGRES)) {
             IndicatorDefinitionFileHelper
