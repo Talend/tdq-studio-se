@@ -93,6 +93,7 @@ import org.talend.dq.indicators.preview.table.WhereRuleChartDataEntity;
 import org.talend.dq.pattern.PatternTransformer;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
@@ -110,7 +111,8 @@ public final class ChartTableFactory {
      * @param analysis
      * @param currentIndicator
      */
-    public static void addJobGenerationMenu(final Menu menu, final Analysis analysis, final Indicator currentIndicator) {
+    public static void addJobGenerationMenu(final Menu menu, final Analysis analysis,
+            final Indicator currentIndicator) {
         if (ProxyRepositoryManager.getInstance().isReadOnly()) {
             return;
         }
@@ -120,13 +122,14 @@ public final class ChartTableFactory {
         boolean isVertica = ConnectionHelper.isVertica(tdDataProvider);
 
         if (PluginChecker.isTDCPLoaded() && !(isDelimitedFileAnalysis || isHiveConnection)) {
-            final IDatabaseJobService service = (IDatabaseJobService) GlobalServiceRegister.getDefault().getService(
-                    IJobService.class);
+            final IDatabaseJobService service =
+                    (IDatabaseJobService) GlobalServiceRegister.getDefault().getService(IJobService.class);
             if (service != null) {
                 service.setIndicator(currentIndicator);
                 service.setAnalysis(analysis);
                 MenuItem item = null;
-                if (isDUDIndicator(currentIndicator) && AnalysisType.COLUMN_SET != analysis.getParameters().getAnalysisType()) {
+                if (isDUDIndicator(currentIndicator)
+                        && AnalysisType.COLUMN_SET != analysis.getParameters().getAnalysisType()) {
                     item = new MenuItem(menu, SWT.PUSH);
                     item.setText(DefaultMessagesImpl.getString("ChartTableFactory.RemoveDuplicate")); //$NON-NLS-1$
                 } else if (isPatternMatchingIndicator(currentIndicator) && !isVertica) {
@@ -160,7 +163,8 @@ public final class ChartTableFactory {
         }
     }
 
-    public static void addMenuAndTip(final TableViewer tbViewer, final IDataExplorer explorer, final Analysis analysis) {
+    public static void addMenuAndTip(final TableViewer tbViewer, final IDataExplorer explorer,
+            final Analysis analysis) {
         final Table table = tbViewer.getTable();
         table.addMouseListener(new MouseAdapter() {
 
@@ -182,7 +186,8 @@ public final class ChartTableFactory {
                         Menu menu = new Menu(table.getShell(), SWT.POP_UP);
                         table.setMenu(menu);
 
-                        MenuItemEntity[] itemEntities = ChartTableMenuGenerator.generate(explorer, analysis, dataEntity);
+                        MenuItemEntity[] itemEntities =
+                                ChartTableMenuGenerator.generate(explorer, analysis, dataEntity);
 
                         if (ExecutionLanguage.SQL == analysis.getParameters().getExecutionLanguage()) {
                             boolean showExtraMenu = false;
@@ -196,10 +201,11 @@ public final class ChartTableFactory {
                                     public void widgetSelected(SelectionEvent e1) {
                                         // TDQ-8637 pop a message when it is pattern and no implemnt Regex function in
                                         // DBMSLanguage.
-                                        if (isPatternMatchingIndicator(indicator)
-                                                && !((PatternExplorer) explorer).isImplementRegexFunction(itemEntity.getLabel())) {
-                                            MessageDialog.openInformation(null, itemEntity.getLabel(),
-                                                    DefaultMessagesImpl.getString("ChartTableFactory.NoSupportPatternTeradata"));//$NON-NLS-1$
+                                        if (isPatternMatchingIndicator(indicator) && !((PatternExplorer) explorer)
+                                                .isImplementRegexFunction(itemEntity.getLabel())) {
+                                            MessageDialog
+                                                    .openInformation(null, itemEntity.getLabel(), DefaultMessagesImpl
+                                                            .getString("ChartTableFactory.NoSupportPatternTeradata"));//$NON-NLS-1$
                                             return;
                                         }
 
@@ -222,7 +228,8 @@ public final class ChartTableFactory {
                                 }
                                 // TDQ-4470~
 
-                                if (isPatternFrequencyIndicator(indicator) && !isEastAsiaPatternFrequencyIndicator(indicator)) {
+                                if (isPatternFrequencyIndicator(indicator)
+                                        && !isEastAsiaPatternFrequencyIndicator(indicator)) {
                                     createMenuOfGenerateRegularPattern(analysis, menu, dataEntity);
                                 }
                             }
@@ -230,22 +237,26 @@ public final class ChartTableFactory {
 
                             if (showExtraMenu && !readOnly) {
                                 MenuItem itemCreateWhereRule = new MenuItem(menu, SWT.PUSH);
-                                itemCreateWhereRule.setText(DefaultMessagesImpl
-                                        .getString("ChartTableFactory.JoinConditionColumnsAnalysis")); //$NON-NLS-1$
+                                itemCreateWhereRule
+                                        .setText(DefaultMessagesImpl
+                                                .getString("ChartTableFactory.JoinConditionColumnsAnalysis")); //$NON-NLS-1$
                                 itemCreateWhereRule.addSelectionListener(new SelectionAdapter() {
 
                                     @Override
                                     public void widgetSelected(SelectionEvent e1) {
-                                        final StructuredSelection selectionOne = (StructuredSelection) tbViewer.getSelection();
+                                        final StructuredSelection selectionOne =
+                                                (StructuredSelection) tbViewer.getSelection();
                                         // MOD xqliu 2012-05-11 TDQ-5314
                                         Object firstElement = selectionOne.getFirstElement();
                                         if (firstElement instanceof WhereRuleChartDataEntity) {
                                             // get the WhereRuleIndicator
-                                            WhereRuleChartDataEntity wrChartDataEntity = (WhereRuleChartDataEntity) firstElement;
-                                            WhereRuleIndicator wrInd = (WhereRuleIndicator) wrChartDataEntity.getIndicator();
+                                            WhereRuleChartDataEntity wrChartDataEntity =
+                                                    (WhereRuleChartDataEntity) firstElement;
+                                            WhereRuleIndicator wrInd =
+                                                    (WhereRuleIndicator) wrChartDataEntity.getIndicator();
                                             // run the CreateDuplicatesAnalysisAction
-                                            CreateDuplicatesAnalysisAction action = new CreateDuplicatesAnalysisAction(
-                                                    buildColumnsMap(wrInd));
+                                            CreateDuplicatesAnalysisAction action =
+                                                    new CreateDuplicatesAnalysisAction(buildColumnsMap(wrInd));
                                             action.run();
                                         }
                                         // ~ TDQ-5314
@@ -294,19 +305,22 @@ public final class ChartTableFactory {
                                      * @param map
                                      * @return
                                      */
-                                    private Map<ColumnSet, List<TdColumn>> getUserSelectedMap(Map<ColumnSet, List<TdColumn>> map) {
-                                        Map<ColumnSet, List<TdColumn>> userMap = new HashMap<ColumnSet, List<TdColumn>>();
+                                    private Map<ColumnSet, List<TdColumn>>
+                                            getUserSelectedMap(Map<ColumnSet, List<TdColumn>> map) {
+                                        Map<ColumnSet, List<TdColumn>> userMap =
+                                                new HashMap<ColumnSet, List<TdColumn>>();
                                         // get the column nodes
                                         List<RepositoryNode> columnNodes = getColumnNodes(map);
                                         // get the connection node
                                         RepositoryNode rootNode = getConnectionNode(map);
                                         // show the dialog, let user select the columns
                                         if (!columnNodes.isEmpty() && rootNode != null) {
-                                            ColumnsMapSelectionDialog dialog = new ColumnsMapSelectionDialog(
-                                                    null,
+                                            ColumnsMapSelectionDialog dialog = new ColumnsMapSelectionDialog(null,
                                                     PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                                                    DefaultMessagesImpl.getString("ColumnsMapSelectionDialog.columnSelection"), columnNodes, rootNode, //$NON-NLS-1$
-                                                    DefaultMessagesImpl.getString("ColumnsMapSelectionDialog.columnSelections")); //$NON-NLS-1$
+                                                    DefaultMessagesImpl
+                                                            .getString("ColumnsMapSelectionDialog.columnSelection"), //$NON-NLS-1$
+                                                    columnNodes, rootNode, DefaultMessagesImpl
+                                                            .getString("ColumnsMapSelectionDialog.columnSelections")); //$NON-NLS-1$
                                             dialog.setAllMap(map);
                                             if (dialog.open() == Window.OK) {
                                                 userMap = dialog.getUserMap();
@@ -324,8 +338,8 @@ public final class ChartTableFactory {
                                     private RepositoryNode getConnectionNode(Map<ColumnSet, List<TdColumn>> map) {
                                         RepositoryNode node = null;
                                         if (map != null && !map.isEmpty()) {
-                                            Connection connection = ConnectionHelper
-                                                    .getConnection(map.keySet().iterator().next());
+                                            Connection connection =
+                                                    ConnectionHelper.getConnection(map.keySet().iterator().next());
                                             if (connection != null) {
                                                 node = RepositoryNodeHelper.recursiveFind(connection);
                                             }
@@ -361,11 +375,13 @@ public final class ChartTableFactory {
 
                             if (analysis.getParameters().isStoreData()) { // if allow drill down
                                 if (indicator.isUsedMapDBMode()) {
-                                    DrillDownUtils.createDrillDownMenuForMapDB(dataEntity, menu, itemEntities, analysis);
+                                    DrillDownUtils
+                                            .createDrillDownMenuForMapDB(dataEntity, menu, itemEntities, analysis);
                                 } else {
                                     DrillDownUtils.createDrillDownMenuForJava(dataEntity, menu, itemEntities, analysis);
                                 }
-                                if (isPatternFrequencyIndicator(indicator) && !isEastAsiaPatternFrequencyIndicator(indicator)) {
+                                if (isPatternFrequencyIndicator(indicator)
+                                        && !isEastAsiaPatternFrequencyIndicator(indicator)) {
                                     for (final MenuItemEntity itemEntity : itemEntities) {
                                         createMenuOfGenerateRegularPattern(analysis, menu, dataEntity);
                                     }
@@ -376,7 +392,9 @@ public final class ChartTableFactory {
                             if (isDatePatternFrequencyIndicator(indicator) && !readOnly) {
                                 final DatePatternFreqIndicator dateIndicator = (DatePatternFreqIndicator) indicator;
                                 MenuItem itemCreatePatt = new MenuItem(menu, SWT.PUSH);
-                                itemCreatePatt.setText(DefaultMessagesImpl.getString("ChartTableFactory.GenerateRegularPattern")); //$NON-NLS-1$
+                                itemCreatePatt
+                                        .setText(DefaultMessagesImpl
+                                                .getString("ChartTableFactory.GenerateRegularPattern")); //$NON-NLS-1$
                                 itemCreatePatt.setImage(ImageLib.getImage(ImageLib.PATTERN_REG));
                                 itemCreatePatt.addSelectionListener(new SelectionAdapter() {
 
@@ -386,10 +404,9 @@ public final class ChartTableFactory {
                                         IFolder folder = ResourceManager.getPatternRegexFolder();
                                         String model = dataEntity.getLabel();
                                         String regex = dateIndicator.getRegex(model);
-                                        new CreatePatternAction(
-                                                folder,
-                                                ExpressionType.REGEXP,
-                                                "'" + regex + "'", model == null ? "" : "match \"" + model + "\"", language.getDbmsName()).run(); //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$//$NON-NLS-5$
+                                        new CreatePatternAction(folder, ExpressionType.REGEXP, "'" + regex + "'", //$NON-NLS-1$ //$NON-NLS-2$
+                                                model == null ? "" : "match \"" + model + "\"", language.getDbmsName()) //$NON-NLS-1$ //$NON-NLS-2$//$NON-NLS-3$
+                                                        .run();
                                     }
 
                                 });
@@ -418,7 +435,8 @@ public final class ChartTableFactory {
      * @param menu
      * @param itemEntity
      */
-    public static void createMenuOfGenerateRegularPattern(final Analysis analysis, Menu menu, final ChartDataEntity dataEntity) {
+    public static void createMenuOfGenerateRegularPattern(final Analysis analysis, Menu menu,
+            final ChartDataEntity dataEntity) {
         if (!ProxyRepositoryManager.getInstance().isReadOnly()) {
             MenuItem itemCreatePatt = new MenuItem(menu, SWT.PUSH);
             itemCreatePatt.setText(DefaultMessagesImpl.getString("ChartTableFactory.GenerateRegularPattern")); //$NON-NLS-1$
@@ -635,7 +653,7 @@ public final class ChartTableFactory {
         String[] supportDB = { EDatabaseTypeName.MYSQL.getDisplayName(), EDatabaseTypeName.PSQL.getDisplayName(),
                 EDatabaseTypeName.ORACLEFORSID.getDisplayName(), EDatabaseTypeName.ORACLESN.getDisplayName(),
                 EDatabaseTypeName.ORACLE_OCI.getDisplayName(), EDatabaseTypeName.MSSQL.getDisplayName(),
-                EDatabaseTypeName.MSSQL05_08.getDisplayName() };
+                EDatabaseTypeName.MSSQL05_08.getDisplayName(), EDatabaseTypeName.AMAZON_AURORA.getDisplayName() };
         TdTable table = SwitchHelpers.TABLE_SWITCH.doSwitch(indicator.getAnalyzedElement());
         if (table == null) {
             return false;
