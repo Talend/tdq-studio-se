@@ -64,7 +64,6 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.utils.CloneConnectionUtils;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
-import org.talend.core.runtime.services.IGenericDBService;
 import org.talend.cwm.constants.DevelopmentStatus;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
@@ -373,25 +372,11 @@ public final class ConnectionUtils {
         }
         if (returnCode.isOk()) {
             List<String> driverJarNameList = new ArrayList<String>();
-            String slashStr = "/"; //$NON-NLS-1$
             String semicolonStr = ";"; //$NON-NLS-1$
-            if (driverJarPath.contains(slashStr)) {
-                if (driverJarPath.contains(semicolonStr)) {
-                    String jars[] = driverJarPath.split(semicolonStr);
-                    for (String jar : jars) {
-                        String jarName = jar.split(slashStr)[1] + ".jar"; //$NON-NLS-1$
-                        driverJarNameList.add(jarName);
-                    }
-                } else {
-                    String jarName = driverJarPath.split(slashStr)[1] + ".jar"; //$NON-NLS-1$
-                    driverJarNameList.add(jarName);
-                }
-            } else {
-                String[] splits = driverJarPath.split(semicolonStr);
-                for (String str : splits) {
-                    if (!StringUtils.isBlank(str)) {
-                        driverJarNameList.add(str);
-                    }
+            String[] splits = driverJarPath.split(semicolonStr);
+            for (String str : splits) {
+                if (!StringUtils.isBlank(str)) {
+                    driverJarNameList.add(str);
                 }
             }
             if (!driverJarNameList.isEmpty()) {
