@@ -82,6 +82,7 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.core.model.metadata.builder.database.PluginConstant;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
@@ -341,11 +342,11 @@ public class SqlexplorerService implements ISqlexplorerService {
             try {
                 List<String> jarNames = EDatabaseVersion4Drivers.getDrivers(dbType, dbVersion);
                 if (jarNames.isEmpty() && "JDBC".equals(dbType)) {
-                    String driverJarPath = dbConn.getDriverJarPath();
+                    String driverJarPath = JavaSqlFactory.getDriverJarPath(dbConn);
                     if (driverJarPath != null) {
                         String[] pathArray = driverJarPath.split(";"); //$NON-NLS-1$
                         for (String path : pathArray) {
-                            jarNames.add(path);
+                            jarNames.add(TalendQuoteUtils.removeQuotes(path));
                         }
                     }
                 }
