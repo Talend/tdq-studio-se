@@ -1776,6 +1776,12 @@
            name="Update Mode Indicator  to add the sql for Ingres db"
            version="7.2.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.AddBenfordLawPattern4BigQueryTask"
+           id="org.talend.dataprofiler.core.migration.impl.AddBenfordLawPattern4BigQueryTask"
+           name="Add BenfordLaw and Regular Expression Matching 4 BigQuery Task"
+           version="7.2.1">
+     </workspacetask>
   </extension>
   
   <extension
