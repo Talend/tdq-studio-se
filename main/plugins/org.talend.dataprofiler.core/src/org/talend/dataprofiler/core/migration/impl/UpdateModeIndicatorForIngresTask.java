@@ -23,15 +23,7 @@ public class UpdateModeIndicatorForIngresTask extends AbstractWorksapceUpdateTas
 
     @Override
     protected boolean doExecute() throws Exception {
-<<<<<<< Upstream, based on master
-<<<<<<< Upstream, based on master
         boolean result = true;
-=======
-        boolean result = false;
->>>>>>> 1dd385b Feat(TDQ-16103) Support Ingress 10.2 (#480)
-=======
-        boolean result = true;
->>>>>>> 344e382 fix  TDQ-16666 Mode indicator can not run on Ingres. (#488)
         IndicatorDefinition indiDefinition = IndicatorDefinitionFileHelper.getSystemIndicatorByName("Mode");
         if (!IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(indiDefinition, INGRES)) {
             IndicatorDefinitionFileHelper
