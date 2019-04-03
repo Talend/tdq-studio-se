@@ -1,3 +1,9 @@
+NOTE: after we upgrade the libraries, 
+please make sure run the follow application to synchronize components.
+UpdateComponent4libphonenumber class 
+under dataquality-libraries-devops project
+------------------------------------------------------------------------------
+
 V7.2.1 
 msjian 2019-04-02
 TDQ-16623 upgrade google libphonenumber jars as follows:
