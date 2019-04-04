@@ -44,8 +44,6 @@ import org.talend.cwm.relational.TdExpression;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
-import org.talend.dataprofiler.core.service.GlobalServiceRegister;
-import org.talend.dataprofiler.core.service.IAntlrEditorUIService;
 import org.talend.dataprofiler.core.ui.editor.AbstractMetadataFormPage;
 import org.talend.dataprofiler.core.ui.utils.MessageUI;
 import org.talend.dataquality.properties.TDQBusinessRuleItem;
@@ -194,10 +192,10 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
      * @param parent
      */
     private void createButtons(Composite parent, final ParserRuleTableViewer parserRuleTableViewer) {
-        boolean isNeedTestButton = false;
-        if (GlobalServiceRegister.getDefault().isServiceRegistered(IAntlrEditorUIService.class)) {
-            isNeedTestButton = true;
-        }
+        // boolean isNeedTestButton = false;
+        // if (GlobalServiceRegister.getDefault().isServiceRegistered(IAntlrEditorUIService.class)) {
+        // isNeedTestButton = true;
+        // }
 
         Composite buttonsComposite = new Composite(parent, SWT.NONE);
         buttonsComposite.setLayout(new GridLayout(7, true));
@@ -289,25 +287,26 @@ public class ParserRuleMasterDetailsPage extends AbstractMetadataFormPage implem
                 parserRuleTableViewer.pasteTdExpression();
             }
         });
-        if (isNeedTestButton) {
-            final Button testButton = new Button(buttonsComposite, SWT.NONE);
-            testButton.setImage(ImageLib.getImage(ImageLib.RULE_TEST));
-            testButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.testRule"));//$NON-NLS-1$
-            testButton.setLayoutData(labelGd);
-            testButton.addSelectionListener(new SelectionAdapter() {
-
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    if (GlobalServiceRegister.getDefault().isServiceRegistered(IAntlrEditorUIService.class)) {
-                        IAntlrEditorUIService antlrEditorUIService = (IAntlrEditorUIService) GlobalServiceRegister.getDefault()
-                                .getService(IAntlrEditorUIService.class);
-                        antlrEditorUIService.runTestRuleAction(getCurrentModelElement(),
-                                ParserRuleMasterDetailsPage.this.getEditor());
-                    }
-
-                }
-            });
-        }
+        // TDQ-16431 20190404 because of upgrading to Antlr4, the old code can not be used. waiting for next step.
+        // if (isNeedTestButton) {
+        // final Button testButton = new Button(buttonsComposite, SWT.NONE);
+        // testButton.setImage(ImageLib.getImage(ImageLib.RULE_TEST));
+        // testButton.setToolTipText(DefaultMessagesImpl.getString("ParserRuleMasterDetailsPage.testRule"));//$NON-NLS-1$
+        // testButton.setLayoutData(labelGd);
+        // testButton.addSelectionListener(new SelectionAdapter() {
+        //
+        // @Override
+        // public void widgetSelected(SelectionEvent e) {
+        // if (GlobalServiceRegister.getDefault().isServiceRegistered(IAntlrEditorUIService.class)) {
+        // IAntlrEditorUIService antlrEditorUIService = (IAntlrEditorUIService) GlobalServiceRegister.getDefault()
+        // .getService(IAntlrEditorUIService.class);
+        // antlrEditorUIService.runTestRuleAction(getCurrentModelElement(),
+        // ParserRuleMasterDetailsPage.this.getEditor());
+        // }
+        //
+        // }
+        // });
+        // }
     }
 
     public ParserRuleTableViewer getParserRuleTableViewer() {
