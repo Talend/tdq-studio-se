@@ -80,7 +80,7 @@ import orgomg.cwm.resource.relational.Schema;
  */
 public class DbmsLanguage {
 
-    private static Logger log = Logger.getLogger(DbmsLanguage.class);
+    public static Logger log = Logger.getLogger(DbmsLanguage.class);
 
     // TODO scorreia put this into its own class and offer simple methods to replace tokens.
 
@@ -126,12 +126,14 @@ public class DbmsLanguage {
 
     static final String EXASOLUTION = SupportDBUrlType.EXASOL.getLanguage();
 
+    public static final String BIGQUERY = "Google BigQuery"; //$NON-NLS-1$
+
     /**
      * Ansi SQL.
      */
     public static final String SQL = "SQL"; //$NON-NLS-1$
 
-    private static final String DOT = "."; //$NON-NLS-1$
+    public static final String DOT = "."; //$NON-NLS-1$
 
     private static final String ASTERISK = "*"; //$NON-NLS-1$
 
@@ -371,7 +373,7 @@ public class DbmsLanguage {
      * @param param
      * @return
      */
-    private String handleContextModeOrAddQuotes(String param) {
+    protected String handleContextModeOrAddQuotes(String param) {
         if (param.startsWith("context.")) { //$NON-NLS-1$
             return "<%=" + param + "%>"; //$NON-NLS-1$ //$NON-NLS-2$
         }

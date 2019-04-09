@@ -24,8 +24,10 @@ import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.columnset.ColumnsetPackage;
 import org.talend.dataquality.indicators.columnset.RowMatchingIndicator;
+import org.talend.dq.dbms.BigQueryDbmsLanguage;
 import org.talend.dq.dbms.HiveDbmsLanguage;
 import org.talend.dq.helper.ContextHelper;
+
 import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
@@ -115,7 +117,8 @@ public class RowMatchExplorer extends DataExplorer {
             EList<TdColumn> columnSetA = ((RowMatchingIndicator) indicator).getColumnSetA();
             EList<TdColumn> columnSetB = ((RowMatchingIndicator) indicator).getColumnSetB();
 
-            String clauseA = " (SELECT *" + dbmsLanguage.from() + getFullyQualifiedTableName(tablea);//$NON-NLS-1$
+            String fullyQualifiedTableAName = getFullyQualifiedTableName(tablea);
+            String clauseA = " (SELECT *" + dbmsLanguage.from() + fullyQualifiedTableAName;//$NON-NLS-1$
             String clauseB = " (SELECT *" + dbmsLanguage.from() + getFullyQualifiedTableName(tableb);//$NON-NLS-1$
             String where = null;
             String onClause = " ON ";//$NON-NLS-1$
@@ -141,7 +144,7 @@ public class RowMatchExplorer extends DataExplorer {
                             : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null))
                     + ") B";//$NON-NLS-1$
 
-            query = "SELECT * FROM " + getFullyQualifiedTableName(tablea);//$NON-NLS-1$
+            query = "SELECT * FROM " + fullyQualifiedTableAName;//$NON-NLS-1$
 
             String clause = PluginConstant.EMPTY_STRING;
             String columnNameByAlias = PluginConstant.EMPTY_STRING;
@@ -154,8 +157,9 @@ public class RowMatchExplorer extends DataExplorer {
             clause = "(SELECT " + columnNameByAlias + dbmsLanguage.from() + clauseA + " JOIN " + clauseB + onClause + ")";//$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
 
             String fullColumnAName = "("; //$NON-NLS-1$
+
             for (int j = 0; j < columnSetA.size(); j++) {
-                fullColumnAName += getFullyQualifiedTableName(tablea) + PluginConstant.DOT_STRING
+                fullColumnAName += fullyQualifiedTableAName + PluginConstant.DOT_STRING
                         + dbmsLanguage.quote(columnSetA.get(j).getName());
                 if (j != columnSetA.size() - 1) {
                     fullColumnAName += ","; //$NON-NLS-1$
@@ -170,6 +174,11 @@ public class RowMatchExplorer extends DataExplorer {
                     + (tableA.equals(tableB) ? andDataFilter(tableA,
                             (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_A
                                     : AnalysisHelper.DATA_FILTER_B)) : andDataFilter(tableA, null));
+
+            // `test_tbd_4452`.`testalltypes_kmo`.`strCol`-->`testalltypes_kmo`.`strCol`
+            if (dbmsLanguage instanceof BigQueryDbmsLanguage) {
+                query = query.replace(fullyQualifiedTableAName + ".`", tableA + ".`");
+            }
         }
 
         return getComment(MENU_VIEW_MATCH_ROWS) + query;

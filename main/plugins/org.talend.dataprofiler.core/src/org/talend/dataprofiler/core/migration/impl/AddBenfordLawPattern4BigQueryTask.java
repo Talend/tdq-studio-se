@@ -17,6 +17,7 @@ import java.util.Date;
 import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
 import org.talend.dataprofiler.core.migration.helper.IndicatorDefinitionFileHelper;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
+import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 
 /**
@@ -29,7 +30,7 @@ public class AddBenfordLawPattern4BigQueryTask extends AbstractWorksapceUpdateTa
 
     private static final String REGULAR_EXPRESSION_MATCHING_UUID = "_yb-_8Dh8Ed2XmO7pl5Yuyg"; //$NON-NLS-1$
 
-    private final String language = "Google BigQuery"; //$NON-NLS-1$
+    private final String language = DbmsLanguage.BIGQUERY;
 
     private DefinitionHandler definitionHandler;
 
@@ -48,7 +49,7 @@ public class AddBenfordLawPattern4BigQueryTask extends AbstractWorksapceUpdateTa
         IndicatorDefinition regexPatternDefinition = definitionHandler.getDefinitionById(BENFORD_LAW_UUID);
         if (regexPatternDefinition != null) {
             String benfordBody =
-                    "SELECT substr(<%=__COLUMN_NAMES__%>,1,1), COUNT(*) c FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY substr(<%=__COLUMN_NAMES__%>,1,1)"; //$NON-NLS-1$
+                    "SELECT substr(cast(<%=__COLUMN_NAMES__%> as STRING),1,1), COUNT(*) c FROM <%=__TABLE_NAME__%> t <%=__WHERE_CLAUSE__%> GROUP BY substr(cast(<%=__COLUMN_NAMES__%> as STRING),1,1)"; //$NON-NLS-1$
             if (!IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(regexPatternDefinition, language)) {
                 IndicatorDefinitionFileHelper
                         .addSqlExpression(regexPatternDefinition, language,

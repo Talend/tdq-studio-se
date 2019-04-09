@@ -21,6 +21,7 @@ import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.indicators.IndicatorsPackage;
 import org.talend.dataquality.indicators.definition.CharactersMapping;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
+import org.talend.dq.dbms.BigQueryDbmsLanguage;
 import org.talend.dq.dbms.DB2DbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.dq.dbms.InfomixDbmsLanguage;
@@ -113,7 +114,11 @@ public class FunctionFrequencyStatExplorer extends FrequencyStatisticsExplorer {
         if (colName == null) {
             return colName;
         }
-        colName = " CAST(" + colName + " AS CHAR(20)) ";//$NON-NLS-1$//$NON-NLS-2$
+        if (dbmsLanguage instanceof BigQueryDbmsLanguage) {
+            colName = dbmsLanguage.castColumnNameToChar(colName);
+        } else {
+            colName = " CAST(" + colName + " AS CHAR(20)) ";//$NON-NLS-1$//$NON-NLS-2$
+        }
         return colName;
     }
 
@@ -137,10 +142,11 @@ public class FunctionFrequencyStatExplorer extends FrequencyStatisticsExplorer {
             }
             // ~12675
             final EList<CharactersMapping> charactersMapping = indicatorDefinition.getCharactersMapping();
-            colName = dbmsLanguage.getPatternFinderFunction(colName, charactersMapping);
-            if (colName == null) { // no replacement found, try the default one
-                colName = dbmsLanguage.getPatternFinderDefaultFunction(colName);
+            String colNameWithFunction = dbmsLanguage.getPatternFinderFunction(colName, charactersMapping);
+            if (colNameWithFunction == null) { // no replacement found, try the default one
+                colNameWithFunction = dbmsLanguage.getPatternFinderDefaultFunction(colName);
             }
+            colName = colNameWithFunction;
         }
         return colName;
     }

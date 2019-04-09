@@ -75,6 +75,7 @@ import org.talend.dataquality.indicators.RowCountIndicator;
 import org.talend.dataquality.indicators.TextParameters;
 import org.talend.dataquality.indicators.definition.CharactersMapping;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
+import org.talend.dq.dbms.BigQueryDbmsLanguage;
 import org.talend.dq.dbms.GenericSQLHandler;
 import org.talend.dq.helper.AnalysisExecutorHelper;
 import org.talend.dq.helper.EObjectHelper;
@@ -89,6 +90,7 @@ import org.talend.utils.sql.Java2SqlType;
 import org.talend.utils.sql.ResultSetUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -587,7 +589,11 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         if (colName == null) {
             return colName;
         }
-        colName = " CAST(" + colName + " AS CHAR(30)) ";//$NON-NLS-1$//$NON-NLS-2$
+        if (dbms() instanceof BigQueryDbmsLanguage) {
+            colName = dbms().castColumnNameToChar(colName);
+        } else {
+            colName = " CAST(" + colName + " AS CHAR(30)) ";//$NON-NLS-1$//$NON-NLS-2$
+        }
         return colName;
     }
 

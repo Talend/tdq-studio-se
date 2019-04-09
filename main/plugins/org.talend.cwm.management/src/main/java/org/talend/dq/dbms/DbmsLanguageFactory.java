@@ -29,6 +29,7 @@ import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisContext;
 import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.foundation.softwaredeployment.SoftwareSystem;
 
@@ -150,6 +151,8 @@ public final class DbmsLanguageFactory {
             dbmsLanguage = new VerticaDbmsLanguage(dbmsSubtype, dbVersion);
         } else if (isNetezza(dbmsSubtype)) {
             dbmsLanguage = new NetezzaDbmsLanguage(dbmsSubtype, dbVersion);
+        } else if (isBigQuery(dbmsSubtype)) {
+            dbmsLanguage = new BigQueryDbmsLanguage(dbmsSubtype, dbVersion);
         } else {
             dbmsLanguage = new DbmsLanguage(dbmsSubtype, dbVersion);
         }
@@ -291,6 +294,10 @@ public final class DbmsLanguageFactory {
 
     private static boolean isNetezza(String dbms) {
         return compareDbmsLanguage(DbmsLanguage.NETEZZA, dbms);
+    }
+
+    private static boolean isBigQuery(String dbms) {
+        return compareDbmsLanguage(DbmsLanguage.BIGQUERY, dbms);
     }
 
     public static boolean isAllDatabaseType(String dbms) {

@@ -18,14 +18,18 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.indicators.columnset.ColumnDependencyIndicator;
+import org.talend.dq.dbms.BigQueryDbmsLanguage;
 import org.talend.dq.dbms.GenericSQLHandler;
 import org.talend.dq.dbms.HiveDbmsLanguage;
 import org.talend.dq.helper.ColumnDependencyHelper;
 import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
+
+import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
  * DOC xqliu class global comment. Detailled comment
@@ -125,8 +129,9 @@ public class ColumnDependencyExplorer extends DataExplorer {
 
         GenericSQLHandler sqlHandler = new GenericSQLHandler(genericSQL);
 
+        String fullyQualifiedTableName = getFullyQualifiedTableName(columnA);
         sqlHandler.replaceColumnA(dbmsLanguage.quote(columnA.getName())).replaceColumnB(dbmsLanguage.quote(columnB.getName()))
-                .replaceTable(dbmsLanguage.quote(getFullyQualifiedTableName(columnA)));
+                .replaceTable(dbmsLanguage.quote(fullyQualifiedTableName));
 
         String instantiatedSQL = sqlHandler.getSqlString();
 
@@ -138,6 +143,12 @@ public class ColumnDependencyExplorer extends DataExplorer {
 
         instantiatedSQL = dbmsLanguage.addWhereToSqlStringStatement(instantiatedSQL, whereClauses);
 
+        // TDQ-15039: `test_tbd_4452`.`testalltypes_kmo`.`strCol`-->`testalltypes_kmo`.`strCol`
+        if (dbmsLanguage instanceof BigQueryDbmsLanguage) {
+            ColumnSet columnSetOwner = ColumnHelper.getColumnOwnerAsColumnSet(columnA);
+            instantiatedSQL = instantiatedSQL.replace(fullyQualifiedTableName + ".`", columnSetOwner.getName() + ".`");
+        }
+        
         return instantiatedSQL;
     }
 
