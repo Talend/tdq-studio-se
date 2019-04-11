@@ -55,6 +55,7 @@ import org.talend.metadata.managment.connection.manager.HiveConnectionManager;
 import org.talend.metadata.managment.hive.handler.HiveConnectionHandler;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -625,6 +626,8 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
             result = !(ConnectionUtils.isOdbcMssql(connection) || ConnectionUtils.isOdbcOracle(connection)
                     || ConnectionUtils.isOdbcProgress(connection) || ConnectionUtils.isOdbcTeradata(connection)
                     || org.talend.utils.sql.ConnectionUtils.isExasol(metadata)
+                    // TDQ-16610 msjian: snowflake no need to change catalog to PUBLIC.
+                    || org.talend.utils.sql.ConnectionUtils.isSnowflake(metadata)
                     || ExtractMetaDataUtils.getInstance().isHiveConnection(connection) || ConnectionUtils.isMysql(connection));
         } catch (TalendRuntimeException e) {
             traceError(e.getMessage());

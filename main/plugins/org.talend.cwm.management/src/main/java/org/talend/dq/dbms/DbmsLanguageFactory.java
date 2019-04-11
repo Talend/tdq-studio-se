@@ -158,6 +158,8 @@ public final class DbmsLanguageFactory {
             dbmsLanguage = new NetezzaDbmsLanguage(dbmsSubtype, dbVersion);
         } else if (isBigQuery(dbmsSubtype)) {
             dbmsLanguage = new BigQueryDbmsLanguage(dbmsSubtype, dbVersion);
+        } else if (isSnowflake(dbmsSubtype)) {
+            dbmsLanguage = new SnowflakeDbmsLanguage(dbmsSubtype, dbVersion);
         } else {
             dbmsLanguage = new DbmsLanguage(dbmsSubtype, dbVersion);
         }
@@ -307,6 +309,10 @@ public final class DbmsLanguageFactory {
 
     private static boolean isBigQuery(String dbms) {
         return compareDbmsLanguage(DbmsLanguage.BIGQUERY, dbms);
+    }
+
+    private static boolean isSnowflake(String dbms) {
+        return compareDbmsLanguage(DbmsLanguage.SNOWFLAKE, dbms);
     }
 
     public static boolean isAllDatabaseType(String dbms) {
