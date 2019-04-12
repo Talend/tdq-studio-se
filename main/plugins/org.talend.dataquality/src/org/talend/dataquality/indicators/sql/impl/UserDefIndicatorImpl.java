@@ -930,7 +930,7 @@ public class UserDefIndicatorImpl extends IndicatorImpl implements UserDefIndica
     @Override
     public Double getRealValue() {
         if (IndicatorValueType.REAL_VALUE.equals(this.getValueType())) {
-            return value == null ? null : Double.valueOf(value);
+            return value == null || "null".equals(value) ? null : Double.valueOf(value); //$NON-NLS-1$
         }
         return null;
     }

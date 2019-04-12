@@ -97,45 +97,46 @@ public class FrequencyDynamicChartEventReceiver extends DynamicChartEventReceive
         }
         FrequencyExt[] tempFreq = handleFrequency(frequencyExt);
         clearDataEntity(customerdataset);
-        boolean withRowCountIndicator = FrequencyTypeStateUtil.isWithRowCountIndicator(indicator);
 
         // Added TDQ-12870
-        List columnKeys = TOPChartUtils.getInstance().getColumnKeys(customerdataset);
-        FrequencyExt freqE = tempFreq[0];
-        if (!columnKeys.contains(String.valueOf(freqE.getKey()))) {
-            // columnKeys.clear();
-            TOPChartUtils.getInstance().clearDataset(customerdataset);
-            ICustomerDataset customerDataset = TOPChartUtils.getInstance().getCustomerDataset(customerdataset);
-            if (customerDataset != null && customerDataset instanceof CustomerDefaultCategoryDataset) {
-                ((CustomerDefaultCategoryDataset) customerDataset).clearAll();
-            }
-        }
-
-        for (int i = 0; i < numOfShown; i++) {
-            FrequencyExt freqExt = tempFreq[i];
-            String keyLabel = String.valueOf(freqExt.getKey());
-            if ("null".equals(keyLabel)) { //$NON-NLS-1$
-                keyLabel = SpecialValueDisplay.NULL_FIELD;
-            }
-            if ("".equals(keyLabel)) { //$NON-NLS-1$
-                keyLabel = SpecialValueDisplay.EMPTY_FIELD;
-            }
-
-            ChartDataEntity entity = FrequencyTypeStateUtil.createChartEntity(indicator, freqExt, keyLabel, true);
-
-            if (customerdataset instanceof CustomerDefaultCategoryDataset) {
-                ((CustomerDefaultCategoryDataset) customerdataset).addDataEntity(entity);
-                addValueToDataset(((CustomerDefaultCategoryDataset) customerdataset).getDataset(), freqExt, keyLabel);
-            } else {
+        if (tempFreq != null && tempFreq.length > 0) {
+            FrequencyExt freqE = tempFreq[0];
+            List columnKeys = TOPChartUtils.getInstance().getColumnKeys(customerdataset);
+            if (!columnKeys.contains(String.valueOf(freqE.getKey()))) {
+                // columnKeys.clear();
+                TOPChartUtils.getInstance().clearDataset(customerdataset);
                 ICustomerDataset customerDataset = TOPChartUtils.getInstance().getCustomerDataset(customerdataset);
                 if (customerDataset != null && customerDataset instanceof CustomerDefaultCategoryDataset) {
-                    customerDataset.addDataEntity(entity);
+                    ((CustomerDefaultCategoryDataset) customerDataset).clearAll();
+                }
+            }
+            for (int i = 0; i < numOfShown; i++) {
+                FrequencyExt freqExt = tempFreq[i];
+                String keyLabel = String.valueOf(freqExt.getKey());
+                if ("null".equals(keyLabel)) { //$NON-NLS-1$
+                    keyLabel = SpecialValueDisplay.NULL_FIELD;
+                } else if ("".equals(keyLabel)) { //$NON-NLS-1$
+                    keyLabel = SpecialValueDisplay.EMPTY_FIELD;
+                }
 
-                    addValueToDataset(((CustomerDefaultCategoryDataset) customerDataset).getDataset(), freqExt,
+                ChartDataEntity entity = FrequencyTypeStateUtil.createChartEntity(indicator, freqExt, keyLabel, true);
+
+                if (customerdataset instanceof CustomerDefaultCategoryDataset) {
+                    ((CustomerDefaultCategoryDataset) customerdataset).addDataEntity(entity);
+                    addValueToDataset(((CustomerDefaultCategoryDataset) customerdataset).getDataset(), freqExt,
                             keyLabel);
+                } else {
+                    ICustomerDataset customerDataset = TOPChartUtils.getInstance().getCustomerDataset(customerdataset);
+                    if (customerDataset != null && customerDataset instanceof CustomerDefaultCategoryDataset) {
+                        customerDataset.addDataEntity(entity);
+
+                        addValueToDataset(((CustomerDefaultCategoryDataset) customerDataset).getDataset(), freqExt,
+                                keyLabel);
+                    }
                 }
             }
         }
+
     }
 
     /**
