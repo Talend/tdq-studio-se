@@ -65,6 +65,7 @@ import org.talend.core.model.utils.CloneConnectionUtils;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.core.runtime.services.IGenericDBService;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.constants.DevelopmentStatus;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
@@ -332,7 +333,7 @@ public final class ConnectionUtils {
                 String[] splits = driverJarPath.split(";"); //$NON-NLS-1$
                 for (String str : splits) {
                     if (!StringUtils.isBlank(str)) {
-                        driverJarNameList.add(str);
+                        driverJarNameList.add(TalendQuoteUtils.removeQuotes(str));
                     }
                 }
                 LinkedList<String> driverJarRealPaths = getDriverJarRealPaths(driverJarNameList);
@@ -378,7 +379,7 @@ public final class ConnectionUtils {
             String[] splits = driverJarPath.split(semicolonStr);
             for (String str : splits) {
                 if (!StringUtils.isBlank(str)) {
-                    driverJarNameList.add(str);
+                    driverJarNameList.add(TalendQuoteUtils.removeQuotes(str));
                 }
             }
             if (!driverJarNameList.isEmpty()) {
