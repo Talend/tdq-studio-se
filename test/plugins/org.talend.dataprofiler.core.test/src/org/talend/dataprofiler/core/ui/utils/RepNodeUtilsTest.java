@@ -25,11 +25,11 @@ import org.eclipse.core.runtime.Path;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.core.model.general.Project;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
@@ -62,12 +62,10 @@ import org.talend.resource.ResourceManager;
 /**
  * DOC yyin class global comment. Detailled comment
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ ProjectManager.class, ResourceManager.class, RepositoryNodeHelper.class, CorePlugin.class,
         ProxyRepositoryFactory.class, ModelElementHelper.class })
 public class RepNodeUtilsTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     TdReport realReport;
 

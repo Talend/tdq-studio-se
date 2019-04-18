@@ -17,11 +17,11 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.cwm.relational.RelationalFactory;
@@ -33,11 +33,9 @@ import org.talend.dataquality.indicators.sql.IndicatorSqlFactory;
 /**
  * DOC yyin  class global comment. Detailled comment
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ TableHelper.class })
 public class ChartTableFactoryTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private Indicator dqRule;
     /**

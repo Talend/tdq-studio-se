@@ -23,11 +23,11 @@ import java.util.ResourceBundle;
 import junit.framework.Assert;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.management.i18n.Messages;
@@ -41,11 +41,9 @@ import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 /**
  * DOC yyin class global comment. Detailled comment
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ ConnectionHelper.class, Messages.class, DbmsLanguageFactory.class })
 public class ModelElementIndicatorRuleTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private TdSqlDataType tdsql;
 
