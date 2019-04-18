@@ -116,6 +116,7 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -127,7 +128,7 @@ public class FileSystemImportWriter implements IImportWriter {
 
     private static Logger log = Logger.getLogger(FileSystemImportWriter.class);
 
-    private static final String VERSION_FILE_NAME = ".version.txt";//$NON-NLS-1$ 
+    private static final String VERSION_FILE_NAME = ".version.txt";//$NON-NLS-1$
 
     private static final String DEFINITION_FILE_NAME = DefinitionHandler.FILENAME;
 
@@ -161,6 +162,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * ItemRecord [], boolean)
      */
 
+    @Override
     public ItemRecord[] populate(ItemRecord[] elements, boolean isOverWrite) {
         List<ItemRecord> inValidRecords = new ArrayList<ItemRecord>();
 
@@ -177,8 +179,9 @@ public class FileSystemImportWriter implements IImportWriter {
             checkBuiltInMode(record);
 
             if (!isOverWrite && record.getConflictObject() != null) {
-                record.addError(DefaultMessagesImpl.getString(
-                        "FileSystemImproWriter.hasConflictObject", record.getName()));//$NON-NLS-1$ 
+                record
+                        .addError(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.hasConflictObject", record.getName()));//$NON-NLS-1$
             }
 
             if (record.existMessageToShow()) {
@@ -225,14 +228,18 @@ public class FileSystemImportWriter implements IImportWriter {
                             ((AllMatchIndicator) indicator).getCompositeRegexMatchingIndicators();
                     for (Indicator ind : compositeIndicators) {
                         if (ind.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
-                            record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
-                                    ind.getName(), modelElement.getName()));
+                            record
+                                    .addError(DefaultMessagesImpl
+                                            .getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
+                                                    ind.getName(), modelElement.getName()));
                         }
                     }
                 } else if (indicator instanceof PatternMatchingIndicator
                         && indicator.getParameters().getDataValidDomain().getBuiltInPatterns().size() > 0) {
-                    record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
-                            indicator.getName(), modelElement.getName()));
+                    record
+                            .addError(DefaultMessagesImpl
+                                    .getString("FileSystemImportWriter.builtinCheck", //$NON-NLS-1$
+                                            indicator.getName(), modelElement.getName()));
                 }
             }
         }
@@ -364,10 +371,11 @@ public class FileSystemImportWriter implements IImportWriter {
                             List<IRepositoryViewObject> supplierDependency =
                                     DependenciesHandler.getInstance().getSupplierDependency(object);
                             for (IRepositoryViewObject supplierViewObject : supplierDependency) {
-                                String message =
-                                        DefaultMessagesImpl
-                                                .getString(
-                                                        "FileSystemImproWriter.DependencyWarning", new Object[] { record.getName(), supplierViewObject.getProperty().getLabel(), object.getLabel() });//$NON-NLS-1$
+                                String message = DefaultMessagesImpl
+                                        .getString("FileSystemImproWriter.DependencyWarning", //$NON-NLS-1$
+                                                new Object[] { record.getName(),
+                                                        supplierViewObject.getProperty().getLabel(),
+                                                        object.getLabel() });
                                 record.addDependencyError(message);
                             }
                         }
@@ -375,7 +383,7 @@ public class FileSystemImportWriter implements IImportWriter {
                     }
                 }
             } catch (Exception e) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.CheckFailed", record.getName()));//$NON-NLS-1$ 
+                record.addError(DefaultMessagesImpl.getString("FileSystemImportWriter.CheckFailed", record.getName()));//$NON-NLS-1$
             }
         }
     }
@@ -394,17 +402,23 @@ public class FileSystemImportWriter implements IImportWriter {
                 record.setConflictObject(confilctObject);
                 record.seteConflictType(EConflictType.UUID);
                 if (!isNameSame) {
-                    record.addWarn(DefaultMessagesImpl.getString("FileSystemImproWriter.sameUUIDDifferentNameReplace", //$NON-NLS-1$
-                            record.getName(), record.getConflictObject().getLabel(), record.getName()));
+                    record
+                            .addWarn(DefaultMessagesImpl
+                                    .getString("FileSystemImproWriter.sameUUIDDifferentNameReplace", //$NON-NLS-1$
+                                            record.getName(), record.getConflictObject().getLabel(), record.getName()));
                 } else {
-                    record.addWarn(DefaultMessagesImpl.getString("FileSystemImproWriter.sameUUIDReplace", //$NON-NLS-1$
-                            record.getName()));
+                    record
+                            .addWarn(DefaultMessagesImpl
+                                    .getString("FileSystemImproWriter.sameUUIDReplace", //$NON-NLS-1$
+                                            record.getName()));
                 }
             } else if (isNameSame) {
                 record.setConflictObject(confilctObject);
                 record.seteConflictType(EConflictType.UUID);
-                record.addWarn(DefaultMessagesImpl.getString("FileSystemImproWriter.hasNameConflictObject", //$NON-NLS-1$
-                        record.getName()));
+                record
+                        .addWarn(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.hasNameConflictObject", //$NON-NLS-1$
+                                        record.getName()));
             }
             return isNameSame;
         }
@@ -433,8 +447,9 @@ public class FileSystemImportWriter implements IImportWriter {
             } else if (uri1.segment(j).equals(this.tempFolder.getName())) {
                 // continue and next one should be project name
                 continue;
-            } else if (!URI.decode(uri1.segment(j)).equals(
-                    URI.decode(uri2.segment(uri2.segmentCount() - (uri1.segmentCount() - j))))) {
+            } else if (!URI
+                    .decode(uri1.segment(j))
+                    .equals(URI.decode(uri2.segment(uri2.segmentCount() - (uri1.segmentCount() - j))))) {
                 isSamePath = false;
                 break;
             }
@@ -446,17 +461,21 @@ public class FileSystemImportWriter implements IImportWriter {
             record.seteConflictType(EConflictType.UUIDBUTNAME);
 
             if (record.isInvalidNAMEConflictExist()) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.needSameNameConflictObject", //$NON-NLS-1$
-                        record.getName()));
+                record
+                        .addError(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.needSameNameConflictObject", //$NON-NLS-1$
+                                        record.getName()));
             } else if (!isSamePath) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.needSamePathConflictObject", //$NON-NLS-1$
-                        record.getName()));
+                record
+                        .addError(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.needSamePathConflictObject", //$NON-NLS-1$
+                                        record.getName()));
             } else {
                 // replace message needed by warn
                 record
                         .addWarn(DefaultMessagesImpl
-                                .getString(
-                                        "FileSystemImproWriter.sameUUIDDifferentNameReplace", record.getName(), record.getConflictObject().getLabel(), record.getName())); //$NON-NLS-1$
+                                .getString("FileSystemImproWriter.sameUUIDDifferentNameReplace", record.getName(), //$NON-NLS-1$
+                                        record.getConflictObject().getLabel(), record.getName()));
             }
             return true;
             // same item and name case
@@ -465,13 +484,15 @@ public class FileSystemImportWriter implements IImportWriter {
             record.seteConflictType(EConflictType.UUID);
 
             if (!isSamePath) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.needSamePathConflictObject", //$NON-NLS-1$
-                        record.getName()));
+                record
+                        .addError(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.needSamePathConflictObject", //$NON-NLS-1$
+                                        record.getName()));
             } else {
                 // replace message needed by warn
                 record
-                        .addWarn(DefaultMessagesImpl.getString(
-                                "FileSystemImproWriter.sameUUIDReplace", record.getName())); //$NON-NLS-1$
+                        .addWarn(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.sameUUIDReplace", record.getName())); //$NON-NLS-1$
             }
             return true;
             // different item same name case
@@ -479,8 +500,10 @@ public class FileSystemImportWriter implements IImportWriter {
             record.setConflictObject(confilctObject);
             record.seteConflictType(EConflictType.NAME);
             if (record.isInvalidNAMEConflictExist()) {
-                record.addError(DefaultMessagesImpl.getString("FileSystemImproWriter.hasNameConflictObject", //$NON-NLS-1$
-                        record.getName()));
+                record
+                        .addError(DefaultMessagesImpl
+                                .getString("FileSystemImproWriter.hasNameConflictObject", //$NON-NLS-1$
+                                        record.getName()));
             }
             return true;
         }
@@ -513,8 +536,10 @@ public class FileSystemImportWriter implements IImportWriter {
                     }
                 }
                 InternalEObject inObject = (InternalEObject) melement;
-                record.addError(DefaultMessagesImpl.getString(
-                        "FileSystemImportWriter.MissDepend", record.getName(), inObject.eProxyURI().toFileString()));//$NON-NLS-1$ 
+                record
+                        .addError(DefaultMessagesImpl
+                                .getString("FileSystemImportWriter.MissDepend", record.getName(), //$NON-NLS-1$
+                                        inObject.eProxyURI().toFileString()));
             }
         }
     }
@@ -523,9 +548,11 @@ public class FileSystemImportWriter implements IImportWriter {
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#mapping(org.talend.dataprofiler.core.ui.imex.model.ItemRecord
+     * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#mapping(org.talend.dataprofiler.core.ui.imex.model.
+     * ItemRecord
      * )
      */
+    @Override
     public Map<IPath, IPath> mapping(ItemRecord record) {
 
         Map<IPath, IPath> toImportMap = new HashMap<IPath, IPath>();
@@ -565,6 +592,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * @see org.talend.dataprofiler.core.ui.imex.model.IImexWriter#write(org.eclipse.core.runtime.IPath,
      * org.eclipse.core.runtime.IPath)
      */
+    @Override
     public void write(IPath resPath, IPath desPath) throws IOException, CoreException {
         File resFile = resPath.toFile();
         File desFile = desPath.toFile();
@@ -575,7 +603,7 @@ public class FileSystemImportWriter implements IImportWriter {
             // error
 
             desFile.delete();
-            log.warn(DefaultMessagesImpl.getString("FileSystemImportWriter.Overwritten", desFile.getAbsoluteFile()));//$NON-NLS-1$ 
+            log.warn(DefaultMessagesImpl.getString("FileSystemImportWriter.Overwritten", desFile.getAbsoluteFile()));//$NON-NLS-1$
         }
 
         FileUtils.copyFile(resFile, desFile);
@@ -609,7 +637,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 needReloadResource = true;
                 if (!StringUtils.equals(projectName, curProjectLabel)) {
                     String content = FileUtils.readFileToString(desFile, "utf-8");//$NON-NLS-1$
-                    content = StringUtils.replace(content, "/" + projectName + "/", "/" + curProjectLabel + "/");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ 
+                    content = StringUtils.replace(content, "/" + projectName + "/", "/" + curProjectLabel + "/");//$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     FileUtils.writeStringToFile(desFile, content, "utf-8");//$NON-NLS-1$
                 }
             }
@@ -638,8 +666,9 @@ public class FileSystemImportWriter implements IImportWriter {
             }
 
         } else {
-            log.error(DefaultMessagesImpl.getString(
-                    "FileSystemImportWriter.destinationFileIsNotExist", desFile.getAbsolutePath())); //$NON-NLS-1$
+            log
+                    .error(DefaultMessagesImpl
+                            .getString("FileSystemImportWriter.destinationFileIsNotExist", desFile.getAbsolutePath())); //$NON-NLS-1$
         }
     }
 
@@ -649,9 +678,11 @@ public class FileSystemImportWriter implements IImportWriter {
      * indicators if valid.(overwrite)
      * 
      * @see
-     * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#write(org.talend.dataprofiler.core.ui.imex.model.ItemRecord
+     * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#write(org.talend.dataprofiler.core.ui.imex.model.
+     * ItemRecord
      * [], org.eclipse.core.runtime.IProgressMonitor)
      */
+    @Override
     public void write(ItemRecord[] records, IProgressMonitor monitor) {
         write(records, monitor, false);
     }
@@ -662,9 +693,11 @@ public class FileSystemImportWriter implements IImportWriter {
      * indicators if valid.(overwrite)
      * 
      * @see
-     * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#write(org.talend.dataprofiler.core.ui.imex.model.ItemRecord
+     * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#write(org.talend.dataprofiler.core.ui.imex.model.
+     * ItemRecord
      * [], org.eclipse.core.runtime.IProgressMonitor)
      */
+    @Override
     public void write(ItemRecord[] records, IProgressMonitor monitor, boolean isOverwrite) {
         if (monitor == null) {
             monitor = new NullProgressMonitor();
@@ -679,180 +712,131 @@ public class FileSystemImportWriter implements IImportWriter {
 
         RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("Import TDQ Element") {//$NON-NLS-1$
 
-                    @Override
-                    protected void run() {
-                        try {
-                            List<ItemRecord> needToRemoveList = new ArrayList<ItemRecord>();
-                            int work = 0;
-                            for (ItemRecord record : fRecords) {
-                                IRepositoryViewObject object = record.getConflictObject();
-                                if (object != null) {
-                                    Property conflictProperty = object.getProperty();
-                                    ModelElement modEle = record.getElement();
-                                    if (record.isNeedToRenameFirst()) {
-                                        conflictProperty.setLabel(modEle.getName());
-                                        ElementWriterFactory
-                                                .getInstance()
-                                                .create(conflictProperty.getItem())
-                                                .save(conflictProperty.getItem(), true);
-                                        record.seteConflictType(EConflictType.UUID);
-                                    }
-                                }
+            @Override
+            protected void run() {
+                try {
+                    List<ItemRecord> needToRemoveList = new ArrayList<ItemRecord>();
+                    int work = 0;
+                    for (ItemRecord record : fRecords) {
+                        IRepositoryViewObject object = record.getConflictObject();
+                        if (object != null) {
+                            Property conflictProperty = object.getProperty();
+                            ModelElement modEle = record.getElement();
+                            if (record.isNeedToRenameFirst()) {
+                                conflictProperty.setLabel(modEle.getName());
+                                ElementWriterFactory
+                                        .getInstance()
+                                        .create(conflictProperty.getItem())
+                                        .save(conflictProperty.getItem(), true);
+                                record.seteConflictType(EConflictType.UUID);
                             }
+                        }
+                    }
 
                     List<String> importedContext = new ArrayList<String>();
                     for (ItemRecord record : fRecords) {
 
-                                if (fMonitor.isCanceled()) {
-                                    break;
-                                }
+                        if (fMonitor.isCanceled()) {
+                            break;
+                        }
 
-                                Map<IPath, IPath> toImportMap = mapping(record);
+                        Map<IPath, IPath> toImportMap = mapping(record);
 
-                                fMonitor.subTask(DefaultMessagesImpl.getString(
-                                        "FileSystemImportWriter.Importing", record.getName()));//$NON-NLS-1$
+                        fMonitor
+                                .subTask(DefaultMessagesImpl
+                                        .getString("FileSystemImportWriter.Importing", record.getName()));//$NON-NLS-1$
 
-                                if (record.isValid()) {
-                                    log.info(DefaultMessagesImpl.getString(
-                                            "FileSystemImportWriter.Importing", record.getFile().getAbsolutePath()));//$NON-NLS-1$
+                        if (record.isValid()) {
+                            log
+                                    .info(DefaultMessagesImpl
+                                            .getString("FileSystemImportWriter.Importing", //$NON-NLS-1$
+                                                    record.getFile().getAbsolutePath()));
 
-                                    // Delete the conflict node before import.
-                                    IRepositoryViewObject object = record.getConflictObject();
-                                    boolean isDelete = true;
-                                    ModelElement modEle = record.getElement();
-                                    if (object != null) {
-                                        // added 20120808 yyin TDQ-4189
-                                        // when record is valid&conflict, means it need to be merged with the current
-                                        // one if it
-                                        // is a system indicator definition, (using its UUid to find this SI not label)
-                                        if (isIndicatorDefinition(modEle)) {
-                                            if (isDQRule(modEle)) {
-                                                if (isParserRule(modEle)) {
-                                                    mergeParserRule(record, (TDQBusinessRuleItem) object
-                                                            .getProperty()
-                                                            .getItem());
-                                                    isDelete = false;
-                                                } else if (isWhereRule(modEle)) {
-                                                    storeDependencyForIndicator(record);
-                                                    isDelete = false;
-                                                    needToRemoveList.add(record);
-                                                }
-                                            } else if (isMatchRuleDefinition(modEle)) {
-                                                // do nothing here now
-                                            } else {
-                                                // System Indicator and UDI need merge
-                                                TDQIndicatorDefinitionItem indItem =
-                                                        (TDQIndicatorDefinitionItem) object.getProperty().getItem();
-                                                mergeSystemIndicator(record, indItem);
-                                                // only add it when it is UDIndicatorDefinition
-                                                if (record.getElement() instanceof UDIndicatorDefinition) {
-                                                    need2MergeModelElementList.add(record);
-                                                    storeDependencyForIndicator(record);
-                                                }
-                                                isDelete = false;
-                                            }
-                                        } else if (isPattern(modEle)) {
-                                            TDQPatternItem patternItem =
-                                                    (TDQPatternItem) object.getProperty().getItem();
-                                            mergePattern(record, patternItem);
-                                            need2MergeModelElementList.add(record);
+                            // Delete the conflict node before import.
+                            IRepositoryViewObject object = record.getConflictObject();
+                            boolean isDelete = true;
+                            ModelElement modEle = record.getElement();
+                            if (object != null) {
+                                // added 20120808 yyin TDQ-4189
+                                // when record is valid&conflict, means it need to be merged with the current
+                                // one if it
+                                // is a system indicator definition, (using its UUid to find this SI not label)
+                                if (isIndicatorDefinition(modEle)) {
+                                    if (isDQRule(modEle)) {
+                                        if (isParserRule(modEle)) {
+                                            mergeParserRule(record,
+                                                    (TDQBusinessRuleItem) object.getProperty().getItem());
+                                            isDelete = false;
+                                        } else if (isWhereRule(modEle)) {
                                             storeDependencyForIndicator(record);
                                             isDelete = false;
-                                        } else if (isConnection(modEle) || isAnalysis(modEle) || isReport(modEle)) {
-                                            storeDependency(record);
-                                            isDelete = false;
-                                            if (!fIsOverwrite) {
-                                                continue;
-                                            }
-                                            work--;
                                             needToRemoveList.add(record);
-                                        } else {
-                                            if (!fIsOverwrite) {
-                                                continue;
-                                            }
-                                            // remove the dependency of the object
-                                            EObjectHelper.removeDependencys(PropertyHelper.getModelElement(object
-                                                    .getProperty()));
-                                            isDelete = true;
-                                            // delete the object
-                                            ProxyRepositoryFactory.getInstance().deleteObjectPhysical(object);
                                         }
+                                    } else if (isMatchRuleDefinition(modEle)) {
+                                        // do nothing here now
+                                    } else {
+                                        // System Indicator and UDI need merge
+                                        TDQIndicatorDefinitionItem indItem =
+                                                (TDQIndicatorDefinitionItem) object.getProperty().getItem();
+                                        mergeSystemIndicator(record, indItem);
+                                        // only add it when it is UDIndicatorDefinition
+                                        if (record.getElement() instanceof UDIndicatorDefinition) {
+                                            need2MergeModelElementList.add(record);
+                                            storeDependencyForIndicator(record);
+                                        }
+                                        isDelete = false;
                                     }
+                                } else if (isPattern(modEle)) {
+                                    TDQPatternItem patternItem = (TDQPatternItem) object.getProperty().getItem();
+                                    mergePattern(record, patternItem);
+                                    need2MergeModelElementList.add(record);
+                                    storeDependencyForIndicator(record);
+                                    isDelete = false;
+                                } else if (isConnection(modEle) || isAnalysis(modEle) || isReport(modEle)) {
+                                    storeDependency(record);
+                                    isDelete = false;
+                                    if (!fIsOverwrite) {
+                                        continue;
+                                    }
+                                    work--;
+                                    needToRemoveList.add(record);
+                                } else {
+                                    if (!fIsOverwrite) {
+                                        continue;
+                                    }
+                                    // remove the dependency of the object
+                                    EObjectHelper
+                                            .removeDependencys(PropertyHelper.getModelElement(object.getProperty()));
+                                    isDelete = true;
+                                    // delete the object
+                                    ProxyRepositoryFactory.getInstance().deleteObjectPhysical(object);
+                                }
+                            }
 
                             // Added TDQ-15353, need to check the context if any in analysis/report
                             if (isAnalysis(modEle) || isReport(modEle)) {
                                 clearContextIfNotImported(record, importedContext);
                             }
 
-                                    if (isDelete) {
-                                        updateFiles.clear();
-                                        updateFilesCoverd.clear();
-
-                                        for (IPath resPath : toImportMap.keySet()) {
-                                            IPath desPath = toImportMap.get(resPath);
-                                            ResourceSet resourceSet =
-                                                    ProxyRepositoryFactory
-                                                            .getInstance()
-                                                            .getRepositoryFactoryFromProvider()
-                                                            .getResourceManager().resourceSet;
-                                            synchronized (resourceSet) {
-                                                write(resPath, desPath);
-                                                allCopiedFiles.add(desPath.toFile());
-                                            }
-                                            allImportItems.add(desPath);
-                                            // TDQ-12180
-                                            AbstractSvnRepositoryService svnReposService =
-                                                    GlobalServiceRegister.getDefault().getSvnRepositoryService(
-                                                            AbstractSvnRepositoryService.class);
-                                            if (svnReposService != null) {
-                                                svnReposService.addIfImportOverride(desPath);
-                                            }
-                                        }
-                                        for (File file : updateFiles) {
-                                            update(file, false);
-                                        }
-                                        for (File file : updateFilesCoverd) {
-                                            update(file, true);
-                                        }
-                            }
-                        } else {
-                            for (String error : record.getErrorMessage()) {
-                                log.error(error);
-                            }
-                        }
-
-                                fMonitor.worked(++work);
-                            }
-
-                            for (ItemRecord removeRecord : needToRemoveList) {
-
-                                Map<IPath, IPath> toImportMap = mapping(removeRecord);
-                                IRepositoryViewObject removeViewObject = removeRecord.getConflictObject();
-                                // remove the dependency of the object
-                                // EObjectHelper.removeDependencys(PropertyHelper.getModelElement(removeViewObject
-                                // .getProperty()));
-                                // delete the object
-                                ProxyRepositoryFactory.getInstance().deleteObjectPhysical(removeViewObject);
-
+                            if (isDelete) {
                                 updateFiles.clear();
                                 updateFilesCoverd.clear();
 
                                 for (IPath resPath : toImportMap.keySet()) {
                                     IPath desPath = toImportMap.get(resPath);
-                                    ResourceSet resourceSet =
-                                            ProxyRepositoryFactory
-                                                    .getInstance()
-                                                    .getRepositoryFactoryFromProvider()
-                                                    .getResourceManager().resourceSet;
+                                    ResourceSet resourceSet = ProxyRepositoryFactory
+                                            .getInstance()
+                                            .getRepositoryFactoryFromProvider()
+                                            .getResourceManager().resourceSet;
                                     synchronized (resourceSet) {
                                         write(resPath, desPath);
                                         allCopiedFiles.add(desPath.toFile());
                                     }
                                     allImportItems.add(desPath);
                                     // TDQ-12180
-                                    AbstractSvnRepositoryService svnReposService =
-                                            GlobalServiceRegister.getDefault().getSvnRepositoryService(
-                                                    AbstractSvnRepositoryService.class);
+                                    AbstractSvnRepositoryService svnReposService = GlobalServiceRegister
+                                            .getDefault()
+                                            .getSvnRepositoryService(AbstractSvnRepositoryService.class);
                                     if (svnReposService != null) {
                                         svnReposService.addIfImportOverride(desPath);
                                     }
@@ -863,136 +847,182 @@ public class FileSystemImportWriter implements IImportWriter {
                                 for (File file : updateFilesCoverd) {
                                     update(file, true);
                                 }
-
-                                fMonitor.worked(++work);
                             }
-
-                            finish(fRecords, fMonitor);
-
-                        } catch (Exception e) {
-                            log.error(e, e);
+                        } else {
+                            for (String error : record.getErrorMessage()) {
+                                log.error(error);
+                            }
                         }
+
+                        fMonitor.worked(++work);
                     }
 
-                    private void storeDependency(ItemRecord record) {
-                        // can not add unused dependency else there is not be save.So that we need to compare at here
-                        Property needStoreProperty = record.getConflictObject().getProperty();
-                        ModelElement modelElement = PropertyHelper.getModelElement(needStoreProperty);
-                        record.getClientDepenList().addAll(EcoreUtil.copyAll(modelElement.getClientDependency()));
-                        record.getSupplierDepenList().addAll(EcoreUtil.copyAll(modelElement.getSupplierDependency()));
-                        Iterator<Dependency> iterator = modelElement.getClientDependency().iterator();
-                        int index = 0;
-                        while (iterator.hasNext()) {
-                            Dependency clientDependency = iterator.next();
-                            record.getClientDepenList()
-                                    .get(index)
-                                    .getClient()
-                                    .addAll(EcoreUtil.copyAll(clientDependency.getClient()));
-                            record.getClientDepenList()
-                                    .get(index)
-                                    .getSupplier()
-                                    .addAll(EcoreUtil.copyAll(clientDependency.getSupplier()));
-                            index++;
-                            Iterator<ModelElement> elementIterator = clientDependency.getSupplier().iterator();
-                            while (elementIterator.hasNext()) {
-                                ModelElement next = elementIterator.next();
-                                Property property = PropertyHelper.getProperty(next);
+                    for (ItemRecord removeRecord : needToRemoveList) {
 
-                                if (property == null) {
-                                    property = PropertyHelper.getProperty(clientDependency);
-                                }
-                                IFile modelElementIfile =
-                                        WorkspaceUtils.getModelElementResource(property.eResource().getURI());
-                                record.getSupplierDepenFileList().add(modelElementIfile);
+                        Map<IPath, IPath> toImportMap = mapping(removeRecord);
+                        IRepositoryViewObject removeViewObject = removeRecord.getConflictObject();
+                        // remove the dependency of the object
+                        // EObjectHelper.removeDependencys(PropertyHelper.getModelElement(removeViewObject
+                        // .getProperty()));
+                        // delete the object
+                        ProxyRepositoryFactory.getInstance().deleteObjectPhysical(removeViewObject);
+
+                        updateFiles.clear();
+                        updateFilesCoverd.clear();
+
+                        for (IPath resPath : toImportMap.keySet()) {
+                            IPath desPath = toImportMap.get(resPath);
+                            ResourceSet resourceSet = ProxyRepositoryFactory
+                                    .getInstance()
+                                    .getRepositoryFactoryFromProvider()
+                                    .getResourceManager().resourceSet;
+                            synchronized (resourceSet) {
+                                write(resPath, desPath);
+                                allCopiedFiles.add(desPath.toFile());
+                            }
+                            allImportItems.add(desPath);
+                            // TDQ-12180
+                            AbstractSvnRepositoryService svnReposService = GlobalServiceRegister
+                                    .getDefault()
+                                    .getSvnRepositoryService(AbstractSvnRepositoryService.class);
+                            if (svnReposService != null) {
+                                svnReposService.addIfImportOverride(desPath);
                             }
                         }
-                        iterator = modelElement.getSupplierDependency().iterator();
-                        index = 0;
-                        while (iterator.hasNext()) {
-                            Dependency supplierDependency = iterator.next();
-                            record.getSupplierDepenList()
-                                    .get(index)
-                                    .getClient()
-                                    .addAll(EcoreUtil.copyAll(supplierDependency.getClient()));
-                            record.getSupplierDepenList()
-                                    .get(index)
-                                    .getSupplier()
-                                    .addAll(EcoreUtil.copyAll(supplierDependency.getSupplier()));
-                            index++;
-                            Iterator<ModelElement> elementIterator = supplierDependency.getClient().iterator();
-                            while (elementIterator.hasNext()) {
-                                ModelElement next = elementIterator.next();
-                                if (next.eIsProxy()) {
-                                    continue;
-                                }
-                                IFile modelElementIfile =
-                                        WorkspaceUtils.getModelElementResource(PropertyHelper
-                                                .getProperty(next)
-                                                .eResource()
-                                                .getURI());
-                                record.getClientDepenFileList().add(modelElementIfile);
-                            }
+                        for (File file : updateFiles) {
+                            update(file, false);
                         }
+                        for (File file : updateFilesCoverd) {
+                            update(file, true);
+                        }
+
+                        fMonitor.worked(++work);
                     }
 
-                    private void storeDependencyForIndicator(ItemRecord record) {
-                        // can not add unused dependency else there is not be save.So that we need to compare at here
-                        Property needStoreProperty = record.getProperty();
-                        ModelElement modelElement = PropertyHelper.getModelElement(needStoreProperty);
-                        record.getClientDepenList().addAll(EcoreUtil.copyAll(modelElement.getClientDependency()));
-                        record.getSupplierDepenList().addAll(EcoreUtil.copyAll(modelElement.getSupplierDependency()));
-                        Iterator<Dependency> iterator = modelElement.getClientDependency().iterator();
-                        int index = 0;
-                        while (iterator.hasNext()) {
-                            Dependency clientDependency = iterator.next();
-                            record.getClientDepenList()
-                                    .get(index)
-                                    .getClient()
-                                    .addAll(EcoreUtil.copyAll(clientDependency.getClient()));
-                            record.getClientDepenList()
-                                    .get(index)
-                                    .getSupplier()
-                                    .addAll(EcoreUtil.copyAll(clientDependency.getSupplier()));
-                            index++;
-                            Iterator<ModelElement> elementIterator = clientDependency.getSupplier().iterator();
-                            while (elementIterator.hasNext()) {
-                                ModelElement next = elementIterator.next();
-                                IFile modelElementIfile =
-                                        WorkspaceUtils.getModelElementResource(PropertyHelper
-                                                .getProperty(next)
-                                                .eResource()
-                                                .getURI());
-                                record.getSupplierDepenFileList().add(modelElementIfile);
-                            }
+                    finish(fRecords, fMonitor);
+
+                } catch (Exception e) {
+                    log.error(e, e);
+                }
+            }
+
+            private void storeDependency(ItemRecord record) {
+                // can not add unused dependency else there is not be save.So that we need to compare at here
+                Property needStoreProperty = record.getConflictObject().getProperty();
+                ModelElement modelElement = PropertyHelper.getModelElement(needStoreProperty);
+                record.getClientDepenList().addAll(EcoreUtil.copyAll(modelElement.getClientDependency()));
+                record.getSupplierDepenList().addAll(EcoreUtil.copyAll(modelElement.getSupplierDependency()));
+                Iterator<Dependency> iterator = modelElement.getClientDependency().iterator();
+                int index = 0;
+                while (iterator.hasNext()) {
+                    Dependency clientDependency = iterator.next();
+                    record
+                            .getClientDepenList()
+                            .get(index)
+                            .getClient()
+                            .addAll(EcoreUtil.copyAll(clientDependency.getClient()));
+                    record
+                            .getClientDepenList()
+                            .get(index)
+                            .getSupplier()
+                            .addAll(EcoreUtil.copyAll(clientDependency.getSupplier()));
+                    index++;
+                    Iterator<ModelElement> elementIterator = clientDependency.getSupplier().iterator();
+                    while (elementIterator.hasNext()) {
+                        ModelElement next = elementIterator.next();
+                        Property property = PropertyHelper.getProperty(next);
+
+                        if (property == null) {
+                            property = PropertyHelper.getProperty(clientDependency);
                         }
-                        iterator = modelElement.getSupplierDependency().iterator();
-                        index = 0;
-                        while (iterator.hasNext()) {
-                            Dependency supplierDependency = iterator.next();
-                            record.getSupplierDepenList()
-                                    .get(index)
-                                    .getClient()
-                                    .addAll(EcoreUtil.copyAll(supplierDependency.getClient()));
-                            record.getSupplierDepenList()
-                                    .get(index)
-                                    .getSupplier()
-                                    .addAll(EcoreUtil.copyAll(supplierDependency.getSupplier()));
-                            index++;
-                            Iterator<ModelElement> elementIterator = supplierDependency.getClient().iterator();
-                            while (elementIterator.hasNext()) {
-                                ModelElement next = elementIterator.next();
-                                if (next.eIsProxy()) {
-                                    continue;
-                                }
-                                IFile modelElementIfile =
-                                        WorkspaceUtils.getModelElementResource(PropertyHelper
-                                                .getProperty(next)
-                                                .eResource()
-                                                .getURI());
-                                record.getClientDepenFileList().add(modelElementIfile);
-                            }
-                        }
+                        IFile modelElementIfile = WorkspaceUtils.getModelElementResource(property.eResource().getURI());
+                        record.getSupplierDepenFileList().add(modelElementIfile);
                     }
+                }
+                iterator = modelElement.getSupplierDependency().iterator();
+                index = 0;
+                while (iterator.hasNext()) {
+                    Dependency supplierDependency = iterator.next();
+                    record
+                            .getSupplierDepenList()
+                            .get(index)
+                            .getClient()
+                            .addAll(EcoreUtil.copyAll(supplierDependency.getClient()));
+                    record
+                            .getSupplierDepenList()
+                            .get(index)
+                            .getSupplier()
+                            .addAll(EcoreUtil.copyAll(supplierDependency.getSupplier()));
+                    index++;
+                    Iterator<ModelElement> elementIterator = supplierDependency.getClient().iterator();
+                    while (elementIterator.hasNext()) {
+                        ModelElement next = elementIterator.next();
+                        if (next.eIsProxy()) {
+                            continue;
+                        }
+                        IFile modelElementIfile = WorkspaceUtils
+                                .getModelElementResource(PropertyHelper.getProperty(next).eResource().getURI());
+                        record.getClientDepenFileList().add(modelElementIfile);
+                    }
+                }
+            }
+
+            private void storeDependencyForIndicator(ItemRecord record) {
+                // can not add unused dependency else there is not be save.So that we need to compare at here
+                Property needStoreProperty = record.getProperty();
+                ModelElement modelElement = PropertyHelper.getModelElement(needStoreProperty);
+                record.getClientDepenList().addAll(EcoreUtil.copyAll(modelElement.getClientDependency()));
+                record.getSupplierDepenList().addAll(EcoreUtil.copyAll(modelElement.getSupplierDependency()));
+                Iterator<Dependency> iterator = modelElement.getClientDependency().iterator();
+                int index = 0;
+                while (iterator.hasNext()) {
+                    Dependency clientDependency = iterator.next();
+                    record
+                            .getClientDepenList()
+                            .get(index)
+                            .getClient()
+                            .addAll(EcoreUtil.copyAll(clientDependency.getClient()));
+                    record
+                            .getClientDepenList()
+                            .get(index)
+                            .getSupplier()
+                            .addAll(EcoreUtil.copyAll(clientDependency.getSupplier()));
+                    index++;
+                    Iterator<ModelElement> elementIterator = clientDependency.getSupplier().iterator();
+                    while (elementIterator.hasNext()) {
+                        ModelElement next = elementIterator.next();
+                        IFile modelElementIfile = WorkspaceUtils
+                                .getModelElementResource(PropertyHelper.getProperty(next).eResource().getURI());
+                        record.getSupplierDepenFileList().add(modelElementIfile);
+                    }
+                }
+                iterator = modelElement.getSupplierDependency().iterator();
+                index = 0;
+                while (iterator.hasNext()) {
+                    Dependency supplierDependency = iterator.next();
+                    record
+                            .getSupplierDepenList()
+                            .get(index)
+                            .getClient()
+                            .addAll(EcoreUtil.copyAll(supplierDependency.getClient()));
+                    record
+                            .getSupplierDepenList()
+                            .get(index)
+                            .getSupplier()
+                            .addAll(EcoreUtil.copyAll(supplierDependency.getSupplier()));
+                    index++;
+                    Iterator<ModelElement> elementIterator = supplierDependency.getClient().iterator();
+                    while (elementIterator.hasNext()) {
+                        ModelElement next = elementIterator.next();
+                        if (next.eIsProxy()) {
+                            continue;
+                        }
+                        IFile modelElementIfile = WorkspaceUtils
+                                .getModelElementResource(PropertyHelper.getProperty(next).eResource().getURI());
+                        record.getClientDepenFileList().add(modelElementIfile);
+                    }
+                }
+            }
 
             // need to check every context id: go through every context parameters in analysis/report, if its contextid
             // : the context is not in the imported list,then clear it.
@@ -1050,7 +1080,7 @@ public class FileSystemImportWriter implements IImportWriter {
                 }
                 return importedContext.contains(repositoryContextId);
             }
-                };
+        };
 
         workUnit.setAvoidUnloadResources(Boolean.TRUE);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
@@ -1058,15 +1088,15 @@ public class FileSystemImportWriter implements IImportWriter {
         // after above workUnit executed, the imported items will worked, than can do merge/update about UDI and Pattern
         RepositoryWorkUnit<Object> workUnitFinish = new RepositoryWorkUnit<Object>("Finish Import TDQ Element") { //$NON-NLS-1$
 
-                    @Override
-                    protected void run() throws LoginException, PersistenceException {
-                        try {
-                            postFinish();
-                        } catch (IOException e) {
-                            log.error(e, e);
-                        }
-                    }
-                };
+            @Override
+            protected void run() throws LoginException, PersistenceException {
+                try {
+                    postFinish();
+                } catch (IOException e) {
+                    log.error(e, e);
+                }
+            }
+        };
 
         workUnitFinish.setAvoidUnloadResources(Boolean.TRUE);
         ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnitFinish);
@@ -1104,11 +1134,13 @@ public class FileSystemImportWriter implements IImportWriter {
             }
             if (systemExpression != null) {
                 IndicatorDefinitionFileHelper.removeSqlExpressionByName(parserRule, importedEx.getName());
-                IndicatorDefinitionFileHelper.addSqlExpression(parserRule, importedEx.getName(),
-                        importedEx.getLanguage(), importedEx.getBody(), importedEx.getModificationDate());
+                IndicatorDefinitionFileHelper
+                        .addSqlExpression(parserRule, importedEx.getName(), importedEx.getLanguage(),
+                                importedEx.getBody(), importedEx.getModificationDate());
             } else {
-                IndicatorDefinitionFileHelper.addSqlExpression(parserRule, importedEx.getName(),
-                        importedEx.getLanguage(), importedEx.getBody(), importedEx.getModificationDate());
+                IndicatorDefinitionFileHelper
+                        .addSqlExpression(parserRule, importedEx.getName(), importedEx.getLanguage(),
+                                importedEx.getBody(), importedEx.getModificationDate());
             }
             isModified = true;
         }
@@ -1171,7 +1203,7 @@ public class FileSystemImportWriter implements IImportWriter {
             // find the related template in system indicator(with same language)
             TdExpression systemExpression = null;
             for (TdExpression ex : siDef.getSqlGenericExpression()) {
-                if (ex.getLanguage().equals(importedEx.getLanguage())) {
+                if (ex.sameVersionAndType(importedEx)) {
                     systemExpression = ex;
                     break;
                 }
@@ -1179,14 +1211,16 @@ public class FileSystemImportWriter implements IImportWriter {
 
             // if new, add to SI
             if (systemExpression == null) {
-                IndicatorDefinitionFileHelper.addSqlExpression(siDef, importedEx.getLanguage(), importedEx.getBody(),
-                        importedEx.getModificationDate());
+                IndicatorDefinitionFileHelper
+                        .addSqlExpressionTakeVersion(siDef, importedEx.getLanguage(), importedEx.getBody(),
+                                importedEx.getModificationDate(), importedEx.getVersion());
                 isModified = true;
             } else {// if the expression are different: compare the modify date, make the SI keep the new one
                 if (replaceExpression(systemExpression, importedEx)) {
-                    IndicatorDefinitionFileHelper.removeSqlExpression(siDef, importedEx.getLanguage());
-                    IndicatorDefinitionFileHelper.addSqlExpression(siDef, importedEx.getLanguage(),
-                            importedEx.getBody(), importedEx.getModificationDate());
+                    IndicatorDefinitionFileHelper.removeSqlExpression(siDef, importedEx.getLanguage(),importedEx.getVersion());
+                    IndicatorDefinitionFileHelper
+                            .addSqlExpressionTakeVersion(siDef, importedEx.getLanguage(), importedEx.getBody(),
+                                    importedEx.getModificationDate(), importedEx.getVersion());
                     isModified = true;
                 }
             }
@@ -1366,12 +1400,12 @@ public class FileSystemImportWriter implements IImportWriter {
                 // systemSupplyModelElement,remove it.
                 if (clientDep.eResource() == null) {
                     URI clientDepURI = ((InternalEObject) clientDep).eProxyURI();
-                    boolean isUDI =
-                            clientDepURI.path().contains(
-                                    ResourceManager.getUDIFolder().getProjectRelativePath().toString());
-                    boolean isPattern =
-                            clientDepURI.path().contains(
-                                    ResourceManager.getPatternFolder().getProjectRelativePath().toString());
+                    boolean isUDI = clientDepURI
+                            .path()
+                            .contains(ResourceManager.getUDIFolder().getProjectRelativePath().toString());
+                    boolean isPattern = clientDepURI
+                            .path()
+                            .contains(ResourceManager.getPatternFolder().getProjectRelativePath().toString());
                     if (supModeResource != null && (isUDI || isPattern)
                             && clientDepURI.lastSegment().equals(supModeResource.getURI().lastSegment())) {
                         it.remove();
@@ -1437,12 +1471,12 @@ public class FileSystemImportWriter implements IImportWriter {
                 // systemSupplyModelElement,remove it.
                 if (clientDep.eResource() == null) {
                     URI clientDepURI = ((InternalEObject) clientDep).eProxyURI();
-                    boolean isUDI =
-                            clientDepURI.path().contains(
-                                    ResourceManager.getUDIFolder().getProjectRelativePath().toString());
-                    boolean isPattern =
-                            clientDepURI.path().contains(
-                                    ResourceManager.getPatternFolder().getProjectRelativePath().toString());
+                    boolean isUDI = clientDepURI
+                            .path()
+                            .contains(ResourceManager.getUDIFolder().getProjectRelativePath().toString());
+                    boolean isPattern = clientDepURI
+                            .path()
+                            .contains(ResourceManager.getPatternFolder().getProjectRelativePath().toString());
                     if (supModeResource != null && (isUDI || isPattern)
                             && clientDepURI.lastSegment().equals(supModeResource.getURI().lastSegment())) {
                         it.remove();
@@ -1536,8 +1570,9 @@ public class FileSystemImportWriter implements IImportWriter {
                         && sysPatternUri.lastSegment().equals(oldPatternUri.lastSegment())) {
                     itPatterns.remove();
                     indParameters.getDataValidDomain().getPatterns().add(sysPattern);
-                    log.info("Pattern '" + sysPattern.getName() + "' is updated in Analysis '" + analysis.getName() //$NON-NLS-1$ //$NON-NLS-2$
-                            + "'"); //$NON-NLS-1$
+                    log
+                            .info("Pattern '" + sysPattern.getName() + "' is updated in Analysis '" + analysis.getName() //$NON-NLS-1$ //$NON-NLS-2$
+                                    + "'"); //$NON-NLS-1$
                     break;
                 }
             }
@@ -1579,9 +1614,11 @@ public class FileSystemImportWriter implements IImportWriter {
      * when clicking the finish button on the import wizard, execute this method.
      * 
      * @see
-     * org.talend.dataprofiler.core.ui.imex.model.IImportWriter#finish(org.talend.dataprofiler.core.ui.imex.model.ItemRecord
+     * org.talend.dataprofiler.core.ui.imex.model.IImportWriter#finish(org.talend.dataprofiler.core.ui.imex.model.
+     * ItemRecord
      * [], org.eclipse.core.runtime.IProgressMonitor)
      */
+    @Override
     public void finish(ItemRecord[] records, IProgressMonitor monitor) throws IOException, CoreException {
         mergeImportItemsDependency(records);
         cleanImportedItems();
@@ -1619,9 +1656,9 @@ public class FileSystemImportWriter implements IImportWriter {
                         URI platformResourceURI =
                                 URI.createPlatformResourceURI(desIFile.getFullPath().toOSString(), false);
                         IFile afterCopyPropertyFile = URIHelper.getFile(platformResourceURI);
-                        currentProperty =
-                                EMFSharedResources.getInstance().reloadModelElementInNode(conflictProperty,
-                                        afterCopyPropertyFile);
+                        currentProperty = EMFSharedResources
+                                .getInstance()
+                                .reloadModelElementInNode(conflictProperty, afterCopyPropertyFile);
                     }
                     // NAME conflict will not come here
                     if (itemRecord.isNeedToRenameFirst()) {
@@ -1636,9 +1673,9 @@ public class FileSystemImportWriter implements IImportWriter {
                         File osCheckFile = WorkspaceUtils.ifileToLocationPath(clientElementIFile).toFile();
                         if (workspaceChekFile != null && workspaceChekFile.exists() && osCheckFile != null
                                 && osCheckFile.exists()) {
-                            Property clientProperty =
-                                    EMFSharedResources.getInstance().reloadModelElementInNode(
-                                            PropertyHelper.getProperty(clientElementIFile, false));
+                            Property clientProperty = EMFSharedResources
+                                    .getInstance()
+                                    .reloadModelElementInNode(PropertyHelper.getProperty(clientElementIFile, false));
                             ModelElement clientElement = PropertyHelper.getModelElement(clientProperty);
                             DependenciesHandler.getInstance().removeClientDependency(clientElement, modelElement);
                             DependenciesHandler.getInstance().setUsageDependencyOn(clientElement, modelElement);
@@ -1652,9 +1689,9 @@ public class FileSystemImportWriter implements IImportWriter {
                         File osCheckFile = WorkspaceUtils.ifileToLocationPath(SupplierElementIFile).toFile();
                         if (workspaceChekFile != null && workspaceChekFile.exists() && osCheckFile != null
                                 && osCheckFile.exists()) {
-                            Property supplierProperty =
-                                    EMFSharedResources.getInstance().reloadModelElementInNode(
-                                            PropertyHelper.getProperty(SupplierElementIFile, false));
+                            Property supplierProperty = EMFSharedResources
+                                    .getInstance()
+                                    .reloadModelElementInNode(PropertyHelper.getProperty(SupplierElementIFile, false));
                             ModelElement supplierElement = PropertyHelper.getModelElement(supplierProperty);
                             DependenciesHandler.getInstance().removeClientDependency(modelElement, supplierElement);
                             DependenciesHandler.getInstance().setUsageDependencyOn(modelElement, supplierElement);
@@ -1714,6 +1751,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * 
      * @see org.talend.dataprofiler.core.ui.imex.model.IImexWriter#migration(org.eclipse.core.runtime.IProgressMonitor)
      */
+    @Override
     public void migration(IProgressMonitor monitor) {
 
         List<IMigrationTask> modelTasks = new ArrayList<IMigrationTask>();
@@ -1751,6 +1789,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * 
      * @see org.talend.dataprofiler.core.ui.imex.model.IImexWriter#computeInput(org.eclipse.core.runtime.IPath)
      */
+    @Override
     public ItemRecord computeInput(IPath path) {
 
         if (path != null) {
@@ -1795,9 +1834,10 @@ public class FileSystemImportWriter implements IImportWriter {
                 log.debug("Back-up workspace...." + workspacePath.toOSString());//$NON-NLS-1$
             }
 
-            File temporaryFolder =
-                    ResourceManager.getRootFolderLocation().append("tempFolder" + EcoreUtil.generateUUID())//$NON-NLS-1$
-                            .toFile();
+            File temporaryFolder = ResourceManager
+                    .getRootFolderLocation()
+                    .append("tempFolder" + EcoreUtil.generateUUID())//$NON-NLS-1$
+                    .toFile();
             if (!temporaryFolder.exists()) {
                 temporaryFolder.mkdir();
             }
@@ -1815,6 +1855,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * 
      * @see org.talend.dataprofiler.core.ui.imex.model.IImexWriter#setBasePath(org.eclipse.core.runtime.IPath)
      */
+    @Override
     public void setBasePath(IPath path) {
         this.basePath = path;
     }
@@ -1824,6 +1865,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * 
      * @see org.talend.dataprofiler.core.ui.imex.model.IImexWriter#getBasePath()
      */
+    @Override
     public IPath getBasePath() {
         return this.basePath;
     }
@@ -1833,6 +1875,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * 
      * @see org.talend.dataprofiler.core.ui.imex.model.IImexWriter#check()
      */
+    @Override
     public List<String> check() {
         List<String> errors = new ArrayList<String>();
         if (!checkBasePath()) {
@@ -2014,6 +2057,7 @@ public class FileSystemImportWriter implements IImportWriter {
      * 
      * @see org.talend.dataprofiler.core.ui.imex.model.IImportWriter#postFinish()
      */
+    @Override
     public void postFinish() throws IOException {
         // reload all import items
         for (IPath path : this.allImportItems) {

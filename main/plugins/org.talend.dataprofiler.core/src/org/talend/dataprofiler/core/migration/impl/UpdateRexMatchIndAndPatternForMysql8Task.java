@@ -32,13 +32,12 @@ import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.resource.ResourceManager;
 
-
 /**
  * Add a regex for Mysql 8,update pattern Complex_Australian_Phone_Number
  */
 public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceUpdateTask {
 
-    private String regulaExpMatchLabel = "Regular Expression Matching"; //$NON-NLS-1$
+    protected String regulaExpMatchLabel = "Regular Expression Matching"; //$NON-NLS-1$
 
     private String indicatorMySqlEx8p =
             "SELECT COUNT(CASE WHEN REGEXP_LIKE(<%=__COLUMN_NAMES__%>,<%=__PATTERN_EXPR__%>,'c') THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
@@ -47,15 +46,17 @@ public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceU
     // |-){0,1}[0-9]{1}(\ |-){0,1}[0-9]{3}$'
     private String newRegexForPattern =
             "'^\\\\({0,1}((0|\\\\+61)(2|4|3|7|8)){0,1}\\\\){0,1}(\\ |-){0,1}[0-9]{2}(\\ |-){0,1}[0-9]{2}(\\ |-){0,1}[0-9]{1}(\\ |-){0,1}[0-9]{3}$'";
-    
 
+    @Override
     public Date getOrder() {
         return createDate(2018, 9, 29);
     }
 
+    @Override
     public MigrationTaskType getMigrationTaskType() {
         return MigrationTaskType.FILE;
     }
+
     @Override
     protected boolean doExecute() throws Exception {
         boolean succuss = true;
@@ -65,11 +66,10 @@ public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceU
         if (indicatorDefinition != null) {
             EList<TdExpression> sqlGenericExpression = indicatorDefinition.getSqlGenericExpression();
             boolean foundMysql8Expression = false;
-            String version = "8.0";
+            String version = getDatabaseVersion();
             if (sqlGenericExpression != null && !sqlGenericExpression.isEmpty()) {
                 for (TdExpression expression : sqlGenericExpression) {
-                    if (expression != null
-                            && SupportDBUrlType.MYSQLDEFAULTURL.getLanguage().equals(expression.getLanguage())
+                    if (expression != null && getDataType().getLanguage().equals(expression.getLanguage())
                             && version.equals(expression.getVersion())) {
                         foundMysql8Expression = true;
                         break;
@@ -77,15 +77,16 @@ public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceU
                 }
             }
             if (!foundMysql8Expression) {
-            TdExpression expressionForMysql8 =
-                    BooleanExpressionHelper.createTdExpression(SupportDBUrlType.MYSQLDEFAULTURL.getLanguage(),
-                                indicatorMySqlEx8p, version);
-            indicatorDefinition.getSqlGenericExpression().add(expressionForMysql8);
-            succuss = IndicatorDefinitionFileHelper.save(indicatorDefinition);
-            DefinitionHandler.getInstance().reloadIndicatorsDefinitions();
+                TdExpression expressionForMysql8 = BooleanExpressionHelper
+                        .createTdExpression(getDataType().getLanguage(), getIndicatorExpression(), version);
+                indicatorDefinition.getSqlGenericExpression().add(expressionForMysql8);
+                succuss = IndicatorDefinitionFileHelper.save(indicatorDefinition);
+                DefinitionHandler.getInstance().reloadIndicatorsDefinitions();
             }
         }
-
+        if (!updatePattern()) {
+            return succuss;
+        }
         // update a pattern Complex_Australian_Phone_Number_0.1.pattern which miss a '\'
         IFolder folder = ResourceManager.getPatternRegexFolder().getFolder("phone"); //$NON-NLS-1$
         if (folder.exists()) {
@@ -109,5 +110,21 @@ public class UpdateRexMatchIndAndPatternForMysql8Task extends AbstractWorksapceU
         }
         return succuss;
 
-}
+    }
+
+    protected boolean updatePattern() {
+        return true;
+    }
+
+    protected String getIndicatorExpression() {
+        return indicatorMySqlEx8p;
+    }
+
+    protected String getDatabaseVersion() {
+        return "8.0"; //$NON-NLS-1$
+    }
+
+    protected SupportDBUrlType getDataType() {
+        return SupportDBUrlType.MYSQLDEFAULTURL;
+    }
 }

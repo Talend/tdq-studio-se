@@ -64,6 +64,26 @@ public final class IndicatorDefinitionFileHelper {
     }
 
     /**
+     * Add a sql expression for indicator.
+     * 
+     * @param definition the definition of indicator
+     * @param language the type of database
+     * @param body the body of expression
+     * @param modifyDate the time of the expression be modify
+     * @param version the version of database
+     * @return true if sql expression be added.
+     */
+    public static boolean addSqlExpressionTakeVersion(IndicatorDefinition definition, String language, String body,
+            String modifyDate, String version) {
+        if (null == definition) {
+            return false;
+        }
+
+        TdExpression e = BooleanExpressionHelper.createTdExpression(language, body, version);
+        return definition.getSqlGenericExpression().add(e);
+    }
+
+    /**
      * keep the modify date
      * 
      * @param definition
@@ -72,7 +92,8 @@ public final class IndicatorDefinitionFileHelper {
      * @param modifyDate
      * @return
      */
-    public static boolean addSqlExpression(IndicatorDefinition definition, String language, String body, String modifyDate) {
+    public static boolean addSqlExpression(IndicatorDefinition definition, String language, String body,
+            String modifyDate) {
         if (null == definition) {
             return false;
         }
@@ -112,14 +133,15 @@ public final class IndicatorDefinitionFileHelper {
      * @param body
      * @return true if sql expression be removed.
      */
-    public static boolean removeSqlExpression(IndicatorDefinition definition, String language) {
+    public static boolean removeSqlExpression(IndicatorDefinition definition, String language, String... version) {
         if (null == definition) {
             return false;
         }
         TdExpression removeExpression = null;
         for (TdExpression e : definition.getSqlGenericExpression()) {
-            if (e.getLanguage().equals(language)) {
+            if (findTheExpression(e, language, version)) {
                 removeExpression = e;
+                break;
             }
         }
         if (removeExpression != null) {
@@ -127,6 +149,17 @@ public final class IndicatorDefinitionFileHelper {
         }
         return false;
 
+    }
+
+    private static boolean findTheExpression(TdExpression e, String language, String[] version) {
+        if (!e.getLanguage().equals(language)) {
+            return false;
+        }
+        if (version == null || version[0] == null) {
+            return e.getVersion() == null;
+        } else {
+            return version[0].equals(e.getVersion());
+        }
     }
 
     /**
@@ -260,11 +293,10 @@ public final class IndicatorDefinitionFileHelper {
         String csWordPatternLowFrequencyUuid = "_Z1RKMD1SEeieEt49TD3y_Q"; //$NON-NLS-1$
 
         boolean isTechUUID = tableOverviewUuid.compareTo(uuid) == 0 || viewOverviewUuid.compareTo(uuid) == 0
-                        || datePatternFrequencyTableUuid.compareTo(uuid) == 0 || sumUuid.compareTo(uuid) == 0
-                        || ciWordPatternFrequencyUuid.compareTo(uuid) == 0
-                        || ciWordPatternLowFrequencyUuid.compareTo(uuid) == 0
-                        || csWordPatternFrequencyUuid.compareTo(uuid) == 0
-                        || csWordPatternLowFrequencyUuid.compareTo(uuid) == 0;
+                || datePatternFrequencyTableUuid.compareTo(uuid) == 0 || sumUuid.compareTo(uuid) == 0
+                || ciWordPatternFrequencyUuid.compareTo(uuid) == 0 || ciWordPatternLowFrequencyUuid.compareTo(uuid) == 0
+                || csWordPatternFrequencyUuid.compareTo(uuid) == 0
+                || csWordPatternLowFrequencyUuid.compareTo(uuid) == 0;
 
         return isTechUUID || isSubCategoryIndicator(uuid);
     }
