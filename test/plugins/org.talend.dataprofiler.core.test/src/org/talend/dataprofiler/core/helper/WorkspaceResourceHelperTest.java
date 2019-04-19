@@ -28,11 +28,11 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.part.FileEditorInput;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.utils.MessageUI;
@@ -45,10 +45,12 @@ import org.talend.utils.sugars.ReturnCode;
 /**
  * DOC xqliu class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ MessageUI.class, DefaultMessagesImpl.class, CorePlugin.class, WorkspaceResourceHelper.class,
         RepositoryNodeHelper.class })
 public class WorkspaceResourceHelperTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for

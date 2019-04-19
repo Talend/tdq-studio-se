@@ -21,11 +21,11 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.commons.utils.io.FilesUtils;
 import org.talend.dataprofiler.ecos.jobs.ComponentInstaller;
 import org.talend.dataprofiler.ecos.model.IEcosComponent;
@@ -34,9 +34,11 @@ import org.talend.utils.sugars.ReturnCode;
 /**
  * created by xqliu on Sep 26, 2012 Detailled comment
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ ComponentInstaller.class, FilesUtils.class })
 public class ImportObjectTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for

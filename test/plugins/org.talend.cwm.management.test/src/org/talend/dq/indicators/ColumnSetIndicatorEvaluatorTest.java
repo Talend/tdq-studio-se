@@ -31,11 +31,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.commons.utils.StringUtils;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
@@ -59,7 +58,6 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 /**
  * DOC msjian class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ LanguageManager.class, ConnectionUtils.class, ResourceBundle.class, Messages.class, ConnectionUtils.class,
         LanguageManager.class, ParameterUtil.class, StringUtils.class, ColumnHelper.class, JavaSqlFactory.class })
 public class ColumnSetIndicatorEvaluatorTest {
@@ -87,6 +85,9 @@ public class ColumnSetIndicatorEvaluatorTest {
     public static String context_fd1_RowSeparator = "context.fd1_RowSeparator"; //$NON-NLS-1$
 
     public static String realRowSeparator = "\n"; //$NON-NLS-1$
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for {@link org.talend.dq.indicators.ColumnSetIndicatorEvaluator#executeSqlQuery(String)} .

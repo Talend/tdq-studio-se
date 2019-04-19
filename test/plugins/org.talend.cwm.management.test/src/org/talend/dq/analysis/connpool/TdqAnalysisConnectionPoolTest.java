@@ -24,11 +24,11 @@ import junit.framework.Assert;
 import org.eclipse.emf.ecore.EClass;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.cwm.helper.SwitchHelpers;
@@ -42,9 +42,11 @@ import org.talend.utils.sugars.TypedReturnCode;
 /**
  * DOC yyin class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ AnalysisHandler.class, SwitchHelpers.class, JavaSqlFactory.class })
 public class TdqAnalysisConnectionPoolTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     TdqAnalysisConnectionPool connPool;
 

@@ -35,10 +35,10 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.runner.RunWith;
+import org.junit.Rule;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.cwm.dependencies.DependenciesHandler;
@@ -71,10 +71,12 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  * created by yyin on 2012-8-8 Detailled comment
  * 
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ IndicatorResourceFileHelper.class, DefaultMessagesImpl.class, ElementWriterFactory.class,
         ResourceManager.class, DependenciesHandler.class })
 public class FileSystemImportWriterTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     FileSystemImportWriter writer;
 

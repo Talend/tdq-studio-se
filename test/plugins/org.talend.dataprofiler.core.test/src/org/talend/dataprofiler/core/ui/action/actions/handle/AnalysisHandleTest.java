@@ -21,11 +21,11 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.emf.common.util.EList;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
@@ -48,13 +48,15 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 /**
  * DOC yyin class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ WorkbenchUtils.class, ResourceManager.class, RepositoryNodeHelper.class })
 public class AnalysisHandleTest {
 
     private static final String VIEW_PATTERN_FILTER = "viewPatternFilter"; //$NON-NLS-1$
 
     private static final String TABLE_PATTERN_FILTER = "tablePatternFilter"; //$NON-NLS-1$
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     Analysis oldAnalysis;
 

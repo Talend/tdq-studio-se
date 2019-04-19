@@ -29,10 +29,10 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
@@ -54,10 +54,12 @@ import orgomg.cwm.resource.relational.Schema;
  * created by qiongli on 2013-11-20 Detailled comment
  * 
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ DbmsLanguageFactory.class, ConnectionHelper.class, Catalog.class, SchemaIndicator.class, Connection.class,
         Evaluator.class, Schema.class })
 public class AbstractSchemaEvaluatorTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private String dbVersion = "502"; //$NON-NLS-1$
 

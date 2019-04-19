@@ -22,11 +22,11 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.cwm.dependencies.DependenciesHandler;
@@ -43,9 +43,12 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  * created by talend on 2015-07-28 Detailled comment.
  *
  */
-@RunWith(PowerMockRunner.class)
+// @RunWith(PowerMockRunner.class)
 @PrepareForTest({ EObjectHelper.class, ModelElementHelper.class, RepositoryNodeHelper.class })
 public class EObjectHelperTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for

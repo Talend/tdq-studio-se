@@ -27,11 +27,11 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -44,9 +44,11 @@ import orgomg.cwm.objectmodel.core.ModelElement;
 /**
  * DOC xqliu class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ RepositoryNodeHelper.class, ResourcesPlugin.class })
 public class RepositoryNodeHelperTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     @Test
     public void testFindNearestSystemFolderNode() {

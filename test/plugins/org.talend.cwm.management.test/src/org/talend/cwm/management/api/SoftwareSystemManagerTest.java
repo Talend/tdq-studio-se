@@ -27,11 +27,11 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.talend.core.model.metadata.builder.ConvertionHelper;
 import org.talend.core.model.metadata.builder.connection.ConnectionPackage;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
@@ -47,9 +47,11 @@ import orgomg.cwm.foundation.softwaredeployment.SoftwareSystem;
  * created by zhao on Aug 4, 2013 Detailled comment
  * 
  */
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ DriverManager.class, EMFSharedResources.class, ConvertionHelper.class, MetadataFillFactory.class })
 public class SoftwareSystemManagerTest {
+
+    @Rule
+    public PowerMockRule powerMockRule = new PowerMockRule();
 
     /**
      * Test method for
