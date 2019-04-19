@@ -23,9 +23,10 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.core.ITDQRepositoryService;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
@@ -47,11 +48,9 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  * $Id: talend.epf 55206 2011-02-15 17:32:14Z mhirt $
  * 
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ WorkspaceResourceHelper.class })
 public class TOPRepositoryServiceTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private ITDQRepositoryService tdqRepService;
 

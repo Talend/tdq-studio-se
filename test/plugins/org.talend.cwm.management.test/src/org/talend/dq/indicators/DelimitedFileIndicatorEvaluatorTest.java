@@ -27,12 +27,12 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.EMap;
 import org.junit.Ignore;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
@@ -52,11 +52,9 @@ import orgomg.cwm.objectmodel.core.ModelElement;
  * created by talend on 2015-07-28 Detailled comment.
  *
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ ColumnHelper.class, LanguageManager.class, JavaSqlFactory.class })
 public class DelimitedFileIndicatorEvaluatorTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     @Ignore
     @Test

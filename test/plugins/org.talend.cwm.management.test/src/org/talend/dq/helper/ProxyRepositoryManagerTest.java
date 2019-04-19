@@ -19,10 +19,10 @@ import junit.framework.Assert;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.rule.PowerMockRule;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.talend.commons.runtime.model.repository.ERepositoryStatus;
 import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
@@ -30,11 +30,9 @@ import org.talend.core.repository.model.ProxyRepositoryFactory;
 /**
  * DOC yyin class global comment. Detailled comment
  */
+@RunWith(PowerMockRunner.class)
 @PrepareForTest({ ProxyRepositoryFactory.class })
 public class ProxyRepositoryManagerTest {
-
-    @Rule
-    public PowerMockRule powerMockRule = new PowerMockRule();
 
     private ProxyRepositoryFactory proxFactory;
 
