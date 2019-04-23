@@ -14,7 +14,7 @@ public class UpdateRexMatchForMariaDB10Task extends UpdateRexMatchIndAndPatternF
 
     @Override
     protected String getIndicatorExpression() {
-        return "SELECT COUNT(CASE WHEN REGEXP_REPLACE(<%=__COLUMN_NAMES__%>,<%=__PATTERN_EXPR__%>,'c') THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
+        return "SELECT COUNT(CASE WHEN <%=__COLUMN_NAMES__%> REGEXP <%=__PATTERN_EXPR__%> THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
     }
 
     @Override

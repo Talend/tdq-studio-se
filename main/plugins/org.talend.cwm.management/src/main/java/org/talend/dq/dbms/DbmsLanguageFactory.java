@@ -80,7 +80,8 @@ public final class DbmsLanguageFactory {
                 productSubtype = TaggedValueHelper.getValueString(TaggedValueHelper.DB_PRODUCT_NAME, dataprovider);
             }
             // ~
-            String productVersion = TaggedValueHelper.getValueString(TaggedValueHelper.DB_PRODUCT_VERSION, dataprovider);
+            String productVersion =
+                    TaggedValueHelper.getValueString(TaggedValueHelper.DB_PRODUCT_VERSION, dataprovider);
 
             if (log.isDebugEnabled()) {
                 log.debug("Software system subtype (Database type): " + productSubtype); //$NON-NLS-1$
@@ -116,7 +117,11 @@ public final class DbmsLanguageFactory {
         ProductVersion dbVersion = ProductVersion.fromString(dbVersionStr, true);
         DbmsLanguage dbmsLanguage = null;
         if (isMySQL(dbmsSubtype)) {
-            dbmsLanguage = new MySQLDbmsLanguage(dbmsSubtype, dbVersion);
+            if (dbVersion.getMajor() >= 10) {
+                dbmsLanguage = new MariaDBDbmsLanguage(dbmsSubtype, dbVersion);
+            } else {
+                dbmsLanguage = new MySQLDbmsLanguage(dbmsSubtype, dbVersion);
+            }
         } else if (isOracle(dbmsSubtype)) {
             dbmsLanguage = new OracleDbmsLanguage(dbmsSubtype, dbVersion);
         } else if (isDB2(dbmsSubtype)) {
@@ -207,19 +212,23 @@ public final class DbmsLanguageFactory {
         // MOD xqliu 2009-07-13 bug 7888
         String databaseProductName = null;
         try {
-            databaseProductName = org.talend.utils.sql.ConnectionUtils.getConnectionMetadata(connection).getDatabaseProductName();
+            databaseProductName =
+                    org.talend.utils.sql.ConnectionUtils.getConnectionMetadata(connection).getDatabaseProductName();
             databaseProductName = databaseProductName == null ? PluginConstant.EMPTY_STRING : databaseProductName;
             String databaseProductVersion = null;
             try {
-                databaseProductVersion = org.talend.utils.sql.ConnectionUtils.getConnectionMetadata(connection)
+                databaseProductVersion = org.talend.utils.sql.ConnectionUtils
+                        .getConnectionMetadata(connection)
                         .getDatabaseProductVersion();
                 databaseProductVersion = databaseProductVersion == null ? "0" : databaseProductVersion; //$NON-NLS-1$
             } catch (Exception e) {
                 log.warn(Messages.getString("DbmsLanguageFactory.RetrieveVerSionException", databaseProductName), e);//$NON-NLS-1$
             }
             DbmsLanguage dbmsLanguage = createDbmsLanguage(databaseProductName, databaseProductVersion);
-            dbmsLanguage.setDbQuoteString(org.talend.utils.sql.ConnectionUtils.getConnectionMetadata(connection)
-                    .getIdentifierQuoteString());
+            dbmsLanguage
+                    .setDbQuoteString(org.talend.utils.sql.ConnectionUtils
+                            .getConnectionMetadata(connection)
+                            .getIdentifierQuoteString());
             return dbmsLanguage;
         } catch (SQLException e) {
             log.warn(Messages.getString("DbmsLanguageFactory.RetrieveInfoException", e), e);//$NON-NLS-1$
@@ -325,7 +334,8 @@ public final class DbmsLanguageFactory {
         // When source language is defaule or target language is default they are must equals between lang1 and lang2,
         // else will cause of error mapping.
         // For example default will mapping MySQL, PostgreSQL,Microsoft SQL Server
-        if (StringUtils.equalsIgnoreCase(lang1, DbmsLanguage.SQL) || StringUtils.equalsIgnoreCase(lang2, DbmsLanguage.SQL)) {
+        if (StringUtils.equalsIgnoreCase(lang1, DbmsLanguage.SQL)
+                || StringUtils.equalsIgnoreCase(lang2, DbmsLanguage.SQL)) {
             return StringUtils.equalsIgnoreCase(lang1, lang2);
         }
         // MOD xqliu 2011-12-20 TDQ-4232, FOR AS400
@@ -340,7 +350,8 @@ public final class DbmsLanguageFactory {
         }
         // ~ TDQ-4232
         // MOD mzhao 2010-08-02 bug 14464, for AS400
-        if (StringUtils.contains(lang1, DbmsLanguage.AS400) && StringUtils.contains(StringUtils.upperCase(lang2), lang1)) {
+        if (StringUtils.contains(lang1, DbmsLanguage.AS400)
+                && StringUtils.contains(StringUtils.upperCase(lang2), lang1)) {
             return true;
         }
         // MOD 2008-08-04 scorreia: for DB2 database, dbName can be "DB2/NT" or "DB2/6000" or "DB2"...

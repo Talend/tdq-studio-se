@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.Expression;
 
 /**
@@ -70,7 +71,8 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
 
     @Override
     protected String getPatternFinderFunction(String expression, String charsToReplace, String replacementChars) {
-        assert charsToReplace != null && replacementChars != null && charsToReplace.length() == replacementChars.length();
+        assert charsToReplace != null && replacementChars != null
+                && charsToReplace.length() == replacementChars.length();
         for (int i = 0; i < charsToReplace.length(); i++) {
             final char charToReplace = charsToReplace.charAt(i);
             final char replacement = replacementChars.charAt(i);
@@ -139,10 +141,17 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
     public String regexLike(String element, String regex) {
         ProductVersion dbVersion = getDbVersion();
         // 'RegexP' doesn't work well for MySQL8
-        if (dbVersion != null && dbVersion.getMajor() >= 8) {
-            return surroundWithSpaces("REGEXP_LIKE(" + element + "," + regex + ",'c')");
+        if (dbVersion != null && isMappingMutilVersion(dbVersion)) {
+            return surroundWithSpaces("REGEXP_LIKE(" + element + "," + regex + ",'c')"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return surroundWithSpaces(element + surroundWithSpaces(getRegularExpressionFunction()) + regex);
+    }
+
+    /**
+     * @return Wheter Current class mapping to more than one version
+     */
+    protected boolean isMappingMutilVersion(ProductVersion dbVersion) {
+        return dbVersion.getMajor() >= 8;
     }
 
     /*
@@ -153,8 +162,8 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
     @Override
     public String regexNotLike(String element, String regex) {
         ProductVersion dbVersion = getDbVersion();
-        if (dbVersion != null && dbVersion.getMajor() >= 8) {
-            return surroundWithSpaces("NOT REGEXP_LIKE(" + element + "," + regex + ",'c')");
+        if (dbVersion != null && isMappingMutilVersion(dbVersion)) {
+            return surroundWithSpaces("NOT REGEXP_LIKE(" + element + "," + regex + ",'c')"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         return surroundWithSpaces(element + surroundWithSpaces(this.not() + getRegularExpressionFunction()) + regex);
     }
