@@ -12,7 +12,7 @@
 // ============================================================================
 package org.talend.dq.analysis;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
@@ -68,13 +68,19 @@ public class ColumnAnalysisExecutorTest {
         catalog.setName("catalogName"); //$NON-NLS-1$
         tdTable.setNamespace(catalog);
         DatabaseConnection createConnection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
-        createConnection.getTaggedValue().add(
-                TaggedValueHelper.createTaggedValue(TaggedValueHelper.DB_PRODUCT_NAME,
-                        SupportDBUrlType.MYSQLDEFAULTURL.getLanguage()));
+        createConnection
+                .getTaggedValue()
+                .add(TaggedValueHelper
+                        .createTaggedValue(TaggedValueHelper.DB_PRODUCT_NAME,
+                                SupportDBUrlType.MYSQLDEFAULTURL.getLanguage()));
+        createConnection
+                .getTaggedValue()
+                .add(TaggedValueHelper.createTaggedValue(TaggedValueHelper.DB_PRODUCT_VERSION, "5.0")); //$NON-NLS-1$
         analysis.getContext().setConnection(createConnection);
 
         ColumnAnalysisExecutor columnAnalysisExecutor = new ColumnAnalysisExecutor();
-        assertEquals("SELECT `columnName` FROM `catalogName`.`tableName`", columnAnalysisExecutor.createSqlStatement(analysis)); //$NON-NLS-1$
+        assertEquals("SELECT `columnName` FROM `catalogName`.`tableName`", //$NON-NLS-1$
+                columnAnalysisExecutor.createSqlStatement(analysis));
     }
 
     /**
@@ -114,14 +120,15 @@ public class ColumnAnalysisExecutorTest {
         schema.setNamespace(catalog);
 
         DatabaseConnection createConnection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
-        createConnection.getTaggedValue().add(
-                TaggedValueHelper.createTaggedValue(TaggedValueHelper.DB_PRODUCT_NAME,
-                        SupportDBUrlType.MSSQLDEFAULTURL.getLanguage()));
+        createConnection
+                .getTaggedValue()
+                .add(TaggedValueHelper
+                        .createTaggedValue(TaggedValueHelper.DB_PRODUCT_NAME,
+                                SupportDBUrlType.MSSQLDEFAULTURL.getLanguage()));
         analysis.getContext().setConnection(createConnection);
 
         ColumnAnalysisExecutor columnAnalysisExecutor = new ColumnAnalysisExecutor();
-        assertEquals(
-                "SELECT \"columnName\" FROM \"catalogName\".\"schemaName\".\"tableName\"", //$NON-NLS-1$
+        assertEquals("SELECT \"columnName\" FROM \"catalogName\".\"schemaName\".\"tableName\"", //$NON-NLS-1$
                 columnAnalysisExecutor.createSqlStatement(analysis));
     }
 

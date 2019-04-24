@@ -12,12 +12,9 @@
 // ============================================================================
 package org.talend.dq.indicators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import static org.powermock.api.support.membermodification.MemberMatcher.*;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 import java.lang.reflect.Field;
@@ -54,14 +51,14 @@ import orgomg.cwm.resource.relational.Schema;
  * created by qiongli on 2013-11-20 Detailled comment
  * 
  */
-@PrepareForTest({ DbmsLanguageFactory.class, ConnectionHelper.class, Catalog.class, SchemaIndicator.class, Connection.class,
-        Evaluator.class, Schema.class })
+@PrepareForTest({ DbmsLanguageFactory.class, ConnectionHelper.class, Catalog.class, SchemaIndicator.class,
+        Connection.class, Evaluator.class, Schema.class })
 public class AbstractSchemaEvaluatorTest {
 
     @Rule
     public PowerMockRule powerMockRule = new PowerMockRule();
 
-    private String dbVersion = "502"; //$NON-NLS-1$
+    private String dbVersion = "5.0.2"; //$NON-NLS-1$
 
     private String catalogName = "catalog1"; //$NON-NLS-1$
 
@@ -92,9 +89,10 @@ public class AbstractSchemaEvaluatorTest {
         stub(method(Evaluator.class, "getAnalyzedElements")).toReturn(analysisElements); //$NON-NLS-1$
         when(schemarIndicator.getAnalyzedElement()).thenReturn(catalog);
 
-        DbmsLanguage mysqlDbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MYSQLDEFAULTURL.getLanguage(),
-                dbVersion);
-        stub(method(DbmsLanguageFactory.class, "createDbmsLanguage", DataManager.class, ExecutionLanguage.class)).toReturn(mysqlDbmsLanguage); //$NON-NLS-1$
+        DbmsLanguage mysqlDbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MYSQLDEFAULTURL.getLanguage(), dbVersion);
+        stub(method(DbmsLanguageFactory.class, "createDbmsLanguage", DataManager.class, ExecutionLanguage.class)) //$NON-NLS-1$
+                .toReturn(mysqlDbmsLanguage);
 
         String catalogNameWithQuote = catalogEvaluator.getCatalogNameWithQuote(schemarIndicator);
         assertNotNull(catalogNameWithQuote);
@@ -109,9 +107,10 @@ public class AbstractSchemaEvaluatorTest {
         analysisElements.add(schema);
         stub(method(Evaluator.class, "getAnalyzedElements")).toReturn(analysisElements); //$NON-NLS-1$
         when(schemarIndicator.getAnalyzedElement()).thenReturn(schema);
-        DbmsLanguage mysqlDbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(
-                SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage(), dbVersion);
-        stub(method(DbmsLanguageFactory.class, "createDbmsLanguage", DataManager.class, ExecutionLanguage.class)).toReturn(mysqlDbmsLanguage); //$NON-NLS-1$
+        DbmsLanguage mysqlDbmsLanguage = DbmsLanguageFactory
+                .createDbmsLanguage(SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage(), dbVersion);
+        stub(method(DbmsLanguageFactory.class, "createDbmsLanguage", DataManager.class, ExecutionLanguage.class)) //$NON-NLS-1$
+                .toReturn(mysqlDbmsLanguage);
 
         String catalogNameWithQuote = schemaEvaluate.getCatalogNameWithQuote(schemarIndicator);
         assertNull(catalogNameWithQuote);
@@ -126,9 +125,10 @@ public class AbstractSchemaEvaluatorTest {
         analysisElements.add(schema);
         stub(method(Evaluator.class, "getAnalyzedElements")).toReturn(analysisElements); //$NON-NLS-1$
         when(schemarIndicator.getAnalyzedElement()).thenReturn(schema);
-        DbmsLanguage mysqlDbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MSSQLDEFAULTURL.getLanguage(),
-                dbVersion);
-        stub(method(DbmsLanguageFactory.class, "createDbmsLanguage", DataManager.class, ExecutionLanguage.class)).toReturn(mysqlDbmsLanguage); //$NON-NLS-1$
+        DbmsLanguage mysqlDbmsLanguage =
+                DbmsLanguageFactory.createDbmsLanguage(SupportDBUrlType.MSSQLDEFAULTURL.getLanguage(), dbVersion);
+        stub(method(DbmsLanguageFactory.class, "createDbmsLanguage", DataManager.class, ExecutionLanguage.class)) //$NON-NLS-1$
+                .toReturn(mysqlDbmsLanguage);
 
         String catalogNameWithQuote = schemaEvaluator.getCatalogNameWithQuote(schemarIndicator);
         assertNotNull(catalogNameWithQuote);
@@ -139,7 +139,8 @@ public class AbstractSchemaEvaluatorTest {
     @Test
     /**
      * 
-     * No mock. using  java reflect mechanism to set private variable.
+     * No mock. using java reflect mechanism to set private variable.
+     * 
      * @throws SQLException
      * @throws InstantiationException
      * @throws IllegalAccessException
@@ -149,8 +150,9 @@ public class AbstractSchemaEvaluatorTest {
      * @throws IllegalArgumentException
      * @throws InvocationTargetException
      */
-    public void testAddToConnectionIndicator2Parameters() throws SQLException, InstantiationException, IllegalAccessException,
-            NoSuchFieldException, SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+    public void testAddToConnectionIndicator2Parameters()
+            throws SQLException, InstantiationException, IllegalAccessException, NoSuchFieldException,
+            SecurityException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
 
         //
         Connection dataProvider = ConnectionFactory.eINSTANCE.createConnection();
@@ -183,11 +185,13 @@ public class AbstractSchemaEvaluatorTest {
         // Catalog catalog = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createCatalog();
         // Schema schema = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createSchema();
 
-        //        Method method = AbstractSchemaEvaluator.class.getDeclaredMethod("evalSchemaIndicLow", new Class[] { //$NON-NLS-1$
+        // Method method = AbstractSchemaEvaluator.class.getDeclaredMethod("evalSchemaIndicLow", new Class[] {
+        // //$NON-NLS-1$
         // CatalogIndicator.class, SchemaIndicator.class, Catalog.class, Schema.class, ReturnCode.class });
         // method.invoke(instance, catalogIndic, schemaIndic, catalog, schema, new ReturnCode(true));
 
-        //        Method method = connEval.getDeclaredMethod("addToConnectionIndicator", CatalogIndicator.class, SchemaIndicator.class); //$NON-NLS-1$
+        // Method method = connEval.getDeclaredMethod("addToConnectionIndicator", CatalogIndicator.class,
+        // SchemaIndicator.class); //$NON-NLS-1$
         // method.setAccessible(true);
 
         for (int i = 0; i < 2; i++) {
