@@ -111,7 +111,7 @@ public final class DbmsLanguageFactory {
     public static DbmsLanguage createDbmsLanguage(String dbmsSubtype, String databaseVersion) {
         // TODO find an appropriate place to set the database version (e.g for hive embedded)
         String dbVersionStr = databaseVersion;
-        if (dbVersionStr == null) {
+        if (StringUtils.isEmpty(dbVersionStr)) {
             dbVersionStr = "0.0.0"; //$NON-NLS-1$
         }
         ProductVersion dbVersion = ProductVersion.fromString(dbVersionStr, true);
