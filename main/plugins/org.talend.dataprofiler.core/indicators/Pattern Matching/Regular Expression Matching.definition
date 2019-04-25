@@ -12,5 +12,5 @@
   <sqlGenericExpression xmi:id="_uc8wYeLKEeGVkLEAJh_9Ew" body="SELECT COUNT(CASE WHEN &lt;%=__COLUMN_NAMES__%> REGEXP &lt;%=__PATTERN_EXPR__%> THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Hive"/>
   <sqlGenericExpression xmi:id="_T3ufkQ30EeO3zPSr7uIh9w" body="SELECT COUNT(CASE WHEN REGEXP_LIKE(TO_CHAR(&lt;%=__COLUMN_NAMES__%>),&lt;%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Vertica Database"/>
   <sqlGenericExpression xmi:id="_-YK6s4qnEd-SocVM_rHvUj" body="SELECT COUNT(CASE WHEN &lt;%=__COLUMN_NAMES__%> REGEXP_LIKE &lt;%=__PATTERN_EXPR__%> THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="EXASolution"/>
-  <sqlGenericExpression xmi:id="_-YK6s4qnEd-SocVM_rHvUK" body="SELECT COUNT(CASE WHEN REGEXP_CONTAINS(&lt;%=__COLUMN_NAMES__%>,&lt;%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Google BigQuery"/>
+  <sqlGenericExpression xmi:id="_-YK6s4qnEd-SocVM_rHvUK" body="SELECT COUNT(CASE WHEN REGEXP_CONTAINS(cast(&lt;%=__COLUMN_NAMES__%> as STRING),&lt;%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="Google BigQuery"/>
 </dataquality.indicators.definition:IndicatorDefinition>
