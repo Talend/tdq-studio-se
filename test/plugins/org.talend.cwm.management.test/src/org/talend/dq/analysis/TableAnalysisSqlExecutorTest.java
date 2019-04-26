@@ -12,8 +12,6 @@
 // ============================================================================
 package org.talend.dq.analysis;
 
-import junit.framework.Assert;
-
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.junit.After;
@@ -37,6 +35,8 @@ import org.talend.dataquality.indicators.sql.WhereRuleIndicator;
 import org.talend.dataquality.rules.JoinElement;
 import org.talend.dataquality.rules.RulesFactory;
 import org.talend.dataquality.rules.WhereRule;
+
+import junit.framework.Assert;
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.resource.relational.Catalog;
 
@@ -65,8 +65,10 @@ public class TableAnalysisSqlExecutorTest {
 
         // create connection
         DatabaseConnection testDatabaseConnection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
-        TaggedValueHelper.setTaggedValue(testDatabaseConnection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.MYSQLDEFAULTURL.getDBKey());
+        TaggedValueHelper
+                .setTaggedValue(testDatabaseConnection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.MYSQLDEFAULTURL.getDBKey());
+        TaggedValueHelper.setTaggedValue(testDatabaseConnection, TaggedValueHelper.DB_PRODUCT_VERSION, "5.0"); //$NON-NLS-1$
 
         // create catalog
         Catalog testCatalog = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createCatalog();
@@ -119,7 +121,9 @@ public class TableAnalysisSqlExecutorTest {
     @Test
     public void testCreateSqlStatementCase1() {
         TdExpression expression = RelationalFactory.eINSTANCE.createTdExpression();
-        expression.setBody("SELECT COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__JOIN_CLAUSE__%> &lt;%=__WHERE_CLAUSE__%>"); //$NON-NLS-1$
+        expression
+                .setBody(
+                        "SELECT COUNT(*) FROM &lt;%=__TABLE_NAME__%> &lt;%=__JOIN_CLAUSE__%> &lt;%=__WHERE_CLAUSE__%>"); //$NON-NLS-1$
         expression.setLanguage("SQL"); //$NON-NLS-1$
         testWhereRuleIndicatorDefinition.getSqlGenericExpression().add(expression);
 

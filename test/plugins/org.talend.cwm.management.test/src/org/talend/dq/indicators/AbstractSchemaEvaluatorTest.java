@@ -200,7 +200,5 @@ public class AbstractSchemaEvaluatorTest {
         assertEquals(connectionIndicator.getTableCount(), 5);
         assertEquals(connectionIndicator.getViewCount(), 3);
         assertEquals(connectionIndicator.getTableRowCount(), 195);
-
     }
-
 }

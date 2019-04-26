@@ -25,34 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sourceforge.sqlexplorer.IConstants;
-import net.sourceforge.sqlexplorer.Messages;
-import net.sourceforge.sqlexplorer.dataset.DataSet;
-import net.sourceforge.sqlexplorer.dataset.actions.ExportCSVAction;
-import net.sourceforge.sqlexplorer.dataset.mapdb.MapDBColumnSetDataSet;
-import net.sourceforge.sqlexplorer.dataset.mapdb.MapDBDataSet;
-import net.sourceforge.sqlexplorer.dataset.mapdb.MapDBSetDataSet;
-import net.sourceforge.sqlexplorer.dataset.mapdb.TalendDataSet;
-import net.sourceforge.sqlexplorer.dbdetail.DetailTabManager;
-import net.sourceforge.sqlexplorer.dbproduct.Alias;
-import net.sourceforge.sqlexplorer.dbproduct.AliasManager;
-import net.sourceforge.sqlexplorer.dbproduct.DriverManager;
-import net.sourceforge.sqlexplorer.dbproduct.ManagedDriver;
-import net.sourceforge.sqlexplorer.dbproduct.User;
-import net.sourceforge.sqlexplorer.dbstructure.nodes.DatabaseNode;
-import net.sourceforge.sqlexplorer.dbstructure.nodes.INode;
-import net.sourceforge.sqlexplorer.dbstructure.nodes.SchemaNode;
-import net.sourceforge.sqlexplorer.dbstructure.nodes.TableFolderNode;
-import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
-import net.sourceforge.sqlexplorer.plugin.actions.OpenPasswordConnectDialogAction;
-import net.sourceforge.sqlexplorer.plugin.editors.SQLEditor;
-import net.sourceforge.sqlexplorer.plugin.editors.SQLEditorInput;
-import net.sourceforge.sqlexplorer.plugin.perspectives.SQLExplorerPluginPerspective;
-import net.sourceforge.sqlexplorer.plugin.views.DatabaseStructureView;
-import net.sourceforge.sqlexplorer.sqleditor.actions.ExecSQLAction;
-import net.sourceforge.sqlexplorer.util.AliasAndManaDriverHelper;
-import net.sourceforge.sqlexplorer.util.MyURLClassLoader;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
@@ -91,6 +63,34 @@ import org.talend.cwm.indicator.DataValidation;
 import org.talend.dataprofiler.service.ISqlexplorerService;
 import org.talend.metadata.managment.hive.HiveClassLoaderFactory;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
+
+import net.sourceforge.sqlexplorer.IConstants;
+import net.sourceforge.sqlexplorer.Messages;
+import net.sourceforge.sqlexplorer.dataset.DataSet;
+import net.sourceforge.sqlexplorer.dataset.actions.ExportCSVAction;
+import net.sourceforge.sqlexplorer.dataset.mapdb.MapDBColumnSetDataSet;
+import net.sourceforge.sqlexplorer.dataset.mapdb.MapDBDataSet;
+import net.sourceforge.sqlexplorer.dataset.mapdb.MapDBSetDataSet;
+import net.sourceforge.sqlexplorer.dataset.mapdb.TalendDataSet;
+import net.sourceforge.sqlexplorer.dbdetail.DetailTabManager;
+import net.sourceforge.sqlexplorer.dbproduct.Alias;
+import net.sourceforge.sqlexplorer.dbproduct.AliasManager;
+import net.sourceforge.sqlexplorer.dbproduct.DriverManager;
+import net.sourceforge.sqlexplorer.dbproduct.ManagedDriver;
+import net.sourceforge.sqlexplorer.dbproduct.User;
+import net.sourceforge.sqlexplorer.dbstructure.nodes.DatabaseNode;
+import net.sourceforge.sqlexplorer.dbstructure.nodes.INode;
+import net.sourceforge.sqlexplorer.dbstructure.nodes.SchemaNode;
+import net.sourceforge.sqlexplorer.dbstructure.nodes.TableFolderNode;
+import net.sourceforge.sqlexplorer.plugin.SQLExplorerPlugin;
+import net.sourceforge.sqlexplorer.plugin.actions.OpenPasswordConnectDialogAction;
+import net.sourceforge.sqlexplorer.plugin.editors.SQLEditor;
+import net.sourceforge.sqlexplorer.plugin.editors.SQLEditorInput;
+import net.sourceforge.sqlexplorer.plugin.perspectives.SQLExplorerPluginPerspective;
+import net.sourceforge.sqlexplorer.plugin.views.DatabaseStructureView;
+import net.sourceforge.sqlexplorer.sqleditor.actions.ExecSQLAction;
+import net.sourceforge.sqlexplorer.util.AliasAndManaDriverHelper;
+import net.sourceforge.sqlexplorer.util.MyURLClassLoader;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -453,7 +453,8 @@ public class SqlexplorerService implements ISqlexplorerService {
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataprofiler.service.ISqlexplorerService#findSqlExplorerTableNode(org.talend.core.model.metadata.builder
+     * org.talend.dataprofiler.service.ISqlexplorerService#findSqlExplorerTableNode(org.talend.core.model.metadata.
+     * builder
      * .connection.Connection, orgomg.cwm.objectmodel.core.Package, java.lang.String, java.lang.String)
      */
     @Override
@@ -461,8 +462,7 @@ public class SqlexplorerService implements ISqlexplorerService {
             String activeTabName) {
         // Open data explore perspective.
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQRepositoryService.class)) {
-            ITDQRepositoryService service = (ITDQRepositoryService) GlobalServiceRegister.getDefault().getService(
-                    ITDQRepositoryService.class);
+            ITDQRepositoryService service = GlobalServiceRegister.getDefault().getService(ITDQRepositoryService.class);
             if (service != null) {
                 service.changePerspectiveAction(SQLExplorerPluginPerspective.class.getName());
             } else {
@@ -475,8 +475,8 @@ public class SqlexplorerService implements ISqlexplorerService {
         for (Alias alias : aliases) {
             if (alias.getUrl().equals(url)) {
                 currentUser = alias.getDefaultUser();
-                OpenPasswordConnectDialogAction openDlgAction = new OpenPasswordConnectDialogAction(alias,
-                        alias.getDefaultUser(), false);
+                OpenPasswordConnectDialogAction openDlgAction =
+                        new OpenPasswordConnectDialogAction(alias, alias.getDefaultUser(), false);
                 openDlgAction.run();
                 break;
             }
@@ -485,8 +485,9 @@ public class SqlexplorerService implements ISqlexplorerService {
         // MOD qiongli bug 13093,2010-7-2,show the warning dialog when the table can't be found
         Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         if (currentUser == null) {
-            MessageDialog.openWarning(shell, Messages.getString("SqlExplorerBridge.Warning"), //$NON-NLS-1$
-                    Messages.getString("SqlExplorerBridge.MissTable") + tableName); //$NON-NLS-1$
+            MessageDialog
+                    .openWarning(shell, Messages.getString("SqlExplorerBridge.Warning"), //$NON-NLS-1$
+                            Messages.getString("SqlExplorerBridge.MissTable") + tableName); //$NON-NLS-1$
             return;
         }
         DatabaseNode root = currentUser.getMetaDataSession().getRoot();
@@ -526,7 +527,8 @@ public class SqlexplorerService implements ISqlexplorerService {
                     // the case for mssql/postgrel(which have catalog and schema structor) schema analysis.
                     Catalog shcmeaOfCatalogNode = CatalogHelper.getParentCatalog(parentPackageElement);
                     for (INode catalogNode : catalogs) {
-                        if (shcmeaOfCatalogNode != null && shcmeaOfCatalogNode.getName().equalsIgnoreCase(catalogNode.getName())) {
+                        if (shcmeaOfCatalogNode != null
+                                && shcmeaOfCatalogNode.getName().equalsIgnoreCase(catalogNode.getName())) {
                             catalogOrSchemaNode = catalogNode;
                             break;
                         }
@@ -553,7 +555,9 @@ public class SqlexplorerService implements ISqlexplorerService {
             } else if (!StringUtils.equals(catalogOrSchemaNode.getSchemaName(), schema.getName())) {
                 // if this catalog already loaded its children of some schema, should reload for this schema.
                 if (catalogOrSchemaNode.isChildrenLoaded()) {
-                    SQLExplorerPlugin.getDefault().getDatabaseStructureView()
+                    SQLExplorerPlugin
+                            .getDefault()
+                            .getDatabaseStructureView()
                             .refreshSessionTrees(currentUser.getMetaDataSession());
                     List<INode> catalogs2 = currentUser.getMetaDataSession().getRoot().getCatalogs();
                     if (catalogs2.size() != 0) {
@@ -568,7 +572,7 @@ public class SqlexplorerService implements ISqlexplorerService {
                     }
                 }
             }
-        }// ~
+        } // ~
 
         INode[] childNodes = catalogOrSchemaNode.getChildNodes();
 
@@ -583,7 +587,7 @@ public class SqlexplorerService implements ISqlexplorerService {
 
         TableFolderNode tableFolderNode = null;
         for (INode node : childNodes) {
-            if ("TABLE".equals(node.getQualifiedName())) { //$NON-NLS-1$
+            if ("TABLE".equals(node.getQualifiedName()) || "BASE TABLE".equals(node.getQualifiedName())) { //$NON-NLS-1$
                 tableFolderNode = (TableFolderNode) node;
                 break;
             }
@@ -598,14 +602,18 @@ public class SqlexplorerService implements ISqlexplorerService {
                     DatabaseStructureView dsView = SQLExplorerPlugin.getDefault().getDatabaseStructureView();
                     dsView.setSessionSelectionNode(currentUser.getMetaDataSession(), new StructuredSelection(node));
                     // MOD qiongli bug 13093,2010-7-2
-                    SQLExplorerPlugin.getDefault().getConnectionsView().getTreeViewer()
+                    SQLExplorerPlugin
+                            .getDefault()
+                            .getConnectionsView()
+                            .getTreeViewer()
                             .setSelection(new StructuredSelection(currentUser));
                     return;
                 }
             }
         }
-        MessageDialog.openWarning(shell, Messages.getString("SqlExplorerBridge.Warning"), //$NON-NLS-1$
-                Messages.getString("SqlExplorerBridge.MissTable") + tableName); //$NON-NLS-1$
+        MessageDialog
+                .openWarning(shell, Messages.getString("SqlExplorerBridge.Warning"), //$NON-NLS-1$
+                        Messages.getString("SqlExplorerBridge.MissTable") + tableName); //$NON-NLS-1$
     }
 
     /**
@@ -651,8 +659,8 @@ public class SqlexplorerService implements ISqlexplorerService {
      * @see org.talend.dataprofiler.service.ISqlexplorerService#getDriver(java.lang.String, java.lang.String)
      */
     @Override
-    public Driver getDriver(String driverClassName, String jarsPath) throws InstantiationException, IllegalAccessException,
-            ClassNotFoundException {
+    public Driver getDriver(String driverClassName, String jarsPath)
+            throws InstantiationException, IllegalAccessException, ClassNotFoundException {
         Driver driver = null;
         if (StringUtils.isNotEmpty(jarsPath)) {
             try {
@@ -805,7 +813,8 @@ public class SqlexplorerService implements ISqlexplorerService {
      * (non-Javadoc)
      * 
      * @see
-     * org.talend.dataprofiler.service.ISqlexplorerService#removeAliasInSQLExplorer(orgomg.cwm.foundation.softwaredeployment
+     * org.talend.dataprofiler.service.ISqlexplorerService#removeAliasInSQLExplorer(orgomg.cwm.foundation.
+     * softwaredeployment
      * .DataProvider[])
      */
     @Override
@@ -889,9 +898,10 @@ public class SqlexplorerService implements ISqlexplorerService {
      * java.lang.Object, int)
      */
     @Override
-    public Object createMapDBColumnSetDataSet(String[] columnHeader, Object mapDB, Long size, Object currIndicator, int pageSize) {
-        return new MapDBColumnSetDataSet(columnHeader, (Map<List<Object>, Long>) mapDB, size, (DataValidation) currIndicator,
-                pageSize);
+    public Object createMapDBColumnSetDataSet(String[] columnHeader, Object mapDB, Long size, Object currIndicator,
+            int pageSize) {
+        return new MapDBColumnSetDataSet(columnHeader, (Map<List<Object>, Long>) mapDB, size,
+                (DataValidation) currIndicator, pageSize);
     }
 
     /*
@@ -912,8 +922,10 @@ public class SqlexplorerService implements ISqlexplorerService {
      * int, java.lang.Object, java.lang.Long)
      */
     @Override
-    public Object createMapDBDataSet(String[] columnHeader, Object mapDB, int pageSize, Object columnFilter, Long itemSize) {
-        return new MapDBDataSet(columnHeader, (Map<Object, List<Object>>) mapDB, pageSize, (ColumnFilter) columnFilter, itemSize);
+    public Object createMapDBDataSet(String[] columnHeader, Object mapDB, int pageSize, Object columnFilter,
+            Long itemSize) {
+        return new MapDBDataSet(columnHeader, (Map<Object, List<Object>>) mapDB, pageSize, (ColumnFilter) columnFilter,
+                itemSize);
     }
 
     /*

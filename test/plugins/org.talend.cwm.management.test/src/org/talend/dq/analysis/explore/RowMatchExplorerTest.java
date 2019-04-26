@@ -32,6 +32,7 @@ import org.talend.dataquality.indicators.columnset.RowMatchingIndicator;
 import org.talend.dataquality.indicators.definition.DefinitionFactory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
+
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
 
@@ -42,7 +43,8 @@ import orgomg.cwm.resource.relational.Schema;
 public class RowMatchExplorerTest {
 
     private static final String COMMENTS = "-- Analysis:  ;\n" + "-- Type of Analysis:  ;\n" + "-- Purpose: Purpose ;\n" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            + "-- Description: Description ;\n" + "-- AnalyzedElement: tableA ;\n" + "-- Indicator: RowMatchingIndicator ;\n"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            + "-- Description: Description ;\n" + "-- AnalyzedElement: tableA ;\n" //$NON-NLS-1$ //$NON-NLS-2$
+            + "-- Indicator: RowMatchingIndicator ;\n"; //$NON-NLS-1$
 
     private static RowMatchExplorer explorer;
 
@@ -65,7 +67,10 @@ public class RowMatchExplorerTest {
         // connection
         connection = ConnectionFactory.eINSTANCE.createDatabaseConnection();
         analysis.getContext().setConnection(connection);
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME, TaggedValueHelper.DB_PRODUCT_NAME);
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.MYSQLDEFAULTURL.getDBKey());
+        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_VERSION, "5.0"); //$NON-NLS-1$
 
         // ------------------------- table A ------------------------------
         Catalog catalogA = orgomg.cwm.resource.relational.RelationalFactory.eINSTANCE.createCatalog();
@@ -127,47 +132,43 @@ public class RowMatchExplorerTest {
     public void testGetRowsMatchStatement() {
 
         // test mysql
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.MYSQLDEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.MYSQLDEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View match rows ;\n" //$NON-NLS-1$
-                        + "SELECT * FROM `catalogA`.`schemaA`.`tableA` WHERE ((`catalogA`.`schemaA`.`tableA`.`columnA`) IN (SELECT  A.`columnA` FROM  (SELECT * FROM `catalogA`.`schemaA`.`tableA`) A JOIN  (SELECT * FROM `catalogB`.`schemaB`.`tableB`) B ON  (A.`columnA`= B.`columnB`) )) ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View match rows ;\n" //$NON-NLS-1$
+                + "SELECT * FROM `catalogA`.`schemaA`.`tableA` WHERE ((`catalogA`.`schemaA`.`tableA`.`columnA`) IN (SELECT  A.`columnA` FROM  (SELECT * FROM `catalogA`.`schemaA`.`tableA`) A JOIN  (SELECT * FROM `catalogB`.`schemaB`.`tableB`) B ON  (A.`columnA`= B.`columnB`) )) ", //$NON-NLS-1$
                 explorer.getRowsMatchStatement());
 
         // test oracle
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View match rows ;\n" //$NON-NLS-1$
-                        + "SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\" WHERE ((\"CATALOGA\".\"SCHEMAA\".\"TABLEA\".\"COLUMNA\") IN (SELECT  A.\"COLUMNA\" FROM  (SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\") A JOIN  (SELECT * FROM \"CATALOGB\".\"SCHEMAB\".\"TABLEB\") B ON  (A.\"COLUMNA\"= B.\"COLUMNB\") )) ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View match rows ;\n" //$NON-NLS-1$
+                + "SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\" WHERE ((\"CATALOGA\".\"SCHEMAA\".\"TABLEA\".\"COLUMNA\") IN (SELECT  A.\"COLUMNA\" FROM  (SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\") A JOIN  (SELECT * FROM \"CATALOGB\".\"SCHEMAB\".\"TABLEB\") B ON  (A.\"COLUMNA\"= B.\"COLUMNB\") )) ", //$NON-NLS-1$
                 explorer.getRowsMatchStatement());
 
         // test postgresql
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.POSTGRESQLEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.POSTGRESQLEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View match rows ;\n" //$NON-NLS-1$
-                        + "SELECT * FROM \"schemaA\".\"tableA\" WHERE ((\"schemaA\".\"tableA\".\"columnA\") IN (SELECT  A.\"columnA\" FROM  (SELECT * FROM \"schemaA\".\"tableA\") A JOIN  (SELECT * FROM \"schemaB\".\"tableB\") B ON  (A.\"columnA\"= B.\"columnB\") )) ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View match rows ;\n" //$NON-NLS-1$
+                + "SELECT * FROM \"schemaA\".\"tableA\" WHERE ((\"schemaA\".\"tableA\".\"columnA\") IN (SELECT  A.\"columnA\" FROM  (SELECT * FROM \"schemaA\".\"tableA\") A JOIN  (SELECT * FROM \"schemaB\".\"tableB\") B ON  (A.\"columnA\"= B.\"columnB\") )) ", //$NON-NLS-1$
                 explorer.getRowsMatchStatement());
 
         // test informix
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.INFORMIXDEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.INFORMIXDEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View match rows ;\n" //$NON-NLS-1$
-                        + "SELECT * FROM catalogA:schemaA.tableA WHERE ((catalogA:schemaA.tableA.columnA) IN (SELECT  A.columnA FROM  (SELECT * FROM catalogA:schemaA.tableA) A JOIN  (SELECT * FROM catalogB:schemaB.tableB) B ON  (A.columnA= B.columnB) )) ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View match rows ;\n" //$NON-NLS-1$
+                + "SELECT * FROM catalogA:schemaA.tableA WHERE ((catalogA:schemaA.tableA.columnA) IN (SELECT  A.columnA FROM  (SELECT * FROM catalogA:schemaA.tableA) A JOIN  (SELECT * FROM catalogB:schemaB.tableB) B ON  (A.columnA= B.columnB) )) ", //$NON-NLS-1$
                 explorer.getRowsMatchStatement());
     }
 
@@ -178,42 +179,40 @@ public class RowMatchExplorerTest {
     public void testGetRowsNotMatchStatement() {
 
         // test mysql
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.MYSQLDEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.MYSQLDEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
-                        + "SELECT A.* FROM  (SELECT * FROM `catalogA`.`schemaA`.`tableA`) A LEFT JOIN  (SELECT * FROM `catalogB`.`schemaB`.`tableB`) B ON  (A.`columnA`= B.`columnB`)  WHERE  B.`columnB` IS NULL ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
+                + "SELECT A.* FROM  (SELECT * FROM `catalogA`.`schemaA`.`tableA`) A LEFT JOIN  (SELECT * FROM `catalogB`.`schemaB`.`tableB`) B ON  (A.`columnA`= B.`columnB`)  WHERE  B.`columnB` IS NULL ", //$NON-NLS-1$
                 explorer.getRowsNotMatchStatement());
 
         // test oracle
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.ORACLEWITHSIDDEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
-                        + "SELECT A.* FROM  (SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\") A LEFT JOIN  (SELECT * FROM \"CATALOGB\".\"SCHEMAB\".\"TABLEB\") B ON  (A.\"COLUMNA\"= B.\"COLUMNB\")  WHERE  B.\"COLUMNB\" IS NULL ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
+                + "SELECT A.* FROM  (SELECT * FROM \"CATALOGA\".\"SCHEMAA\".\"TABLEA\") A LEFT JOIN  (SELECT * FROM \"CATALOGB\".\"SCHEMAB\".\"TABLEB\") B ON  (A.\"COLUMNA\"= B.\"COLUMNB\")  WHERE  B.\"COLUMNB\" IS NULL ", //$NON-NLS-1$
                 explorer.getRowsNotMatchStatement());
 
         // test postgresql
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.POSTGRESQLEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.POSTGRESQLEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
-        assertEquals(
-                COMMENTS
-                        + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
-                        + "SELECT A.* FROM  (SELECT * FROM \"schemaA\".\"tableA\") A " //$NON-NLS-1$
-                        + "LEFT JOIN  (SELECT * FROM \"schemaB\".\"tableB\") B ON  (A.\"columnA\"= B.\"columnB\")  WHERE  B.\"columnB\" IS NULL ", //$NON-NLS-1$
+        assertEquals(COMMENTS + "-- Showing: View not match rows ;\n" //$NON-NLS-1$
+                + "SELECT A.* FROM  (SELECT * FROM \"schemaA\".\"tableA\") A " //$NON-NLS-1$
+                + "LEFT JOIN  (SELECT * FROM \"schemaB\".\"tableB\") B ON  (A.\"columnA\"= B.\"columnB\")  WHERE  B.\"columnB\" IS NULL ", //$NON-NLS-1$
                 explorer.getRowsNotMatchStatement());
 
         // test informix
-        TaggedValueHelper.setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
-                SupportDBUrlType.INFORMIXDEFAULTURL.getLanguage());
+        TaggedValueHelper
+                .setTaggedValue(connection, TaggedValueHelper.DB_PRODUCT_NAME,
+                        SupportDBUrlType.INFORMIXDEFAULTURL.getLanguage());
         explorer.setAnalysis(analysis);
         explorer.setEnitty(entity);
         assertEquals(COMMENTS + "-- Showing: View not match rows ;\n" //$NON-NLS-1$

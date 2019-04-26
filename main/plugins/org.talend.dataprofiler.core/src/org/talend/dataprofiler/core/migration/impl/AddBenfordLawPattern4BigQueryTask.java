@@ -67,7 +67,7 @@ public class AddBenfordLawPattern4BigQueryTask extends AbstractWorksapceUpdateTa
                 definitionHandler.getDefinitionById(REGULAR_EXPRESSION_MATCHING_UUID);
         if (regularExpMatchingDef != null) {
             String regularExpbody =
-                    "SELECT COUNT(CASE WHEN REGEXP_CONTAINS(<%=__COLUMN_NAMES__%>,<%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
+                    "SELECT COUNT(CASE WHEN REGEXP_CONTAINS(cast(<%=__COLUMN_NAMES__%> as STRING),<%=__PATTERN_EXPR__%>) THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
             if (!IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(regularExpMatchingDef, language)) {
                 IndicatorDefinitionFileHelper
                         .addSqlExpression(regularExpMatchingDef, language,

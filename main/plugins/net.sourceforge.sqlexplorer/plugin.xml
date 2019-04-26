@@ -157,13 +157,13 @@
             database-product-name="*"
             id="sqlexplorer.dbstructure.actions.GenerateSelectSQLAction"
             name="Generate SELECT Statement"
-            node-type="table,column"/>
+            node-type="table,column,base table"/>
       <action
             class="net.sourceforge.sqlexplorer.dbstructure.actions.CreateTableScriptAction"
             database-product-name="*"
             id="sqlexplorer.dbstructure.actions.CreateTableScriptAction"
             name="Generate TABLE Script"
-            node-type="table"/>
+            node-type="table,base table"/>
       <action
             class="net.sourceforge.sqlexplorer.dbstructure.actions.RemoveNodeFilterAction"
             database-product-name="*"

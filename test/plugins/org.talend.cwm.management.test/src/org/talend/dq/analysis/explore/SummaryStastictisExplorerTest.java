@@ -16,8 +16,6 @@ import static org.junit.Assert.*;
 
 import java.sql.Types;
 
-import junit.framework.Assert;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -31,6 +29,8 @@ import org.talend.dataquality.indicators.IndicatorsFactory;
 import org.talend.dataquality.indicators.SumIndicator;
 import org.talend.dq.helper.UnitTestBuildHelper;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
+
+import junit.framework.Assert;
 
 /**
  * DOC yyin class global comment. Detailled comment
@@ -52,7 +52,7 @@ public class SummaryStastictisExplorerTest {
     public void setUp() throws Exception {
         UnitTestBuildHelper.initProjectStructure();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQItemService.class)) {
-            ITDQItemService tdqService = (ITDQItemService) GlobalServiceRegister.getDefault().getService(ITDQItemService.class);
+            ITDQItemService tdqService = GlobalServiceRegister.getDefault().getService(ITDQItemService.class);
             tdqService.createDQStructor();
         }
         sumExp = new SummaryStastictisExplorer();
@@ -65,11 +65,13 @@ public class SummaryStastictisExplorerTest {
         indicator.setParameters(indicatorParameters);
 
         analysis = UnitTestBuildHelper.createAndInitAnalysis();
-        TaggedValueHelper.setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_NAME, "Teradata");
-        TaggedValueHelper.setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_VERSION, "1");
+        TaggedValueHelper
+                .setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_NAME, "Teradata");
+        TaggedValueHelper
+                .setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_VERSION, "1");
         sumExp.setAnalysis(analysis);
 
-        ChartDataEntity chartDataEntity = new ChartDataEntity(indicator, "1", "1"); //$NON-NLS-1$  //$NON-NLS-2$
+        ChartDataEntity chartDataEntity = new ChartDataEntity(indicator, "1", "1"); //$NON-NLS-1$ //$NON-NLS-2$
         chartDataEntity.setLabelNull(false);
         chartDataEntity.setKey("1"); //$NON-NLS-1$
         assertFalse(chartDataEntity.isLabelNull());
@@ -104,8 +106,10 @@ public class SummaryStastictisExplorerTest {
      */
     @Test
     public void testGetAnalyzedElementName_2() {
-        TaggedValueHelper.setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_NAME, "MySql");
-        TaggedValueHelper.setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_VERSION, "1");
+        TaggedValueHelper
+                .setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_NAME, "MySql");
+        TaggedValueHelper
+                .setTaggedValue(analysis.getContext().getConnection(), TaggedValueHelper.DB_PRODUCT_VERSION, "5.0");
         sumExp.setAnalysis(analysis);
         String intervalColumn = this.sumExp.getAnalyzedElementName(indicator);
         Assert.assertEquals("`INTERVAL_MONTH`", intervalColumn);

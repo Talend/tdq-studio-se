@@ -95,6 +95,10 @@ public class SimpleStatisticsExplorer extends DataExplorer {
         TdExpression tdExp =
                 dbmsLanguage.getSqlExpression(indicatorDefinition, dbmsLanguage.getDbmsName(), list,
                 dbmsLanguage.getDbVersion());
+        // TDQ-16806: msjian fix a NPE, when for UDI, when there is no drilldown template defined
+        if (tdExp == null) {
+            return sql;
+        }
         sql = tdExp.getBody();
         String dataFilterClause = getDataFilterClause();
         if (!dataFilterClause.equals(PluginConstant.EMPTY_STRING)) {
