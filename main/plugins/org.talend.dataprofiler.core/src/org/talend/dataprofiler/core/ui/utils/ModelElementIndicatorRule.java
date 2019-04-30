@@ -26,8 +26,10 @@ import org.talend.dataquality.helpers.MetadataHelper;
 import org.talend.dataquality.indicators.DataminingType;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.definition.CharactersMapping;
+import org.talend.dq.dbms.BigQueryDbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguage;
 import org.talend.dq.dbms.DbmsLanguageFactory;
+import org.talend.dq.dbms.SnowflakeDbmsLanguage;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.nodes.indicator.IIndicatorNode;
@@ -35,6 +37,7 @@ import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.utils.sql.Java2SqlType;
 import org.talend.utils.sql.TalendTypeConvert;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -114,11 +117,17 @@ public final class ModelElementIndicatorRule {
         // MOD msjian 2016-8-25 TDQ-12349 need to disabled indicators for ingres with sql engine.
         boolean isIngres = connection == null ? false : ConnectionHelper.isIngress(connection) && isSQLEngine;
 
-        // MOD msjian 2016-8-25 TDQ-12464 need to disabled indicators for ingres with sql engine.
+        // MOD msjian 2016-8-25 TDQ-12464 need to disabled indicators for sybase with sql engine.
         boolean isSybase = connection == null ? false : ConnectionHelper.isSybase(connection) && isSQLEngine;
 
         // MOD qiongli 2013-8-27 TDQ-2104 disabled soundex indicators for hive with sql engine.
         boolean isVerticaSQL = connection == null ? false : ConnectionHelper.isVertica(connection) && isSQLEngine;
+
+        // MOD msjian 2019-4-30 TDQ-16901 disabled soundex indicators for Snowflake/BigQuery with sql engine.
+        boolean isSnowflakeSQL =
+                connection == null ? false : (dbmsLanguage instanceof SnowflakeDbmsLanguage) && isSQLEngine;
+        boolean isBigQuerySQL =
+                connection == null ? false : (dbmsLanguage instanceof BigQueryDbmsLanguage) && isSQLEngine;
 
         switch (indicatorType) {
         case CountsIndicatorEnum:
@@ -218,7 +227,7 @@ public final class ModelElementIndicatorRule {
         case SoundexLowIndicatorEnum:
             if (!Java2SqlType.isDateInSQL(javaType) && !Java2SqlType.isNumbericInSQL(javaType)
                     && (dataminingType == DataminingType.NOMINAL || dataminingType == DataminingType.INTERVAL)) {
-                if (isHiveSQL || isVerticaSQL) {
+                if (isHiveSQL || isVerticaSQL || isBigQuerySQL || isSnowflakeSQL) {
                     return false;
                 }
                 // Added yyin 20121212 TDQ-6099: disable for Teradata's interval_xx_to_xx type.
