@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>基础统计</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>基础统计</h1>
+	<hr>
+	   
+	它们提供关于记录数量的基础统计。 
+	<p>
+	它会提供列内容概览、存在的 null 数据数量、不同数据的数量...
+	<p>
+	
+	<ul>
+		<li>空白计数：对空白行数量进行计数。&ldquo;空白&rdquo;是仅包含空格的非 null 文本数据。请注意，Oracle 不区分空字符串和 null 值。</li>
+		<p>
+	    <li>默认值计数：对默认值的数量进行计数。</li>
+		<p>
+	    <li>不同计数：对列中的不同值数量进行计数。</li>
+		<p>
+	    <li>重复计数：对出现次数超过一次的值数量进行计数。存在以下关系：重复计数 + 唯一计数 = 不同计数。</li>
+		<p>
+	    <li>Null 计数：对 null 行的数量进行计数。</li>
+		<p>
+	    <li>行计数：对行数进行计数。</li>
+		<p>
+	    <li>唯一计数：对只出现一次的不同值数量进行计数。它必然小于或等于不同计数。</li>
+    </ul>
+    
+	<p>
+	例如，a,a,a,a,b,b,c,d,e =&gt; 9 个值，5 个不同值，3 个唯一值，2 个重复值。	
+	<p>
+	
+	<iframe align="top" frameborder="0" scrolling="no" id="footer" src="footer.html"></iframe>
+	
+</body>
+</html>

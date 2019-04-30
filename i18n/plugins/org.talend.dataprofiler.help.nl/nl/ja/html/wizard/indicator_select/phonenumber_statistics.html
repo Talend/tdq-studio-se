@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>電話番号統計</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>電話番号統計</h1>
+	<hr>
+	
+	このグループのインジケーターは電話番号をカウントします。各電話番号形式のカウントを返します。  
+	<p>
+	これらはorg.talend.libraries.google.libphonumberライブラリを使用して電話番号形式を検証します。
+	
+	<p>
+	<ul>
+		<li><b>有効な電話番号数</b>: 有効な電話番号を数えます。</li>
+		<p>
+	    <li><b>推定電話番号数</b>: 有効な電話番号の数を推測します。</li>
+		<p>
+	    <li><b>有効な地域コード番号数</b>: 有効な地域コードを持つ電話番号を数えます。</li>
+		<p>
+	    <li><b>無効な地域コード数</b>: 無効な地域コードを持つ電話番号を数えます。</li>
+		<p>
+	    <li><b>国内電話番号の形式に適応している電話番号数</b>: 適切な形式の国内電話番号を数えます。</li>
+		<p>
+	    <li><b>国際電話番号の形式に適応している電話番号数</b>: 国際電話番号の形式を遵守している国際電話番号を数えます(国番号で始まる電話番号)。</li>
+		<p>
+	    <li><b>正しい形式のE164電話番号カウント</b>: 国際電話番号の形式を遵守している国際電話番号を数えます(最大15桁、+プレフィックスがある)。</li>
+		<p>
+	    <li><b>形式頻度円グラフ</b>: 電話番号カウントの結果をいくつかのセクションに分かれた円グラフで表示します。</li>
+    </ul>
+    
+    <p>
+    これらのインジケーターは、分析設定でJavaエンジンを選択した場合にのみ使用できます。
+    <p>
+     
+	<iframe align="top" frameborder="0" scrolling="no" id="footer" src="footer.html"></iframe>
+	
+</body>
+</html>

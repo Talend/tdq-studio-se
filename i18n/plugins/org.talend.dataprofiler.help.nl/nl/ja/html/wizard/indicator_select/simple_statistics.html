@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>シンプル統計</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>シンプル統計</h1>
+	<hr>
+	   
+	レコードの数にシンプル統計が提供されます。 
+	<p>
+	カラムのコンテンツ、nullデータの数、重複を除いたデータの数、その他の概要が示されます。
+	<p>
+	
+	<ul>
+		<li><b>空白カウント</b>: 空白の行数をカウントします。「空白」とはnullではないテキストデータで、空白のみが含まれるものです。Oracleは空の文字列とnull値を区別しません。</li>
+		<p>
+	    <li><b>デフォルト値カウント</b>: デフォルト値の数を数えます。</li>
+		<p>
+	    <li><b>重複を除いたカウント</b>: カラム内の重複を除いた値の数をカウントします。</li>
+		<p>
+	    <li><b>重複カウント</b>: 2回以上出現する値の数をカウントします。次の関係があります: 重複カウント + ユニークなカウント = 重複を除いたカウント。</li>
+		<p>
+	    <li><b>NULL値カウント</b>:nullの行数をカウントします。</li>
+		<p>
+	    <li><b>行カウント</b>:行数をカウントします。</li>
+		<p>
+	    <li><b>ユニークカウント</b>:1回しか出現しない重複を除いた値の数をカウントします。これは重複を除いたカウント以下になります。</li>
+    </ul>
+    
+	<p>
+	たとえば、a、a、a、a、b、b、c、d、e =&gt;値9、重複を除いた値5、ユニーク値3、重複値2となります。	
+	<p>
+	
+	<iframe align="top" frameborder="0" scrolling="no" id="footer" src="footer.html"></iframe>
+	
+</body>
+</html>

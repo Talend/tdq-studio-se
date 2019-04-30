@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>テキスト統計</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>テキスト統計</h1>
+	<hr>
+	
+	テキスト統計では、カラム内のテキストフィールドの最小文字数、最大文字数、平均文字数などの特性を分析することができます。
+	
+	<ul>
+		<li><b>最小文字数</b>: テキストフィールドの最小文字数を計算します。</li>
+		<p>
+	    <li><b>最大文字数</b>: テキストフィールドの最大文字数を計算します。</li>
+		<p>
+	    <li><b>平均文字数</b>: テキストフィールドの平均文字数を計算します。</li>
+	</ul>
+	
+	<p>
+	他にも、上記の各インジケーターでnull値を持つもの、空白値を持つもの、null値と空白値の両方を持つものをカウントすることもできます。
+	<p>
+	null値のデータ長は0としてカウントされます(例: null値の最小文字数は0です)。つまり、[Minimal Length With Null] (nullを含めた最小文字数)および[Maximal Length With Null] (nullを含めた最大文字数)ではnull値を含めたテキストフィールドの最小/最大長を計算します。
+	<p>
+	空白値のデータ長は0としてカウントされます(例: 空白値の最小文字数は0です)。つまり、[Minimal Length With Blank] (空白を含めた最小文字数)および[Maximal Length With Blank] (空白を含めた最大文字数)では空白値を含めたテキストフィールドの最小/最大長を計算します。
+	<p>
+	全ての平均インジケーターにも同様のことが当てはまります。
+	<p>
+	
+	<iframe align="top" frameborder="0" scrolling="no" id="footer" src="footer.html"></iframe>
+	
+</body>
+</html>

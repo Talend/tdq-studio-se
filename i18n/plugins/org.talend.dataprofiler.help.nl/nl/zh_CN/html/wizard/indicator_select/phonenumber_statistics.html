@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>电话号码统计</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>电话号码统计</h1>
+	<hr>
+	
+	本组中指标对电话号码进行计数。它们将返回每种电话号码格式的计数。  
+	<p>
+	它们使用 org.talend.libraries.google.libphonumber 库来验证手机格式。
+	
+	<p>
+	<ul>
+		<li>有效电话号码计数：计算有效的电话号码。</li>
+		<p>
+	    <li>可能的电话号码计数：计算假定的有效电话号码。</li>
+		<p>
+	    <li>有效区域代码计数：计算具有有效区域代码的电话号码。</li>
+		<p>
+	    <li>无效区域代码计数：计算具有无效区域代码的电话号码。</li>
+		<p>
+	    <li>完整的国内电话号码计数：计算完整的国内电话号码。</li>
+		<p>
+	    <li>完整的国际电话号码计数：计算符合国际电话格式（以国家/地区代码开头的电话号码）的国际电话号码。</li>
+		<p>
+	    <li>完整的 E164 电话号码计数：计算符合国际电话格式（最多 15 位数，含 + 前缀）的国际电话号码。</li>
+		<p>
+	    <li>格式频率饼图：在按扇区划分的饼图中显示电话号码计数结果。</li>
+    </ul>
+    
+    <p>
+    请注意，只有在分析设置中选择 Java 引擎时，方可使用这些指标。
+    <p>
+     
+	<iframe align="top" frameborder="0" scrolling="no" id="footer" src="footer.html"></iframe>
+	
+</body>
+</html>

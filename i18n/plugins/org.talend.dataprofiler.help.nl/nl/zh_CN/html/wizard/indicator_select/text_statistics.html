@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>文本统计</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>文本统计</h1>
+	<hr>
+	
+	它们分析列中的文本字段特性，包括最小长度、最大长度和平均长度。
+	
+	<ul>
+		<li>最小长度：计算文本字段的最小长度。</li>
+		<p>
+	    <li>最大长度：计算文本字段的最大长度。</li>
+		<p>
+	    <li>平均长度：计算字段的平均长度。</li>
+	</ul>
+	
+	<p>
+	其他文本指标可用于为以上各个具有 null 值、空值或 null 和空值的指标进行计数。
+	<p>
+	Null 值将被计为长度为 0 的数据，即 Null 值的最小长度为 0。这意味着具有 Null 的最小长度和具有 Null 的最大长度将会计算包含 Null 值的文本字段的最小/最大长度。
+	<p>
+	空白值将被计为长度为 0 的数据，即空白值的最小长度为 0。这意味着具有空白的最小长度和具有空白的最大长度将会计算包含空白值的文本字段的最小/最大长度。
+	<p>
+	这也适用于所有平均值指标。
+	<p>
+	
+	<iframe align="top" frameborder="0" scrolling="no" id="footer" src="footer.html"></iframe>
+	
+</body>
+</html>

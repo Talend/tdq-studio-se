@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>导入模式</title>
+<link type="text/css" href="style.css" rel="stylesheet"></link>
+</head>
+<body>
+	<h1>导入模式：</h1>
+	<hr>
+	<p>
+	您可以从 csv 文件导入多个正则表达式。 
+	</p>
+
+	文件格式如下：<br>
+	<ul>
+		<li>C1：<font color=red>标签</font>：模式的标签（不得为空）</li>
+		<li>C2：<font color=red>目的</font>：模式的目的（可以为空）</li>
+		<li>C3：<font color=red>描述</font>：模式的描述（可以为空）</li>
+		<li>C4：<font color=red>作者</font>：正则表达式的作者（可以为空） </li>
+		<li>C5：<font color=red>相对路径</font>：根文件夹的相对路径（可以为空） </li>
+		<li>C6：<font color=red>All_DB_Regexp</font>：适用于所有数据库的正则表达式（可以为空）</li>
+		<li>C7：<font color=red>DB2_Regexp</font>：适用于 DB2 数据库的正则表达式（可以为空） </li>
+		<li>C8：<font color=red>MySQL_Regexp</font>：适用于 MySQL 数据库的正则表达式（可以为空）</li>
+		<li>C9：<font color=red>Oracle_Regexp</font>：适用于 Oracle 数据库的正则表达式（可以为空）</li>
+		<li>C10：<font color=red>PostgreSQL_Regexp</font>：适用于 PostgreSQL 数据库的正则表达式（可以为空）</li>
+		<li>C11：<font color=red>SQL_Server_Regexp</font>：适用于 SQL Server 数据库的正则表达式（可以为空）</li>
+		<li>C12：<font color=red>Sybase_Regexp</font>：适用于 Sybase 数据库的正则表达式（可以为空）</li>
+		<li>C13：<font color=red>Ingres_Regexp</font>：适用于 Ingres 数据库的正则表达式（可以为空）</li>
+		<li>C14：<font color=red>Informix_Regexp</font>：适用于 Informix 数据库的正则表达式（可以为空）</li>
+		<li>C15：<font color=red>SQLite3_Regexp</font>：适用于 SQLite3 数据库的正则表达式（可以为空）</li>
+		<li>C16：<font color=red>Teradata_Regexp</font>：适用于 Teradata 数据库的正则表达式（可以为空）</li>
+		
+	</ul>
+	<p>
+    注意：<br>csv 文件必须包含用红色字符编写的头文件。字段分隔符为<b>制表符</b>键。<br>由于头文件用于标识数据，因此 csv文件可能只包含这些列的一个子集。例如，csv 文件可能只包含以下列：&ldquo;Label Purpose Description Author Relative_Path All_DB_Regexp&rdquo;
+	</p>
+	
+</body>
+</html>
