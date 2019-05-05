@@ -1788,6 +1788,12 @@
            name="Add Regular Expression Matching MariaDB 10.0 Task"
            version="7.2.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.AddTextStatistics4SnowflakeTask"
+           id="org.talend.dataprofiler.core.migration.impl.AddTextStatistics4SnowflakeTask"
+           name="Add definitions in TextStatistics and Regular Expression Matching 4 snowflake Task"
+           version="7.2.1">
+     </workspacetask>
   </extension>
   
   <extension
