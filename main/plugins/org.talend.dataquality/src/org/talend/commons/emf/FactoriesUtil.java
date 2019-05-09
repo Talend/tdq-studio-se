@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.DelimitedFileConnectionItem;
@@ -49,6 +50,7 @@ import org.talend.dataquality.reports.ReportsFactory;
 import org.talend.dataquality.reports.ReportsPackage;
 import org.talend.dataquality.rules.RulesFactory;
 import org.talend.dataquality.rules.RulesPackage;
+
 import orgomg.cwm.foundation.typemapping.TypemappingPackage;
 import orgomg.cwm.objectmodel.core.CorePackage;
 
@@ -425,6 +427,11 @@ public final class FactoriesUtil {
 
                     @Override
                     public Object caseContextItem(ContextItem object) {
+                        return ITEM;
+                    }
+
+                    @Override
+                    public Object caseConnectionItem(ConnectionItem object) {
                         return ITEM;
                     }
 
