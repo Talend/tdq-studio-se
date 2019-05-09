@@ -190,14 +190,11 @@ public class ResourceViewContentProvider extends WorkbenchContentProvider {
                             treeViewer.setSelection(tempSelection);
                         }
                     } else {
-                        ISelection dqTreeSelection = RepositoryNodeHelper.getDQCommonViewer().getSelection();
-
                         RepositoryNodeHelper.getDQCommonViewer().setSelection(structSel);
                         TreeItem[] selections = RepositoryNodeHelper.getDQCommonViewer().getTree().getSelection();
                         if (0 != selections.length) {
                             selections[0].setText(node.getLabel());
                         }
-                        RepositoryNodeHelper.getDQCommonViewer().setSelection(dqTreeSelection);
                     }
 
                 } catch (Exception e) {
