@@ -12,7 +12,8 @@
 // ============================================================================
 package org.talend.cwm.management.api;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -41,6 +42,7 @@ import org.talend.cwm.softwaredeployment.TdSoftwareSystem;
 import org.talend.dq.writer.EMFSharedResources;
 import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.SoftwareSystem;
 
 /**
@@ -48,7 +50,7 @@ import orgomg.cwm.foundation.softwaredeployment.SoftwareSystem;
  * 
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ DriverManager.class, EMFSharedResources.class, ConvertionHelper.class, MetadataFillFactory.class })
+@PrepareForTest({ EMFSharedResources.class, DriverManager.class, ConvertionHelper.class, MetadataFillFactory.class })
 public class SoftwareSystemManagerTest {
 
     /**
@@ -57,6 +59,7 @@ public class SoftwareSystemManagerTest {
      * .
      */
     @Test
+    @PrepareForTest(java.sql.DriverManager.class)
     public void testUpdateSoftwareSystem() {
         SoftwareSystemManager softwareSystemManger = SoftwareSystemManager.getInstance();
         PowerMockito.mockStatic(EMFSharedResources.class);
