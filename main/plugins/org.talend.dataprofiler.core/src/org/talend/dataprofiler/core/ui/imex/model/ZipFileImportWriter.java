@@ -30,7 +30,7 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
 
     private static Logger log = Logger.getLogger(ZipFileImportWriter.class);
 
-    private IPath sourcePath;
+    private IPath sourcePath = null;
 
     private String tempFolderNameUuid = ""; //$NON-NLS-1$
 
@@ -49,10 +49,11 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
 
         sourcePath = path.removeFileExtension();
         tempFolderNameUuid = EcoreUtil.generateUUID();
+        // TDQ-14949: fix cannot import the items when the source path like "XX .zip".
+        tempFile = new File(sourcePath.toFile().getPath().trim() + tempFolderNameUuid);
 
         try {
-            FilesUtils.createFolder(getSourceFile());
-
+            FilesUtils.createFolder(tempFile);
             FilesUtils.unzip(path.toOSString(), tempFile.toString());
         } catch (Exception e) {
             log.error(e, e);
@@ -83,15 +84,9 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
      * DOC msjian Comment method "deleteTempUnzipFolder".
      */
     private void deleteTempUnzipFolder() {
-        if (sourcePath != null && tempFile != null && tempFile.exists()) {
+        if (tempFile != null && tempFile.exists()) {
             FilesUtils.removeFolder(tempFile, true);
         }
-    }
-
-    private File getSourceFile() {
-        // TDQ-14949: fix cannot import the items when the source path like "XX .zip".
-        tempFile = new File(sourcePath.toFile().getPath().trim() + tempFolderNameUuid);
-        return tempFile;
     }
 
     @Override
@@ -99,5 +94,4 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
         deleteTempUnzipFolder();
         super.clearTempFolder();
     }
-
 }
