@@ -1742,7 +1742,7 @@ public class FileSystemImportWriter implements IImportWriter {
             if (log.isDebugEnabled()) {
                 log.debug("Deleting temporary workspace..." + tempFolder.getAbsolutePath());//$NON-NLS-1$
             }
-            FileUtils.deleteDirectory(tempFolder);
+            org.talend.utils.io.FilesUtils.removeFolder(tempFolder, true);
         }
     }
 
@@ -2075,6 +2075,11 @@ public class FileSystemImportWriter implements IImportWriter {
         }
         ItemRecord.clear();
         // delete the temp folder
+        deleteTempProjectFolder();
+    }
+
+    @Override
+    public void clearTempFolder() throws IOException {
         deleteTempProjectFolder();
     }
 

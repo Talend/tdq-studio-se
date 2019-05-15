@@ -13,6 +13,7 @@
 package org.talend.dataprofiler.core.ui.imex;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,7 @@ import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.helper.ReportFileHelper;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -148,6 +150,15 @@ public class ImportWizardPage extends WizardPage {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
+                // clear the temp folder
+                if (writer != null) {
+                    try {
+                        writer.clearTempFolder();
+                    } catch (IOException e1) {
+                        // Nothing needed
+                    }
+                }
+
                 // keep do one time for every method when every time switch between two radios
                 if (dirBTN == e.getSource()) {
                     setDirState(isDirState());

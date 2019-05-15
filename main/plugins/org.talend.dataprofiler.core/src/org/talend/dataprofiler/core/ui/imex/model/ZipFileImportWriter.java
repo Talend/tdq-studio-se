@@ -34,6 +34,8 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
 
     private String tempFolderNameUuid = ""; //$NON-NLS-1$
 
+    private File tempFile = null;
+
     /*
      * (non-Javadoc)
      * 
@@ -51,12 +53,12 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
         try {
             FilesUtils.createFolder(getSourceFile());
 
-            FilesUtils.unzip(path.toOSString(), getSourceFile().toString());
+            FilesUtils.unzip(path.toOSString(), tempFile.toString());
         } catch (Exception e) {
             log.error(e, e);
         }
 
-        File libFolder = DqFileUtils.getFile(getSourceFile(), EResourceConstant.LIBRARIES.getName(), true);
+        File libFolder = DqFileUtils.getFile(tempFile, EResourceConstant.LIBRARIES.getName(), true);
 
         if (libFolder != null && libFolder.exists()) {
             IPath projectPath = new Path(libFolder.getParentFile().getAbsolutePath());
@@ -81,13 +83,21 @@ public class ZipFileImportWriter extends FileSystemImportWriter {
      * DOC msjian Comment method "deleteTempUnzipFolder".
      */
     private void deleteTempUnzipFolder() {
-        if (sourcePath != null && getSourceFile().exists()) {
-            FilesUtils.removeFolder(getSourceFile(), true);
+        if (sourcePath != null && tempFile != null && tempFile.exists()) {
+            FilesUtils.removeFolder(tempFile, true);
         }
     }
 
     private File getSourceFile() {
         // TDQ-14949: fix cannot import the items when the source path like "XX .zip".
-        return new File(sourcePath.toFile().getPath().trim() + tempFolderNameUuid);
+        tempFile = new File(sourcePath.toFile().getPath().trim() + tempFolderNameUuid);
+        return tempFile;
     }
+
+    @Override
+    public void clearTempFolder() throws IOException {
+        deleteTempUnzipFolder();
+        super.clearTempFolder();
+    }
+
 }

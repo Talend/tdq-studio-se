@@ -120,4 +120,11 @@ public interface IImportWriter {
      * @throws IOException
      */
     public void postFinish() throws IOException;
+
+    /**
+     * TDQ-16176 each time need to delete the temp folder.
+     * 
+     * @throws IOException
+     */
+    public void clearTempFolder() throws IOException;
 }
