@@ -176,6 +176,14 @@ public class ImportWizardPage extends WizardPage {
         ModifyListener populateListener = new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
+                // clear the temp folder
+                if (writer != null) {
+                    try {
+                        writer.clearTempFolder();
+                    } catch (IOException e1) {
+                        // Nothing needed
+                    }
+                }
                 updateBasePath();
             }
         };
