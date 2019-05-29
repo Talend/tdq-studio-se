@@ -66,16 +66,13 @@ import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
 import org.talend.dq.indicators.preview.table.PatternChartDataEntity;
 import org.talend.utils.format.StringFormatUtil;
+
 import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
  * DOC rli class global comment. Detailled comment
  */
 public class RedundancyAnalysisResultPage extends AbstractAnalysisResultPageWithChart {
-
-    private static final String NOT_MATCHING = DefaultMessagesImpl.getString("ColumnsComparisonAnalysisResultPage.Not_matching"); //$NON-NLS-1$
-
-    private static final String MATCHING = DefaultMessagesImpl.getString("ColumnsComparisonAnalysisResultPage.Matching"); //$NON-NLS-1$
 
     private RedundancyAnalysisDetailsPage masterPage;
 
@@ -458,10 +455,13 @@ public class RedundancyAnalysisResultPage extends AbstractAnalysisResultPageWith
     }
 
     private void creatChart(Composite parent, String tableA, String tableB) {
+        String notMatching = DefaultMessagesImpl.getString("ColumnsComparisonAnalysisResultPage.Not_matching"); //$NON-NLS-1$
+        String matching = DefaultMessagesImpl.getString("ColumnsComparisonAnalysisResultPage.Matching"); //$NON-NLS-1$
+
         CustomerDefaultCategoryDataset dataset = new CustomerDefaultCategoryDataset();
         // DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        dataset.addValue(rowMatchingIndicatorA.getNotMatchingValueCount(), NOT_MATCHING, tableA);
-        dataset.addValue(rowMatchingIndicatorA.getMatchingValueCount(), MATCHING, tableA);
+        dataset.addValue(rowMatchingIndicatorA.getNotMatchingValueCount(), notMatching, tableA);
+        dataset.addValue(rowMatchingIndicatorA.getMatchingValueCount(), matching, tableA);
         // add by hcheng
         PatternChartDataEntity dataEntityA = new PatternChartDataEntity();
         dataEntityA.setLabel(tableA);
@@ -472,8 +472,8 @@ public class RedundancyAnalysisResultPage extends AbstractAnalysisResultPageWith
         dataset.addDataEntity(dataEntityA);
 
         if (!isHasDeactivatedIndicator) {
-            dataset.addValue(rowMatchingIndicatorB.getNotMatchingValueCount(), NOT_MATCHING, tableB);
-            dataset.addValue(rowMatchingIndicatorB.getMatchingValueCount(), MATCHING, tableB);
+            dataset.addValue(rowMatchingIndicatorB.getNotMatchingValueCount(), notMatching, tableB);
+            dataset.addValue(rowMatchingIndicatorB.getMatchingValueCount(), matching, tableB);
 
             PatternChartDataEntity dataEntityB = new PatternChartDataEntity();
             dataEntityB.setLabel(tableB);

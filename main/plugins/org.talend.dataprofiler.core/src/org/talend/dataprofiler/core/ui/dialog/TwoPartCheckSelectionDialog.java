@@ -75,6 +75,7 @@ import org.talend.dq.nodes.DBTableRepNode;
 import org.talend.dq.nodes.DBViewRepNode;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.repository.model.IRepositoryNode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -565,10 +566,10 @@ public abstract class TwoPartCheckSelectionDialog extends SelectionStatusDialog 
         data.grabExcessHorizontalSpace = true;
         composite.setData(data);
         Button selectButton = createButton(buttonComposite, IDialogConstants.SELECT_ALL_ID,
-                DefaultMessagesImpl.getString("TwoPartCheckSelectionDialog.SelectAll"), false); //$NON-NLS-1$
+                DefaultMessagesImpl.getString("TwoPartCheckSelectionDialog.selectAll"), false); //$NON-NLS-1$
 
         Button deselectButton = createButton(buttonComposite, IDialogConstants.DESELECT_ALL_ID,
-                DefaultMessagesImpl.getString("TwoPartCheckSelectionDialog.DeSelectAll"), false); //$NON-NLS-1$
+                DefaultMessagesImpl.getString("TwoPartCheckSelectionDialog.deselectAll"), false); //$NON-NLS-1$
 
         addSelectionButtonListener(selectButton, deselectButton);
         return buttonComposite;
