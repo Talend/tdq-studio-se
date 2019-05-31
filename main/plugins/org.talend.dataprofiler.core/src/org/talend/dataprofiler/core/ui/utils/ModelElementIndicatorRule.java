@@ -200,6 +200,7 @@ public final class ModelElementIndicatorRule {
             if (isTeradataInterval > 0) {
                 return false;
             }
+            return true;
         case PatternFreqIndicatorEnum:
         case PatternLowFreqIndicatorEnum:
             if (isTeradataSQL || isIngres || isSybase) {
