@@ -18,8 +18,14 @@
 
 package net.sourceforge.sqlexplorer.dbstructure.actions;
 
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
 
 import net.sourceforge.sqlexplorer.Messages;
 import net.sourceforge.sqlexplorer.dbstructure.nodes.TableNode;
@@ -31,11 +37,6 @@ import net.sourceforge.squirrel_sql.fw.sql.ITableInfo;
 import net.sourceforge.squirrel_sql.fw.sql.PrimaryKeyInfo;
 import net.sourceforge.squirrel_sql.fw.sql.SQLDatabaseMetaData;
 import net.sourceforge.squirrel_sql.fw.sql.TableColumnInfo;
-
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.IWorkbenchPage;
-import org.eclipse.ui.PartInitException;
 
 /**
  * Create table script for the selected node.
@@ -74,11 +75,11 @@ public class CreateTableScriptAction extends AbstractDBTreeContextAction {
      * @see org.eclipse.jface.action.IAction#run()
      */
     public void run() {
-
         TableNode tableNode = (TableNode) _selectedNodes[0];
         ITableInfo info = tableNode.getTableInfo();
 
         StringBuffer buf = new StringBuffer(4 * 1024);
+        StringBuffer temp = new StringBuffer(4096);
         String sep = System.getProperty("line.separator");
 
         try {
@@ -86,8 +87,23 @@ public class CreateTableScriptAction extends AbstractDBTreeContextAction {
 
             ArrayList<String> pks = new ArrayList<String>();
             PrimaryKeyInfo[] pksInfo = metaData.getPrimaryKey(info);
-            for (PrimaryKeyInfo pkInfo : pksInfo)
+            for (PrimaryKeyInfo pkInfo : pksInfo) {
             	pks.add(pkInfo.getColumnName());
+            }
+
+            ResultSet fkSet = metaData.getImportedKeys(tableNode.getTableInfo());
+            String fk = null;
+            String fkparent = null;
+            String parentKey = null;
+            while ((fkSet != null) && (fkSet.next())) {
+                temp.append(sep);
+                fkparent = fkSet.getString(3);
+                parentKey = fkSet.getString(4);
+                fk = fkSet.getString(8);
+                temp.append("FOREIGN KEY (" + fk + ") REFERENCES " + fkparent + "(" + parentKey + ")");
+                temp.append(",");
+            }
+            fkSet.close();
 
             TableColumnInfo[] columnsInfo = metaData.getColumnInfo(info);
             String tableName = _selectedNodes[0].getQualifiedName();
@@ -102,21 +118,19 @@ public class CreateTableScriptAction extends AbstractDBTreeContextAction {
 //                String decimalDigits = resultSet.getString(9);
 //                String defaultValue = resultSet.getString(13);
                 boolean notNull = "NO".equalsIgnoreCase(col.isNullable()); 
-                String sLower = col.getColumnName().toLowerCase();
+                // TDQ-16793 msjian: fix "Create Table Script" failed run for mysql
+                String sLower = col.getTypeName().toLowerCase();
                 buf.append(sep);
                 buf.append(col.getColumnName() + " ");
-
                 buf.append(col.getTypeName());
 
                 boolean bNumeric = false;
                 if (sLower.equals("numeric") || sLower.equals("number") || sLower.equals("decimal"))
                     bNumeric = true;
-
                 if (sLower.indexOf("char") != -1 || sLower.indexOf("int") != -1) {
                     buf.append("(");
                     buf.append(col.getColumnSize());
                     buf.append(")");
-                    
                 } else if (bNumeric) {
                     buf.append("(");
                     buf.append(col.getColumnSize());
@@ -151,6 +165,9 @@ public class CreateTableScriptAction extends AbstractDBTreeContextAction {
                 }
                 buf.append(",");
             }
+
+            buf.append(temp);
+
             buf.deleteCharAt(buf.length() - 1);
             buf.append(")" + sep);
 
@@ -174,7 +191,6 @@ public class CreateTableScriptAction extends AbstractDBTreeContextAction {
      * @see net.sourceforge.sqlexplorer.dbstructure.actions.AbstractDBTreeContextAction#isAvailable()
      */
     public boolean isAvailable() {
-
         if (_selectedNodes.length != 0) {
             return true;
         }

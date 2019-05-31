@@ -1,5 +1,7 @@
 change logs from talend
 
+2019-05-21 msjian TDQ-16793: fix "Create Table Script" failed run for mysql
+
 2019-03-5 msjian TDQ-15236: Upgrade to Eclipse 4.10.x
 Enable some sqlExplorer embeded features (Oracle Query Explain Plan, displayTriggers...)
 
