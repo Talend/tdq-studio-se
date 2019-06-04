@@ -98,9 +98,25 @@ public class DBMapCompartor implements Comparator<Object>, Serializable {
         }
 
         if (o1.getClass().isArray() && o2.getClass().isArray()) {
-            return listCompare((Object[]) o1, (Object[]) o2);
+            try {
+                return listCompare((Object[]) o1, (Object[]) o2);
+            } catch (java.lang.ClassCastException e) {
+                return byteCompare((byte[]) o1, (byte[]) o2);
+            }
         }
         return -1;
+    }
+
+    private int byteCompare(byte[] data1, byte[] data2) {
+        int i;
+        for (i = 0; i < data1.length && i < data2.length; i++) {
+            if (data1[i] > data2[i]) {
+                return 1;
+            } else if (data1[i] < data2[i]) {
+                return -1;
+            }
+        }
+        return 0;
     }
 
     /**

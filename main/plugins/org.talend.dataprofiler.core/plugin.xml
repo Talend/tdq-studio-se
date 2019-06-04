@@ -1794,6 +1794,12 @@
            name="Add definitions in TextStatistics and Regular Expression Matching 4 snowflake Task"
            version="7.2.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.AddTeradataExpressionInRegularExpressionIndicatorTask"
+           id="org.talend.dataprofiler.core.migration.impl.AddTeradataExpressionInRegularExpressionIndicatorTask"
+           name="Add definition in  Regular Expression Matching for Teradata Task"
+           version="7.2.1">
+     </workspacetask>
   </extension>
   
   <extension
