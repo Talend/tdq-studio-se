@@ -48,6 +48,7 @@ import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.metadata.managment.model.MetadataFillFactory;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -347,11 +348,11 @@ public abstract class AbstractSchemaEvaluator<T> extends Evaluator<T> {
         }
         // not needed here statement.setFetchSize(fetchSize);
         try {
-            if (log.isInfoEnabled()) {
-                log.info("The execute query is:  " + sql); //$NON-NLS-1$
-            }
             // MOD xqliu 2009-02-09 bug 6237
             if (continueRun()) {
+                if (log.isInfoEnabled()) {
+                    log.info("Executing query: " + sql); //$NON-NLS-1$
+                }
                 statement.execute(sql);
             }
         } catch (SQLException e) {

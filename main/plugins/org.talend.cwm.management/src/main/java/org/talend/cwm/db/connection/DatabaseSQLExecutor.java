@@ -31,6 +31,7 @@ import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.utils.sql.ResultSetUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -155,7 +156,11 @@ public class DatabaseSQLExecutor extends SQLExecutor {
             if (limit > 0 && (ConnectionUtils.isTcompJdbc(con) || ConnectionUtils.isGeneralJdbc(con))) {
                 statement.setMaxRows(limit);
             }
-            statement.execute(createSqlStatement(connection, analysedElements, where));
+            String query = createSqlStatement(connection, analysedElements, where);
+            if (log.isInfoEnabled()) {
+                log.info("Executing query: " + query); //$NON-NLS-1$
+            }
+            statement.execute(query);
             resultSet = statement.getResultSet();
 
             while (resultSet.next()) {

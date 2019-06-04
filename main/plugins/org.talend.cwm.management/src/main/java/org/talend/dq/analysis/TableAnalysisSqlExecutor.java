@@ -56,6 +56,7 @@ import org.talend.dq.indicators.IndicatorCommonUtil;
 import org.talend.dq.indicators.IndicatorEvaluator;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -484,6 +485,9 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
         // statement.setFetchSize(fetchSize);
 
         if (continueRun()) {
+            if (log.isInfoEnabled()) {
+                log.info("Executing query: " + queryStmt); //$NON-NLS-1$
+            }
             statement.execute(queryStmt);
         }
 

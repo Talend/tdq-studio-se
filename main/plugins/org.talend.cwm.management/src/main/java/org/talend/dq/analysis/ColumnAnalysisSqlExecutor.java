@@ -569,6 +569,9 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
             conenction = conn.getObject();
 
             stat = conenction.createStatement();
+            if (log.isInfoEnabled()) {
+                log.info("Executing query: " + queryStmt); //$NON-NLS-1$
+            }
             ok = stat.execute(queryStmt);
 
         } catch (Exception e) {
@@ -1484,6 +1487,9 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 // create query statement
                 statement = connection.createStatement();
                 // statement.setFetchSize(fetchSize);
+                if (log.isInfoEnabled()) {
+                    log.info("Executing query: " + queryStmt); //$NON-NLS-1$
+                }
                 statement.execute(queryStmt);
                 // get the results
                 ResultSet resultSet = statement.getResultSet();
