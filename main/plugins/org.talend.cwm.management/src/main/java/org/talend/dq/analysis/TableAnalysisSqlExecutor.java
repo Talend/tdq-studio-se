@@ -339,13 +339,16 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
             // execute the sql statement for each group of aide and rule
             for (int i = 1; i < indicatorList.size(); i++) {
                 final Indicator rule = indicatorList.get(i);
-
-                isSuccess = executeRule((WhereRuleIndicator) rule, connection);
-                // if there's no joins, should use the row count as the count.
-                if (isJoinConditionEmpty(rule)) {
-                    rule.setCount(rowCount);
+                if (rule instanceof WhereRuleIndicator) {
+                    isSuccess = executeRule((WhereRuleIndicator) rule, connection);
+                    // if there's no joins, should use the row count as the count.
+                    if (isJoinConditionEmpty(rule)) {
+                        rule.setCount(rowCount);
+                    }
+                } else {
+                    // TDQ-14843 msjian: when have serveral talbes, may have row count indicator
+                    isSuccess = executeIndicator(rule, connection);
                 }
-
                 publishDynamicEvent(rule);
             }
         } finally {
