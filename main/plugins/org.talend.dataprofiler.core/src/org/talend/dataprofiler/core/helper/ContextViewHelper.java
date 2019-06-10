@@ -51,6 +51,7 @@ import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.ReportRepNode;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.resource.EResourceConstant;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -165,6 +166,10 @@ public final class ContextViewHelper {
     @SuppressWarnings("unchecked")
     private static boolean findAndUpdateContext(EList<ContextType> contextList, ContextItem contextItem,
             RepositoryUpdateManager ruManager, boolean isUpdated) {
+        // when the ana/rep had no context, or didnot use the current modified context, no need to proceed.
+        if (CollectionUtils.isEmpty(contextList) || !isCurrentContextContained(contextList, contextItem)) {
+            return false;
+        }
         boolean isModified = false;
         if (!ruManager.getRepositoryAddGroupContext().isEmpty()) {
             List<IContext> addGroupContext = ruManager.getRepositoryAddGroupContext().get(contextItem);
@@ -193,62 +198,78 @@ public final class ContextViewHelper {
                 contextList.removeAll(removedGrps);
             }
         }
-        if (CollectionUtils.isNotEmpty(contextList)) {
-            List<ContextType> renamedGroups = new ArrayList<ContextType>();
-            Map<ContextItem, Map<String, String>> contextRenamedMap = ruManager.getContextRenamedMap();
-            for (ContextType context : contextList) {
-                // rename context groups' name
-                // need to check if the same context.
-                EList<ContextParameterType> contextParameter = context.getContextParameter();
-                if (contextParameter.isEmpty()) {
-                    continue;//if the context had no parameter, no need to continue
+
+        List<ContextType> renamedGroups = new ArrayList<ContextType>();
+        Map<ContextItem, Map<String, String>> contextRenamedMap = ruManager.getContextRenamedMap();
+        for (ContextType context : contextList) {
+            // rename context groups' name
+            // need to check if the same context.
+            EList<ContextParameterType> contextParameter = context.getContextParameter();
+            if (contextParameter.isEmpty()) {
+                continue;// if the context had no parameter, no need to continue
+            }
+            // only when the current context is the modified one, continue
+            boolean hasThisContext = false;
+            for (ContextParameterType param : contextParameter) {
+                if (StringUtils.equals(param.getRepositoryContextId(), contextItem.getProperty().getId())) {
+                    hasThisContext = true;
+                    break;
                 }
-                // only when the current context is the modified one, continue
-                boolean hasThisContext = false;
-                for (ContextParameterType param : contextParameter) {
-                    if (StringUtils.equals(param.getRepositoryContextId(), contextItem.getProperty().getId())) {
-                        hasThisContext = true;
+            }
+            if (!hasThisContext) {
+                continue;
+            }
+
+            // rename the context group
+            Map<IContext, String> renameGroupContext = ruManager.getRenameContextGroup();
+            if (!renameGroupContext.isEmpty() && renameGroupContext.containsValue(context.getName())) {
+                for (IContext renamedContext : renameGroupContext.keySet()) {
+                    if (StringUtils.equals(context.getName(), renameGroupContext.get(renamedContext))) {
+                        if (isUpdated) {
+                            context.setName(renamedContext.getName());
+                        } else {// select no: add the renamed context group as a new group TDQ-16114
+                            renamedGroups.add(duplicateContext(renamedContext));
+                        }
+                        isModified = true;
                         break;
                     }
                 }
-                if (!hasThisContext) {
-                    continue;
-                }
-
-                // rename the context group
-                Map<IContext, String> renameGroupContext = ruManager.getRenameContextGroup();
-                if (!renameGroupContext.isEmpty() && renameGroupContext.containsValue(context.getName())) {
-                    for (IContext renamedContext : renameGroupContext.keySet()) {
-                        if (StringUtils.equals(context.getName(), renameGroupContext.get(renamedContext))) {
-                            if (isUpdated) {
-                                context.setName(renamedContext.getName());
-                            } else {// select no: add the renamed context group as a new group TDQ-16114
-                                renamedGroups.add(duplicateContext(renamedContext));
-                            }
-                            isModified = true;
-                            break;
-                        }
-                    }
-                }
-
-                // rename context parameters, delete
-                // if (contextItem != null && !contextRenamedMap.isEmpty()) {
-                    EList<ContextType> changedList = contextItem.getContext();
-                    for (ContextType modifiedContext : changedList) {
-                        if (StringUtils.equals(context.getName(), modifiedContext.getName())) {
-                            updateContextParameters(context, modifiedContext, contextItem.getProperty().getId(), ruManager
-                                    .getContextRenamedMap().get(contextItem), isUpdated);
-                            isModified = true;
-                            break;
-                        }
-                    }
-                // }
             }
-            if (!isUpdated) {// add the renamed context group as a new group, when select no TDQ-16114
-                contextList.addAll(renamedGroups);
+
+            // rename context parameters, delete
+            // if (contextItem != null && !contextRenamedMap.isEmpty()) {
+            EList<ContextType> changedList = contextItem.getContext();
+            for (ContextType modifiedContext : changedList) {
+                if (StringUtils.equals(context.getName(), modifiedContext.getName())) {
+                    updateContextParameters(context, modifiedContext, contextItem.getProperty().getId(),
+                            ruManager.getContextRenamedMap().get(contextItem), isUpdated);
+                    isModified = true;
+                    break;
+                }
+            }
+            // }
+        }
+        if (!isUpdated) {// add the renamed context group as a new group, when select no TDQ-16114
+            contextList.addAll(renamedGroups);
+        }
+
+        return isModified;
+    }
+
+    private static boolean isCurrentContextContained(EList<ContextType> contextList, ContextItem contextItem) {
+        for (ContextType context : contextList) {
+            // need to check if the same context.
+            EList<ContextParameterType> contextParameter = context.getContextParameter();
+            if (contextParameter.isEmpty()) {
+                continue;// if the context had no parameter, no need to continue
+            }
+            for (ContextParameterType param : contextParameter) {
+                if (StringUtils.equals(param.getRepositoryContextId(), contextItem.getProperty().getId())) {
+                    return true;
+                }
             }
         }
-        return isModified;
+        return false;
     }
 
     private static ContextType duplicateContext(IContext renamedContext) {
