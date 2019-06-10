@@ -34,10 +34,10 @@ public class AddTeradataExpressionInRegularExpressionIndicatorTask extends Abstr
         if (regularExpressionIndicator != null) {
             if (!IndicatorDefinitionFileHelper.isExistSqlExprWithLanguage(regularExpressionIndicator, Teradata)) {
                 IndicatorDefinitionFileHelper.addSqlExpression(regularExpressionIndicator, Teradata,
-                        "SELECT COUNT(CASE WHEN REGEXP_SIMILAR(<%=__COLUMN_NAMES__%>,<%=__PATTERN_EXPR__%>)=1 THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"); //$NON-NLS-1$
+                                "SELECT COUNT(CASE WHEN REGEXP_SIMILAR(CAST(<%=__COLUMN_NAMES__%> as varchar(100)),<%=__PATTERN_EXPR__%>)=1 THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"); //$NON-NLS-1$
             } else {
                 IndicatorDefinitionFileHelper.updateSqlExpression(regularExpressionIndicator, Teradata,
-                        "SELECT COUNT(CASE WHEN REGEXP_SIMILAR(<%=__COLUMN_NAMES__%>,<%=__PATTERN_EXPR__%>)=1 THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"); //$NON-NLS-1$
+                                "SELECT COUNT(CASE WHEN REGEXP_SIMILAR(CAST(<%=__COLUMN_NAMES__%> as varchar(100)),<%=__PATTERN_EXPR__%>)=1 THEN 1 END), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"); //$NON-NLS-1$
             }
             IndicatorDefinitionFileHelper.save(regularExpressionIndicator);
             DefinitionHandler.getInstance().reloadIndicatorsDefinitions();
