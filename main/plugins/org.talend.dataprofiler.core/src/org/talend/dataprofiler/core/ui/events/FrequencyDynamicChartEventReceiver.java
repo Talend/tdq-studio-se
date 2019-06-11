@@ -161,7 +161,7 @@ public class FrequencyDynamicChartEventReceiver extends DynamicChartEventReceive
             return;
         }
 
-        if (this.parentChartComposite != null) {
+        if (this.parentChartComposite != null && !parentChartComposite.isDisposed()) {
             TOPChartUtils.getInstance().refrechChart(this.parentChartComposite, registerChart);
         }
 
@@ -179,7 +179,7 @@ public class FrequencyDynamicChartEventReceiver extends DynamicChartEventReceive
         state.setSupportDynamicChart(true);
         Object chart = state.getChart();
         TOPChartUtils.getInstance().decorateChart(chart, false);
-        if (this.parentChartComposite != null) {
+        if (this.parentChartComposite != null && !parentChartComposite.isDisposed()) {
             TOPChartUtils.getInstance().refrechChart(this.parentChartComposite, chart);
         }
 
