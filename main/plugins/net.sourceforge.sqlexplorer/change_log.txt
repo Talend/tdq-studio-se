@@ -1,6 +1,6 @@
 change logs from talend
 
-2019-06-18 msjian TDQ-17204: remove the oracle driver file
+2019-06-18 msjian + sizhao TDQ-17204: remove the net.sourceforge.sqlexplorer.oracle fragment and its related classes
 
 2019-05-21 msjian TDQ-16793: fix "Create Table Script" failed run for mysql
 

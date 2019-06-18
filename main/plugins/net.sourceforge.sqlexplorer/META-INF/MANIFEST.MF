@@ -26,8 +26,7 @@ Bundle-ClassPath: sqlexplorer.jar,
  lib/rowset.jar,
  lib/dom4j.jar,
  lib/squirrel.jar,
- lib/hibernate3.2.4.sp1.jar,
- net.sourceforge.sqlexplorer.oracle_3.6.1.v20120708_SR6.jar
+ lib/hibernate3.2.4.sp1.jar
 Export-Package: META-INF,
  com.sun.rowset,
  com.sun.rowset.internal;x-internal:=true,

@@ -6,11 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry kind="lib" path="net.sourceforge.sqlexplorer.oracle_3.6.1.v20120708_SR6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/rowset.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/dom4j.jar" sourcepath="C:/os/src/dom4j/dom4j-1.6.1/src/java"/>
-	<classpathentry exported="true" kind="lib" path="lib/squirrel.jar" sourcepath="C:/os/src/squirrel-sql/sql12/fw/src"/>
-	<classpathentry exported="true" kind="lib" path="lib/hibernate3.2.4.sp1.jar" sourcepath="D:/eclipse_workspace/NewDataProfiler3_4/HibenateTest/hibernate-3.2.4.sp1.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/squirrel.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/hibernate3.2.4.sp1.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
