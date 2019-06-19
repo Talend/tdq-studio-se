@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_G4EzQZU9Ed-Y15ulK_jijQ" name="Minimal Length With Blank" label="Minimal Length With Blank">
-  <taggedValue xmi:id="_obCMkJU9Ed-Y15ulK_jijQ" tag="Description" value="computes the minimal length of a text field, counting blank as zero length values."/>
-  <taggedValue xmi:id="_ouZ0gJU9Ed-Y15ulK_jijQ" tag="Purpose" value="evaluates the length of the smallest textual record"/>
+  <taggedValue xmi:id="_obCMkJU9Ed-Y15ulK_jijQ" tag="Description" value="computes the minimal length of a text field. Does not take into account the null values when computing the minimal length."/>
+  <taggedValue xmi:id="_ouZ0gJU9Ed-Y15ulK_jijQ" tag="Purpose" value="evaluates the length of the smallest textual record of non-null values"/>
   <categories href="../../../.Talend.definition#_ccKHERF2Ed2PKb6nEJEvhw"/>
   <sqlGenericExpression xmi:id="_ve1mgJU9Ed-Y15ulK_jijQ" body="SELECT MIN(CHAR_LENGTH(&lt;%=__COLUMN_NAMES__%>)) FROM &lt;%=__TABLE_NAME__%> WHERE (&lt;%=__COLUMN_NAMES__%> IS NOT NULL ) &lt;%=__AND_WHERE_CLAUSE__%>" language="SQL"/>
   <sqlGenericExpression xmi:id="_GzADAZVeEd-z2e5j9BoiLw" body="SELECT MIN( LENGTH(&lt;%=__COLUMN_NAMES__%>) ) FROM &lt;%=__TABLE_NAME__%> WHERE (&lt;%=__COLUMN_NAMES__%> IS NOT NULL ) &lt;%=__AND_WHERE_CLAUSE__%>" language="Oracle"/>

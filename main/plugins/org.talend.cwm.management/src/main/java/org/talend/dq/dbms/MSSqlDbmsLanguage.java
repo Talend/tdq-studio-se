@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -159,50 +160,9 @@ public class MSSqlDbmsLanguage extends DbmsLanguage {
                 + ") = 1 THEN 1 END), COUNT(*) FROM " + GenericSQLHandler.TABLE_NAME + " " + GenericSQLHandler.WHERE_CLAUSE; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    /**
-     * DOC yyi 2011-07-07 22246:view rows for average length for Oracle
-     *
-     * @return average length sql statement
-     */
-    @Override
-    public String getAverageLengthRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE DATALENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(DATALENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEILING(SUM(DATALENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
-    }
-
     @Override
     public String trimIfBlank(String colName) {
         return " CASE WHEN  LEN(" + trim(colName) + ")=0  THEN '' ELSE  " + colName + " END"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-    }
-
-    /*
-     * (non-Jsdoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithBlankRows()
-     */
-    @Override
-    public String getAverageLengthWithBlankRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LEN(" + trimIfBlank("<%=__COLUMN_NAMES__%>") + ") BETWEEN (SELECT FLOOR(SUM(LEN(" + trimIfBlank("<%=__COLUMN_NAMES__%>") + ")) / COUNT(*)) FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NOT NULL) AND (SELECT CEILING(CAST(SUM(LEN(" + trimIfBlank("<%=__COLUMN_NAMES__%>") + " ))*1.00 AS FLOAT) / COUNT(*)) FROM <%=__TABLE_NAME__%>  WHERE <%=__COLUMN_NAMES__%> IS NOT NULL)"; //$NON-NLS-1$
-    }
-
-    /*
-     * (non-Jsdoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullRows()
-     */
-    @Override
-    public String getAverageLengthWithNullRows() {
-        String whereExpression = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")";
-        return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression + "AND LEN(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LEN(<%=__COLUMN_NAMES__%> )) / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression + ") AND (SELECT CEILING(CAST(SUM(LEN(<%=__COLUMN_NAMES__%>))*1.00 AS FLOAT) / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression + ")"; //$NON-NLS-1$
-    }
-
-    /*
-     * (non-Jsdoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullBlankRows()
-     */
-    @Override
-    public String getAverageLengthWithNullBlankRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LEN(" + trimIfBlank("<%=__COLUMN_NAMES__%>") + ") BETWEEN (SELECT FLOOR(SUM(LEN(" + trimIfBlank("<%=__COLUMN_NAMES__%>") + ")) / COUNT(*)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEILING(CAST(SUM(LEN(" + trimIfBlank("<%=__COLUMN_NAMES__%>") + " ))*1.00 AS FLOAT) / COUNT(*)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
     }
 
     /*

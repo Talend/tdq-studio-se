@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_a4KsoI1qEd-xwI2imLgHRA" name="Minimal Length With Null" label="Minimal Length With Null">
-  <taggedValue xmi:id="_a4KsoY1qEd-xwI2imLgHRA" tag="Description" value="computes the minimal length of a text field, counting null as zero length values."/>
-  <taggedValue xmi:id="_a4Ksoo1qEd-xwI2imLgHRA" tag="Purpose" value="evaluates the length of the smallest textual record"/>
+  <taggedValue xmi:id="_a4KsoY1qEd-xwI2imLgHRA" tag="Description" value="computes the minimal length of a text field. Does not take into account the blank values when computing the minimal length."/>
+  <taggedValue xmi:id="_a4Ksoo1qEd-xwI2imLgHRA" tag="Purpose" value="evaluates the length of the smallest textual record of non-blank values"/>
   <categories href="../../../.Talend.definition#_ccKHERF2Ed2PKb6nEJEvhw"/>
   <sqlGenericExpression xmi:id="_a4KspI1qEd-xwI2imLgHRA" body="SELECT MIN(CHAR_LENGTH(IFNULL(&lt;%=__COLUMN_NAMES__%>,''))) FROM &lt;%=__TABLE_NAME__%> WHERE (TRIM(IFNULL(&lt;%=__COLUMN_NAMES__%>,'NULL TALEND')) &lt;> '' ) &lt;%=__AND_WHERE_CLAUSE__%>" language="SQL"/>
   <sqlGenericExpression xmi:id="_a4KspY1qEd-xwI2imLgHRA" body="SELECT MIN(CASE WHEN &lt;%=__COLUMN_NAMES__%> IS NULL THEN 0 ELSE LENGTH(&lt;%=__COLUMN_NAMES__%>) END) FROM &lt;%=__TABLE_NAME__%> WHERE (TRIM(NVL(&lt;%=__COLUMN_NAMES__%>,'NULL TALEND')) IS NOT NULL) &lt;%=__AND_WHERE_CLAUSE__%>" language="Oracle"/>

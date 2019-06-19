@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="__gPoIJSOEd-TE5ti6XNR2Q" name="Average Length With Blank" label="Average Length With Blank">
-  <taggedValue xmi:id="__gPoIZSOEd-TE5ti6XNR2Q" tag="Description" value="computes the average length of the field, counting blank data as zero length values."/>
-  <taggedValue xmi:id="__gPoIpSOEd-TE5ti6XNR2Q" tag="Purpose" value="evaluates the average length of the textual record"/>
+  <taggedValue xmi:id="__gPoIZSOEd-TE5ti6XNR2Q" tag="Description" value="computes the average length of the field. Does not take into account the null values when computing the average length."/>
+  <taggedValue xmi:id="__gPoIpSOEd-TE5ti6XNR2Q" tag="Purpose" value="evaluates the average length of the textual record of non-null values"/>
   <categories href="../../../.Talend.definition#_ccKHERF2Ed2PKb6nEJEvhw"/>
   <sqlGenericExpression xmi:id="__gPoJJSOEd-TE5ti6XNR2Q" body="SELECT SUM(CHAR_LENGTH(CASE WHEN   CHAR_LENGTH( TRIM(&lt;%=__COLUMN_NAMES__%>) ) =0  THEN '' ELSE  &lt;%=__COLUMN_NAMES__%> END)), COUNT(*) FROM &lt;%=__TABLE_NAME__%> WHERE (&lt;%=__COLUMN_NAMES__%> IS NOT NULL ) &lt;%=__AND_WHERE_CLAUSE__%>" language="SQL"/>
   <sqlGenericExpression xmi:id="__gPoJZSOEd-TE5ti6XNR2Q" body="SELECT SUM(CASE WHEN &lt;%=__COLUMN_NAMES__%> IS NOT NULL AND  TRIM(&lt;%=__COLUMN_NAMES__%>) IS NULL THEN 0 ELSE  LENGTH(&lt;%=__COLUMN_NAMES__%>)END), COUNT(*) FROM &lt;%=__TABLE_NAME__%> WHERE (&lt;%=__COLUMN_NAMES__%> IS NOT NULL ) &lt;%=__AND_WHERE_CLAUSE__%>" language="Oracle"/>

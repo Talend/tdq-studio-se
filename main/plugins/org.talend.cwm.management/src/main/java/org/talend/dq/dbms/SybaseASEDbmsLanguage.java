@@ -20,6 +20,7 @@ import java.util.regex.Matcher;
 
 import org.talend.dataquality.PluginConstant;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.ColumnSet;
@@ -67,7 +68,7 @@ public class SybaseASEDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE CHAR_LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEILING(SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NOT NULL AND CHAR_LENGTH( LTRIM(RTRIM(<%=__COLUMN_NAMES__%>)) ) >0 "; //$NON-NLS-1$
     }
 
     /*
@@ -87,18 +88,7 @@ public class SybaseASEDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthWithBlankRows() {
-        String whereExpression = "WHERE <%=__COLUMN_NAMES__%> IS NOT NULL ";
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE " + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " BETWEEN (SELECT FLOOR(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + ") / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression + ") AND (SELECT CEILING(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " ) / COUNT(* )) FROM <%=__TABLE_NAME__%> " + whereExpression + ")"; //$NON-NLS-1$
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullBlankRows()
-     */
-    @Override
-    public String getAverageLengthWithNullBlankRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE " + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " BETWEEN (SELECT FLOOR(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + ") / COUNT(*)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEILING(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " ) / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NOT NULL OR CHAR_LENGTH( LTRIM(RTRIM(<%=__COLUMN_NAMES__%>)) ) =0 "; //$NON-NLS-1$
     }
 
     /*
@@ -108,8 +98,12 @@ public class SybaseASEDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthWithNullRows() {
-        String whereExpression = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")";
-        return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression + "AND " + charLength("<%=__COLUMN_NAMES__%>") + " BETWEEN (SELECT FLOOR(SUM(" + charLength("<%=__COLUMN_NAMES__%>") + ") / COUNT( * )) FROM <%=__TABLE_NAME__%> " + whereExpression + ") AND (SELECT CEILING(SUM(" + charLength("<%=__COLUMN_NAMES__%>") + ") / COUNT(*)) FROM <%=__TABLE_NAME__%>  " + whereExpression + ")"; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NULL OR CHAR_LENGTH( LTRIM(RTRIM(<%=__COLUMN_NAMES__%>)) ) >0 "; //$NON-NLS-1$
+    }
+
+    @Override
+    public String getMinLengthWithBlankNullRows() {
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NULL OR (<%=__COLUMN_NAMES__%> = '' or RTRIM(LTRIM(<%=__COLUMN_NAMES__%>)) = '') "; //$NON-NLS-1$
     }
 
     /*

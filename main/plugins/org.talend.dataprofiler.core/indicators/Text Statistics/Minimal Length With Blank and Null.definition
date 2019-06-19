@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_9HDjMJSOEd-TE5ti6XNR2Q" name="Minimal Length With Blank and Null" label="Minimal Length With Blank and Null">
-  <taggedValue xmi:id="_9HDjMZSOEd-TE5ti6XNR2Q" tag="Description" value="computes the minimal length of a text field, counting blank and null as zero length values."/>
+  <taggedValue xmi:id="_9HDjMZSOEd-TE5ti6XNR2Q" tag="Description" value="computes the minimal length of a text field."/>
   <taggedValue xmi:id="_9HDjMpSOEd-TE5ti6XNR2Q" tag="Purpose" value="evaluates the length of the smallest textual record"/>
   <categories href="../../../.Talend.definition#_ccKHERF2Ed2PKb6nEJEvhw"/>
   <sqlGenericExpression xmi:id="_9HDjNJSOEd-TE5ti6XNR2Q" body="SELECT MIN(CHAR_LENGTH(IFNULL(&lt;%=__COLUMN_NAMES__%>,''))) FROM &lt;%=__TABLE_NAME__%> &lt;%=__WHERE_CLAUSE__%>" language="SQL"/>

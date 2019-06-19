@@ -44,6 +44,10 @@ public class TextStatisticsExplorer extends DataExplorer {
             case AverageLengthIndicatorEnum:
                 // MOD msjian 2011-7-1 22549:change Sql for average length indicator
                 // MOD qiongli 2011-8-10 TDQ-2474:change Sql for kinds of average length indicator
+                if (isSqlEngine) {
+                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getAverageLengthRowsStatement());
+                }
+                break;
             case AverageLengthWithBlankIndicatorEnum:
                 if (isSqlEngine) {
                     map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getAverageLengthWithBlankRowsStatement());
@@ -63,7 +67,15 @@ public class TextStatisticsExplorer extends DataExplorer {
             case MaxLengthIndicatorEnum:
             case MinLengthWithBlankIndicatorEnum:
             case MinLengthWithBlankNullIndicatorEnum:
+                if (isSqlEngine) {
+                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getMinLengthWithBlankNullRowsStatement());
+                }
+                break;
             case MinLengthWithNullIndicatorEnum:
+                if (isSqlEngine) {
+                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getMinLengthWithNullRowsStatement());
+                }
+                break;
             case MaxLengthWithBlankIndicatorEnum:
             case MaxLengthWithBlankNullIndicatorEnum:
             case MaxLengthWithNullIndicatorEnum:
@@ -92,6 +104,23 @@ public class TextStatisticsExplorer extends DataExplorer {
         return map;
     }
 
+    private String getAverageLengthRowsStatement() {
+        String tableName = getFullyQualifiedTableName(this.indicator.getAnalyzedElement());
+        return dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getAverageLengthRows(), this.columnName, tableName);
+    }
+
+    private String getMinLengthWithBlankNullRowsStatement() {
+        String tableName = getFullyQualifiedTableName(this.indicator.getAnalyzedElement());
+        return dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithBlankNullRows(), this.columnName,
+                tableName);
+    }
+
+    private String getMinLengthWithNullRowsStatement() {
+        String tableName = getFullyQualifiedTableName(this.indicator.getAnalyzedElement());
+        return dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithNullRows(), this.columnName,
+                tableName);
+    }
+
     /**
      * DOC qiongli 2011-09-8 TDQ-2474:view rows for average length with blank.
      *
@@ -110,7 +139,7 @@ public class TextStatisticsExplorer extends DataExplorer {
      */
     private String getAverageLengthWithNullBlankRowsStatement() {
         String tableName = getFullyQualifiedTableName(this.indicator.getAnalyzedElement());
-        return dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getAverageLengthWithNullBlankRows(),
+        return dbmsLanguage.fillGenericQueryWithColumnsAndTable("SELECT * FROM <%=__TABLE_NAME__%>",
                 this.columnName, tableName);
     }
 

@@ -17,6 +17,7 @@ import org.talend.dataquality.domain.sql.SqlPredicate;
 import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
 import org.talend.utils.properties.PropertiesLoader;
+
 import orgomg.cwm.objectmodel.core.Expression;
 
 /**
@@ -283,7 +284,7 @@ public class OracleDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NOT NULL AND  LENGTH(trim(<%=__COLUMN_NAMES__%>)) IS NOT NULL "; //$NON-NLS-1$
     }
 
     @Override
@@ -310,38 +311,6 @@ public class OracleDbmsLanguage extends DbmsLanguage {
     @Override
     public String getCatalogNameFromContext(DatabaseConnection dbConn) {
         return null;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithBlankRows()
-     */
-    @Override
-    public String getAverageLengthWithBlankRows() {
-        String whereExpression = "WHERE <%=__COLUMN_NAMES__%> IS NOT NULL "; //$NON-NLS-1$
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE  " + lengthForSumColumn("<%=__COLUMN_NAMES__%>") + " BETWEEN (SELECT FLOOR(SUM(" + lengthForSumColumn("<%=__COLUMN_NAMES__%>") + ") / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression + ") AND (SELECT CEIL(SUM(" + lengthForSumColumn("<%=__COLUMN_NAMES__%>") + " ) / COUNT(* )) FROM <%=__TABLE_NAME__%> " + whereExpression + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullBlankRows()
-     */
-    @Override
-    public String getAverageLengthWithNullBlankRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE " + lengthForSumColumn("<%=__COLUMN_NAMES__%>") + " BETWEEN (SELECT FLOOR(SUM(" + lengthForSumColumn("<%=__COLUMN_NAMES__%>") + ") / COUNT(*)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(" + lengthForSumColumn("<%=__COLUMN_NAMES__%>") + " ) / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullRows()
-     */
-    @Override
-    public String getAverageLengthWithNullRows() {
-        String whereExpression = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression + "AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%> )) / COUNT( * )) FROM <%=__TABLE_NAME__%> " + whereExpression + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> )) / COUNT(*)) FROM <%=__TABLE_NAME__%>  " + whereExpression + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
     /**
@@ -373,6 +342,11 @@ public class OracleDbmsLanguage extends DbmsLanguage {
     @Override
     public String quote(String sqlIdentifier) {
         return super.quote(sqlIdentifier).toUpperCase();
+    }
+
+    @Override
+    public String getMinLengthWithBlankNullRows() {
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE <%=__COLUMN_NAMES__%> IS NULL OR  LENGTH(trim(<%=__COLUMN_NAMES__%>)) IS NULL "; //$NON-NLS-1$
     }
 
 }

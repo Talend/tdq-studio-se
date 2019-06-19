@@ -47,58 +47,71 @@ public class TeradataDbmsLanguage extends DbmsLanguage {
      *
      * @return average length sql statement
      */
-    @Override
-    public String getAverageLengthRows() {
-        return "SELECT t.* FROM(" + "SELECT " //$NON-NLS-1$//$NON-NLS-2$
-                + "CAST(SUM(CHARACTER_LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(<%=__COLUMN_NAMES__%>)*1.00)+0.99 as int) c, " //$NON-NLS-1$
-                + "CAST(SUM(CHARACTER_LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f " //$NON-NLS-1$
-                + "FROM <%=__TABLE_NAME__%>) e, <%=__TABLE_NAME__%> t " //$NON-NLS-1$
-                + "where character_length(<%=__COLUMN_NAMES__%>) between f and c"; //$NON-NLS-1$
-    }
-
-    /*
-     * (non-Jsdoc)
-     *
-     * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithBlankRows()
-     */
-    @Override
-    public String getAverageLengthWithBlankRows() {
-        String sql = "SELECT t.* FROM(SELECT CAST(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) //$NON-NLS-1$ //$NON-NLS-2$
-                + ") / (COUNT(<%=__COLUMN_NAMES__%> )*1.00)+0.99 as int) c," + "CAST(SUM(" //$NON-NLS-1$ //$NON-NLS-2$
-                + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + ") / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f " //$NON-NLS-1$ //$NON-NLS-2$
-                + "FROM <%=__TABLE_NAME__%> WHERE(<%=__COLUMN_NAMES__%> IS NOT NULL)) e, <%=__TABLE_NAME__%> t " + "WHERE " //$NON-NLS-1$ //$NON-NLS-2$
-                + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " BETWEEN f AND c"; //$NON-NLS-1$ //$NON-NLS-2$
-        return sql;
-    }
+    // @Override
+    // public String getAverageLengthRows() {
+    // return "SELECT t.* FROM(" + "SELECT " //$NON-NLS-1$//$NON-NLS-2$
+    // + "CAST(SUM(CHARACTER_LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(<%=__COLUMN_NAMES__%>)*1.00)+0.99 as int) c, "
+    // //$NON-NLS-1$
+    // + "CAST(SUM(CHARACTER_LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f "
+    // //$NON-NLS-1$
+    // + "FROM <%=__TABLE_NAME__%>) e, <%=__TABLE_NAME__%> t " //$NON-NLS-1$
+    // + "where character_length(<%=__COLUMN_NAMES__%>) between f and c"; //$NON-NLS-1$
+    // }
+    //
+    // /*
+    // * (non-Jsdoc)
+    // *
+    // * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithBlankRows()
+    // */
+    // @Override
+    // public String getAverageLengthWithBlankRows() {
+    // String sql = "SELECT t.* FROM(SELECT CAST(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) //$NON-NLS-1$
+    // //$NON-NLS-2$
+    // + ") / (COUNT(<%=__COLUMN_NAMES__%> )*1.00)+0.99 as int) c," + "CAST(SUM(" //$NON-NLS-1$ //$NON-NLS-2$
+    // + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + ") / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f "
+    // //$NON-NLS-1$ //$NON-NLS-2$
+    // + "FROM <%=__TABLE_NAME__%> WHERE(<%=__COLUMN_NAMES__%> IS NOT NULL)) e, <%=__TABLE_NAME__%> t " + "WHERE "
+    // //$NON-NLS-1$ //$NON-NLS-2$
+    // + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " BETWEEN f AND c"; //$NON-NLS-1$ //$NON-NLS-2$
+    // return sql;
+    // }
 
     /*
      * (non-Jsdoc)
      *
      * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullBlankRows()
      */
-    @Override
-    public String getAverageLengthWithNullBlankRows() {
-        String sql = "SELECT t.* FROM(SELECT CAST(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) //$NON-NLS-1$ //$NON-NLS-2$
-                + ") / (COUNT(*)*1.00)+0.99 as int) c," + "CAST(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                + ") / (COUNT(*)*1.00) as int) f " + "FROM <%=__TABLE_NAME__%> ) e, <%=__TABLE_NAME__%> t " + "WHERE " //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
-                + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " BETWEEN f AND c"; //$NON-NLS-1$ //$NON-NLS-2$
-        return sql;
-    }
+    // @Override
+    // public String getAverageLengthWithNullBlankRows() {
+    // String sql = "SELECT t.* FROM(SELECT CAST(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) //$NON-NLS-1$
+    // //$NON-NLS-2$
+    // + ") / (COUNT(*)*1.00)+0.99 as int) c," + "CAST(SUM(" + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>"))
+    // //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    // + ") / (COUNT(*)*1.00) as int) f " + "FROM <%=__TABLE_NAME__%> ) e, <%=__TABLE_NAME__%> t " + "WHERE "
+    // //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+    // + charLength(trimIfBlank("<%=__COLUMN_NAMES__%>")) + " BETWEEN f AND c"; //$NON-NLS-1$ //$NON-NLS-2$
+    // return sql;
+    // }
 
     /*
      * (non-Javadoc)
      *
      * @see org.talend.dq.dbms.DbmsLanguage#getAverageLengthWithNullRows()
      */
-    @Override
-    public String getAverageLengthWithNullRows() {
-        String whereExp = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        String sql = "SELECT t.* FROM(SELECT " + "CAST(SUM(" + charLength("<%=__COLUMN_NAMES__%>") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                + ") / (COUNT(<%=__COLUMN_NAMES__%> )*1.00)+0.99 as int) c," + "CAST(SUM(" + charLength("<%=__COLUMN_NAMES__%>") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                + ") / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f " + "FROM <%=__TABLE_NAME__%> " + whereExp //$NON-NLS-1$ //$NON-NLS-2$
-                + ") e, <%=__TABLE_NAME__%> t " + whereExp + "AND " + charLength("<%=__COLUMN_NAMES__%>") + " BETWEEN f AND c"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        return sql;
-    }
+    // @Override
+    // public String getAverageLengthWithNullRows() {
+    // String whereExp = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")";
+    // //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    // String sql = "SELECT t.* FROM(SELECT " + "CAST(SUM(" + charLength("<%=__COLUMN_NAMES__%>") //$NON-NLS-1$
+    // //$NON-NLS-2$ //$NON-NLS-3$
+    // + ") / (COUNT(<%=__COLUMN_NAMES__%> )*1.00)+0.99 as int) c," + "CAST(SUM(" + charLength("<%=__COLUMN_NAMES__%>")
+    // //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    // + ") / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f " + "FROM <%=__TABLE_NAME__%> " + whereExp //$NON-NLS-1$
+    // //$NON-NLS-2$
+    // + ") e, <%=__TABLE_NAME__%> t " + whereExp + "AND " + charLength("<%=__COLUMN_NAMES__%>") + " BETWEEN f AND c";
+    // //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+    // return sql;
+    // }
 
 
     /*
