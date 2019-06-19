@@ -36,7 +36,6 @@ import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.AbstractTreeViewer;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
@@ -62,7 +61,6 @@ import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.update.RepositoryUpdateManager;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
-import org.talend.core.runtime.CoreRuntimePlugin;
 import org.talend.cwm.compare.exception.ReloadCompareException;
 import org.talend.cwm.compare.factory.ComparisonLevelFactory;
 import org.talend.cwm.compare.factory.IComparisonLevel;
@@ -79,8 +77,6 @@ import org.talend.dataprofiler.core.manager.DQStructureManager;
 import org.talend.dataprofiler.core.ui.action.actions.CreateHiveOfHCAction;
 import org.talend.dataprofiler.core.ui.dialog.message.DeleteModelElementConfirmDialog;
 import org.talend.dataprofiler.core.ui.editor.PartListener;
-import org.talend.dataprofiler.core.ui.editor.connection.ConnectionEditor;
-import org.talend.dataprofiler.core.ui.editor.connection.ConnectionItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.dqrules.BusinessRuleItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.dqrules.DQRuleEditor;
 import org.talend.dataprofiler.core.ui.events.EventEnum;
@@ -115,6 +111,7 @@ import org.talend.resource.ResourceManager;
 import org.talend.utils.dates.DateUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -146,26 +143,9 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     }
 
     public void openConnectionEditor(Item item) {
-        // Added TDQ-7504, TDQ-7770, yyin 20130819: when the db wizard is opened in the match analysis editor, no need
-        // to open the db edtior any more.
-        if (noNeedToOpenConnectionEditor) {
-            return;
-        }// ~
-
-        Class<?> clazz = null;
-        IEditorInput editorInput = null;
-        if (item instanceof ConnectionItem) {
-            clazz = ConnectionEditor.class;
-            editorInput = new ConnectionItemEditorInput(RepositoryNodeHelper.recursiveFind(item.getProperty()));
-        }
-
-        if (editorInput != null && clazz != null && CoreRuntimePlugin.getInstance().isDataProfilePerspectiveSelected()) {
-            CorePlugin.getDefault().openEditor(editorInput, clazz.getName());
-        }
     }
 
     public void refreshConnectionEditor(Item item) {
-        CorePlugin.getDefault().refreshOpenedEditor(item);
     }
 
     /**

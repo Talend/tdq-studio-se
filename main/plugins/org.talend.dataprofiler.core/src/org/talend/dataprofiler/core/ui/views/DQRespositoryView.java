@@ -109,6 +109,7 @@ import org.talend.dataprofiler.core.service.IService;
 import org.talend.dataprofiler.core.service.IViewerFilterService;
 import org.talend.dataprofiler.core.ui.action.actions.DQEditContextAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditDFTableAction;
+import org.talend.dataprofiler.core.ui.action.actions.EditDatabaseConnectionAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditFileDelimitedAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditHDFSConnectionAction;
 import org.talend.dataprofiler.core.ui.action.actions.EditHadoopClusterAction;
@@ -131,6 +132,7 @@ import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.ContextRepNode;
+import org.talend.dq.nodes.DBConnectionRepNode;
 import org.talend.dq.nodes.DBTableRepNode;
 import org.talend.dq.nodes.DBViewRepNode;
 import org.talend.dq.nodes.DFConnectionRepNode;
@@ -150,6 +152,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -455,6 +458,8 @@ public class DQRespositoryView extends CommonNavigator {
                     if (obj instanceof DQRepositoryNode) {
                         if (obj instanceof ReportFileRepNode) {
                             new OpenItemEditorAction(new IRepositoryNode[] { (IRepositoryNode) obj }).run();
+                        } else if (obj instanceof DBConnectionRepNode) {
+                            new EditDatabaseConnectionAction((IRepositoryNode) obj).run();
                         } else if (obj instanceof DFConnectionRepNode) {
                             new EditFileDelimitedAction((IRepositoryNode) obj).run();
                         } else if (obj instanceof HadoopClusterConnectionRepNode

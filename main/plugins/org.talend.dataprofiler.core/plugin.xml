@@ -917,13 +917,6 @@
             name="%editor.name.AnalysisEditor">
       </editor>
       <editor
-            class="org.talend.dataprofiler.core.ui.editor.connection.ConnectionEditor"
-            extensions="prv,item"
-            icon="icons/TdDataProvider.gif"
-            id="org.talend.dataprofiler.core.ui.editor.connection.ConnectionEditor"
-            name="%editor.name.ConnectionEditor">
-      </editor>
-      <editor
             class="org.talend.dataprofiler.core.ui.editor.pattern.PatternEditor"
             extensions="pattern"
             icon="icons/pattern_white.png"

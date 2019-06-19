@@ -71,7 +71,6 @@ import org.talend.dataprofiler.core.ui.editor.AbstractItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisEditor;
 import org.talend.dataprofiler.core.ui.editor.analysis.AnalysisItemEditorInput;
 import org.talend.dataprofiler.core.ui.editor.analysis.MatchAnalysisEditor;
-import org.talend.dataprofiler.core.ui.editor.connection.ConnectionEditor;
 import org.talend.dataprofiler.core.ui.editor.report.ReportItemEditorInput;
 import org.talend.dataprofiler.core.ui.events.EventEnum;
 import org.talend.dataprofiler.core.ui.events.EventManager;
@@ -92,6 +91,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -321,7 +321,6 @@ public final class WorkbenchUtils {
     @Deprecated
     public static void refreshCurrentAnalysisAndConnectionEditor() {
         List<IEditorReference> iEditorReference = getIEditorReference(AnalysisEditor.class.getName(), StringUtils.EMPTY);
-        iEditorReference.addAll(getIEditorReference(ConnectionEditor.class.getName(), StringUtils.EMPTY));
         iEditorReference.addAll(getIEditorReference(MatchAnalysisEditor.class.getName(), StringUtils.EMPTY));
         closeAndOpenEditor(iEditorReference);
     }
