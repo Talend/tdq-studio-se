@@ -80,6 +80,7 @@ import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.classloader.TalendURLClassLoader;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -1075,7 +1076,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      */
     private void setClassNameAndJarPathForJava() {
         EList<TaggedValue> tvs = getCurrentModelElement().getTaggedValue();
-        if (classNameForSave == null || jarPathForSave == null) {
+        if (StringUtils.isEmpty(classNameForSave) || StringUtils.isEmpty(jarPathForSave)) {
             for (TaggedValue tv : tvs) {
                 if (tv.getTag().equals(TaggedValueHelper.CLASS_NAME_TEXT)) {
                     this.classNameForSave = tv.getValue();
