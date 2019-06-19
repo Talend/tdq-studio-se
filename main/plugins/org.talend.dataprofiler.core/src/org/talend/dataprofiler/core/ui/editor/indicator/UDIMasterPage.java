@@ -463,7 +463,6 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
         }
 
         combo.getParent().dispose();
-        // combo.dispose();
 
         if (dataBaseComp.getChildren().length == 1) {
             Control[] children = dataBaseComp.getChildren();
@@ -550,7 +549,9 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
         // line comp dispose
         combo.dispose();
         // java title dispose
-        javaLanguageComp.dispose();
+        if (javaLanguageComp.getChildren().length <= 2) {
+            javaLanguageComp.dispose();
+        }
 
     }
 
@@ -1080,7 +1081,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      */
     private void setClassNameAndJarPathForJava() {
         EList<TaggedValue> tvs = getCurrentModelElement().getTaggedValue();
-        if (classNameForSave == null || jarPathForSave == null) {
+        if (StringUtils.isEmpty(classNameForSave) || StringUtils.isEmpty(jarPathForSave)) {
             for (TaggedValue tv : tvs) {
                 if (tv.getTag().equals(TaggedValueHelper.CLASS_NAME_TEXT)) {
                     this.classNameForSave = tv.getValue();
