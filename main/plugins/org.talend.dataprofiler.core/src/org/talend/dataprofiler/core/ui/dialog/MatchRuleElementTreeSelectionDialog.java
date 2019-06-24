@@ -162,6 +162,7 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
     private void addValidator() {
         setValidator(new ISelectionStatusValidator() {
 
+            @Override
             public IStatus validate(Object[] selection) {
                 IStatus status = new Status(IStatus.OK, CorePlugin.PLUGIN_ID, StringUtils.EMPTY);
                 if (selection == null || (selection != null && selection.length > 1)) {
@@ -374,6 +375,7 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
         Composite composite = (Composite) super.createDialogArea(form);
         getTreeViewer().addSelectionChangedListener(new ISelectionChangedListener() {
 
+            @Override
             public void selectionChanged(SelectionChangedEvent event) {
                 if (dialogType != SUGGEST_TYPE) {
                     IStructuredSelection selection = (IStructuredSelection) event.getSelection();
@@ -932,8 +934,7 @@ public class MatchRuleElementTreeSelectionDialog extends ElementTreeSelectionDia
      */
     private boolean checkFunctionValid(String functionType, String matchedColumnName, String dataType) {
         SurvivorShipAlgorithmEnum functionEnum = SurvivorShipAlgorithmEnum.getTypeBySavedValue(functionType);
-        // for most common, no need to check, it fixes all type.
-        if (SurvivorShipAlgorithmEnum.MOST_COMMON.equals(functionEnum) || dataType == null) {
+        if (dataType == null) {
             return true;
         }
         DefaultSurvivorShipDataTypeEnum[] valudDataType = functionEnum.getDataType();
