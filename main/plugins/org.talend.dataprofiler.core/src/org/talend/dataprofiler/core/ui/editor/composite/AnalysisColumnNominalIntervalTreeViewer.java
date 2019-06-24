@@ -74,6 +74,7 @@ import org.talend.dataquality.indicators.PatternMatchingIndicator;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.resourcehelper.ResourceFileMap;
 import org.talend.dq.nodes.DBColumnRepNode;
+import org.talend.dq.nodes.DFColumnRepNode;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
@@ -749,6 +750,11 @@ public class AnalysisColumnNominalIntervalTreeViewer extends AbstractColumnDropT
 
     @Override
     public boolean canDrop(IRepositoryNode modelElement) {
+        // TDQ-3984: column correlation analysis is not available on file connection.
+        if (modelElement instanceof DFColumnRepNode) {
+            return false;
+        }
+        // TDQ-3984~
         List<TdColumn> existColumns = new ArrayList<TdColumn>();
         for (RepositoryNode columnFromMultiValueList : this.getColumnSetMultiValueList()) {
             IRepositoryViewObject repObject = columnFromMultiValueList.getObject();
