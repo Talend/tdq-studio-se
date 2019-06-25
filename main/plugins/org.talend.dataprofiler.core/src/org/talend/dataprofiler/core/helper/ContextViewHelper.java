@@ -176,7 +176,7 @@ public final class ContextViewHelper {
             // add new context group
             if (!addGroupContext.isEmpty()) {
                 for (IContext addedGroup : addGroupContext) {
-                    contextList.add(duplicateContext(addedGroup));
+                    contextList.add(duplicateContext(addedGroup, contextItem.getProperty().getId()));
                     isModified = true;
                 }
             }
@@ -228,7 +228,7 @@ public final class ContextViewHelper {
                         if (isUpdated) {
                             context.setName(renamedContext.getName());
                         } else {// select no: add the renamed context group as a new group TDQ-16114
-                            renamedGroups.add(duplicateContext(renamedContext));
+                            renamedGroups.add(duplicateContext(renamedContext, contextItem.getProperty().getId()));
                         }
                         isModified = true;
                         break;
@@ -272,7 +272,7 @@ public final class ContextViewHelper {
         return false;
     }
 
-    private static ContextType duplicateContext(IContext renamedContext) {
+    private static ContextType duplicateContext(IContext renamedContext, String contextId) {
         ContextType newCtx = TalendFileFactory.eINSTANCE.createContextType();
         newCtx.setConfirmationNeeded(renamedContext.isConfirmationNeeded());
         newCtx.setName(renamedContext.getName());
@@ -281,7 +281,7 @@ public final class ContextViewHelper {
         EList<ContextParameterType> newContextParameters = newCtx.getContextParameter();
         for (IContextParameter ctxParam : contextParameters) {
             ContextParameterType newCtxParam = TalendFileFactory.eINSTANCE.createContextParameterType();
-            newCtxParam.setRepositoryContextId(ctxParam.getSource());
+            newCtxParam.setRepositoryContextId(contextId);
             newCtxParam.setComment(ctxParam.getComment());
             newCtxParam.setName(ctxParam.getName());
             newCtxParam.setPrompt(ctxParam.getPrompt());
