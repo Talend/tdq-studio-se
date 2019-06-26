@@ -142,12 +142,6 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
     }
 
-    public void openConnectionEditor(Item item) {
-    }
-
-    public void refreshConnectionEditor(Item item) {
-    }
-
     /**
      * Fill MDM connection only.
      */
@@ -556,14 +550,14 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     @Deprecated
     public void refreshCurrentAnalysisAndConnectionEditor() {
         WorkbenchUtils.refreshCurrentAnalysisAndConnectionEditor();
+    }
 
-    } /*
-       * (non-Javadoc)
-       *
-       * @see
-       * org.talend.core.ITDQRepositoryService#createHiveConnection(org.talend.core.model.metadata.IMetadataConnection)
-       */
-
+    /*
+     * (non-Javadoc)
+     *
+     * @see
+     * org.talend.core.ITDQRepositoryService#createHiveConnection(org.talend.core.model.metadata.IMetadataConnection)
+     */
     public java.sql.Connection createHiveConnection(IMetadataConnection metadataConnection) {
         java.sql.Connection connection = null;
         if (metadataConnection != null
