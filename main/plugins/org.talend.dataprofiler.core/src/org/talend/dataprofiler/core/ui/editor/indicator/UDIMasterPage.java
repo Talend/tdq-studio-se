@@ -463,7 +463,6 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
         }
 
         combo.getParent().dispose();
-        // combo.dispose();
 
         if (dataBaseComp.getChildren().length == 1) {
             Control[] children = dataBaseComp.getChildren();
@@ -548,9 +547,13 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
         removeFromTempMap(combo);
 
         // line comp dispose
-        combo.dispose();
+        combo.getParent().dispose();
         // java title dispose
-        javaLanguageComp.dispose();
+        if (javaLanguageComp.getChildren().length == 1) {
+            Control[] children = javaLanguageComp.getChildren();
+            children[0].dispose();
+        }
+        lineComp.requestLayout();
 
     }
 
@@ -642,8 +645,10 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      */
     @Override
     protected void doDeleteOnlyForJava() {
-        classNameForSave = ""; //$NON-NLS-1$
-        jarPathForSave = ""; //$NON-NLS-1$
+        if (!checkIsHaveJavaComb()) {
+            classNameForSave = ""; //$NON-NLS-1$
+            jarPathForSave = ""; //$NON-NLS-1$
+        }
     }
 
     /**
@@ -1080,7 +1085,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      */
     private void setClassNameAndJarPathForJava() {
         EList<TaggedValue> tvs = getCurrentModelElement().getTaggedValue();
-        if (classNameForSave == null || jarPathForSave == null) {
+        if (StringUtils.isEmpty(classNameForSave) || StringUtils.isEmpty(jarPathForSave)) {
             for (TaggedValue tv : tvs) {
                 if (tv.getTag().equals(TaggedValueHelper.CLASS_NAME_TEXT)) {
                     this.classNameForSave = tv.getValue();
