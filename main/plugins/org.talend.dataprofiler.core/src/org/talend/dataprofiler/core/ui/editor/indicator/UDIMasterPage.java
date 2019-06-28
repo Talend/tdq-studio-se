@@ -638,8 +638,10 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      */
     @Override
     protected void doDeleteOnlyForJava() {
-        classNameForSave = ""; //$NON-NLS-1$
-        jarPathForSave = ""; //$NON-NLS-1$
+        if (!checkIsHaveJavaComb()) {
+            classNameForSave = ""; //$NON-NLS-1$
+            jarPathForSave = ""; //$NON-NLS-1$
+        }
     }
 
     /**
