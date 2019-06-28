@@ -205,7 +205,7 @@ public class SelectAlgorithmSection extends AbstractSectionComposite {
      */
     protected void updateMatchAndSurvivorSection() {
         // In case of match rule definition editor.
-        matchAndSurvivorKeySection.initTableInput(Boolean.TRUE);
+        matchAndSurvivorKeySection.redrawnContent();
     }
 
     public boolean isVSRMode() {
