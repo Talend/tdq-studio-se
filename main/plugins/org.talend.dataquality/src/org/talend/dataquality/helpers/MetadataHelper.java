@@ -22,7 +22,6 @@ import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.properties.Project;
 import org.talend.core.model.properties.Status;
 import org.talend.cwm.constants.DevelopmentStatus;
-import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdSqlDataType;
@@ -33,6 +32,7 @@ import org.talend.dataquality.indicators.DataminingType;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.utils.sql.Java2SqlType;
 import org.talend.utils.sql.TalendTypeConvert;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -118,13 +118,10 @@ public final class MetadataHelper {
         // MOD xqliu 2010-03-23 bug 12014
         String contentType = column.getContentType();
         if (contentType == null || contentType.equals("")) {
-            if (ColumnHelper.isPrimaryKey(column) || ColumnHelper.isForeignKey(column)) {
-                return DataminingType.NOMINAL;
-            } else {
-                // MOD scorreia 2010-10-20 bug 16403 avoid NPE here
-                TdSqlDataType sqlDataType = column.getSqlDataType();
-                return (sqlDataType != null) ? getDefaultDataminingType(sqlDataType.getJavaDataType()) : DataminingType.OTHER;
-            }
+            // MOD scorreia 2010-10-20 bug 16403 avoid NPE here
+            TdSqlDataType sqlDataType = column.getSqlDataType();
+            return (sqlDataType != null) ? getDefaultDataminingType(sqlDataType.getJavaDataType())
+                    : DataminingType.OTHER;
         } else {
             return DataminingType.get(contentType);
         }
