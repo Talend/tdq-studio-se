@@ -189,7 +189,7 @@ public final class ModelElementIndicatorRule {
             break;
         case EastAsiaPatternFreqIndicatorEnum:
         case EastAsiaPatternLowFreqIndicatorEnum:
-            if (isSQLEngine && isEmpryExpression(indicator, dbmsLanguage)) {
+            if (isSQLEngine && isEmptyExpression(indicator, dbmsLanguage)) {
                 return false;
             } else if (isJavaEngine) {
                 return true;
@@ -366,7 +366,7 @@ public final class ModelElementIndicatorRule {
      * @param indicator
      * @return
      */
-    private static boolean isEmpryExpression(Indicator indicator, DbmsLanguage dbmsLanguage) {
+    private static boolean isEmptyExpression(Indicator indicator, DbmsLanguage dbmsLanguage) {
         Expression sqlExpression = dbmsLanguage.getSqlExpression(indicator.getIndicatorDefinition());
         CharactersMapping characterMappingExpression = dbmsLanguage.getChartacterMappingExpression(indicator
                 .getIndicatorDefinition());
