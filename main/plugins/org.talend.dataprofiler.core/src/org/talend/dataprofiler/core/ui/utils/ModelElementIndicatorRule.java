@@ -367,6 +367,9 @@ public final class ModelElementIndicatorRule {
      * @return
      */
     private static boolean isEmptyExpression(Indicator indicator, DbmsLanguage dbmsLanguage) {
+        if (indicator == null || dbmsLanguage == null) {
+            return true;
+        }
         Expression sqlExpression = dbmsLanguage.getSqlExpression(indicator.getIndicatorDefinition());
         CharactersMapping characterMappingExpression = dbmsLanguage.getChartacterMappingExpression(indicator
                 .getIndicatorDefinition());

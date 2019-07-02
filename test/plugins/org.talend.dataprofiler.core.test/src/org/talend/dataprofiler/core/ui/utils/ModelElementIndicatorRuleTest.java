@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.utils;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
@@ -48,6 +49,54 @@ public class ModelElementIndicatorRuleTest {
     private TdSqlDataType tdSqlDataType;
 
     private TdColumn tdColumn;
+
+    IndicatorEnum[] indicators = new IndicatorEnum[] {
+            // Simple Statistics
+            IndicatorEnum.RowCountIndicatorEnum, IndicatorEnum.NullCountIndicatorEnum,
+            IndicatorEnum.DistinctCountIndicatorEnum, IndicatorEnum.UniqueIndicatorEnum,
+            IndicatorEnum.DuplicateCountIndicatorEnum, IndicatorEnum.BlankCountIndicatorEnum,
+            IndicatorEnum.DefValueCountIndicatorEnum,
+            // Text Statistics
+            IndicatorEnum.MinLengthIndicatorEnum, IndicatorEnum.MinLengthWithNullIndicatorEnum,
+            IndicatorEnum.MinLengthWithBlankIndicatorEnum, IndicatorEnum.MinLengthWithBlankNullIndicatorEnum,
+            IndicatorEnum.MaxLengthIndicatorEnum, IndicatorEnum.MaxLengthWithNullIndicatorEnum,
+            IndicatorEnum.MaxLengthWithBlankIndicatorEnum, IndicatorEnum.MaxLengthWithBlankNullIndicatorEnum,
+            IndicatorEnum.AverageLengthIndicatorEnum, IndicatorEnum.AverageLengthWithNullIndicatorEnum,
+            IndicatorEnum.AverageLengthWithBlankIndicatorEnum, IndicatorEnum.AverageLengthWithNullBlankIndicatorEnum,
+            // Summary Statistics
+            IndicatorEnum.MeanIndicatorEnum, IndicatorEnum.MedianIndicatorEnum, IndicatorEnum.IQRIndicatorEnum,
+            IndicatorEnum.LowerQuartileIndicatorEnum, IndicatorEnum.UpperQuartileIndicatorEnum,
+            IndicatorEnum.RangeIndicatorEnum, IndicatorEnum.MinValueIndicatorEnum, IndicatorEnum.MaxValueIndicatorEnum,
+            // Advanced Statistics
+            IndicatorEnum.ModeIndicatorEnum, IndicatorEnum.FrequencyIndicatorEnum,
+            IndicatorEnum.LowFrequencyIndicatorEnum, IndicatorEnum.DateFrequencyIndicatorEnum,
+            IndicatorEnum.DateLowFrequencyIndicatorEnum, IndicatorEnum.WeekFrequencyIndicatorEnum,
+            IndicatorEnum.WeekLowFrequencyIndicatorEnum, IndicatorEnum.MonthFrequencyIndicatorEnum,
+            IndicatorEnum.MonthLowFrequencyIndicatorEnum, IndicatorEnum.QuarterFrequencyIndicatorEnum,
+            IndicatorEnum.QuarterLowFrequencyIndicatorEnum, IndicatorEnum.YearFrequencyIndicatorEnum,
+            IndicatorEnum.YearLowFrequencyIndicatorEnum, IndicatorEnum.BinFrequencyIndicatorEnum,
+            IndicatorEnum.BinLowFrequencyIndicatorEnum,
+            // Pattern Frequency Statistics
+            IndicatorEnum.PatternFreqIndicatorEnum, IndicatorEnum.PatternLowFreqIndicatorEnum,
+            IndicatorEnum.EastAsiaPatternFreqIndicatorEnum, IndicatorEnum.EastAsiaPatternLowFreqIndicatorEnum,
+            IndicatorEnum.DatePatternFreqIndicatorEnum, IndicatorEnum.CSWordPatternFreqIndicatorEnum,
+            IndicatorEnum.CSWordPatternLowFreqIndicatorEnum, IndicatorEnum.CIWordPatternFreqIndicatorEnum,
+            IndicatorEnum.CIWordPatternLowFreqIndicatorEnum,
+            // Soundex Frequency Statistics
+            IndicatorEnum.SoundexIndicatorEnum, IndicatorEnum.SoundexLowIndicatorEnum,
+            // Phone Number Statistics
+            IndicatorEnum.ValidPhoneCountIndicatorEnum, IndicatorEnum.ValidRegCodeCountIndicatorEnum,
+            IndicatorEnum.InvalidRegCodeCountIndicatorEnum, IndicatorEnum.PossiblePhoneCountIndicatorEnum,
+            IndicatorEnum.WellFormIntePhoneCountIndicatorEnum, IndicatorEnum.WellFormNationalPhoneCountIndicatorEnum,
+            IndicatorEnum.WellFormE164PhoneCountIndicatorEnum, IndicatorEnum.FormatFreqPieIndictorEnum,
+            // Fraud Detection
+            IndicatorEnum.BenfordLawFrequencyIndicatorEnum,
+            // User Defined Indicators
+            IndicatorEnum.UserDefinedIndicatorEnum,
+            // Sql patterns
+            IndicatorEnum.SqlPatternMatchingIndicatorEnum,
+            // Regex patterns
+            IndicatorEnum.RegexpMatchingIndicatorEnum };
 
     /**
      * DOC yyin Comment method "setUp".
@@ -360,7 +409,6 @@ public class ModelElementIndicatorRuleTest {
         DatabaseConnection connection = mock(DatabaseConnection.class);
         PowerMockito.mockStatic(ConnectionHelper.class);
         when(ConnectionHelper.getTdDataProvider(tdColumn)).thenReturn(connection);
-        when(ConnectionHelper.isTeradata(connection)).thenReturn(true);
         DbmsLanguage dbmsLanguage = mock(DbmsLanguage.class);
         when(dbmsLanguage.getDbmsName()).thenReturn("Sybase"); //$NON-NLS-1$
         when(dbmsLanguage.getDbVersion()).thenReturn(null);
@@ -376,4 +424,225 @@ public class ModelElementIndicatorRuleTest {
                         .patternRule(IndicatorEnum.BenfordLawFrequencyIndicatorEnum, tdColumn, ExecutionLanguage.JAVA));
 
     }
+
+    @Test
+    public void testPatternRule_mysql() {
+        String dbmsName = "Mysql";
+        int[] javaDataTypes = {
+                // int/bigint/bit
+                Types.INTEGER// , Types.BIGINT, Types.BIT
+                // float/double/decimal
+                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL
+
+                // varchar/char/text
+                , Types.VARCHAR//, Types.CHAR, Types.LONGNVARCHAR
+
+                // date/datetime // /time/timestamp
+                , Types.DATE//, Types.TIMESTAMP// Types.TIME,
+
+                // binary/blob/...
+                , Types.BINARY//, Types.BLOB
+        };
+
+
+        boolean[] ExpectResults= {
+                // please follow
+                // https://talend365.sharepoint.com/:x:/r/sites/DqTeamBeijing/_layouts/15/doc2.aspx?sourcedoc=%7Bb9903b74-31d1-4263-bdb9-6e8870b28bad%7D&action=edit&activeCell=%27MysqlSelectIndicator%27!U8&wdInitialSession=a8cc6194-2b98-47c3-b7c7-aade684e7158&wdRldC=1
+
+                // the order is java engine, sql engine
+
+                // part1-->int/bigint/bit
+                // Simple Statistics B5, C5~B6, C6~~~~B11, C11
+                true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+                // Text Statistics B13, C13~B24, C24
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false,
+                // Summary Statistics B26, C26~B33, C33
+                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+                // Advanced Statistics B35, C35~B42, C42, *2 include low
+                true, true, true, true, true, true, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false, false, false, true, true, true, true,
+                // Pattern Frequency Statistics
+                true, true, true, true, true, false, true, false, false, false, true, false, true, false,
+                true, false, true, false,
+                //Soundex Frequency Statistics
+                false, false, false, false,
+                //Phone Number Statistics
+                true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+                // Fraud Detection
+                true, true,
+                // User Defined Indicators
+                false, false, // (this is not follow the excel real result(true,true))
+                // Sql patterns
+                false, false, // (this is not follow the excel real result(false,true))
+                // Regex patterns
+                false, false, // (this is not follow the excel real result(true,true))
+
+                // part2-->varchar/char/text
+                // Simple Statistics D5, E5~D6, E6~~~~D11, E11
+                true, true, true, true, true, true, true, true, true, true, true, true, false, false,
+                // Text Statistics D13, E13~D24, E24
+                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true,
+                // Summary Statistics D26, E26~D33, E33
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false,
+                // Advanced Statistics D35, E35~D42, E42, *2 include low
+                true, true, true, true, true, true, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                // Pattern Frequency Statistics
+                true, true, true, true, true, false, true, false, true, false, true, false, true, false,
+                true, false, true, false,
+                //Soundex Frequency Statistics
+                true, true, true, true,
+                //Phone Number Statistics
+                true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+                // Fraud Detection
+                true, true,
+                // User Defined Indicators
+                false, false, // (this is not follow the excel real result(true,true))
+                // Sql patterns
+                false, false, // (this is not follow the excel real result(false,true))
+                // Regex patterns
+                false, false, // (this is not follow the excel real result(true,true))
+
+                // part3-->date/datetime/time/timestamp
+                // Simple Statistics F5, G5~F6, G6~~~~F11, G11
+                true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+                // Text Statistics F13, G13~F24, G24
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false,
+                // Summary Statistics F26, G26~F33, G33
+                false, false, false, false, false, false, false, false, false, false, true, true, true, true, true,
+                true,
+                // Advanced Statistics F35, G35~F42, G42, *2 include low
+                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+                true, true, true, true, true, true, true, true, true, false, false, false, false,
+                // Pattern Frequency Statistics
+                true, true, true, true, true, false, true, false, true, false, true, false, true, false, true, false,
+                true, false,
+                // Soundex Frequency Statistics
+                false, false, false, false,
+                // Phone Number Statistics
+                true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+                // Fraud Detection
+                true, true,
+                // User Defined Indicators
+                false, false, // (this is not follow the excel real result(true,true))
+                // Sql patterns
+                false, false, // (this is not follow the excel real result(false,true))
+                // Regex patterns
+                false, false, // (this is not follow the excel real result(true,true))
+
+                // part4-->binary/blob/...
+                // Simple Statistics H5, I5~H6, I6~~~~H11, I11
+                true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+                // Text Statistics H13, I13~H24, I24
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false,
+                // Summary Statistics H26, I26~H33, I33
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false,
+                // Advanced Statistics H35, I35~H42, I42, *2 include low
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                // Pattern Frequency Statistics
+                false, false, false, false, true, false, true, false, false, false, false, false, false, false, false,
+                false, false, false,
+                // Soundex Frequency Statistics
+                false, false, false, false,
+                // Phone Number Statistics
+                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+                false,
+                // Fraud Detection
+                true, true,
+                // User Defined Indicators
+                false, false, // (this is not follow the excel real result(true,true))
+                // Sql patterns
+                false, false, // (this is not follow the excel real result(false,true))
+                // Regex patterns
+                false, false, // (this is not follow the excel real result(true,true))
+
+        };
+        
+        int i = 0;
+        for (int javaDataType : javaDataTypes) {
+            for (; i < ExpectResults.length;) {
+                for (IndicatorEnum indicatorEnum : indicators) {
+                    testPatternRuleForAll(dbmsName, javaDataType, indicatorEnum, ExpectResults[i], ExpectResults[i + 1]);
+                    i += 2;
+                }
+                // when the indicator for one javaDataType finished, that means we need to skip and go on to another
+                // javaDataType
+                break;
+            }
+        }
+    }
+
+    /**
+     * DOC msjian Comment method "testPatternRuleForAll".
+     * 
+     * @param dbmsName "Mysql" dbVersion null
+     * @param javaDataType Types.VARCHAR
+     * @param indicatorEnum IndicatorEnum.BenfordLawFrequencyIndicatorEnum
+     * @param javaExpectResult true/false(true means can be selected)
+     * @param sqlExpectResult true/false(false means cannot be selected)
+     */
+    private void testPatternRuleForAll(String dbmsName, int javaDataType, IndicatorEnum indicatorEnum,
+            boolean javaExpectResult, boolean sqlExpectResult) {
+        when(tdSqlDataType.getJavaDataType()).thenReturn(javaDataType);
+        DatabaseConnection connection = mock(DatabaseConnection.class);
+        PowerMockito.mockStatic(ConnectionHelper.class);
+        when(ConnectionHelper.getTdDataProvider(tdColumn)).thenReturn(connection);
+        DbmsLanguage dbmsLanguage = mock(DbmsLanguage.class);
+        when(dbmsLanguage.getDbmsName()).thenReturn(dbmsName); // $NON-NLS-1$
+        when(dbmsLanguage.getDbVersion()).thenReturn(null);
+        PowerMockito.mockStatic(DbmsLanguageFactory.class);
+        when(DbmsLanguageFactory.createDbmsLanguage(connection)).thenReturn(dbmsLanguage);
+        String message = printDetailsforDebug(dbmsName, javaDataType, indicatorEnum, javaExpectResult, sqlExpectResult);
+        assertEquals(message, javaExpectResult,
+                ModelElementIndicatorRule.patternRule(indicatorEnum, tdColumn, ExecutionLanguage.JAVA));
+        assertEquals(message, sqlExpectResult,
+                ModelElementIndicatorRule.patternRule(indicatorEnum, tdColumn, ExecutionLanguage.SQL));
+    }
+
+    /**
+     * DOC msjian Comment method "printDetailsforDebug".
+     * @param dbmsName
+     * @param javaDataType
+     * @param indicatorEnum
+     * @param javaExpectResult
+     * @param sqlExpectResult
+     */
+    private String printDetailsforDebug(String dbmsName, int javaDataType, IndicatorEnum indicatorEnum,
+            boolean javaExpectResult, boolean sqlExpectResult) {
+        StringBuffer messageBuffer = new StringBuffer();
+        messageBuffer.append("-------------------------");
+        messageBuffer.append("dbmsName is:" + dbmsName);
+        messageBuffer.append(" javaDataType is:");
+        switch (javaDataType) {
+        case Types.INTEGER:
+            messageBuffer.append("Types.INTEGER");
+            break;
+        case Types.VARCHAR:
+            messageBuffer.append("Types.VARCHAR");
+            break;
+        case Types.FLOAT:
+            messageBuffer.append("Types.FLOAT");
+            break;
+        case Types.DATE:
+            messageBuffer.append("Types.DATE");
+            break;
+        case Types.BINARY:
+            messageBuffer.append("Types.BINARY");
+            break;
+        default:
+            messageBuffer.append(javaDataType);
+        }
+        messageBuffer.append(" indicatorEnum is:" + indicatorEnum);
+        messageBuffer.append(" javaExpectResult is:" + javaExpectResult);
+        messageBuffer.append(" sqlExpectResult is:" + sqlExpectResult);
+        return messageBuffer.toString();
+    }
+
 }
