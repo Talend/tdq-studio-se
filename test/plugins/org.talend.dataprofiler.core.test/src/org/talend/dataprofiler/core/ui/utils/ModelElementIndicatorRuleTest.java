@@ -98,6 +98,124 @@ public class ModelElementIndicatorRuleTest {
             // Regex patterns
             IndicatorEnum.RegexpMatchingIndicatorEnum };
 
+    boolean[] ExpectResults = {
+            // please follow
+            // https://talend365.sharepoint.com/:x:/r/sites/DqTeamBeijing/_layouts/15/doc2.aspx?sourcedoc=%7Bb9903b74-31d1-4263-bdb9-6e8870b28bad%7D&action=edit&activeCell=%27MysqlSelectIndicator%27!U8&wdInitialSession=a8cc6194-2b98-47c3-b7c7-aade684e7158&wdRldC=1
+
+            // the order is java engine, sql engine
+
+            // part1-->int/bigint/bit
+            // Simple Statistics B5, C5~B6, C6~~~~B11, C11
+            true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+            // Text Statistics B13, C13~B24, C24
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false,
+            // Summary Statistics B26, C26~B33, C33
+            true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+            // Advanced Statistics B35, C35~B42, C42, *2 include low
+            true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, true, true, true, true,
+            // Pattern Frequency Statistics
+            true, true, true, true, true, false, true, false, false, false, true, false, true, false, true, false, true,
+            false,
+            // Soundex Frequency Statistics
+            false, false, false, false,
+            // Phone Number Statistics
+            true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+            // Fraud Detection
+            true, true,
+            // User Defined Indicators
+            false, false, // (this is not follow the excel real result(true,true))
+            // Sql patterns
+            false, false, // (this is not follow the excel real result(false,true))
+            // Regex patterns
+            false, false, // (this is not follow the excel real result(true,true))
+
+            // part2-->varchar/char/text
+            // Simple Statistics D5, E5~D6, E6~~~~D11, E11
+            true, true, true, true, true, true, true, true, true, true, true, true, false, false,
+            // Text Statistics D13, E13~D24, E24
+            true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true,
+            // Summary Statistics D26, E26~D33, E33
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false,
+            // Advanced Statistics D35, E35~D42, E42, *2 include low
+            true, true, true, true, true, true, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            // Pattern Frequency Statistics
+            true, true, true, true, true, false, true, false, true, false, true, false, true, false, true, false, true,
+            false,
+            // Soundex Frequency Statistics
+            true, true, true, true,
+            // Phone Number Statistics
+            true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+            // Fraud Detection
+            true, true,
+            // User Defined Indicators
+            false, false, // (this is not follow the excel real result(true,true))
+            // Sql patterns
+            false, false, // (this is not follow the excel real result(false,true))
+            // Regex patterns
+            false, false, // (this is not follow the excel real result(true,true))
+
+            // part3-->date/datetime/time/timestamp
+            // Simple Statistics F5, G5~F6, G6~~~~F11, G11
+            true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+            // Text Statistics F13, G13~F24, G24
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false,
+            // Summary Statistics F26, G26~F33, G33
+            false, false, false, false, false, false, false, false, false, false, true, true, true, true, true, true,
+            // Advanced Statistics F35, G35~F42, G42, *2 include low
+            true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
+            true, true, true, true, true, true, true, true, false, false, false, false,
+            // Pattern Frequency Statistics
+            true, true, true, true, true, false, true, false, true, false, true, false, true, false, true, false, true,
+            false,
+            // Soundex Frequency Statistics
+            false, false, false, false,
+            // Phone Number Statistics
+            true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+            // Fraud Detection
+            true, true,
+            // User Defined Indicators
+            false, false, // (this is not follow the excel real result(true,true))
+            // Sql patterns
+            false, false, // (this is not follow the excel real result(false,true))
+            // Regex patterns
+            false, false, // (this is not follow the excel real result(true,true))
+
+            // part4-->binary/blob/...
+            // Simple Statistics H5, I5~H6, I6~~~~H11, I11
+            true, true, true, true, true, true, true, true, true, true, false, false, false, false,
+            // Text Statistics H13, I13~H24, I24
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false,
+            // Summary Statistics H26, I26~H33, I33
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false,
+            // Advanced Statistics H35, I35~H42, I42, *2 include low
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            // Pattern Frequency Statistics
+            false, false, false, false, true, false, true, false, false, false, false, false, false, false, false,
+            false, false, false,
+            // Soundex Frequency Statistics
+            false, false, false, false,
+            // Phone Number Statistics
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
+            false,
+            // Fraud Detection
+            true, true,
+            // User Defined Indicators
+            false, false, // (this is not follow the excel real result(true,true))
+            // Sql patterns
+            false, false, // (this is not follow the excel real result(false,true))
+            // Regex patterns
+            false, false, // (this is not follow the excel real result(true,true))
+    };
+
     /**
      * DOC yyin Comment method "setUp".
      *
@@ -403,173 +521,17 @@ public class ModelElementIndicatorRuleTest {
                 ExecutionLanguage.JAVA));
     }
 
-    @Test
-    public void testPatternRule_sybase() {
-        when(tdSqlDataType.getJavaDataType()).thenReturn(Types.VARCHAR);
-        DatabaseConnection connection = mock(DatabaseConnection.class);
-        PowerMockito.mockStatic(ConnectionHelper.class);
-        when(ConnectionHelper.getTdDataProvider(tdColumn)).thenReturn(connection);
-        DbmsLanguage dbmsLanguage = mock(DbmsLanguage.class);
-        when(dbmsLanguage.getDbmsName()).thenReturn("Sybase"); //$NON-NLS-1$
-        when(dbmsLanguage.getDbVersion()).thenReturn(null);
-
-        PowerMockito.mockStatic(DbmsLanguageFactory.class);
-        when(DbmsLanguageFactory.createDbmsLanguage(connection)).thenReturn(dbmsLanguage);
-
-        Assert
-                .assertTrue(ModelElementIndicatorRule
-                        .patternRule(IndicatorEnum.BenfordLawFrequencyIndicatorEnum, tdColumn, ExecutionLanguage.SQL));
-        Assert
-                .assertTrue(ModelElementIndicatorRule
-                        .patternRule(IndicatorEnum.BenfordLawFrequencyIndicatorEnum, tdColumn, ExecutionLanguage.JAVA));
-
-    }
-
-    @Test
-    public void testPatternRule_mysql() {
-        String dbmsName = "Mysql";
-        int[] javaDataTypes = {
-                // int/bigint/bit
-                Types.INTEGER// , Types.BIGINT, Types.BIT
-                // float/double/decimal
-                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL
-
-                // varchar/char/text
-                , Types.VARCHAR//, Types.CHAR, Types.LONGNVARCHAR
-
-                // date/datetime // /time/timestamp
-                , Types.DATE//, Types.TIMESTAMP// Types.TIME,
-
-                // binary/blob/...
-                , Types.BINARY//, Types.BLOB
-        };
-
-
-        boolean[] ExpectResults= {
-                // please follow
-                // https://talend365.sharepoint.com/:x:/r/sites/DqTeamBeijing/_layouts/15/doc2.aspx?sourcedoc=%7Bb9903b74-31d1-4263-bdb9-6e8870b28bad%7D&action=edit&activeCell=%27MysqlSelectIndicator%27!U8&wdInitialSession=a8cc6194-2b98-47c3-b7c7-aade684e7158&wdRldC=1
-
-                // the order is java engine, sql engine
-
-                // part1-->int/bigint/bit
-                // Simple Statistics B5, C5~B6, C6~~~~B11, C11
-                true, true, true, true, true, true, true, true, true, true, false, false, false, false,
-                // Text Statistics B13, C13~B24, C24
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false, false,
-                // Summary Statistics B26, C26~B33, C33
-                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-                // Advanced Statistics B35, C35~B42, C42, *2 include low
-                true, true, true, true, true, true, false, false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false, false, false, false, true, true, true, true,
-                // Pattern Frequency Statistics
-                true, true, true, true, true, false, true, false, false, false, true, false, true, false,
-                true, false, true, false,
-                //Soundex Frequency Statistics
-                false, false, false, false,
-                //Phone Number Statistics
-                true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
-                // Fraud Detection
-                true, true,
-                // User Defined Indicators
-                false, false, // (this is not follow the excel real result(true,true))
-                // Sql patterns
-                false, false, // (this is not follow the excel real result(false,true))
-                // Regex patterns
-                false, false, // (this is not follow the excel real result(true,true))
-
-                // part2-->varchar/char/text
-                // Simple Statistics D5, E5~D6, E6~~~~D11, E11
-                true, true, true, true, true, true, true, true, true, true, true, true, false, false,
-                // Text Statistics D13, E13~D24, E24
-                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-                true, true, true, true, true, true, true,
-                // Summary Statistics D26, E26~D33, E33
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false,
-                // Advanced Statistics D35, E35~D42, E42, *2 include low
-                true, true, true, true, true, true, false, false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                // Pattern Frequency Statistics
-                true, true, true, true, true, false, true, false, true, false, true, false, true, false,
-                true, false, true, false,
-                //Soundex Frequency Statistics
-                true, true, true, true,
-                //Phone Number Statistics
-                true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
-                // Fraud Detection
-                true, true,
-                // User Defined Indicators
-                false, false, // (this is not follow the excel real result(true,true))
-                // Sql patterns
-                false, false, // (this is not follow the excel real result(false,true))
-                // Regex patterns
-                false, false, // (this is not follow the excel real result(true,true))
-
-                // part3-->date/datetime/time/timestamp
-                // Simple Statistics F5, G5~F6, G6~~~~F11, G11
-                true, true, true, true, true, true, true, true, true, true, false, false, false, false,
-                // Text Statistics F13, G13~F24, G24
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false, false,
-                // Summary Statistics F26, G26~F33, G33
-                false, false, false, false, false, false, false, false, false, false, true, true, true, true, true,
-                true,
-                // Advanced Statistics F35, G35~F42, G42, *2 include low
-                true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true,
-                true, true, true, true, true, true, true, true, true, false, false, false, false,
-                // Pattern Frequency Statistics
-                true, true, true, true, true, false, true, false, true, false, true, false, true, false, true, false,
-                true, false,
-                // Soundex Frequency Statistics
-                false, false, false, false,
-                // Phone Number Statistics
-                true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
-                // Fraud Detection
-                true, true,
-                // User Defined Indicators
-                false, false, // (this is not follow the excel real result(true,true))
-                // Sql patterns
-                false, false, // (this is not follow the excel real result(false,true))
-                // Regex patterns
-                false, false, // (this is not follow the excel real result(true,true))
-
-                // part4-->binary/blob/...
-                // Simple Statistics H5, I5~H6, I6~~~~H11, I11
-                true, true, true, true, true, true, true, true, true, true, false, false, false, false,
-                // Text Statistics H13, I13~H24, I24
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false, false,
-                // Summary Statistics H26, I26~H33, I33
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false,
-                // Advanced Statistics H35, I35~H42, I42, *2 include low
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                // Pattern Frequency Statistics
-                false, false, false, false, true, false, true, false, false, false, false, false, false, false, false,
-                false, false, false,
-                // Soundex Frequency Statistics
-                false, false, false, false,
-                // Phone Number Statistics
-                false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-                false,
-                // Fraud Detection
-                true, true,
-                // User Defined Indicators
-                false, false, // (this is not follow the excel real result(true,true))
-                // Sql patterns
-                false, false, // (this is not follow the excel real result(false,true))
-                // Regex patterns
-                false, false, // (this is not follow the excel real result(true,true))
-
-        };
-        
+    /**
+     * DOC msjian Comment method "testPatternRuleForDatabase".
+     * @param dbmsName
+     * @param javaDataTypes
+     */
+    private void testPatternRuleForDatabase(String dbmsName, int[] javaDataTypes) {
         int i = 0;
         for (int javaDataType : javaDataTypes) {
             for (; i < ExpectResults.length;) {
                 for (IndicatorEnum indicatorEnum : indicators) {
-                    testPatternRuleForAll(dbmsName, javaDataType, indicatorEnum, ExpectResults[i], ExpectResults[i + 1]);
+                    testPatternRule(dbmsName, javaDataType, indicatorEnum, ExpectResults[i], ExpectResults[i + 1]);
                     i += 2;
                 }
                 // when the indicator for one javaDataType finished, that means we need to skip and go on to another
@@ -588,7 +550,7 @@ public class ModelElementIndicatorRuleTest {
      * @param javaExpectResult true/false(true means can be selected)
      * @param sqlExpectResult true/false(false means cannot be selected)
      */
-    private void testPatternRuleForAll(String dbmsName, int javaDataType, IndicatorEnum indicatorEnum,
+    private void testPatternRule(String dbmsName, int javaDataType, IndicatorEnum indicatorEnum,
             boolean javaExpectResult, boolean sqlExpectResult) {
         when(tdSqlDataType.getJavaDataType()).thenReturn(javaDataType);
         DatabaseConnection connection = mock(DatabaseConnection.class);
@@ -636,6 +598,12 @@ public class ModelElementIndicatorRuleTest {
         case Types.BINARY:
             messageBuffer.append("Types.BINARY");
             break;
+        case Types.CLOB:
+            messageBuffer.append("Types.CLOB");
+            break;
+        case Types.BLOB:
+            messageBuffer.append("Types.BLOB");
+            break;
         default:
             messageBuffer.append(javaDataType);
         }
@@ -645,4 +613,110 @@ public class ModelElementIndicatorRuleTest {
         return messageBuffer.toString();
     }
 
+    @Test
+    public void testPatternRule_mysql() {
+        String dbmsName = "Mysql";
+        int[] javaDataTypes = {
+                // int/bigint/bit
+                Types.INTEGER// , Types.BIGINT, Types.BIT
+                // float/double/decimal
+                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL
+
+                // varchar/char/text
+                , Types.VARCHAR// , Types.CHAR, Types.LONGNVARCHAR
+
+                // date/datetime // /time/timestamp
+                , Types.DATE// , Types.TIMESTAMP// Types.TIME,
+
+                // binary/blob/...
+                , Types.BINARY// , Types.BLOB
+        };
+
+        testPatternRuleForDatabase(dbmsName, javaDataTypes);
+    }
+
+    @Test
+    public void testPatternRule_oracle() {
+        String dbmsName = "Oracle";
+        int[] javaDataTypes = {
+                // int/bigint/bit
+                Types.INTEGER// , Types.BIGINT, Types.BIT
+                // float/double/decimal
+                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL, Types.CLOB
+
+                // varchar/char/
+                , Types.NVARCHAR// , Types.CHAR
+
+                // date/datetime // /time/timestamp
+                , Types.DATE// , Types.TIMESTAMP// Types.TIME,
+
+                // binary/blob/...
+                , Types.BLOB
+        };
+
+        testPatternRuleForDatabase(dbmsName, javaDataTypes);
+    }
+
+    @Test
+    public void testPatternRule_MSSQL() {
+        String dbmsName = "Microsoft SQL Server";
+        int[] javaDataTypes = {
+                // int/bigint/bit
+                Types.INTEGER// , Types.BIGINT, Types.BIT
+                // float/double/decimal
+                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL, Types.CLOB
+
+                // varchar/char/
+                , Types.CHAR// , Types.CHAR
+
+                // date/datetime // /time/timestamp
+                , Types.DATE// , Types.TIMESTAMP// Types.TIME,
+
+                // binary/blob/...
+                , Types.BINARY };
+
+        testPatternRuleForDatabase(dbmsName, javaDataTypes);
+    }
+
+    @Test
+    public void testPatternRule_PostgreSQL() {
+        String dbmsName = "PostgreSQL";
+        int[] javaDataTypes = {
+                // int/bigint/bit
+                Types.INTEGER// , Types.BIGINT, Types.BIT
+                // float/double/decimal
+                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL, Types.CLOB
+
+                // varchar/char/
+                , Types.VARCHAR// , Types.CHAR
+
+                // date/datetime // /time/timestamp
+                , Types.TIMESTAMP// , Types.TIMESTAMP// Types.TIME,
+
+                // binary/blob/...
+                , Types.SQLXML };
+
+        testPatternRuleForDatabase(dbmsName, javaDataTypes);
+    }
+
+    @Test
+    public void testPatternRule_sybase() {
+        String dbmsName = "Sybase (ASE and IQ)";
+        int[] javaDataTypes = {
+                // int/bigint/bit
+                Types.BIGINT// , Types.BIGINT, Types.BIT
+                // float/double/decimal
+                // , Types.FLOAT//, Types.DOUBLE, Types.DECIMAL, Types.CLOB
+
+                // varchar/char/
+                , Types.VARCHAR// , Types.CHAR
+
+                // date/datetime // /time/timestamp
+                , Types.DATE// , Types.TIMESTAMP// Types.TIME,
+
+                // binary/blob/...
+                , Types.VARBINARY };
+
+        testPatternRuleForDatabase(dbmsName, javaDataTypes);
+    }
 }
