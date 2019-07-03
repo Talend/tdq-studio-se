@@ -40,6 +40,7 @@ import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.exceptions.MissingDriverException;
+
 import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
@@ -188,7 +189,7 @@ public class DBColumnFolderRepNode extends DQDBFolderRepositoryNode implements I
                 MetadataColumnRepositoryObject metadataColumn = new MetadataColumnRepositoryObject(this.getParent().getObject(),
                         tdColumn);
                 metadataColumn.setId(tdColumn.getName());
-                metadataColumn.setLabel(tdColumn.getName());
+                metadataColumn.setLabel(tdColumn.getLabel());
                 DBColumnRepNode columnNode = new DBColumnRepNode(metadataColumn, this, ENodeType.TDQ_REPOSITORY_ELEMENT,
                         getProject());
                 columnNode.setProperties(EProperties.LABEL, ERepositoryObjectType.METADATA_CON_COLUMN);
