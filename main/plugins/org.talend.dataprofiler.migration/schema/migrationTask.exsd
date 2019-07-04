@@ -176,6 +176,8 @@
                   </enumeration>
                   <enumeration value="7.2.1">
                   </enumeration>
+                  <enumeration value="7.3.1">
+                  </enumeration>
                </restriction>
             </simpleType>
          </attribute>
