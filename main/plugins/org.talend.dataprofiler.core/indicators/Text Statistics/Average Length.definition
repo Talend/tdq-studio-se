@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_ccIR4BF2Ed2PKb6nEJEvhw" name="Average Length" label="Average Length">
-  <taggedValue xmi:id="_-Vwf4YqnEd-SocVM_rHvUg" tag="Description" value="computes the average length of the field. Does not take into account the null values when computing the average."/>
-  <taggedValue xmi:id="_-Vwf4oqnEd-SocVM_rHvUg" tag="Purpose" value="evaluates the average length of the textual record"/>
+  <taggedValue xmi:id="_-Vwf4YqnEd-SocVM_rHvUg" tag="Description" value="computes the average length of the field. Does not take into account the null and blank values when computing the average length."/>
+  <taggedValue xmi:id="_-Vwf4oqnEd-SocVM_rHvUg" tag="Purpose" value="evaluates the average length of the textual record of non-null and non-blank values"/>
   <categories href="../../../.Talend.definition#_ccKHERF2Ed2PKb6nEJEvhw"/>
   <sqlGenericExpression xmi:id="_-Vwf44qnEd-SocVM_rHvUg" body="SELECT SUM(CHAR_LENGTH(&lt;%=__COLUMN_NAMES__%>)), COUNT(&lt;%=__COLUMN_NAMES__%>) FROM &lt;%=__TABLE_NAME__%> WHERE (&lt;%=__COLUMN_NAMES__%> IS NOT NULL ) AND (TRIM(IFNULL(&lt;%=__COLUMN_NAMES__%>,'NULL TALEND')) &lt;> '' ) &lt;%=__AND_WHERE_CLAUSE__%>" language="SQL"/>
   <sqlGenericExpression xmi:id="_-Vwf5IqnEd-SocVM_rHvUg" body="SELECT SUM(LENGTH(&lt;%=__COLUMN_NAMES__%>)), COUNT(&lt;%=__COLUMN_NAMES__%>) FROM &lt;%=__TABLE_NAME__%> WHERE (&lt;%=__COLUMN_NAMES__%> IS NOT NULL ) AND (TRIM(NVL(&lt;%=__COLUMN_NAMES__%>,'NULL TALEND')) IS NOT NULL) &lt;%=__AND_WHERE_CLAUSE__%>" language="Oracle"/>

@@ -19,6 +19,7 @@ import java.sql.Statement;
 import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
 import org.talend.utils.properties.PropertiesLoader;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
@@ -233,4 +234,32 @@ public class PostgresqlDbmsLanguage extends DbmsLanguage {
         connection.setAutoCommit(false);
         return super.createStatement(connection, fetchSize);
     }
+
+    public String getAverageLengthWithBlankRows() {
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+    }
+
+    public String getAverageLengthRows() {
+        String whereExpression = "WHERE (TRIM(<%=__COLUMN_NAMES__%>) <> '' )) "; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression //$NON-NLS-1$
+                + " AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)" //$NON-NLS-1$
+                + "))::numeric / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression
+                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))::numeric / COUNT(* )) FROM <%=__TABLE_NAME__%> "
+                + whereExpression + ")";
+    }
+
+    public String getAverageLengthWithNullBlankRows() {
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>))::numeric / COUNT(*)) FROM <%=__TABLE_NAME__%>)"
+                + " AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>))::numeric / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    public String getAverageLengthWithNullRows() {
+        String whereExpression = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression
+                + "AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))::numeric / COUNT( * )) FROM <%=__TABLE_NAME__%> "
+                + whereExpression
+                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))::numeric / COUNT(*)) FROM <%=__TABLE_NAME__%>  " //$NON-NLS-1$
+                + whereExpression + ")"; //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+    }
+
 }

@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -208,7 +209,12 @@ public class InfomixDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+        String where = "WHERE  <%=__COLUMN_NAMES__%>  IS NOT NULL  AND CHAR_LENGTH( TRIM( <%=__COLUMN_NAMES__%> ) ) >0 ";
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) "
+                + "BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%> "
+                + where
+                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%> " //$NON-NLS-1$
+                + where + ")";
     }
 
     /*

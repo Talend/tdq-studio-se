@@ -38,6 +38,7 @@ import org.talend.dq.helper.AnalysisExecutorHelper;
 import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.indicators.preview.table.ChartDataEntity;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;

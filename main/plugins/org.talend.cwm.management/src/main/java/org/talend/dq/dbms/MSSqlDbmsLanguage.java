@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -166,7 +167,7 @@ public class MSSqlDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE DATALENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(DATALENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEILING(SUM(DATALENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LEN(LTRIM(RTRIM(<%=__COLUMN_NAMES__%>)))>0 AND DATALENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(DATALENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEILING(SUM(DATALENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
     }
 
     @Override

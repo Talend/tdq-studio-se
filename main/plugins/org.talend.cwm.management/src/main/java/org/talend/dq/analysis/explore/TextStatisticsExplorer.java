@@ -23,14 +23,31 @@ import org.talend.dq.dbms.HiveDbmsLanguage;
  */
 public class TextStatisticsExplorer extends DataExplorer {
 
-    private String getTextRowsStatement() {
+    private String getTextRowsStatement(boolean withBrackets) {
         String instantiatedSQL = getIndicatorExpressionSQL();
         if (instantiatedSQL == null) {
             return instantiatedSQL;
         }
 
         String clause = dbmsLanguage.charLength(this.columnName) + dbmsLanguage.equal() + "(" + instantiatedSQL + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-        return getRowsStatement(clause);
+        return getRowsStatement(clause, withBrackets);
+    }
+
+    private String getRowsStatement(String whereClause, boolean withBrackets) {
+        String fromClause = getFromClause();
+        if (fromClause == null) {
+            return null;
+        }
+        if (whereClause != null) {
+            String where = fromClause.contains(dbmsLanguage.where()) ? dbmsLanguage.and() : dbmsLanguage.where();
+            if (withBrackets) {
+                return SELECT_ALL + fromClause + where + " ( " + whereClause + " ) ";
+            } else {
+                return SELECT_ALL + fromClause + where + whereClause;
+            }
+        } else {
+            return SELECT_ALL + fromClause;
+        }
     }
 
     @Override
@@ -44,6 +61,10 @@ public class TextStatisticsExplorer extends DataExplorer {
             case AverageLengthIndicatorEnum:
                 // MOD msjian 2011-7-1 22549:change Sql for average length indicator
                 // MOD qiongli 2011-8-10 TDQ-2474:change Sql for kinds of average length indicator
+                if (isSqlEngine) {
+                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getAverageLengthRowsStatement());
+                }
+                break;
             case AverageLengthWithBlankIndicatorEnum:
                 if (isSqlEngine) {
                     map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getAverageLengthWithBlankRowsStatement());
@@ -59,15 +80,23 @@ public class TextStatisticsExplorer extends DataExplorer {
                     map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getAverageLengthWithNullRowsStatement());
                 }
                 break;
+            case MinLengthWithBlankNullIndicatorEnum:
+                if (isSqlEngine) {
+                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getMinLengthWithBlankNullRowsStatement());
+                }
+                break;
+            case MinLengthWithNullIndicatorEnum:
+                if (isSqlEngine) {
+                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getMinLengthWithNullRowsStatement());
+                }
+                break;
             case MinLengthIndicatorEnum:
             case MaxLengthIndicatorEnum:
             case MinLengthWithBlankIndicatorEnum:
-            case MinLengthWithBlankNullIndicatorEnum:
-            case MinLengthWithNullIndicatorEnum:
             case MaxLengthWithBlankIndicatorEnum:
             case MaxLengthWithBlankNullIndicatorEnum:
             case MaxLengthWithNullIndicatorEnum:
-                map.put(MENU_VIEW_ROWS, isSqlEngine ? getComment(MENU_VIEW_ROWS) + getTextRowsStatement() : null);
+                map.put(MENU_VIEW_ROWS, isSqlEngine ? getComment(MENU_VIEW_ROWS) + getTextRowsStatement(false) : null);
                 break;
             default:
             }
@@ -90,6 +119,21 @@ public class TextStatisticsExplorer extends DataExplorer {
             }
         }
         return map;
+    }
+
+    private String getAverageLengthRowsStatement() {
+        String tableName = getFullyQualifiedTableName(this.indicator.getAnalyzedElement());
+        return dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getAverageLengthRows(), this.columnName, tableName);
+    }
+
+    private String getMinLengthWithBlankNullRowsStatement() {
+        return getTextRowsStatement(true) + dbmsLanguage
+                .fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithBlankNullRows(), this.columnName, "");
+    }
+
+    private String getMinLengthWithNullRowsStatement() {
+        return getTextRowsStatement(true)
+                + dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithNullRows(), this.columnName, "");
     }
 
     /**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_-_UFUJSOEd-TE5ti6XNR2Q" name="Maximal Length With Null" label="Maximal Length With Null">
-  <taggedValue xmi:id="_-_UFUZSOEd-TE5ti6XNR2Q" tag="Description" value="computes the maximal length of a text field, counting null data as zero length values."/>
-  <taggedValue xmi:id="_-_UFUpSOEd-TE5ti6XNR2Q" tag="Purpose" value="evaluates the length of the longest textual record"/>
+  <taggedValue xmi:id="_-_UFUZSOEd-TE5ti6XNR2Q" tag="Description" value="computes the maximal length of a text field. Does not take into account the blank values when computing the maximal length."/>
+  <taggedValue xmi:id="_-_UFUpSOEd-TE5ti6XNR2Q" tag="Purpose" value="evaluates the length of the longest textual record of non-blank values"/>
   <categories href="../../../.Talend.definition#_ccKHERF2Ed2PKb6nEJEvhw"/>
   <sqlGenericExpression xmi:id="_-_UFVJSOEd-TE5ti6XNR2Q" body="SELECT MAX(CHAR_LENGTH(IFNULL(&lt;%=__COLUMN_NAMES__%>,''))) FROM &lt;%=__TABLE_NAME__%> WHERE (TRIM(IFNULL(&lt;%=__COLUMN_NAMES__%>,'NULL TALEND')) &lt;> '' ) &lt;%=__AND_WHERE_CLAUSE__%>" language="SQL"/>
   <sqlGenericExpression xmi:id="_-_UFVZSOEd-TE5ti6XNR2Q" body="SELECT MAX(CASE WHEN &lt;%=__COLUMN_NAMES__%> IS NULL THEN 0 ELSE LENGTH(&lt;%=__COLUMN_NAMES__%>) END) FROM &lt;%=__TABLE_NAME__%> WHERE (TRIM(NVL(&lt;%=__COLUMN_NAMES__%>,'NULL TALEND')) IS NOT NULL) &lt;%=__AND_WHERE_CLAUSE__%>" language="Oracle"/>

@@ -1793,6 +1793,18 @@
            name="Add definition in  Regular Expression Matching for Teradata Task"
            version="7.2.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.UpdateDescriptionOfAllTextIndicatorsTask"
+           id="org.talend.dataprofiler.core.migration.impl.UpdateDescriptionOfAllTextIndicatorsTask"
+           name="Update the purpose and Description Of All Text Indicators"
+           version="7.2.1">
+     </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.UpdateAverageIndicatorsExpressionTask"
+           id="org.talend.dataprofiler.core.migration.impl.UpdateAverageIndicatorsExpressionTask"
+           name="Update the sql expressions for  Average Length with Blank, Average Length with Blank and Null Text Indicators"
+           version="7.2.1">
+     </workspacetask>
   </extension>
   
   <extension
