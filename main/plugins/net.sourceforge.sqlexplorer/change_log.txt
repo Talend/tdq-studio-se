@@ -1,5 +1,7 @@
 change logs from talend
 
+2019-06-28 msjian TDQ-17205: remove some jars
+
 2016-8-29 msjian bug TDQ-12005: fix Exasol database can view index/keys well
 
 2016-8-24 xqliu bug TDQ-12451 Impala connection can not do Preview
