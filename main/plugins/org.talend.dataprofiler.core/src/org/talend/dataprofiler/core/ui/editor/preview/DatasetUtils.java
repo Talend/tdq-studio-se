@@ -39,6 +39,7 @@ import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.utils.collections.MultiMapHelper;
 import org.talend.utils.collections.MultipleKey;
 import org.talend.utils.collections.ValueAggregate;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -228,9 +229,9 @@ public class DatasetUtils {
             if (null != listRows) {
                 for (Object[] row : listRows) {
                     final Object minObj = row[minPos];
-                    final Date minDate = minObj != null ? (Date) minObj : null;
+                    final Date minDate = minObj != null ? convert2Date(minObj) : null;
                     final Object maxobj = row[maxPos];
-                    final Date maxDate = maxobj != null ? (Date) maxobj : null;
+                    final Date maxDate = maxobj != null ? convert2Date(maxobj) : null;
 
                     DateValueAggregate valueAggregator = valueAggregators.get(key);
                     if (valueAggregator == null) {
@@ -243,6 +244,19 @@ public class DatasetUtils {
             }
         }
         return valueAggregators;
+    }
+
+    /**
+     * DOC msjian Comment method "getDate".
+     * @param minObj
+     * @return
+     */
+    private static java.util.Date convert2Date(Object obj) {
+        if (obj instanceof String) {
+            return java.sql.Date.valueOf(obj.toString());
+        }
+        // for Timestamp type data
+        return (Date) obj;
     }
 
     /**
