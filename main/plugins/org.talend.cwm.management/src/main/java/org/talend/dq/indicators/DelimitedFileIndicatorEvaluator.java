@@ -42,7 +42,6 @@ import org.talend.dataquality.analysis.AnalysisFactory;
 import org.talend.dataquality.analysis.AnalyzedDataSet;
 import org.talend.dataquality.indicators.DuplicateCountIndicator;
 import org.talend.dataquality.indicators.Indicator;
-import org.talend.dataquality.indicators.RowCountIndicator;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.mapdb.MapDBUtils;
 import org.talend.dq.helper.AnalysisExecutorHelper;
@@ -50,9 +49,10 @@ import org.talend.dq.helper.FileUtils;
 import org.talend.fileprocess.FileInputDelimited;
 import org.talend.utils.sql.TalendTypeConvert;
 import org.talend.utils.sugars.ReturnCode;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 import com.talend.csv.CSVReader;
+
+import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC qiongli class global comment. Detailled comment
@@ -323,10 +323,6 @@ public class DelimitedFileIndicatorEvaluator extends IndicatorEvaluator {
             for (Indicator indicator : indicators) {
                 if (!continueRun()) {
                     break element;
-                }
-                // bug 19036,to irregularly data,still compute for RowCountIndicator
-                if (object == null && !(indicator instanceof RowCountIndicator)) {
-                    continue element;
                 }
                 // Added yyin 20120608 TDQ-3589
                 if (indicator instanceof DuplicateCountIndicator) {
