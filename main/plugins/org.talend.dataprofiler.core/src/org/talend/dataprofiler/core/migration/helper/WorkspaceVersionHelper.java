@@ -21,9 +21,11 @@ import java.util.Properties;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.PluginConstant;
+import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.ProductVersion;
 
@@ -46,7 +48,13 @@ public final class WorkspaceVersionHelper {
      * @return
      */
     public static IFile getVersionFile() {
-        return ResourceManager.getLibrariesFolder().getFile(PluginConstant.VERSION_FILE_PATH);
+        return getVersionFile(ResourceManager.getRootProject());
+    }
+
+    public static IFile getVersionFile(IProject project) {
+        return ResourceManager
+                .getOneFolder(project, EResourceConstant.LIBRARIES)
+                .getFile(PluginConstant.VERSION_FILE_PATH);
     }
 
     /**

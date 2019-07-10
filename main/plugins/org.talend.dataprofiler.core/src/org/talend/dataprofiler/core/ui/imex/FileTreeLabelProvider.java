@@ -26,6 +26,7 @@ import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.ui.imex.model.ItemRecord;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.resource.EResourceConstant;
+import org.talend.resource.ResourceManager;
 
 /**
  * DOC bZhou class global comment. Detailled comment
@@ -46,40 +47,43 @@ public class FileTreeLabelProvider extends LabelProvider {
             String fileName = file.getName();
             if (file.isDirectory()) {
                 image = ImageLib.getImage(ImageLib.FOLDERNODE_IMAGE);
-
-                EResourceConstant constant = resolveResourceConstant(fileName);
-                if (constant != null) {
-                    switch (constant) {
-                    case DATA_PROFILING:
-                        image = ImageLib.getImage(ImageLib.DATA_PROFILING);
-                        break;
-                    case METADATA:
-                        image = ImageLib.getImage(ImageLib.METADATA);
-                        break;
-                    case LIBRARIES:
-                        image = ImageLib.getImage(ImageLib.LIBRARIES);
-                        break;
-                    case ANALYSIS:
-                        break;
-                    case REPORTS:
-                        break;
-                    case EXCHANGE:
-                        image = ImageLib.getImage(ImageLib.EXCHANGE);
-                        break;
-                    case DB_CONNECTIONS:
-                        image = ImageLib.getImage(ImageLib.CONNECTION);
-                        break;
-                    case FILEDELIMITED:
-                        image = ImageLib.getImage(ImageLib.FILE_DELIMITED);
-                        break;
-                    case HADOOP_CLUSTER:
-                        image = ImageLib.getImage(ImageLib.HADOOP_CLUSTER);
-                        break;
-                    case CONTEXT:
-                        image = ImageLib.getImage(ImageLib.CONTEXT);
-                        break;
-                    default:
-                        break;
+                if (ResourceManager.getWorskpacePath().toFile().equals(file)) {
+                    image = ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
+                } else {
+                    EResourceConstant constant = resolveResourceConstant(fileName);
+                    if (constant != null) {
+                        switch (constant) {
+                        case DATA_PROFILING:
+                            image = ImageLib.getImage(ImageLib.DATA_PROFILING);
+                            break;
+                        case METADATA:
+                            image = ImageLib.getImage(ImageLib.METADATA);
+                            break;
+                        case LIBRARIES:
+                            image = ImageLib.getImage(ImageLib.LIBRARIES);
+                            break;
+                        case ANALYSIS:
+                            break;
+                        case REPORTS:
+                            break;
+                        case EXCHANGE:
+                            image = ImageLib.getImage(ImageLib.EXCHANGE);
+                            break;
+                        case DB_CONNECTIONS:
+                            image = ImageLib.getImage(ImageLib.CONNECTION);
+                            break;
+                        case FILEDELIMITED:
+                            image = ImageLib.getImage(ImageLib.FILE_DELIMITED);
+                            break;
+                        case HADOOP_CLUSTER:
+                            image = ImageLib.getImage(ImageLib.HADOOP_CLUSTER);
+                            break;
+                        case CONTEXT:
+                            image = ImageLib.getImage(ImageLib.CONTEXT);
+                            break;
+                        default:
+                            break;
+                        }
                     }
                 }
             } else {

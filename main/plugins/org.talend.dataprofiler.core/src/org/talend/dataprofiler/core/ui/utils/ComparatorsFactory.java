@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.utils;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +29,7 @@ import org.talend.dq.helper.EMainNodesTreeType;
 import org.talend.dq.helper.RepositoryNodeComparator;
 import org.talend.dq.indicators.ext.FrequencyExt;
 import org.talend.repository.model.IRepositoryNode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -315,7 +317,15 @@ public final class ComparatorsFactory {
             }
             EMainNodesTreeType orderType1 = EMainNodesTreeType.findByFile(o1.getFile());
             EMainNodesTreeType orderType2 = EMainNodesTreeType.findByFile(o2.getFile());
-            return orderType1.ordinal() - orderType2.ordinal();
+            if (!orderType1.equals(orderType1)) {
+                return orderType1.ordinal() - orderType2.ordinal();
+            }
+            File file1 = o1.getFile();
+            File file2 = o2.getFile();
+            if (file1 != null && file1.exists() && file2 != null && file2.exists()) {
+                return file1.getName().compareTo(file2.getName());
+            }
+            return 0;
         }
     }
 

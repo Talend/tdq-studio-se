@@ -57,7 +57,6 @@ import org.talend.dataprofiler.core.ui.imex.model.EImexType;
 import org.talend.dataprofiler.core.ui.imex.model.ExportWriterFactory;
 import org.talend.dataprofiler.core.ui.imex.model.IExportWriter;
 import org.talend.dataprofiler.core.ui.imex.model.ItemRecord;
-import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
 import org.talend.dataprofiler.core.ui.utils.ImportAndExportUtils;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.helper.EObjectHelper;
@@ -71,6 +70,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -117,6 +117,7 @@ public class ExportWizardPage extends WizardPage {
     private final String underlineStr = "_";//$NON-NLS-1$
 
     private final String subrepName = "subreports";//$NON-NLS-1$
+
 
     public ExportWizardPage(String specifiedPath) {
         super(Messages.getString("ExportWizardPage.2")); //$NON-NLS-1$
@@ -324,9 +325,9 @@ public class ExportWizardPage extends WizardPage {
                         for (File file : record.getDependencySet()) {
                             // ADD msjian TDQ-12245: for the reference project file which is depended on by the main
                             // items, we ignore it(means not export it).
-                            if (!DqFileUtils.isLocalProjectFile(file)) {
-                                continue;
-                            }
+                            // if (!DqFileUtils.isLocalProjectFile(file)) {
+                            // continue;
+                            // }
                             // TDQ-12245~
 
                             ItemRecord findRecord = ItemRecord.findRecord(file);
@@ -386,9 +387,9 @@ public class ExportWizardPage extends WizardPage {
             for (File depFile : record.getDependencySet()) {
                 // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items, we
                 // ignore it(means not export it).
-                if (!DqFileUtils.isLocalProjectFile(depFile)) {
-                    continue;
-                }
+                // if (!DqFileUtils.isLocalProjectFile(depFile)) {
+                // continue;
+                // }
                 // TDQ-12245~
 
                 ItemRecord findRecord = ItemRecord.findRecord(depFile);
@@ -574,9 +575,9 @@ public class ExportWizardPage extends WizardPage {
                     for (File depFile : record.getDependencySet()) {
                         // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items,
                         // we ignore it(means not export it).
-                        if (!DqFileUtils.isLocalProjectFile(depFile)) {
-                            continue;
-                        }
+                        // if (!DqFileUtils.isLocalProjectFile(depFile)) {
+                        // continue;
+                        // }
                         // TDQ-12245~
 
                         ItemRecord depRecord = ItemRecord.findRecord(depFile);
@@ -696,6 +697,7 @@ public class ExportWizardPage extends WizardPage {
                     }
                 }
             }
+
         }
         return itemRecords.toArray(new ItemRecord[itemRecords.size()]);
     }
@@ -803,4 +805,5 @@ public class ExportWizardPage extends WizardPage {
         }
         return true;
     }
+
 }

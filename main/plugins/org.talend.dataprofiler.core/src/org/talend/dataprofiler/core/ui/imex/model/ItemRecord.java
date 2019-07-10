@@ -25,7 +25,10 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
@@ -37,6 +40,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.emf.FactoriesUtil.EElementEName;
 import org.talend.commons.utils.WorkspaceUtils;
+import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
@@ -51,6 +55,7 @@ import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.helper.ContextViewHelper;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.utils.ComparatorsFactory;
+import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
 import org.talend.dataprofiler.core.ui.utils.UDIUtils;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
@@ -75,10 +80,14 @@ import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.dq.helper.CustomAttributeMatcherHelper;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
+import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.resourcehelper.ContextResourceFileHelper;
 import org.talend.dq.helper.resourcehelper.RepResourceFileHelper;
+import org.talend.model.bridge.ReponsitoryContextBridge;
+import org.talend.repository.ProjectManager;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.TaggedValue;
@@ -136,6 +145,8 @@ public class ItemRecord {
     // we get rootFolder of current project
     private IPath rootFolder = Path.EMPTY;
 
+    private Project project = null;
+
     public ItemRecord(File file) {
         this(file, ResourceManager.getRootProject().getLocation());
     }
@@ -162,7 +173,13 @@ public class ItemRecord {
         if (FILE_ELEMENT_MAP == null) {
             FILE_ELEMENT_MAP = new HashMap<File, ModelElement>();
         }
-
+        if (rootFolder != null) {
+            String lastSegment = rootFolder.lastSegment();
+            project = ProjectManager.getInstance().getProjectFromProjectTechLabel(lastSegment);
+        }
+        if (project == null) {
+            project = ProjectManager.getInstance().getCurrentProject();
+        }
         try {
             initialize();
         } catch (Exception e) {
@@ -794,7 +811,6 @@ public class ItemRecord {
     public ItemRecord[] getChildern() {
         if (childern == null) {
             List<ItemRecord> recordList = new ArrayList<ItemRecord>();
-
             File[] listFiles = file.listFiles();
             if (listFiles != null) {
                 for (File aFile : listFiles) {
@@ -806,11 +822,64 @@ public class ItemRecord {
                     }
                 }
             }
+            Project currentProject = ProjectManager.getInstance().getCurrentProject();
+            List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(currentProject);
+            boolean hasRefProject = org.talend.core.PluginChecker.isRefProjectLoaded()
+                    && currentProject.getEmfProject() != null && referencedProjects.size() > 0;
+            if (DqFileUtils.isLocalProjectFile(file)) {
+                if (hasRefProject && ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+                    try {
+                        for (Project refProj : referencedProjects) {
+                            IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
+                            IFolder refFolder = findRefNeededFolder(iProject, file);
+                            if (refFolder != null && refFolder.exists()) {
+                                for (IResource res : refFolder.members()) {
+                                    File refFile = res.getLocation().toFile();
+                                    if (!isValid(refFile)) {
+                                        break;
+                                    }
+                                    ItemRecord itemRecord = new ItemRecord(refFile,
+                                            ResourceManager.getWorskpacePath().append(refProj.getTechnicalLabel()));
+                                    if (itemRecord.isValid()) {
+                                        recordList.add(itemRecord);
+                                    }
+                                }
+                            }
+
+                        }
+                    } catch (CoreException e) {
+                        log.error(e.getMessage());
+                    }
+                }
+            }
+
+            if (ResourceManager.getRootProject().getLocation().toFile().getPath().equals(file.getPath())
+                    && hasRefProject) {
+                    if (!ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+                        ItemRecord itemRecordRefRoot =
+                                new ItemRecord(ResourceManager.getWorskpacePath().toFile(),
+                                        ResourceManager.getWorskpacePath());
+                        recordList.add(itemRecordRefRoot);
+
+                    }
+
+            } else if (hasRefProject && ResourceManager.getWorskpacePath().toFile().equals(file)
+                    && rootFolder.equals(ResourceManager.getWorskpacePath())) {
+                    for (Project refProj : referencedProjects) {
+                        IPath refRootPath = ResourceManager.getWorskpacePath().append(refProj.getTechnicalLabel());
+                        ItemRecord itemRecordRef = new ItemRecord(refRootPath.toFile(), refRootPath);
+                        recordList.add(itemRecordRef);
+                    }
+
+            }
+
             childern = recordList.toArray(new ItemRecord[recordList.size()]);
         }
         ComparatorsFactory.sort(childern, ComparatorsFactory.ITEM_RECORD_COMPARATOR_ID);
         return this.childern;
     }
+
+
 
     /**
      * DOC bZhou Comment method "getName".
@@ -818,56 +887,176 @@ public class ItemRecord {
      * @return
      */
     public String getName() {
+        String displayName = null;
         if (property != null) {
             // only internationalization name of SystemIndicator
             ModelElement element = PropertyHelper.getModelElement(property);
             if (element != null && DefinitionPackage.eINSTANCE.getIndicatorDefinition().equals(element.eClass())) {
-                return InternationalizationUtil.getDefinitionInternationalizationLabel(property.getLabel());
+                displayName = InternationalizationUtil.getDefinitionInternationalizationLabel(property.getLabel());
+                if (!ResourceManager.getRootProject().getName().equalsIgnoreCase(project.getTechnicalLabel())) {
+                    return displayName + "(@" + project.getLabel() + ")";
+                }
+                return displayName;
             }
-            return property.getDisplayName();
+
+            displayName = property.getDisplayName();
         } else {
             if (file == null) {
                 return StringUtils.EMPTY;
+            }
+            if (ResourceManager.getWorskpacePath().toFile().equals(file)
+                    && rootFolder.equals(ResourceManager.getWorskpacePath())) {
+                return "Referenced project";
+            }
+            String name = file.getName();
+            if (name.equals(EResourceConstant.DATA_PROFILING.getName())
+                    || name.equals(EResourceConstant.LIBRARIES.getName())
+                    || name.equals(EResourceConstant.METADATA.getName())
+                    || name.equals(EResourceConstant.ANALYSIS.getName())
+                    || name.equals(EResourceConstant.REPORTS.getName())
+                    || name.equals(EResourceConstant.CONTEXT.getName())
+                    || name.equals(EResourceConstant.HADOOP_CLUSTER.getName())
+                    || name.equals(EResourceConstant.EXCHANGE.getName())
+                    || name.equals(EResourceConstant.RULES.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS.getName())
+                    || name.equals(EResourceConstant.JRXML_TEMPLATE.getName())
+                    || name.equals(EResourceConstant.USER_DEFINED_INDICATORS.getName())
+                    || name.equals(EResourceConstant.PATTERNS.getName())
+                    || name.equals(EResourceConstant.INDICATORS.getName())
+                    || name.equals(EResourceConstant.FILEDELIMITED.getName())
+                    || name.equals(EResourceConstant.DB_CONNECTIONS.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_TEXT_STATISTICS.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_CORRELATION.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_FRAUDDETECTION.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_FUNCTIONAL_DEPENDENCY.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_PATTERN_MATCHING.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_ADVANCED_STATISTICS.getName())
+                    || name.equals(EResourceConstant.SOURCE_FILES.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_ROW_COMPARISON.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_SIMPLE_STATISTICS.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS.getName())
+                    || name.equals(EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName())
+                    || name.equals(EResourceConstant.RULES_PARSER.getName())
+                    || name.equals(EResourceConstant.RULES_MATCHER.getName())) {
+                displayName = Messages.getString("RepositoryNodeHelper." + name.replace(' ', '_'));
+            } else if (name.equals(EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName())) {
+                return Messages.getString(name.replace(' ', '_'));
             } else {
-                String name = file.getName();
-                if (name.equals(EResourceConstant.DATA_PROFILING.getName())
-                        || name.equals(EResourceConstant.LIBRARIES.getName())
-                        || name.equals(EResourceConstant.METADATA.getName())
-                        || name.equals(EResourceConstant.ANALYSIS.getName())
-                        || name.equals(EResourceConstant.REPORTS.getName())
-                        || name.equals(EResourceConstant.CONTEXT.getName())
-                        || name.equals(EResourceConstant.HADOOP_CLUSTER.getName())
-                        || name.equals(EResourceConstant.EXCHANGE.getName())
-                        || name.equals(EResourceConstant.RULES.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS.getName())
-                        || name.equals(EResourceConstant.JRXML_TEMPLATE.getName())
-                        || name.equals(EResourceConstant.USER_DEFINED_INDICATORS.getName())
-                        || name.equals(EResourceConstant.PATTERNS.getName())
-                        || name.equals(EResourceConstant.INDICATORS.getName())
-                        || name.equals(EResourceConstant.FILEDELIMITED.getName())
-                        || name.equals(EResourceConstant.DB_CONNECTIONS.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_TEXT_STATISTICS.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_CORRELATION.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_FRAUDDETECTION.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_FUNCTIONAL_DEPENDENCY.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_PATTERN_MATCHING.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_ADVANCED_STATISTICS.getName())
-                        || name.equals(EResourceConstant.SOURCE_FILES.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_ROW_COMPARISON.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_SIMPLE_STATISTICS.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS.getName())
-                        || name.equals(EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName())
-                        || name.equals(EResourceConstant.RULES_PARSER.getName())
-                        || name.equals(EResourceConstant.RULES_MATCHER.getName())) {
-                    return Messages.getString("RepositoryNodeHelper." + name.replace(' ', '_'));
-                } else if (name.equals(EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName())) {
-                    return Messages.getString(name.replace(' ', '_'));
-                } else {
-                    return name;
+                displayName = name;
+            }
+
+        }
+        if (!ResourceManager.getRootProject().getName().equalsIgnoreCase(project.getTechnicalLabel())) {
+            return displayName + "(@" + project.getLabel() + ")";
+        }
+        return displayName;
+    }
+
+    public IFolder findRefNeededFolder(IProject iproject, File fileOrFolder) {
+        IFolder folder = null;
+        if (fileOrFolder != null && fileOrFolder.isDirectory()) {
+            String name = fileOrFolder.getName();
+            String folderPath = fileOrFolder.getPath();
+            if (folderPath != null) {
+                folderPath = folderPath.replace("\\", IPath.SEPARATOR + "");
+                if (folderPath.contains(EResourceConstant.PATTERN_SQL.getPath())
+                        && !EResourceConstant.PATTERN_SQL.getName().equals(name)) {
+                    return findRefSubFolder(name,
+                            ResourceManager.getOneFolder(iproject, EResourceConstant.PATTERN_SQL));
+                } else if (folderPath.contains(EResourceConstant.PATTERN_REGEX.getPath())
+                        && !EResourceConstant.PATTERN_REGEX.getName().equals(name)) {
+                    return findRefSubFolder(name,
+                            ResourceManager.getOneFolder(iproject, EResourceConstant.PATTERN_REGEX));
                 }
             }
+            if (EResourceConstant.ANALYSIS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.ANALYSIS);
+            }
+            if (EResourceConstant.REPORTS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.REPORTS);
+            }
+
+            if (EResourceConstant.USER_DEFINED_INDICATORS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.USER_DEFINED_INDICATORS);
+            }
+            if (EResourceConstant.USER_DEFINED_INDICATORS_LIB.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.USER_DEFINED_INDICATORS_LIB);
+            }
+
+            if (EResourceConstant.DB_CONNECTIONS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.DB_CONNECTIONS);
+            }
+            if (EResourceConstant.FILEDELIMITED.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.FILEDELIMITED);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_SIMPLE_STATISTICS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SIMPLE_STATISTICS);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_ADVANCED_STATISTICS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_ADVANCED_STATISTICS);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS.getName().equals(name)) {
+                return ResourceManager
+                        .getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_PATTERN_MATCHING.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_PATTERN_MATCHING);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName().equals(name)) {
+                return ResourceManager
+                        .getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_SOUNDEX.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SOUNDEX);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_TEXT_STATISTICS.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_TEXT_STATISTICS);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_CORRELATION.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_CORRELATION);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_ROW_COMPARISON.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_ROW_COMPARISON);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES);
+            }
+            if (EResourceConstant.SYSTEM_INDICATORS_FRAUDDETECTION.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS);
+            }
+            if (EResourceConstant.RULES_PARSER.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.RULES_PARSER);
+            }
+            if (EResourceConstant.RULES_SQL.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.RULES_SQL);
+            }
+            if (EResourceConstant.RULES_MATCHER.getName().equals(name)) {
+                return ResourceManager.getOneFolder(iproject, EResourceConstant.RULES_MATCHER);
+            }
         }
+        return folder;
+    }
+
+    /**
+     * @Description:
+     * @param iproject
+     * @param name
+     * @param parent
+     * @return
+     */
+    private IFolder findRefSubFolder(String name, IFolder parent) {
+        IResource findMember = parent.findMember(name);
+        if (findMember instanceof IFolder) {
+            IFolder patternSqlChild = (IFolder) findMember;
+            if (patternSqlChild.exists()) {
+                return patternSqlChild;
+            }
+        }
+        return null;
     }
 
     /**
@@ -1119,4 +1308,5 @@ public class ItemRecord {
         }
         return false;
     }
+
 }

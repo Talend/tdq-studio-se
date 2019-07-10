@@ -16,11 +16,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -35,8 +38,10 @@ import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.migration.helper.WorkspaceVersionHelper;
+import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
+import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.resource.ResourceManager;
 
 /**
@@ -75,7 +80,7 @@ public class FileSystemExportWriter implements IExportWriter {
         // TDQ-11349 get path from property, should not contain path "repositories\1638449237\master..."
         Property property = record.getProperty();
         IPath itemDesPath = null;
-        if (property != null) {
+        if (property != null && DqFileUtils.isLocalProjectFile(record.getFile())) {
             // TDQ-11370: get a relative path to make the export structure correctly.
             itemDesPath = PropertyHelper.getItemPath(property).makeRelative();
         } else {
@@ -109,6 +114,8 @@ public class FileSystemExportWriter implements IExportWriter {
         }
 
         try {
+            Set<IPath> projectPathes = new HashSet<IPath>();
+            List<IProject> expProjects = new ArrayList<IProject>();
             for (ItemRecord record : records) {
 
                 if (monitor.isCanceled()) {
@@ -132,6 +139,7 @@ public class FileSystemExportWriter implements IExportWriter {
                             write(resPath, desPath);
                         }
                     }
+                    projectPathes.add(record.getRootFolderPath());
                 } else {// may not come here check if have time
                     for (ImportMessage error : record.getErrors()) {
                         if (EMessageType.ERROR == error.getType()) {
@@ -142,8 +150,16 @@ public class FileSystemExportWriter implements IExportWriter {
 
                 monitor.worked(1);
             }
+            // compute which projects are selected
+            for (IPath projectPat : projectPathes) {
+                IFile projDir = ResourceManager.getRoot().getFile(projectPat);
+                IProject project = ReponsitoryContextBridge.findProject(projDir.getName());
+                if (project.exists()) {
+                    expProjects.add(project);
+                }
+            }
 
-            finish(records);
+            finish(records, expProjects);
 
         } catch (Exception e) {
             log.error(e, e);
@@ -167,6 +183,12 @@ public class FileSystemExportWriter implements IExportWriter {
         }
     }
 
+    public void finish(ItemRecord[] records) throws IOException, CoreException {
+        List<IProject> projects = new ArrayList<>();
+        projects.add(ResourceManager.getRootProject());
+        finish(records, projects);
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -174,17 +196,21 @@ public class FileSystemExportWriter implements IExportWriter {
      * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#finish(org.talend.dataprofiler.core.ui.imex.model.ItemRecord
      * [])
      */
-    public void finish(ItemRecord[] records) throws IOException, CoreException {
-        IFile projFile = ResourceManager.getRootProject().getFile(FileConstants.LOCAL_PROJECT_FILENAME);
-        writeSysFile(projFile);
+    public void finish(ItemRecord[] records, List<IProject> projects) throws IOException, CoreException {
+        for (IProject project : projects) {
+            IFile projFile = project.getFile(FileConstants.LOCAL_PROJECT_FILENAME);// named 'talend.project'
 
-        IFile definitonFile = DefinitionHandler.getTalendDefinitionFile();
-        writeSysFile(definitonFile);
+            writeSysFile(projFile);
 
-        IFile versionFile = WorkspaceVersionHelper.getVersionFile();
-        writeSysFile(versionFile);
+            IFile definitonFile = DefinitionHandler.getTalendDefinitionFile(project);
+            writeSysFile(definitonFile);
+
+            IFile versionFile = WorkspaceVersionHelper.getVersionFile(project);
+            writeSysFile(versionFile);
+        }
 
         ItemRecord.clear();
+
     }
 
     /**

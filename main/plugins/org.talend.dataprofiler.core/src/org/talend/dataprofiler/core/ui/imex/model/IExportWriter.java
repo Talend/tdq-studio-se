@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -87,4 +88,6 @@ public interface IExportWriter {
      * @throws CoreException
      */
     public void finish(ItemRecord[] records) throws IOException, CoreException;
+
+    public void finish(ItemRecord[] records, List<IProject> projects) throws IOException, CoreException;
 }

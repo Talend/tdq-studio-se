@@ -27,10 +27,12 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
+import org.talend.resource.ResourceManager;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -112,7 +114,14 @@ public class ZipFileExportWriter extends FileSystemExportWriter {
      */
     @Override
     public void finish(ItemRecord[] records) throws IOException, CoreException {
-        super.finish(records);
+        List<IProject> projects = new ArrayList<>();
+        projects.add(ResourceManager.getRootProject());
+        finish(records, projects);
+    }
+
+    @Override
+    public void finish(ItemRecord[] records, List<IProject> projects) throws IOException, CoreException {
+        super.finish(records, projects);
 
         addFilesToExistingZip(getBasePath().toFile(), tempMap);
         tempMap.clear();
@@ -120,6 +129,7 @@ public class ZipFileExportWriter extends FileSystemExportWriter {
             outputStream.close();
         }
     }
+
 
     /*
      * (non-Javadoc)
