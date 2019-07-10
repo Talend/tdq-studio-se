@@ -922,7 +922,7 @@ public final class RepositoryNodeHelper {
     private static DBColumnRepNode createMetadataColumnRepNode(TdColumn findColumn, IRepositoryViewObject lastVersion) {
         MetadataColumnRepositoryObject metadataColumn = new MetadataColumnRepositoryObject(lastVersion, findColumn);
         metadataColumn.setId(findColumn.getName());
-        metadataColumn.setLabel(findColumn.getName());
+        metadataColumn.setLabel(findColumn.getLabel());
         DBColumnRepNode columnNode = new DBColumnRepNode(metadataColumn, null, ENodeType.TDQ_REPOSITORY_ELEMENT, null);
         columnNode.setProperties(EProperties.LABEL, ERepositoryObjectType.METADATA_CON_COLUMN);
         columnNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_CON_COLUMN);
