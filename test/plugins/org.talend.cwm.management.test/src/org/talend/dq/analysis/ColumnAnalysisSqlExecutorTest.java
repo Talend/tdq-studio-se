@@ -12,6 +12,8 @@
 // ============================================================================
 package org.talend.dq.analysis;
 
+import java.sql.Types;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -184,4 +186,46 @@ public class ColumnAnalysisSqlExecutorTest {
         Assert.assertNotNull(testFrequencyIndicator.getInstantiatedExpressions());
         Assert.assertEquals(expectResult, testFrequencyIndicator.getInstantiatedExpressions().get(0).getBody());
     }
+
+    @SuppressWarnings({ "deprecation", "nls" })
+    @Test
+    public void testGetFinalDefaultValue() {
+        ColumnAnalysisSqlExecutor columnAnalysisSqlExecutor = new ColumnAnalysisSqlExecutor();
+        // case1 TDQ-1554 add single quotation '' for mysql date type
+        String finalDefaultValue =
+                columnAnalysisSqlExecutor
+                        .getFinalDefaultValue(Types.DATE, "MySQL", "`tbi`.`defalutvalueTest`", "CURRENT_TIMESTAMP");
+        Assert.assertEquals("\'" + "CURRENT_TIMESTAMP" + "\'", finalDefaultValue);
+
+        // case2 TDQ-10783: varchar type but with number content, we should add single quotation ''
+        finalDefaultValue = columnAnalysisSqlExecutor
+                .getFinalDefaultValue(Types.VARCHAR, "MySQL", "`tbi`.`defalutvalueTest`", "12");
+        Assert.assertEquals("\'12\'", finalDefaultValue);
+
+        // case3 INTEGER type still return a number
+        finalDefaultValue =
+                columnAnalysisSqlExecutor.getFinalDefaultValue(Types.INTEGER, "MySQL", "`tbi`.`defalutvalueTest`", "1");
+        Assert.assertEquals("1", finalDefaultValue);
+
+        // case4 varchar type with a string
+        finalDefaultValue = columnAnalysisSqlExecutor
+                .getFinalDefaultValue(Types.VARCHAR, "MySQL", "`tbi`.`defalutvalueTest`", "literal");
+        Assert.assertEquals("\'literal\'", finalDefaultValue);
+
+        // case5 varchar type with a string with ''
+        finalDefaultValue = columnAnalysisSqlExecutor
+                .getFinalDefaultValue(Types.VARCHAR, "MySQL", "`tbi`.`defalutvalueTest`", "\'literal\'");
+        Assert.assertEquals("\'literal\'", finalDefaultValue);
+
+        // case6 Snowflake varchar type with a string
+        finalDefaultValue = columnAnalysisSqlExecutor
+                .getFinalDefaultValue(Types.VARCHAR, "Snowflake", "`tbi`.`defalutvalueTest`", "literal");
+        Assert.assertEquals("\'literal\'", finalDefaultValue);
+
+        // case7 Snowflake varchar type with a string with ''
+        finalDefaultValue = columnAnalysisSqlExecutor
+                .getFinalDefaultValue(Types.VARCHAR, "Snowflake", "`tbi`.`defalutvalueTest`", "\'literal\'");
+        Assert.assertEquals("\'literal\'", finalDefaultValue);
+    }
+
 }

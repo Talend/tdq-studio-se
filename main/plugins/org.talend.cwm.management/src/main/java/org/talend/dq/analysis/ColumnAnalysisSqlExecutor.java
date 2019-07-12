@@ -46,6 +46,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
 import org.talend.core.model.metadata.connection.hive.HiveServerVersionInfo;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.exception.AnalysisExecutionException;
 import org.talend.cwm.helper.CatalogHelper;
@@ -393,13 +394,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 }
                 // need to generate different SQL where clause for each type.
                 int javaType = tdColumn.getSqlDataType().getJavaDataType();
-                // MOD qiongli 2011-10-31 add single quotation '' for mysql date type.
-                if (!Java2SqlType.isNumbericInSQL(javaType)
-                        // MOD msjian TDQ-10783: varchar type but with number content, we should add single quotation ''
-                        && (!isFunction(defValue, table) || StringUtils.isNumeric(defValue.trim()))
-                        || (Java2SqlType.isDateInSQL(javaType) && SupportDBUrlType.MYSQLDEFAULTURL.getLanguage().equals(language))) {
-                    defValue = "'" + defValue + "'"; //$NON-NLS-1$ //$NON-NLS-2$
-                }
+                defValue = getFinalDefaultValue(javaType, language, table, defValue);
                 whereExpression.add(colName + dbms().equal() + defValue);
             }
 
@@ -417,6 +412,27 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
 
         rt.setObject(completedSqlString);
         return rt;
+    }
+
+    /**
+     * DOC msjian Comment method "getFinalDefaultValue".
+     * @param tdColumn
+     * @param language
+     * @param table
+     * @param defValue
+     * @return
+     */
+    public String getFinalDefaultValue(int javaType, String language, String table, String defValue) {
+        // MOD qiongli 2011-10-31 add single quotation '' for mysql date type.
+        if (!Java2SqlType.isNumbericInSQL(javaType)
+                // MOD msjian TDQ-10783: varchar type but with number content, we should add single quotation ''
+                && (!isFunction(defValue, table) || StringUtils.isNumeric(defValue.trim()))
+                || (Java2SqlType.isDateInSQL(javaType)
+                        && SupportDBUrlType.MYSQLDEFAULTURL.getLanguage().equals(language))) {
+            // defValue = "'" + defValue + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+            defValue = TalendQuoteUtils.addSingleQuotesIfNotExist(defValue);
+        }
+        return defValue;
     }
 
     /**
@@ -579,7 +595,9 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         } finally {
             // MOD qiongli 2011-5-20,don't print error in error log view and use finnaly to close Statement.
             try {
-                stat.close();
+                if (stat != null) {
+                    stat.close();
+                }
             } catch (SQLException e) {
                 log.error(e, e);
             }
