@@ -46,6 +46,7 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
 import org.talend.core.model.metadata.connection.hive.HiveServerVersionInfo;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.exception.AnalysisExecutionException;
 import org.talend.cwm.helper.CatalogHelper;
@@ -396,7 +397,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                         // MOD msjian TDQ-10783: varchar type but with number content, we should add single quotation ''
                         && (!isFunction(defValue, table) || StringUtils.isNumeric(defValue.trim()))
                         || (Java2SqlType.isDateInSQL(javaType) && SupportDBUrlType.MYSQLDEFAULTURL.getLanguage().equals(language))) {
-                    defValue = "'" + defValue + "'"; //$NON-NLS-1$ //$NON-NLS-2$
+                    defValue = TalendQuoteUtils.addSingleQuotesIfNotExist(defValue);
                 }
                 whereExpression.add(colName + dbms().equal() + defValue);
             }
