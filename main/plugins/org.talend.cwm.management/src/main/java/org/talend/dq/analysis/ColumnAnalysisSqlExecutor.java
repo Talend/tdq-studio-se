@@ -429,7 +429,6 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 && (!isFunction(defValue, table) || StringUtils.isNumeric(defValue.trim()))
                 || (Java2SqlType.isDateInSQL(javaType)
                         && SupportDBUrlType.MYSQLDEFAULTURL.getLanguage().equals(language))) {
-            // defValue = "'" + defValue + "'"; //$NON-NLS-1$ //$NON-NLS-2$
             defValue = TalendQuoteUtils.addSingleQuotesIfNotExist(defValue);
         }
         return defValue;
