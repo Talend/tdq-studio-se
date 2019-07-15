@@ -323,13 +323,6 @@ public class ExportWizardPage extends WizardPage {
                     boolean checked = item.getChecked();
                     if (checked) {
                         for (File file : record.getDependencySet()) {
-                            // ADD msjian TDQ-12245: for the reference project file which is depended on by the main
-                            // items, we ignore it(means not export it).
-                            // if (!DqFileUtils.isLocalProjectFile(file)) {
-                            // continue;
-                            // }
-                            // TDQ-12245~
-
                             ItemRecord findRecord = ItemRecord.findRecord(file);
                             if (findRecord != null) {
                                 repositoryTree.setChecked(findRecord, checked);
@@ -385,13 +378,6 @@ public class ExportWizardPage extends WizardPage {
         for (ItemRecord record : elements) {
             errors.addAll(record.getErrorMessage());
             for (File depFile : record.getDependencySet()) {
-                // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items, we
-                // ignore it(means not export it).
-                // if (!DqFileUtils.isLocalProjectFile(depFile)) {
-                // continue;
-                // }
-                // TDQ-12245~
-
                 ItemRecord findRecord = ItemRecord.findRecord(depFile);
                 if (findRecord == null || !repositoryTree.getChecked(findRecord)) {
 
@@ -573,13 +559,6 @@ public class ExportWizardPage extends WizardPage {
                 ItemRecord[] records = getElements();
                 for (ItemRecord record : records) {
                     for (File depFile : record.getDependencySet()) {
-                        // ADD msjian TDQ-12245: for the reference project file which is depended on by the main items,
-                        // we ignore it(means not export it).
-                        // if (!DqFileUtils.isLocalProjectFile(depFile)) {
-                        // continue;
-                        // }
-                        // TDQ-12245~
-
                         ItemRecord depRecord = ItemRecord.findRecord(depFile);
                         if (depRecord != null && !repositoryTree.getChecked(depRecord)) {
                             repositoryTree.setChecked(depRecord, true);
