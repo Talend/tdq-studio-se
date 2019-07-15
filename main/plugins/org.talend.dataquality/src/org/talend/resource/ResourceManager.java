@@ -616,9 +616,14 @@ public final class ResourceManager {
     public static IFolder getOneFolder(EResourceConstant constant) {
         assert constant != null;
 
-        return getRootProject().getFolder(new Path(constant.getPath()));
+        return getOneFolder(getRootProject(), constant);
     }
 
+    public static IFolder getOneFolder(IProject project, EResourceConstant constant) {
+        assert constant != null;
+
+        return project.getFolder(new Path(constant.getPath()));
+    }
     /**
      * DOC xqliu Comment method "getRootFolderLocation".
      *

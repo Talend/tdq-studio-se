@@ -22,6 +22,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
@@ -57,6 +58,7 @@ import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.resourcehelper.IndicatorResourceFileHelper;
 import org.talend.dq.writer.EMFSharedResources;
 import org.talend.model.emf.CwmResource;
+import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -671,7 +673,14 @@ public final class DefinitionHandler {
     }
 
     public static IFile getTalendDefinitionFile() {
-        return ResourceManager.getLibrariesFolder().getFile(FILENAME);
+        return getTalendDefinitionFile(ResourceManager.getRootProject());
+    }
+
+    public static IFile getTalendDefinitionFile(IProject project) {
+        if (project == null) {
+            project = ResourceManager.getRootProject();
+        }
+        return ResourceManager.getOneFolder(project, EResourceConstant.LIBRARIES).getFile(FILENAME);
     }
 
     /**

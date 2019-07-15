@@ -85,7 +85,7 @@ public class FileSystemExportWriter implements IExportWriter {
             itemDesPath = PropertyHelper.getItemPath(property).makeRelative();
         } else {
             itemDesPath =
-                    itemResPath.makeRelativeTo(ResourceManager.getRootProject().getLocation().removeLastSegments(1));
+                    itemResPath.makeRelativeTo(record.getRootFolderPath().removeLastSegments(1));
         }
 
         // property

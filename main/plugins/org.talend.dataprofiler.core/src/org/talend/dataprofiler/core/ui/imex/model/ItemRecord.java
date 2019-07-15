@@ -824,62 +824,43 @@ public class ItemRecord {
             }
             Project currentProject = ProjectManager.getInstance().getCurrentProject();
             List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(currentProject);
-            boolean hasRefProject = org.talend.core.PluginChecker.isRefProjectLoaded()
-                    && currentProject.getEmfProject() != null && referencedProjects.size() > 0;
-            if (DqFileUtils.isLocalProjectFile(file)) {
-                if (hasRefProject && ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-                    try {
-                        for (Project refProj : referencedProjects) {
-                            IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
-                            IFolder refFolder = findRefNeededFolder(iProject, file);
-                            if (refFolder != null && refFolder.exists()) {
-                                for (IResource res : refFolder.members()) {
-                                    File refFile = res.getLocation().toFile();
-                                    if (!isValid(refFile)) {
-                                        break;
-                                    }
-                                    ItemRecord itemRecord = new ItemRecord(refFile,
-                                            ResourceManager.getWorskpacePath().append(refProj.getTechnicalLabel()));
-                                    if (itemRecord.isValid()) {
-                                        recordList.add(itemRecord);
-                                    }
-                                }
-                            }
-
-                        }
-                    } catch (CoreException e) {
-                        log.error(e.getMessage());
-                    }
-                }
+            if (org.talend.core.PluginChecker.isRefProjectLoaded() && currentProject.getEmfProject() != null
+                    && referencedProjects.size() > 0) {
+                addRefProjChildToExport(recordList, referencedProjects);
             }
-
-            if (ResourceManager.getRootProject().getLocation().toFile().getPath().equals(file.getPath())
-                    && hasRefProject) {
-                    if (!ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-                        ItemRecord itemRecordRefRoot =
-                                new ItemRecord(ResourceManager.getWorskpacePath().toFile(),
-                                        ResourceManager.getWorskpacePath());
-                        recordList.add(itemRecordRefRoot);
-
-                    }
-
-            } else if (hasRefProject && ResourceManager.getWorskpacePath().toFile().equals(file)
-                    && rootFolder.equals(ResourceManager.getWorskpacePath())) {
-                    for (Project refProj : referencedProjects) {
-                        IPath refRootPath = ResourceManager.getWorskpacePath().append(refProj.getTechnicalLabel());
-                        ItemRecord itemRecordRef = new ItemRecord(refRootPath.toFile(), refRootPath);
-                        recordList.add(itemRecordRef);
-                    }
-
-            }
-
             childern = recordList.toArray(new ItemRecord[recordList.size()]);
         }
         ComparatorsFactory.sort(childern, ComparatorsFactory.ITEM_RECORD_COMPARATOR_ID);
         return this.childern;
     }
 
+    private void addRefProjChildToExport(List<ItemRecord> recordList, List<Project> referencedProjects) {
+        boolean isMeredRefProject = ProxyRepositoryManager.getInstance().isMergeRefProject();
+        if (DqFileUtils.isLocalProjectFile(file) && isMeredRefProject) {// for merged model, add some reference
+            for (Project refProj : referencedProjects) {
+                IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
+                findRefNeededResToChildren(iProject, recordList, file);
+            }
+        }
+        if (!isMeredRefProject) { // Add reference children with none-merged mode
+            if (ResourceManager.getRootProject().getLocation().toFile().equals(file)) {// Add a virtual root node
+                ItemRecord itemRecordRefRoot =
+                        new ItemRecord(ResourceManager.getWorskpacePath().toFile(), ResourceManager.getWorskpacePath());
+                recordList.add(itemRecordRefRoot);
 
+            } else if (ResourceManager.getWorskpacePath().toFile().equals(file)
+                    && rootFolder.equals(ResourceManager.getWorskpacePath())) {
+                // Add children under the Reference Virtual root node
+                for (Project refProj : referencedProjects) {
+                    IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
+                    IPath refRootPath = iProject.getLocation();
+                    ItemRecord itemRecordRef = new ItemRecord(refRootPath.toFile(), refRootPath);
+                    recordList.add(itemRecordRef);
+                }
+
+            }
+        }
+    }
 
     /**
      * DOC bZhou Comment method "getName".
@@ -939,7 +920,7 @@ public class ItemRecord {
                     || name.equals(EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName())
                     || name.equals(EResourceConstant.RULES_PARSER.getName())
                     || name.equals(EResourceConstant.RULES_MATCHER.getName())) {
-                displayName = Messages.getString("RepositoryNodeHelper." + name.replace(' ', '_'));
+                return Messages.getString("RepositoryNodeHelper." + name.replace(' ', '_'));
             } else if (name.equals(EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName())) {
                 return Messages.getString(name.replace(' ', '_'));
             } else {
@@ -953,110 +934,73 @@ public class ItemRecord {
         return displayName;
     }
 
-    public IFolder findRefNeededFolder(IProject iproject, File fileOrFolder) {
-        IFolder folder = null;
-        if (fileOrFolder != null && fileOrFolder.isDirectory()) {
-            String name = fileOrFolder.getName();
-            String folderPath = fileOrFolder.getPath();
-            if (folderPath != null) {
-                folderPath = folderPath.replace("\\", IPath.SEPARATOR + "");
-                if (folderPath.contains(EResourceConstant.PATTERN_SQL.getPath())
-                        && !EResourceConstant.PATTERN_SQL.getName().equals(name)) {
-                    return findRefSubFolder(name,
-                            ResourceManager.getOneFolder(iproject, EResourceConstant.PATTERN_SQL));
-                } else if (folderPath.contains(EResourceConstant.PATTERN_REGEX.getPath())
-                        && !EResourceConstant.PATTERN_REGEX.getName().equals(name)) {
-                    return findRefSubFolder(name,
-                            ResourceManager.getOneFolder(iproject, EResourceConstant.PATTERN_REGEX));
-                }
-            }
-            if (EResourceConstant.ANALYSIS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.ANALYSIS);
-            }
-            if (EResourceConstant.REPORTS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.REPORTS);
-            }
 
-            if (EResourceConstant.USER_DEFINED_INDICATORS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.USER_DEFINED_INDICATORS);
-            }
-            if (EResourceConstant.USER_DEFINED_INDICATORS_LIB.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.USER_DEFINED_INDICATORS_LIB);
-            }
-
-            if (EResourceConstant.DB_CONNECTIONS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.DB_CONNECTIONS);
-            }
-            if (EResourceConstant.FILEDELIMITED.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.FILEDELIMITED);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_SIMPLE_STATISTICS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SIMPLE_STATISTICS);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_ADVANCED_STATISTICS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_ADVANCED_STATISTICS);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS.getName().equals(name)) {
-                return ResourceManager
-                        .getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_PATTERN_MATCHING.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_PATTERN_MATCHING);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName().equals(name)) {
-                return ResourceManager
-                        .getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_SOUNDEX.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SOUNDEX);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_TEXT_STATISTICS.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_TEXT_STATISTICS);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_CORRELATION.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_CORRELATION);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_ROW_COMPARISON.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_ROW_COMPARISON);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES);
-            }
-            if (EResourceConstant.SYSTEM_INDICATORS_FRAUDDETECTION.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.SYSTEM_INDICATORS_SUMMARY_STATISTICS);
-            }
-            if (EResourceConstant.RULES_PARSER.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.RULES_PARSER);
-            }
-            if (EResourceConstant.RULES_SQL.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.RULES_SQL);
-            }
-            if (EResourceConstant.RULES_MATCHER.getName().equals(name)) {
-                return ResourceManager.getOneFolder(iproject, EResourceConstant.RULES_MATCHER);
-            }
-        }
-        return folder;
-    }
 
     /**
      * @Description:
-     * @param iproject
-     * @param name
-     * @param parent
-     * @return
+     * @param iProject
+     * @param recordList
+     * @param fileOrFolder
+     * @return For merge mode,find the related folders in reference project based on the current file name
      */
-    private IFolder findRefSubFolder(String name, IFolder parent) {
-        IResource findMember = parent.findMember(name);
-        if (findMember instanceof IFolder) {
-            IFolder patternSqlChild = (IFolder) findMember;
-            if (patternSqlChild.exists()) {
-                return patternSqlChild;
+    public boolean findRefNeededResToChildren(IProject iProject, List<ItemRecord> recordList, File fileOrFolder) {
+        boolean isValidFolder = fileOrFolder != null && fileOrFolder.exists() && fileOrFolder.isDirectory();
+        if (!ProxyRepositoryManager.getInstance().isMergeRefProject() || !isValidFolder) {
+            return false;
+        }
+        List<IResource> resources = new ArrayList<>();
+        String name = fileOrFolder.getName();
+        try {
+            for (EResourceConstant eResConst : EResourceConstant.getReferenceNeededConstants()) {
+                IFolder refEResFolder = ResourceManager.getOneFolder(iProject, eResConst);
+                boolean isPatternOrJRXML = eResConst == EResourceConstant.PATTERN_REGEX
+                        || eResConst == EResourceConstant.PATTERN_SQL || eResConst == EResourceConstant.JRXML_TEMPLATE;
+                if (!refEResFolder.exists() || !fileOrFolder.getPath().contains(eResConst.getName())) {
+                    continue;
+                }
+                // 1.sub-folder in PatternRegex(like 'address'),PatternSQL,JRMX
+                // 2.user-defined resources in some reference folders like "Regex"
+                if (isPatternOrJRXML) {
+                    if (refEResFolder.getFolder(name).exists()) {// 1
+                        for (IResource res : refEResFolder.getFolder(name).members()) {
+                            resources.add(res);
+                        }
+                        break;
+                    } else if (eResConst.getName().equals(name)) {// 2
+                        for (IResource res : refEResFolder.members()) {
+                            IResource findMemberFromRootProj =
+                                    ResourceManager.getOneFolder(eResConst).findMember(res.getName());
+                            if (findMemberFromRootProj == null || !findMemberFromRootProj.exists()) {
+                                resources.add(res);
+                            }
+                        }
+                        break;
+                    }
+
+                } else if (eResConst.getName().equals(name)) {// Analyses,Report,Indicators...
+                    for (IResource res : refEResFolder.members()) {
+                        resources.add(res);
+                    }
+                    break;
+                }
+            }
+        } catch (CoreException e) {
+            log.error(e.getMessage());
+        }
+        if (recordList != null) {
+            for (IResource res : resources) {
+                if (res != null && res.exists()) {
+                    File refFile = res.getLocation().toFile();
+                    if (isValid(refFile)) {
+                        ItemRecord itemRecord = new ItemRecord(refFile, iProject.getLocation());
+                        if (itemRecord.isValid()) {
+                            recordList.add(itemRecord);
+                        }
+                    }
+                }
             }
         }
-        return null;
+        return !resources.isEmpty();
     }
 
     /**
@@ -1086,7 +1030,8 @@ public class ItemRecord {
         String fileName = f.getName();
         // MOD qiongli 2012-5-14 TDQ-5259.".Talend.properties" exists on 401,need to filter it and ".Talend.definition".
         if ("jasper".equals(path.getFileExtension()) //$NON-NLS-1$
-                || (fileName != null && (fileName.equals(".Talend.definition") || fileName.equals(".Talend.properties")))) {//$NON-NLS-1$ //$NON-NLS-2$
+                || (fileName != null
+                        && (fileName.equals(".Talend.definition") || fileName.equals(".Talend.properties")))) {//$NON-NLS-1$ //$NON-NLS-2$
             return false;
         } else if (path.toString().contains(EResourceConstant.SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS.getPath())
                 && path.lastSegment().endsWith(".definition")) {
@@ -1094,8 +1039,8 @@ public class ItemRecord {
             return !(fileName != null && fileName.startsWith("C"));
         }
 
-        return FactoriesUtil.JAR.equals(path.getFileExtension()) || propPath.toFile().exists()
-                && !propPath.equals(path);
+        return FactoriesUtil.JAR.equals(path.getFileExtension())
+                || propPath.toFile().exists() && !propPath.equals(path);
     }
 
     /**

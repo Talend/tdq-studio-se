@@ -49,6 +49,7 @@ import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.ParserRule;
 import org.talend.dataquality.rules.WhereRule;
 import org.talend.designer.business.model.business.Context;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwmx.analysis.informationreporting.Report;
@@ -421,6 +422,16 @@ public enum EResourceConstant {
         return new EResourceConstant[] { DATA_PROFILING, LIBRARIES, METADATA, CONTEXT };
     }
 
+    public static EResourceConstant[] getReferenceNeededConstants() {
+        return new EResourceConstant[] { ANALYSIS, REPORTS, USER_DEFINED_INDICATORS, USER_DEFINED_INDICATORS_LIB,
+                DB_CONNECTIONS, FILEDELIMITED, SYSTEM_INDICATORS_SIMPLE_STATISTICS,
+                SYSTEM_INDICATORS_ADVANCED_STATISTICS, SYSTEM_INDICATORS_PATTERN_FREQUENCY_STATISTICS,
+                SYSTEM_INDICATORS_PATTERN_MATCHING, SYSTEM_INDICATORS_PHONENUMBER_STATISTICS, SYSTEM_INDICATORS_SOUNDEX,
+                SYSTEM_INDICATORS_SUMMARY_STATISTICS, SYSTEM_INDICATORS_TEXT_STATISTICS, SYSTEM_INDICATORS_CORRELATION,
+                SYSTEM_INDICATORS_ROW_COMPARISON, SYSTEM_INDICATORS_BUSINESS_RULES, SYSTEM_INDICATORS_FRAUDDETECTION,
+                RULES_PARSER, RULES_SQL, RULES_MATCHER, PATTERN_REGEX, PATTERN_SQL, JRXML_TEMPLATE, SOURCE_FILES,
+                CONTEXT };
+    }
 
     /**
      * DOC bZhou Comment method "getTopConstantIndexFromPath".

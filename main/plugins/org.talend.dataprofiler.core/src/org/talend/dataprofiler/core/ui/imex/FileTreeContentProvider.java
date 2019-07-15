@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.talend.commons.utils.platform.PluginChecker;
@@ -128,25 +126,18 @@ public class FileTreeContentProvider implements ITreeContentProvider {
             File[] listFiles = ((ItemRecord) element).getFile().listFiles();
             // also consider the reference project with merged mode
             if (DqFileUtils.isLocalProjectFile(record.getFile()) && (listFiles == null || listFiles.length == 0)) {
-                try {
-                    Project currentProject = ProjectManager.getInstance().getCurrentProject();
-                    List<Project> referencedProjects =
-                            ProjectManager.getInstance().getReferencedProjects(currentProject);
-                    boolean hasRefProject = org.talend.core.PluginChecker.isRefProjectLoaded()
-                            && currentProject.getEmfProject() != null && referencedProjects.size() > 0;
-                    if (hasRefProject && ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-                        for (Project refProj : referencedProjects) {
-                            IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
-                            IFolder refFolder = record.findRefNeededFolder(iProject, record.getFile());
-                            if (refFolder != null && refFolder.exists() && refFolder.members().length > 0) {
-                                return true;
-                            }
+                Project currentProject = ProjectManager.getInstance().getCurrentProject();
+                List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(currentProject);
+                boolean hasRefProject = org.talend.core.PluginChecker.isRefProjectLoaded()
+                        && currentProject.getEmfProject() != null && referencedProjects.size() > 0;
+                if (hasRefProject && ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+                    for (Project refProj : referencedProjects) {
+                        IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
+                        return record.findRefNeededResToChildren(iProject, null, record.getFile());
 
-                        }
                     }
-                } catch (CoreException e) {
-                    log.error(e.getMessage(), e);
                 }
+
             }
             return listFiles != null && listFiles.length > 0;
         }

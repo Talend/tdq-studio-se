@@ -317,7 +317,7 @@ public final class ComparatorsFactory {
             }
             EMainNodesTreeType orderType1 = EMainNodesTreeType.findByFile(o1.getFile());
             EMainNodesTreeType orderType2 = EMainNodesTreeType.findByFile(o2.getFile());
-            if (!orderType1.equals(orderType1)) {
+            if (!orderType1.equals(orderType2)) {
                 return orderType1.ordinal() - orderType2.ordinal();
             }
             File file1 = o1.getFile();
