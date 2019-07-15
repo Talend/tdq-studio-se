@@ -38,7 +38,6 @@ import org.talend.dataquality.indicators.FrequencyIndicator;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.LowFrequencyIndicator;
 import org.talend.dataquality.properties.TDQAnalysisItem;
-import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.nodes.AnalysisRepNode;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.writer.impl.AnalysisWriter;
@@ -169,8 +168,7 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
             }
 
         });
-        boolean isReadOnly = ProxyRepositoryManager.getInstance().isReadOnly();
-        mainComposite.setEnabled(!isReadOnly);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
 
     }
@@ -304,5 +302,16 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
     @Override
     protected IPreferenceStore doGetPreferenceStore() {
         return CorePlugin.getDefault().getPreferenceStore();
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
     }
 }

@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 
 /**
@@ -53,10 +54,21 @@ public class DataProfilerPreferencePage extends PreferencePage implements IWorkb
         composite.setLayoutData(gridData);
         Label label = new Label(composite, SWT.NONE);
         label.setText(DefaultMessagesImpl.getString("DataProfilerPreferencePage.UnfoldFolder")); //$NON-NLS-1$
+        CorePlugin.getDefault().handleUserReadOnlyStatus(composite);
         return composite;
     }
 
     public void init(IWorkbench workbench) {
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
 }
