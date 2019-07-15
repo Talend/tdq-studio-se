@@ -505,7 +505,7 @@ public class EditorPreferencePage extends PreferencePage implements IWorkbenchPr
         // MOD xqliu 2010-03-10 feature 10834
         createPageSizeComp(mainComposite);
         // ~10834
-
+        CorePlugin.getDefault().handleUserReadOnlyStatus(mainComposite);
         return mainComposite;
     }
 
@@ -787,4 +787,14 @@ public class EditorPreferencePage extends PreferencePage implements IWorkbenchPr
         EditorPreferencePage.currentUnfoldContextGroupSettings = currentUnfoldContextGroupSettings;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
+    }
 }

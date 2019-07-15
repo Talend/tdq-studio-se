@@ -63,7 +63,7 @@ public class WebBrowserPreferencePage extends PreferencePage implements IWorkben
                 isBlockWeb = blockWebBtn.getSelection();
             }
         });
-
+        CorePlugin.getDefault().handleUserReadOnlyStatus(top);
         return top;
     }
 
@@ -101,5 +101,16 @@ public class WebBrowserPreferencePage extends PreferencePage implements IWorkben
         }
 
         return true;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.jface.preference.PreferencePage#contributeButtons(org.eclipse.swt.widgets.Composite)
+     */
+    @Override
+    protected void contributeButtons(Composite parent) {
+        super.contributeButtons(parent);
+        CorePlugin.getDefault().handleUserReadOnlyStatus(parent);
     }
 }
