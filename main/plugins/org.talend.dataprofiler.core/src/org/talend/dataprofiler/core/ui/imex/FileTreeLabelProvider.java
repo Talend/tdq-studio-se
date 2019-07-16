@@ -15,9 +15,7 @@ package org.talend.dataprofiler.core.ui.imex;
 import java.io.File;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.ui.runtime.image.ECoreImage;
@@ -26,7 +24,6 @@ import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.ui.imex.model.ItemRecord;
-import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
@@ -34,11 +31,7 @@ import org.talend.resource.ResourceManager;
 /**
  * DOC bZhou class global comment. Detailled comment
  */
-public class FileTreeLabelProvider extends LabelProvider implements IColorProvider {
-
-    private static final Color STABLE_SECONDARY_ENTRY_COLOR = new Color(null, 100, 100, 100);
-
-    private static final Color STABLE_PRIMARY_ENTRY_COLOR = new Color(null, 0, 0, 0);
+public class FileTreeLabelProvider extends LabelProvider {
 
     /*
      * (non-Javadoc)
@@ -156,23 +149,6 @@ public class FileTreeLabelProvider extends LabelProvider implements IColorProvid
             return record.getName();
         }
         return super.getText(element);
-    }
-
-    @Override
-    public Color getForeground(Object element) {
-        if (element instanceof ItemRecord) {
-            File file = ((ItemRecord) element).getFile();
-            if (file != null && !DqFileUtils.isLocalProjectFile(file)) {
-                return STABLE_SECONDARY_ENTRY_COLOR;
-            }
-        }
-        return STABLE_PRIMARY_ENTRY_COLOR;
-    }
-
-    @Override
-    public Color getBackground(Object element) {
-        // TODO Auto-generated method stub
-        return null;
     }
 
 }
