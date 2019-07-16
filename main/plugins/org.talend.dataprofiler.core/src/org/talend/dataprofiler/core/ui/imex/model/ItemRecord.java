@@ -943,10 +943,10 @@ public class ItemRecord {
      * @param fileOrFolder
      * @return For merge mode,find the related folders in reference project based on the current file name
      */
-    public boolean findRefNeededResToChildren(IProject iProject, List<ItemRecord> recordList, File fileOrFolder) {
+    private void findRefNeededResToChildren(IProject iProject, List<ItemRecord> recordList, File fileOrFolder) {
         boolean isValidFolder = fileOrFolder != null && fileOrFolder.exists() && fileOrFolder.isDirectory();
         if (!ProxyRepositoryManager.getInstance().isMergeRefProject() || !isValidFolder) {
-            return false;
+            return;
         }
         List<IResource> resources = new ArrayList<>();
         String name = fileOrFolder.getName();
@@ -1000,7 +1000,6 @@ public class ItemRecord {
                 }
             }
         }
-        return !resources.isEmpty();
     }
 
     /**
@@ -1232,9 +1231,8 @@ public class ItemRecord {
     public boolean isInvalidNAMEConflictExist() {
         if (EConflictType.NAME == this.eConflictType) {
             return true;
-        } else if (EConflictType.UUIDBUTNAME == this.eConflictType
-                && !(this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
-                        .getElement() instanceof Report)) {
+        } else if (EConflictType.UUIDBUTNAME == this.eConflictType && !(this.getElement() instanceof Connection
+                || this.getElement() instanceof Analysis || this.getElement() instanceof Report)) {
             // analysis connection and report do that first then we will do others
             return true;
         }
@@ -1245,9 +1243,8 @@ public class ItemRecord {
      * Judge whether it is the case which need to rename first
      */
     public boolean isNeedToRenameFirst() {
-        if (EConflictType.UUIDBUTNAME == this.eConflictType
-                && (this.getElement() instanceof Connection || this.getElement() instanceof Analysis || this
-                        .getElement() instanceof Report)) {
+        if (EConflictType.UUIDBUTNAME == this.eConflictType && (this.getElement() instanceof Connection
+                || this.getElement() instanceof Analysis || this.getElement() instanceof Report)) {
             // analysis connection and report do that first then we will do others
             return true;
         }

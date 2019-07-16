@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 import org.talend.commons.utils.platform.PluginChecker;
@@ -32,6 +34,7 @@ import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.model.bridge.ReponsitoryContextBridge;
 import org.talend.repository.ProjectManager;
 import org.talend.resource.EResourceConstant;
+import org.talend.resource.ResourceManager;
 
 /**
  * DOC bZhou class global comment. Detailled comment
@@ -124,22 +127,33 @@ public class FileTreeContentProvider implements ITreeContentProvider {
         if (element instanceof ItemRecord) {
             ItemRecord record = (ItemRecord) element;
             File[] listFiles = ((ItemRecord) element).getFile().listFiles();
+            if (listFiles != null && listFiles.length > 0) {
+                return true;
+            }
+            File file = record.getFile();
             // also consider the reference project with merged mode
-            if (DqFileUtils.isLocalProjectFile(record.getFile()) && (listFiles == null || listFiles.length == 0)) {
+            if (DqFileUtils.isLocalProjectFile(file) && ProxyRepositoryManager.getInstance().isMergeRefProject()) {
                 Project currentProject = ProjectManager.getInstance().getCurrentProject();
                 List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(currentProject);
-                boolean hasRefProject = org.talend.core.PluginChecker.isRefProjectLoaded()
-                        && currentProject.getEmfProject() != null && referencedProjects.size() > 0;
-                if (hasRefProject && ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+                boolean hasRefProject = currentProject.getEmfProject() != null && referencedProjects.size() > 0;
+                if (hasRefProject) {
                     for (Project refProj : referencedProjects) {
                         IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
-                        return record.findRefNeededResToChildren(iProject, null, record.getFile());
-
+                        if (iProject == null) {
+                            continue;
+                        }
+                        IPath path = new Path(file.getAbsolutePath());
+                        path = path.makeRelativeTo(ResourceManager.getRootProject().getLocation());
+                        File refFile = iProject.getLocation().append(path).toFile();
+                        if (refFile != null && refFile.exists()) {
+                            if (refFile.listFiles() != null && refFile.listFiles().length > 0) {
+                                return true;
+                            }
+                        }
                     }
                 }
 
             }
-            return listFiles != null && listFiles.length > 0;
         }
         return false;
     }

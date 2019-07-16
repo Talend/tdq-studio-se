@@ -65,7 +65,6 @@ public final class DqFileUtils {
      * @param fileName
      * @param withFolder
      * @return
-     * @deprecated use {@link #getFiles(File parent, String fileName, boolean withFolder)}
      */
     public static File getFile(File parent, String fileName, boolean withFolder) {
         List<File> allFiles = new ArrayList<File>();
@@ -80,26 +79,6 @@ public final class DqFileUtils {
         return null;
     }
 
-    /**
-     * @Description:
-     * @param parent
-     * @param fileName
-     * @param withFolder
-     * @return one or more than one file form different projects
-     */
-    public static List<File> getFiles(File parent, String fileName, boolean withFolder) {
-        List<File> allFiles = new ArrayList<File>();
-        List<File> foundFiles = new ArrayList<File>();
-        searchAllFile(allFiles, parent, true, withFolder);
-
-        for (File file : allFiles) {
-            if (StringUtils.equals(fileName, file.getName())) {
-                foundFiles.add(file);
-            }
-        }
-
-        return foundFiles;
-    }
 
     /**
      * DOC bZhou Comment method "existFile".
