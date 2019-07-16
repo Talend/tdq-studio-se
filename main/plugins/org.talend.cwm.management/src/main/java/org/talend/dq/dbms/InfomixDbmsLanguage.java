@@ -262,7 +262,21 @@ public class InfomixDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getRandomQuery(String query) {
-        // TODO: need to implement this
         return query;
     }
+
+    /**
+     * Length function will do trim auto so that use char_Length instead of it
+     */
+    @Override
+    public String getAverageLengthWithBlankRows() {
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE CHAR_LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+    }
+
+    @Override
+    public String getAverageLengthWithNullBlankRows() {
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE CHAR_LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(*)) FROM <%=__TABLE_NAME__%>)" //$NON-NLS-1$
+                + " AND (SELECT CEIL(SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
+    }
+
 }

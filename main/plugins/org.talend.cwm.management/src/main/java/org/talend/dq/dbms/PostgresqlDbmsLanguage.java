@@ -235,31 +235,35 @@ public class PostgresqlDbmsLanguage extends DbmsLanguage {
         return super.createStatement(connection, fetchSize);
     }
 
+    @Override
     public String getAverageLengthWithBlankRows() {
         return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(<%=__COLUMN_NAMES__%>)) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
     }
 
+    @Override
     public String getAverageLengthRows() {
-        String whereExpression = "WHERE (TRIM(<%=__COLUMN_NAMES__%>) <> '' )) "; //$NON-NLS-1$
+        String whereExpression = "WHERE (TRIM(<%=__COLUMN_NAMES__%>) <> '' ) "; //$NON-NLS-1$
         return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression //$NON-NLS-1$
                 + " AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)" //$NON-NLS-1$
-                + "))::numeric / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression
-                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))::numeric / COUNT(* )) FROM <%=__TABLE_NAME__%> "
+                + ")*1.0 / COUNT(*)) FROM <%=__TABLE_NAME__%> " + whereExpression
+                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))*1.0 / COUNT(* )) FROM <%=__TABLE_NAME__%> "
                 + whereExpression + ")";
     }
 
+    @Override
     public String getAverageLengthWithNullBlankRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>))::numeric / COUNT(*)) FROM <%=__TABLE_NAME__%>)"
-                + " AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>))::numeric / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$ //$NON-NLS-2$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(*)) FROM <%=__TABLE_NAME__%>)"
+                + " AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$
     }
 
+    @Override
     public String getAverageLengthWithNullRows() {
         String whereExpression = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression
-                + "AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))::numeric / COUNT( * )) FROM <%=__TABLE_NAME__%> "
+                + "AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))*1.0 / COUNT( * )) FROM <%=__TABLE_NAME__%> "
                 + whereExpression
-                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))::numeric / COUNT(*)) FROM <%=__TABLE_NAME__%>  " //$NON-NLS-1$
-                + whereExpression + ")"; //$NON-NLS-1$ //$NON-NLS-3$ //$NON-NLS-4$
+                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%> ))*1.0 / COUNT(*)) FROM <%=__TABLE_NAME__%>  " //$NON-NLS-1$
+                + whereExpression + ")"; //$NON-NLS-1$ 
     }
 
 }

@@ -20,6 +20,7 @@ import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -79,6 +80,20 @@ public class SQLiteDbmsLanguage extends DbmsLanguage {
         return " LENGTH(" + columnName + ") "; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
+    /**
+     * Count function will ignore null value if special name so that use * instead of the column name
+     */
+    @Override
+    public String getAverageLengthRows() {
+        String whereExpress =
+                "WHERE (<%=__COLUMN_NAMES__%> IS NOT NULL AND " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")";
+        return "SELECT t.* FROM(SELECT "
+                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(* )*1.00)+0.99 as int) c,"
+                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(*)*1.00) as int) f "
+                + "FROM <%=__TABLE_NAME__%> " + whereExpress + ") e, <%=__TABLE_NAME__%> t " + whereExpress
+                + " AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN f AND c";
+    }
+
     /*
      * (non-Jsdoc)
      *
@@ -86,12 +101,10 @@ public class SQLiteDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthWithBlankRows() {
-        String sql = "SELECT t.* FROM(SELECT CAST(SUM(LENGTH(" + trimIfBlank("<%=__COLUMN_NAMES__%>")
-                + ")) / (COUNT(<%=__COLUMN_NAMES__%> )*1.00)+0.99 as int) c," + "CAST(SUM(LENGTH("
-                + trimIfBlank("<%=__COLUMN_NAMES__%>") + ")) / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f "
+        String sql = "SELECT t.* FROM(SELECT CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(*)*1.00)+0.99 as int) c,"
+                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(*)*1.00) as int) f "
                 + "FROM <%=__TABLE_NAME__%> WHERE(<%=__COLUMN_NAMES__%> IS NOT NULL)) e, <%=__TABLE_NAME__%> t "
-                + "WHERE <%=__COLUMN_NAMES__%> IS NOT NULL AND LENGTH(" + trimIfBlank("<%=__COLUMN_NAMES__%>")
-                + ") BETWEEN f AND c";
+                + "WHERE <%=__COLUMN_NAMES__%> IS NOT NULL AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN f AND c";
         return sql;
     }
 
@@ -104,8 +117,8 @@ public class SQLiteDbmsLanguage extends DbmsLanguage {
     public String getAverageLengthWithNullRows() {
         String whereExpress = "WHERE(<%=__COLUMN_NAMES__%> IS NULL OR " + isNotBlank("<%=__COLUMN_NAMES__%>") + ")";
         String sql = "SELECT t.* FROM(SELECT "
-                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(<%=__COLUMN_NAMES__%> )*1.00)+0.99 as int) c,"
-                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(<%=__COLUMN_NAMES__%>)*1.00) as int) f "
+                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(* )*1.00)+0.99 as int) c,"
+                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(*)*1.00) as int) f "
                 + "FROM <%=__TABLE_NAME__%> " + whereExpress + ") e, <%=__TABLE_NAME__%> t " + whereExpress
                 + " AND LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN f AND c";
         return sql;
@@ -118,10 +131,10 @@ public class SQLiteDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthWithNullBlankRows() {
-        String sql = "SELECT t.* FROM(SELECT CAST(SUM(LENGTH(" + trimIfBlank("<%=__COLUMN_NAMES__%>")
-                + ")) / (COUNT(*)*1.00)+0.99 as int) c," + "CAST(SUM(LENGTH(" + trimIfBlank("<%=__COLUMN_NAMES__%>")
-                + ")) / (COUNT(*)*1.00) as int) f " + "FROM <%=__TABLE_NAME__%> ) e, <%=__TABLE_NAME__%> t " + "WHERE LENGTH("
-                + trimIfBlank("<%=__COLUMN_NAMES__%>") + ") BETWEEN f AND c";
+        String sql = "SELECT t.* FROM(SELECT CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(*)*1.00)+0.99 as int) c,"
+                + "CAST(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / (COUNT(*)*1.00) as int) f "
+                + "FROM <%=__TABLE_NAME__%> ) e, <%=__TABLE_NAME__%> t "
+                + "WHERE LENGTH(<%=__COLUMN_NAMES__%>) BETWEEN f AND c";
         return sql;
     }
 

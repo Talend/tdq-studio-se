@@ -123,4 +123,16 @@ public class DB2DbmsLanguage extends DbmsLanguage {
     public String getCatalogNameFromContext(DatabaseConnection dbConn) {
         return null;
     }
+
+    @Override
+    public String getAverageLengthRows() {
+        String whereExpression =
+                "WHERE <%=__COLUMN_NAMES__%> IS NOT NULL AND (LENGTH(TRIM(<%=__COLUMN_NAMES__%>)) > 0 )"; //$NON-NLS-1$
+        return "SELECT * FROM <%=__TABLE_NAME__%> " + whereExpression + " AND LENGTH(<%=__COLUMN_NAMES__%>"
+                + ") BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(*)) FROM <%=__TABLE_NAME__%> "
+                + whereExpression
+                + ") AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>))*1.0 / COUNT(* )) FROM <%=__TABLE_NAME__%> "
+                + whereExpression + ")"; //$NON-NLS-1$
+    }
+
 }

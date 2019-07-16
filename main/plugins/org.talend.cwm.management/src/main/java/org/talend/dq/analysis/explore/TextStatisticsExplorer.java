@@ -128,12 +128,15 @@ public class TextStatisticsExplorer extends DataExplorer {
 
     private String getMinLengthWithBlankNullRowsStatement() {
         return getTextRowsStatement(true) + dbmsLanguage
-                .fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithBlankNullRows(), this.columnName, "");
+                .fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithBlankNullRows(), this.columnName, "",
+                        this.andDataFilterClause());
     }
 
     private String getMinLengthWithNullRowsStatement() {
         return getTextRowsStatement(true)
-                + dbmsLanguage.fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithNullRows(), this.columnName, "");
+                + dbmsLanguage
+                        .fillGenericQueryWithColumnsAndTable(dbmsLanguage.getMinLengthWithNullRows(), this.columnName,
+                                "", this.andDataFilterClause());
     }
 
     /**

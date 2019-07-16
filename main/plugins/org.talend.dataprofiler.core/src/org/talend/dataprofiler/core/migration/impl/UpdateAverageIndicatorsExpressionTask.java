@@ -50,7 +50,7 @@ public class UpdateAverageIndicatorsExpressionTask extends AbstractWorksapceUpda
             IndicatorDefinitionFileHelper.updateSqlExpression(definition, "Informix",
                             "SELECT SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>)), COUNT(*) FROM  <%=__TABLE_NAME__%>   WHERE ( <%=__COLUMN_NAMES__%>  IS NOT NULL ) <%=__AND_WHERE_CLAUSE__%>");
             IndicatorDefinitionFileHelper.updateSqlExpression(definition, "PostgreSQL",
-                            "SELECT SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>)), COUNT(*) FROM <%=__TABLE_NAME__%>  WHERE (<%=__COLUMN_NAMES__%> IS NOT NULL ) <%=__AND_WHERE_CLAUSE__%");
+                            "SELECT SUM(CHAR_LENGTH(<%=__COLUMN_NAMES__%>)), COUNT(*) FROM <%=__TABLE_NAME__%>  WHERE (<%=__COLUMN_NAMES__%> IS NOT NULL ) <%=__AND_WHERE_CLAUSE__%>");
             IndicatorDefinitionFileHelper.updateSqlExpression(definition, "Snowflake",
                             "SELECT SUM(LENGTH(<%=__COLUMN_NAMES__%>)), COUNT(*) FROM <%=__TABLE_NAME__%> WHERE (<%=__COLUMN_NAMES__%> IS NOT NULL ) <%=__AND_WHERE_CLAUSE__%>");
             IndicatorDefinitionFileHelper.updateSqlExpression(definition, "", "");

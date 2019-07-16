@@ -220,6 +220,15 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
         return false;
     }
 
+    @Override
+    public String charLength(String columnName) {
+        return " CHAR_LENGTH(" + ifNULL(columnName) + ") "; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    private String ifNULL(String columnName) {
+        return "IFNULL(" + columnName + ",'')"; //$NON-NLS-1$//$NON-NLS-2$
+    }
+
     /*
      * (non-Javadoc)
      *
