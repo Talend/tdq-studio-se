@@ -1517,7 +1517,7 @@ public class DbmsLanguage {
     public String fillGenericQueryWithColumnsAndTable(String genericQuery, String columns, String table,
             String originalClause) {
         return new GenericSQLHandler(genericQuery).replaceColumnTable(columns, table).getSqlString()
-                + originalClause == null ? "" : originalClause;
+                + originalClause == null ? "" : originalClause; //$NON-NLS-1$
     }
 
     public String fillGenericQueryWithColumnsABAndTable(String genericQuery, String columnA, String columnB, String table) {

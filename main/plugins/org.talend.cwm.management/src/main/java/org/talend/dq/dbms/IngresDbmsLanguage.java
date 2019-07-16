@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.apache.commons.lang.StringUtils;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.utils.ProductVersion;
 
@@ -144,6 +145,16 @@ public class IngresDbmsLanguage extends DbmsLanguage {
     @Override
     public Statement createStatement(Connection connection, int fetchSize) throws SQLException {
         return createStatement(connection);
+    }
+
+    @Override
+    public String getMinLengthWithNullRows() {
+        return StringUtils.EMPTY;
+    }
+
+    @Override
+    public String getMinLengthWithBlankNullRows() {
+        return StringUtils.EMPTY;
     }
 
 }
