@@ -52,6 +52,9 @@ public final class WorkspaceVersionHelper {
     }
 
     public static IFile getVersionFile(IProject project) {
+        if (project == null) {
+            project = ResourceManager.getRootProject();
+        }
         return ResourceManager
                 .getOneFolder(project, EResourceConstant.LIBRARIES)
                 .getFile(PluginConstant.VERSION_FILE_PATH);
