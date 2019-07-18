@@ -410,6 +410,7 @@ public class RepositoryNodeHelperRealTest {
     public TdColumn addColumn(TdTable table, String columnName) {
         TdColumn createTdColumn = RelationalFactory.eINSTANCE.createTdColumn();
         createTdColumn.setName(columnName);
+        createTdColumn.setLabel(columnName);
         TableHelper.addColumn(table, createTdColumn);
         return createTdColumn;
     }
