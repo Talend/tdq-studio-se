@@ -334,7 +334,7 @@ public class OracleDbmsLanguage extends DbmsLanguage {
      */
     @Override
     public String getAverageLengthWithNullBlankRows() {
-        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>)  BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(*)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$ //$NON-NLS-2$
+        return "SELECT * FROM <%=__TABLE_NAME__%> WHERE LENGTH(<%=__COLUMN_NAMES__%>)  BETWEEN (SELECT FLOOR(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(*)) FROM <%=__TABLE_NAME__%>) AND (SELECT CEIL(SUM(LENGTH(<%=__COLUMN_NAMES__%>)) / COUNT(* )) FROM <%=__TABLE_NAME__%>)"; //$NON-NLS-1$ 
     }
 
     /*
@@ -366,6 +366,11 @@ public class OracleDbmsLanguage extends DbmsLanguage {
     @Override
     public String quote(String sqlIdentifier) {
         return super.quote(sqlIdentifier).toUpperCase();
+    }
+
+    @Override
+    public String getBlankCountSecondCondition(String fullColumnName) {
+        return " AND " + fullColumnName + " is not NULL"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
 }

@@ -49,12 +49,24 @@ public class SimpleStatisticsExplorer extends DataExplorer {
                 map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getRowsStatement());
             }
             break;
-        case NullCountIndicatorEnum:
         case BlankCountIndicatorEnum:
+            // when user define indicator
+            IndicatorDefinition indicatorDefinition = this.indicator.getIndicatorDefinition();
+            map
+                    .put(MENU_VIEW_ROWS,
+                            isSqlEngine
+                                    ? getComment(MENU_VIEW_ROWS) + getRowsStatement()
+                                            + dbmsLanguage
+                                                    .getBlankCountSecondCondition(dbmsLanguage
+                                                            .quote(this.indicator.getAnalyzedElement().getName()))
+                                    : null);
+            break;
+
+        case NullCountIndicatorEnum:
         case DefValueCountIndicatorEnum:
         case UserDefinedIndicatorEnum:
             // when user define indicator
-            IndicatorDefinition indicatorDefinition = this.indicator.getIndicatorDefinition();
+            indicatorDefinition = this.indicator.getIndicatorDefinition();
             map.put(MENU_VIEW_ROWS, isSqlEngine ? getComment(MENU_VIEW_ROWS)
                     + (indicatorDefinition instanceof UDIndicatorDefinition ? getQueryForViewRows(indicatorDefinition)
                             : getRowsStatement()) : null);

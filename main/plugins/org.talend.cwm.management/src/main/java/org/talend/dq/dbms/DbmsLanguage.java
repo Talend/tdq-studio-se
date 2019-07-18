@@ -2330,4 +2330,8 @@ public class DbmsLanguage {
     public String getMinLengthWithBlankNullRows() {
         return "OR <%=__COLUMN_NAMES__%> IS NULL";
     }
+
+    public String getBlankCountSecondCondition(String fullColumnName) {
+        return StringUtils.EMPTY;
+    }
 }
