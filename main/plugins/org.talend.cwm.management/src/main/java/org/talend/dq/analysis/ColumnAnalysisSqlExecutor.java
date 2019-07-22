@@ -600,7 +600,9 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
             } catch (SQLException e) {
                 log.error(e, e);
             }
-            ConnectionUtils.closeConnection(conenction);
+            if (conenction != null) {
+                ConnectionUtils.closeConnection(conenction);
+            }
         }
         return ok;
     }
