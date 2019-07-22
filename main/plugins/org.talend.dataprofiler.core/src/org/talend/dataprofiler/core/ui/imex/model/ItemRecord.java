@@ -883,9 +883,9 @@ public class ItemRecord {
      * @return
      */
     private boolean checkFileIsProject() {
-        IProject[] projects = ResourceManager.getRoot().getProjects();
-        for (IProject proj : projects) {
-            if (proj.getLocation().equals(this.getFilePath())) {
+        if (this.file != null && file.isDirectory()) {
+            IProject checkProject = ResourceManager.getProject(this.file.getName());
+            if (checkProject != null && getFilePath().equals(checkProject.getLocation())) {
                 return true;
             }
         }
