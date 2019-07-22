@@ -12,8 +12,7 @@
 // ============================================================================
 package org.talend.dq.analysis.explore;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import java.sql.Types;
 import java.util.Map;
@@ -43,7 +42,7 @@ public class TextStatisticsExplorerTest {
     public void setUp() throws Exception {
         UnitTestBuildHelper.initProjectStructure();
         if (GlobalServiceRegister.getDefault().isServiceRegistered(ITDQItemService.class)) {
-            ITDQItemService tdqService = (ITDQItemService) GlobalServiceRegister.getDefault().getService(ITDQItemService.class);
+            ITDQItemService tdqService = GlobalServiceRegister.getDefault().getService(ITDQItemService.class);
             tdqService.createDQStructor();
         }
 
@@ -87,7 +86,7 @@ public class TextStatisticsExplorerTest {
                         + "-- AnalyzedElement: NAME ;\n"
                         + "-- Indicator: Average Length ;\n"
                         + "-- Showing: View rows ;\n"
-                        + "SELECT t.* FROM(SELECT CAST(SUM( CHAR_LENGTH( CASE WHEN   CHAR_LENGTH( TRIM(NAME) ) =0  THEN '' ELSE  NAME END) ) / (COUNT(NAME )*1.00)+0.99 as int) c,CAST(SUM( CHAR_LENGTH( CASE WHEN   CHAR_LENGTH( TRIM(NAME) ) =0  THEN '' ELSE  NAME END) ) / (COUNT(NAME)*1.00) as int) f FROM TDQ_CALENDAR WHERE(NAME IS NOT NULL)) e, TDQ_CALENDAR t WHERE  CHAR_LENGTH( CASE WHEN   CHAR_LENGTH( TRIM(NAME) ) =0  THEN '' ELSE  NAME END)  BETWEEN f AND c",
+                        + "SELECT t.* FROM(SELECT CAST(SUM(CHARACTER_LENGTH(NAME)) / (COUNT(NAME)*1.00)+0.99 as int) c, CAST(SUM(CHARACTER_LENGTH(NAME)) / (COUNT(NAME)*1.00) as int) f FROM TDQ_CALENDAR) e, TDQ_CALENDAR t where character_length(NAME) between f and c",
                 queryMap.get("View rows"));
     }
 

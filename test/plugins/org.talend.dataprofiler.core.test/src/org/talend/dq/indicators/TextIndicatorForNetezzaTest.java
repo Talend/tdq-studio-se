@@ -12,8 +12,7 @@
 // ============================================================================
 package org.talend.dq.indicators;
 
-import junit.framework.Assert;
-
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.talend.core.model.metadata.builder.database.dburl.SupportDBUrlType;
@@ -21,6 +20,7 @@ import org.talend.cwm.relational.TdExpression;
 import org.talend.dataprofiler.core.helper.UnitTestBuildHelper;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
+
 
 /**
  * Check if every related sql expression for Netezza db has been added into related text indicators, benford indicator,
@@ -34,7 +34,8 @@ public class TextIndicatorForNetezzaTest {
 
     private static final String AVERAGE_LENGTH_WITH_BLANK_AND_NULL = "Average Length With Blank and Null"; //$NON-NLS-1$
 
-    private static final String AVERAGE_LENGTH_WITH_BLANK_AND_NULL_SQL = "SELECT SUM(CHAR_LENGTH(CASE WHEN   CHAR_LENGTH( TRIM(ISNULL(<%=__COLUMN_NAMES__%>,'')) ) =0  THEN '' ELSE  ISNULL(<%=__COLUMN_NAMES__%>,'') END)), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
+    private static final String AVERAGE_LENGTH_WITH_BLANK_AND_NULL_SQL =
+            "SELECT SUM(CHAR_LENGTH(ISNULL(<%=__COLUMN_NAMES__%>,''))), COUNT(*) FROM <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%>"; //$NON-NLS-1$
 
     private static final String AVERAGE_LENGTH_WITH_NULL = "Average Length With Null"; //$NON-NLS-1$
 
