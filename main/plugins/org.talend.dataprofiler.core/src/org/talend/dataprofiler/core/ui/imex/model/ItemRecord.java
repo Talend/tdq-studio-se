@@ -151,13 +151,18 @@ public class ItemRecord {
         this(file, ResourceManager.getRootProject().getLocation());
     }
 
+    public ItemRecord(File file, IPath rootFolder) {
+        this(file, rootFolder, null);
+    }
+
     /**
      * the resourceSet attribute is static so that notice call {@link #clear()} method when next time
      *
      * @param file the file which we want to import or export
      * @param rootFolder the location which file is come from
+     * @param proj the current file is from which project(main or reference project)
      */
-    public ItemRecord(File file, IPath rootFolder) {
+    public ItemRecord(File file, IPath rootFolder, Project proj) {
         this.file = file;
         this.rootFolder = rootFolder;
 
@@ -173,7 +178,9 @@ public class ItemRecord {
         if (FILE_ELEMENT_MAP == null) {
             FILE_ELEMENT_MAP = new HashMap<File, ModelElement>();
         }
-        if (rootFolder != null) {
+        if (proj != null) {
+            project = proj;
+        } else if (rootFolder != null) {
             String lastSegment = rootFolder.lastSegment();
             project = ProjectManager.getInstance().getProjectFromProjectTechLabel(lastSegment);
         }
@@ -822,9 +829,8 @@ public class ItemRecord {
                     }
                 }
             }
-            Project currentProject = ProjectManager.getInstance().getCurrentProject();
-            List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(currentProject);
-            if (org.talend.core.PluginChecker.isRefProjectLoaded() && currentProject.getEmfProject() != null
+            List<Project> referencedProjects = ProjectManager.getInstance().getReferencedProjects(project);
+            if (org.talend.core.PluginChecker.isRefProjectLoaded() && project.getEmfProject() != null
                     && referencedProjects.size() > 0) {
                 addRefProjChildToExport(recordList, referencedProjects);
             }
@@ -836,16 +842,26 @@ public class ItemRecord {
 
     private void addRefProjChildToExport(List<ItemRecord> recordList, List<Project> referencedProjects) {
         boolean isMeredRefProject = ProxyRepositoryManager.getInstance().isMergeRefProject();
-        if (DqFileUtils.isLocalProjectFile(file) && isMeredRefProject) {// for merged model, add some reference
+        if (file == null || !file.exists() || referencedProjects.size() == 0) {
+            return;
+        }
+        // merged model for Reference project
+        if (isMeredRefProject && DqFileUtils.isLocalProjectFile(file)) {
             for (Project refProj : referencedProjects) {
-                IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
-                findRefNeededResToChildren(iProject, recordList, file);
+                findChildrenFromRefFolder(refProj, recordList, file);
+                List<Project> subRefProjs = ProjectManager.getInstance().getReferencedProjects(refProj);
+                if (!subRefProjs.isEmpty()) {
+                    addRefProjChildToExport(recordList, subRefProjs);
+                }
             }
         }
-        if (!isMeredRefProject) { // Add reference children with none-merged mode
-            if (ResourceManager.getRootProject().getLocation().toFile().equals(file)) {// Add a virtual root node
+        // none-merged mode for Reference project
+        if (!isMeredRefProject) {
+            // Add a Virtual node "Referenced Project", both file and root folder are workspace root path
+            if (checkFileIsProject()) {
                 ItemRecord itemRecordRefRoot =
-                        new ItemRecord(ResourceManager.getWorskpacePath().toFile(), ResourceManager.getWorskpacePath());
+                        new ItemRecord(ResourceManager.getWorskpacePath().toFile(), ResourceManager.getWorskpacePath(),
+                                this.project);
                 recordList.add(itemRecordRefRoot);
 
             } else if (ResourceManager.getWorskpacePath().toFile().equals(file)
@@ -854,12 +870,26 @@ public class ItemRecord {
                 for (Project refProj : referencedProjects) {
                     IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
                     IPath refRootPath = iProject.getLocation();
-                    ItemRecord itemRecordRef = new ItemRecord(refRootPath.toFile(), refRootPath);
+                    ItemRecord itemRecordRef = new ItemRecord(refRootPath.toFile(), refRootPath, refProj);
                     recordList.add(itemRecordRef);
                 }
 
             }
         }
+    }
+
+    /**
+     * @Description:Check the current file path if it is a project path
+     * @return
+     */
+    private boolean checkFileIsProject() {
+        IProject[] projects = ResourceManager.getRoot().getProjects();
+        for (IProject proj : projects) {
+            if (proj.getLocation().equals(this.getFilePath())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -943,59 +973,58 @@ public class ItemRecord {
      * @param fileOrFolder
      * @return For merge mode,find the related folders in reference project based on the current file name
      */
-    private void findRefNeededResToChildren(IProject iProject, List<ItemRecord> recordList, File fileOrFolder) {
+    private void findChildrenFromRefFolder(Project refProj, List<ItemRecord> recordList, File fileOrFolder) {
         boolean isValidFolder = fileOrFolder != null && fileOrFolder.exists() && fileOrFolder.isDirectory();
         if (!ProxyRepositoryManager.getInstance().isMergeRefProject() || !isValidFolder) {
             return;
         }
         List<IResource> resources = new ArrayList<>();
         String name = fileOrFolder.getName();
+        IProject iProject = ReponsitoryContextBridge.findProject(refProj.getTechnicalLabel());
         try {
             for (EResourceConstant eResConst : EResourceConstant.getReferenceNeededConstants()) {
                 IFolder refEResFolder = ResourceManager.getOneFolder(iProject, eResConst);
                 boolean isPatternOrJRXML = eResConst == EResourceConstant.PATTERN_REGEX
                         || eResConst == EResourceConstant.PATTERN_SQL || eResConst == EResourceConstant.JRXML_TEMPLATE;
-                if (!refEResFolder.exists() || !fileOrFolder.getPath().contains(eResConst.getName())) {
-                    continue;
-                }
-                // 1.sub-folder in PatternRegex(like 'address'),PatternSQL,JRMX
-                // 2.user-defined resources in some reference folders like "Regex"
-                if (isPatternOrJRXML) {
-                    if (refEResFolder.getFolder(name).exists()) {// 1
-                        for (IResource res : refEResFolder.getFolder(name).members()) {
+                if (refEResFolder.exists() && fileOrFolder.getPath().contains(eResConst.getPath().replace("/", "\\"))) {
+                    // 1.sub-folder in PatternRegex(like 'address'),PatternSQL,JRMX
+                    // 2.user-defined resources in some reference folders like folder "abc" in "Regex"
+                    if (isPatternOrJRXML) {
+                        if (refEResFolder.getFolder(name).exists()) {// 1
+                            for (IResource res : refEResFolder.getFolder(name).members()) {
+                                resources.add(res);
+                            }
+                            break;
+                        } else if (eResConst.getName().equals(name)) {// 2
+                            for (IResource res : refEResFolder.members()) {
+                                // if not found in Main project,take it as user-defined resource in RefProject
+                                IResource findMemberFromRootProj =
+                                        ResourceManager.getOneFolder(eResConst).findMember(res.getName());
+                                if (findMemberFromRootProj == null || !findMemberFromRootProj.exists()) {
+                                    resources.add(res);
+                                }
+                            }
+                            break;
+                        }
+
+                    } else if (eResConst.getName().equals(name)) {// Analyses,Report,Indicators...
+                        for (IResource res : refEResFolder.members()) {
                             resources.add(res);
                         }
                         break;
-                    } else if (eResConst.getName().equals(name)) {// 2
-                        for (IResource res : refEResFolder.members()) {
-                            IResource findMemberFromRootProj =
-                                    ResourceManager.getOneFolder(eResConst).findMember(res.getName());
-                            if (findMemberFromRootProj == null || !findMemberFromRootProj.exists()) {
-                                resources.add(res);
-                            }
-                        }
-                        break;
                     }
-
-                } else if (eResConst.getName().equals(name)) {// Analyses,Report,Indicators...
-                    for (IResource res : refEResFolder.members()) {
-                        resources.add(res);
-                    }
-                    break;
                 }
             }
         } catch (CoreException e) {
             log.error(e.getMessage());
         }
-        if (recordList != null) {
-            for (IResource res : resources) {
-                if (res != null && res.exists()) {
-                    File refFile = res.getLocation().toFile();
-                    if (isValid(refFile)) {
-                        ItemRecord itemRecord = new ItemRecord(refFile, iProject.getLocation());
-                        if (itemRecord.isValid()) {
-                            recordList.add(itemRecord);
-                        }
+        for (IResource res : resources) {
+            if (res != null && res.exists()) {
+                File refFile = res.getLocation().toFile();
+                if (isValid(refFile)) {
+                    ItemRecord itemRecord = new ItemRecord(refFile, iProject.getLocation());
+                    if (itemRecord.isValid()) {
+                        recordList.add(itemRecord);
                     }
                 }
             }
