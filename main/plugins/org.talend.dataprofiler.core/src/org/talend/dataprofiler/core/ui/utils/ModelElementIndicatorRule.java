@@ -136,9 +136,7 @@ public final class ModelElementIndicatorRule {
         case DistinctCountIndicatorEnum:
         case UniqueIndicatorEnum:
         case DuplicateCountIndicatorEnum:
-
             // MOD scorreia 2008-06-04 enable distinct count, unique count and duplicate count for all types
-            // if (dataminingType == DataminingType.NOMINAL) {
             return true;
         case DefValueCountIndicatorEnum:
             Expression initialValue = null;
@@ -150,7 +148,6 @@ public final class ModelElementIndicatorRule {
                 // non nullable numeric column give a non null default value as ''
                 return initialValue.getBody().length() != 0 || Java2SqlType.isTextInSQL(javaType);
             }
-
             break;
         case BlankCountIndicatorEnum:
             // MOD klliu 2011-07-19 bug 22980 from repository as same as indicator dialog
@@ -160,10 +157,8 @@ public final class ModelElementIndicatorRule {
             } else if (isTeradataInterval == Java2SqlType.TERADATA_INTERVAL_TO && isSQLEngine) {
                 // Added yyin 20121212 TDQ-6099: disable for Teradata's interval_xx_to_xx type.
                 return false;
-            } else {
-                return true;
             }
-
+            return true;
         case TextIndicatorEnum:
         case MinLengthIndicatorEnum:
         case MinLengthWithNullIndicatorEnum:
@@ -194,6 +189,7 @@ public final class ModelElementIndicatorRule {
             } else if (isJavaEngine) {
                 return true;
             }
+            return false;
         case BenfordLawFrequencyIndicatorEnum:
             // Added yyin 20121211 TDQ-6099: disable these three for INTERVAL type of Teradata
             // disable the benford for interval type: both sql and java
@@ -206,11 +202,22 @@ public final class ModelElementIndicatorRule {
             if (isTeradataSQL || isIngres || isSybase) {
                 return false;
             }
+            if (isTeradataInterval == Java2SqlType.TERADATA_INTERVAL_TO && isSQLEngine) {
+                return false;
+            }
+            if (dataminingType == DataminingType.OTHER) {
+                return false;
+            }
+            return true;
         case ModeIndicatorEnum:
             // Added yyin 20121212 TDQ-6099: disable for Teradata's interval_xx_to_xx type.
             if (isTeradataInterval == Java2SqlType.TERADATA_INTERVAL_TO && isSQLEngine) {
                 return false;
             }
+            if (dataminingType == DataminingType.OTHER) {
+                return false;
+            }
+            return true;
         case FrequencyIndicatorEnum:
         case LowFrequencyIndicatorEnum:
             if (dataminingType == DataminingType.NOMINAL || dataminingType == DataminingType.INTERVAL) {
@@ -243,7 +250,6 @@ public final class ModelElementIndicatorRule {
         case IQRIndicatorEnum:
         case LowerQuartileIndicatorEnum:
         case UpperQuartileIndicatorEnum:
-
             // MOD scorreia 2008-09-19 do not allow box plot on date fields because it is not correctly handled in the
             // graphics and database yet.
             if (Java2SqlType.isNumbericInSQL(javaType) /* || Java2SqlType.isDateInSQL(javaType) */) {
@@ -277,7 +283,6 @@ public final class ModelElementIndicatorRule {
         case MonthLowFrequencyIndicatorEnum:
         case QuarterLowFrequencyIndicatorEnum:
         case YearLowFrequencyIndicatorEnum:
-
             // ADD yyi 2010-07-23 13676
             // Mod yyin 20120511 TDQ-5241
             if (Java2SqlType.isDateInSQL(javaType) && !Java2SqlType.isTimeSQL(javaType)
@@ -309,7 +314,6 @@ public final class ModelElementIndicatorRule {
                 return true;
             }
             break;
-
         case SqlPatternMatchingIndicatorEnum:
             if (node == null) {
                 return false;
@@ -347,7 +351,6 @@ public final class ModelElementIndicatorRule {
             if (judi != null) {
                 indicator = judi;
             }
-
             returnExpression = dbmsLanguage.getExpression(indicator);
             if (isJavaEngine && judi == null || isSQLEngine && returnExpression == null) {
                 return false;
@@ -356,7 +359,6 @@ public final class ModelElementIndicatorRule {
         default:
             return false;
         }
-
         return false;
     }
 
