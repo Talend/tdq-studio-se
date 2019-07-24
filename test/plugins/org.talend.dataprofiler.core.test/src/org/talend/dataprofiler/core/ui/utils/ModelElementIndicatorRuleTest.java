@@ -178,7 +178,7 @@ public class ModelElementIndicatorRuleTest {
             // Phone Number Statistics
             true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
             // Fraud Detection
-            true, true,
+            false, false,
             // User Defined Indicators
             false, false, // (this is not follow the excel real result(true,true))
             // Sql patterns
@@ -199,7 +199,7 @@ public class ModelElementIndicatorRuleTest {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
             // Pattern Frequency Statistics
-            false, false, false, false, true, false, true, false, false, false, false, false, false, false, false,
+            false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
             false, false, false,
             // Soundex Frequency Statistics
             false, false, false, false,
@@ -207,7 +207,7 @@ public class ModelElementIndicatorRuleTest {
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
             false,
             // Fraud Detection
-            true, true,
+            false, false,
             // User Defined Indicators
             false, false, // (this is not follow the excel real result(true,true))
             // Sql patterns

@@ -186,7 +186,7 @@ public final class ModelElementIndicatorRule {
         case EastAsiaPatternLowFreqIndicatorEnum:
             if (isSQLEngine && isEmptyExpression(indicator, dbmsLanguage)) {
                 return false;
-            } else if (isJavaEngine) {
+            } else if (isJavaEngine && dataminingType != DataminingType.OTHER) {
                 return true;
             }
             return false;
@@ -194,6 +194,12 @@ public final class ModelElementIndicatorRule {
             // Added yyin 20121211 TDQ-6099: disable these three for INTERVAL type of Teradata
             // disable the benford for interval type: both sql and java
             if (isTeradataInterval > 0) {
+                return false;
+            }
+            if (Java2SqlType.isDateInSQL(javaType)) {
+                return false;
+            }
+            if (dataminingType == DataminingType.OTHER) {
                 return false;
             }
             return true;
