@@ -70,7 +70,7 @@ public class EMailValidationIndicator extends UserDefIndicatorImpl {
      *
      * @param emailAddress the sender email address to set
      */
-    void setEmailAddress(String emailAddress) {
+    public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 
@@ -338,7 +338,7 @@ public class EMailValidationIndicator extends UserDefIndicatorImpl {
         return res;
     }
 
-    boolean isAddressValid(String address) {
+    public boolean isAddressValid(String address) {
         if (address == null) {
             return false;
         }

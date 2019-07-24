@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Test
+Bundle-SymbolicName: test.myudi.test
+Bundle-Version: 7.3.1.qualifier
+Fragment-Host: test.myudi
+Automatic-Module-Name: test.myudi.test

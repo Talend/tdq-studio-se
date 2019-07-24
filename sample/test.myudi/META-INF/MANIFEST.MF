@@ -5,8 +5,7 @@ Bundle-SymbolicName: test.myudi
 Bundle-Version: 7.3.1.qualifier
 Require-Bundle: org.talend.dataquality;bundle-version="6.0.0",
  org.talend.testutils;bundle-version="1.0.0",
- org.apache.log4j,
- org.junit
+ org.apache.log4j
 Bundle-ClassPath: .
 Export-Package: 
  org.talend.dataquality.indicator.userdefine,

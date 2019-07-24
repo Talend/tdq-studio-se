@@ -10,12 +10,17 @@
 // 9 rue Pages 92150 Suresnes, France
 //
 // ============================================================================
-package org.talend.dataquality.indicator.userdefine.email;
+package org.talend.dataquality.indicator.userdefine;
 
 import junit.framework.Assert;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.talend.dataquality.domain.Domain;
+import org.talend.dataquality.domain.DomainFactory;
+import org.talend.dataquality.indicator.userdefine.email.EMailValidationIndicator;
+import org.talend.dataquality.indicators.IndicatorParameters;
+import org.talend.dataquality.indicators.IndicatorsFactory;
 
 /**
  * created by zhao on 2012-8-27 Detailled comment
@@ -26,9 +31,9 @@ public class EMailValidationIndicatorTest {
     private EMailValidationIndicator emailValidationIndicator = null;
 
     private final static String[] emails = new String[] {
-            "mzhao@talend.cn", "xxxmzhao@talend.com", "minglee.zhao@gmail.com", "paslor@126.com", "paslor@hotmail.com", "mzhao@Talxxx.com", null, "", " ", "a@", "@b", "@hotmail.com" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
+            "mzhao@talend.cn","307728088@qq.com", "minglee.zhao@gmail.com", "paslor@126.com",  "mzhao@Talxxx.com", null, "", " ", "a@", "@b", "@hotmail.com" }; //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$
 
-    private final static boolean[] valid = { false, true, true, true, false, false, false, false, false, false, false, false };
+    private final static boolean[] valid = { false,true, true, true, false, false, false, false, false, false, false};
 
     /**
      * DOC zhao Comment method "setUp".
@@ -41,6 +46,7 @@ public class EMailValidationIndicatorTest {
         emailValidationIndicator.setName(this.getClass().getName());
         emailValidationIndicator.setEmailAddress("mzhao@talend.com"); //$NON-NLS-1$
         Assert.assertEquals(emails.length, valid.length);
+        //;
     }
 
     /**
@@ -64,13 +70,16 @@ public class EMailValidationIndicatorTest {
      * Test method for
      * {@link org.talend.dataquality.indicator.userdefine.email.EMailValidationIndicator#isAddressValid(java.lang.String)}
      */
-    @Test
+    @SuppressWarnings("deprecation")
+	@Test
     public void testIsAddressValid() {
         emailValidationIndicator.reset();
+        Assert.assertEquals(true,emailValidationIndicator.isAddressValid("307728088@qq.com"));
+        
+       // Assert.assertEquals(true,emailValidationIndicator.isAddressValid("wangxiaoying320@hotmail.com"));
+       
         for (int j = 0; j < emails.length; j++) {
-            Assert.assertEquals(valid[j], emailValidationIndicator.isAddressValid(emails[j]));
-        }
+		  Assert.assertEquals(emails[j],valid[j], emailValidationIndicator.isAddressValid(emails[j])); }
     }
-
-    // TODO create different parameters and test the initparameter method.
+    // TODO create different parameters and test the initparameter method. 
 }
