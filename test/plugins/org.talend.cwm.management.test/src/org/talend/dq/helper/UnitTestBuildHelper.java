@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 
-import junit.framework.Assert;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -98,6 +96,8 @@ import org.talend.repository.model.RepositoryNode;
 import org.talend.test.utils.DBPropertiesUtils;
 import org.talend.utils.string.StringUtilities;
 import org.talend.utils.sugars.ReturnCode;
+
+import junit.framework.Assert;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
@@ -456,7 +456,7 @@ public class UnitTestBuildHelper {
 
         property.setAuthor(author);
         property.setCreationDate(new Date());
-        property.setId(StringUtilities.getRandomString(26));
+        property.setId(StringUtilities.getRandomString(13) + StringUtilities.getRandomString(13));
         property.setItem(folderItem);
         property.setLabel(type.getFolder());
         property.setMaxInformationLevel(InformationLevel.DEBUG_LITERAL);

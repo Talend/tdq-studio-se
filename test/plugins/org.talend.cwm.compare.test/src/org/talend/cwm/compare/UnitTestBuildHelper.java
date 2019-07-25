@@ -87,6 +87,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryConstants;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.string.StringUtilities;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.record.RecordFactory;
 import orgomg.cwm.resource.record.RecordFile;
@@ -444,7 +445,7 @@ public class UnitTestBuildHelper {
 
         property.setAuthor(author);
         property.setCreationDate(new Date());
-        property.setId(StringUtilities.getRandomString(26));
+        property.setId(StringUtilities.getRandomString(13) + StringUtilities.getRandomString(13));
         property.setItem(folderItem);
         property.setLabel(type.getFolder());
         property.setMaxInformationLevel(InformationLevel.DEBUG_LITERAL);
