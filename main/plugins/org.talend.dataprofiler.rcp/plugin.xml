@@ -38,7 +38,7 @@
             context="Jtds wizard"
             language="java"
             message="Wizard use for TOP"
-            name="jtds-1.3.1-patch.jar" mvn_uri="mvn:org.talend.libraries/jtds-1.3.1-patch/6.1.1" 
+            name="jtds-1.3.1-patch-20190523.jar" mvn_uri="mvn:net.sourceforge.jtds/jtds/1.3.1-patch-20190523" 
             required="true">
       </libraryNeeded>
       <libraryNeeded
