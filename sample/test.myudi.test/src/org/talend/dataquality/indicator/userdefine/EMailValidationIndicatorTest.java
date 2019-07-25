@@ -74,10 +74,6 @@ public class EMailValidationIndicatorTest {
 	@Test
     public void testIsAddressValid() {
         emailValidationIndicator.reset();
-        Assert.assertEquals(true,emailValidationIndicator.isAddressValid("307728088@qq.com"));
-        
-       // Assert.assertEquals(true,emailValidationIndicator.isAddressValid("wangxiaoying320@hotmail.com"));
-       
         for (int j = 0; j < emails.length; j++) {
 		  Assert.assertEquals(emails[j],valid[j], emailValidationIndicator.isAddressValid(emails[j])); }
     }
