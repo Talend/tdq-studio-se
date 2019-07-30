@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.cwm.db.connection;
 
+import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -21,7 +22,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.metadata.builder.database.ExtractMetaDataUtils;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
+import org.talend.cwm.helper.CatalogHelper;
+import org.talend.cwm.helper.ColumnHelper;
+import org.talend.cwm.helper.SchemaHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.matchmerge.Record;
@@ -34,6 +39,9 @@ import org.talend.utils.sugars.TypedReturnCode;
 
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwm.resource.relational.Catalog;
+import orgomg.cwm.resource.relational.ColumnSet;
+import orgomg.cwm.resource.relational.Schema;
 
 /**
  * SQL executor dedicated for relational database query.
@@ -156,6 +164,22 @@ public class DatabaseSQLExecutor extends SQLExecutor {
             if (limit > 0 && (ConnectionUtils.isTcompJdbc(con) || ConnectionUtils.isGeneralJdbc(con))) {
                 statement.setMaxRows(limit);
             }
+            // TDQ-17324: set the connection's catalog for Snowflake specially when not set db parameter
+            if (columnListSize > 0) {
+                DatabaseMetaData metadata =
+                        ExtractMetaDataUtils.getInstance().getConnectionMetadata(sqlconnection.getObject());
+                if (org.talend.utils.sql.ConnectionUtils.isSnowflake(metadata)) {
+                    ModelElement modelElement = analysedElements.get(0);
+                    ColumnSet columnOwnerAsColumnSet = ColumnHelper.getColumnOwnerAsColumnSet(modelElement);
+                    Schema parentSchema = SchemaHelper.getParentSchema(columnOwnerAsColumnSet);
+                    Catalog parentCatalog = CatalogHelper.getParentCatalog(parentSchema);
+                    if (parentCatalog != null) {
+                        sqlconnection.getObject().setCatalog(parentCatalog.getName());
+                    }
+                }
+            }
+            // TDQ-17324~
+
             String query = createSqlStatement(connection, analysedElements, where);
             if (log.isInfoEnabled()) {
                 log.info("Executing query: " + query); //$NON-NLS-1$
