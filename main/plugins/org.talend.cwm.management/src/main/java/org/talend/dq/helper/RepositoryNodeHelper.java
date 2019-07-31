@@ -163,6 +163,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -2598,7 +2599,7 @@ public final class RepositoryNodeHelper {
         return node instanceof AnalysisRepNode || node instanceof SysIndicatorDefinitionRepNode
                 || node instanceof PatternRepNode || node instanceof JrxmlTempleteRepNode
                 || node instanceof SourceFileRepNode || node instanceof RuleRepNode
-                || node instanceof DBConnectionRepNode || node instanceof ReportRepNode
+                || node instanceof ReportRepNode
                 || node instanceof ReportFileRepNode || node instanceof ReportAnalysisRepNode
                 || node instanceof HiveOfHCConnectionNode;
     }

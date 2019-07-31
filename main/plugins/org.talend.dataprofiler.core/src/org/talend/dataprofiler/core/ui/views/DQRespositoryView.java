@@ -507,7 +507,23 @@ public class DQRespositoryView extends CommonNavigator {
                                     new IRepositoryNode[] { repoNode });
                             openItemEditorAction.run();
                         }
-
+                        // TDQ-7500: press 'enter' on a metadata connection(database/file/hadoop) should open its wizard
+                        if (repoNode instanceof DBConnectionRepNode) {
+                            new EditDatabaseConnectionAction(repoNode).run();
+                        } else if (repoNode instanceof DFConnectionRepNode) {
+                            new EditFileDelimitedAction(repoNode).run();
+                        } else if (repoNode instanceof HadoopClusterConnectionRepNode
+                                && HadoopClusterUtils.getDefault().isServiceInstalled()) {
+                            new EditHadoopClusterAction(repoNode).run();
+                        } else if (repoNode instanceof HDFSOfHCConnectionNode
+                                && HadoopClusterUtils.getDefault().isServiceInstalled()) {
+                            new EditHDFSConnectionAction(repoNode).run();
+                        } else if (repoNode instanceof DFTableRepNode) {
+                            new EditDFTableAction(repoNode).run();
+                        } else if (repoNode instanceof ContextRepNode) {
+                            new DQEditContextAction(repoNode, false).run();
+                        }
+                        // TDQ-7500~
                     }
                 }
             }
