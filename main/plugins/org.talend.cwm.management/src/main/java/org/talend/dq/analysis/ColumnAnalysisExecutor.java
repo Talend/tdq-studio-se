@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
@@ -39,6 +40,7 @@ import org.talend.dq.dbms.GenericSQLHandler;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.indicators.IndicatorEvaluator;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.Classifier;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -96,10 +98,14 @@ public class ColumnAnalysisExecutor extends AnalysisExecutor {
 
         // when to close connection
         boolean closeAtTheEnd = true;
-        Package catalog = schemata.values().iterator().next();
-        if (!eval.selectCatalog(catalog.getName())) {
-            log.warn(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalog.getName()));//$NON-NLS-1$
+        // TDQ-17324: set the connection's catalog for Snowflake specially when not set db parameter
+        Package schema = schemata.values().iterator().next();
+        Package catalog = CatalogHelper.getParentCatalog(schema);
+        String catalogName = catalog != null ? catalog.getName() : schema.getName();
+        if (!eval.selectCatalog(catalogName)) {
+            log.error(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalogName));//$NON-NLS-1$
         }
+        // TDQ-17324~
 
         return eval.evaluateIndicators(sqlStatement, closeAtTheEnd);
     }
