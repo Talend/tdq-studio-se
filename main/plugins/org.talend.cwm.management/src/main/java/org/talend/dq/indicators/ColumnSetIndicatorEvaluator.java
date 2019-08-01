@@ -34,8 +34,10 @@ import org.talend.core.model.metadata.builder.connection.DelimitedFileConnection
 import org.talend.core.model.metadata.builder.connection.Escape;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
+import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ModelElementHelper;
+import org.talend.cwm.helper.SchemaHelper;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.xml.TdXmlSchema;
 import org.talend.dataquality.PluginConstant;
@@ -58,9 +60,12 @@ import org.talend.fileprocess.FileInputDelimited;
 import org.talend.utils.sql.ResultSetUtils;
 import org.talend.utils.sql.TalendTypeConvert;
 import org.talend.utils.sugars.ReturnCode;
-import orgomg.cwm.objectmodel.core.ModelElement;
 
 import com.talend.csv.CSVReader;
+
+import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwm.objectmodel.core.Package;
+import orgomg.cwm.resource.relational.ColumnSet;
 
 /**
  * DOC qiongli class global comment. Detailled comment
@@ -90,6 +95,19 @@ public class ColumnSetIndicatorEvaluator extends Evaluator<String> {
         if (isDelimitedFile) {
             ok = evaluateByDelimitedFile(sqlStatement, ok);
         } else {
+            // TDQ-17324: set the connection's catalog for Snowflake specially when not set db parameter
+            List<ModelElement> analysisElementList = this.analysis.getContext().getAnalysedElements();
+            if (analysisElementList.size() > 0) {
+                ModelElement modelElement = analysisElementList.get(0);
+                ColumnSet columnOwnerAsColumnSet = ColumnHelper.getColumnOwnerAsColumnSet(modelElement);
+                Package schema = SchemaHelper.getParentSchema(columnOwnerAsColumnSet);
+                Package catalog = CatalogHelper.getParentCatalog(schema);
+                String catalogName = catalog != null ? catalog.getName() : schema.getName();
+                if (!selectCatalog(catalogName)) {
+                    log.error(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalogName));//$NON-NLS-1$
+                }
+            }
+            // TDQ-17324~
             ok = evaluateBySql(sqlStatement, ok);
         }
 

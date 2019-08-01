@@ -634,10 +634,14 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
 
         // when to close connection
         boolean closeAtTheEnd = true;
-        Package catalog = schemata.values().iterator().next();
-        if (!eval.selectCatalog(catalog.getName())) {
-            log.warn("Failed to select catalog " + catalog.getName() + " for connection.");//$NON-NLS-1$//$NON-NLS-2$
+        // TDQ-17324: set the connection's catalog for Snowflake specially when not set db parameter
+        Package schema = schemata.values().iterator().next();
+        Package catalog = CatalogHelper.getParentCatalog(schema);
+        String catalogName = catalog != null ? catalog.getName() : schema.getName();
+        if (!eval.selectCatalog(catalogName)) {
+            log.error("Failed to select catalog " + catalogName + " for connection.");//$NON-NLS-1$//$NON-NLS-2$
         }
+        // TDQ-17324~
         ReturnCode retCode = eval.evaluateIndicators(sqlStatement, closeAtTheEnd);
         if (getMonitor() != null) {
             getMonitor().worked(compIndicatorsWorked);
