@@ -23,10 +23,10 @@ import org.eclipse.emf.common.util.EList;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.helper.TaggedValueHelper;
-import org.talend.daikon.security.CryptoHelper;
 import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
 import org.talend.dq.helper.resourcehelper.PrvResourceFileHelper;
 import org.talend.resource.ResourceManager;
+import org.talend.utils.security.StudioEncryption;
 
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -98,7 +98,7 @@ public class EncryptAndDecryptPasswordTask extends AbstractWorksapceUpdateTask {
                     if (tvObj != null) {
                         TaggedValue tv = (TaggedValue) tvObj;
                         if (TaggedValueHelper.PASSWORD.equals(tv.getTag())) {
-                            tv.setValue(new CryptoHelper(CryptoHelper.PASSPHRASE).encrypt(tv.getValue()));
+                            tv.setValue(StudioEncryption.encrypt(tv.getValue()));
                         }
                     }
                 }
