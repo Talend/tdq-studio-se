@@ -13,6 +13,10 @@ package org.talend.dq.dbms;
 
 import org.talend.utils.ProductVersion;
 
+import orgomg.cwm.objectmodel.core.ModelElement;
+import orgomg.cwm.resource.relational.Catalog;
+import orgomg.cwm.resource.relational.Schema;
+
 /**
  * DOC msjian class global comment. Detailled comment <br/>
  * 
@@ -39,5 +43,19 @@ public class SnowflakeDbmsLanguage extends DbmsLanguage {
     @Override
     public String charLength(String columnName) {
         return " LENGTH(" + columnName + ") "; //$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.talend.dq.dbms.DbmsLanguage#getCatalog(orgomg.cwm.objectmodel.core.ModelElement)
+     */
+    @Override
+    protected Catalog getCatalog(ModelElement columnSetOwner) {
+        // get the schema first
+        Schema schema = getSchema(columnSetOwner);
+        // get the catalog according to the schema
+        Catalog catalog = super.getCatalog(schema);
+        return catalog;
     }
 }
