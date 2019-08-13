@@ -45,6 +45,7 @@
   <plugin id="org.talend.cwm.mip.edit.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.cwm.mip.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
   <plugin id="org.talend.daikon" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
+  <plugin id="org.talend.daikon.crypto.utils" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.daikon.exception" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.dataprofiler.common.ui" download-size="0" install-size="0" version="0.0.0" unpack="false"/>
   <plugin id="org.talend.dataprofiler.common.ui.nl" download-size="0" install-size="0" version="0.0.0" fragment="true" unpack="false"/>
