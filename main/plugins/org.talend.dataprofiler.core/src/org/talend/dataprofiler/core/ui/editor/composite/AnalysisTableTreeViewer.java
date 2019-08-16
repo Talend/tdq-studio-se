@@ -101,10 +101,10 @@ import org.talend.dq.nodes.DBTableRepNode;
 import org.talend.dq.nodes.DBViewRepNode;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.RuleRepNode;
-import org.talend.dq.nodes.SysIndicatorDefinitionRepNode;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.NamedColumnSet;
@@ -524,10 +524,10 @@ public class AnalysisTableTreeViewer extends AbstractTableDropTree {
         String label = indicatorUnit.getIndicatorName();
         label = label != null ? label : DefaultMessagesImpl.getString("AnalysisTableTreeViewer.unknownIndicator");//$NON-NLS-1$
 
-        SysIndicatorDefinitionRepNode recursiveFindIndicatorDefinition = RepositoryNodeHelper
-                .recursiveFindIndicatorDefinition(indicatorUnit.getIndicator().getIndicatorDefinition());
-        if (recursiveFindIndicatorDefinition != null && !recursiveFindIndicatorDefinition.getProject().isMainProject()) {
-            label = label + recursiveFindIndicatorDefinition.getDisplayProjectName();
+        DQRepositoryNode recursiveFindNode =
+                RepositoryNodeHelper.recursiveFind(indicatorUnit.getIndicator().getIndicatorDefinition());
+        if (recursiveFindNode != null && !recursiveFindNode.getProject().isMainProject()) {
+            label = label + recursiveFindNode.getDisplayProjectName();
         }
 
         if (IndicatorEnum.WhereRuleIndicatorEnum.compareTo(type) == 0) {
