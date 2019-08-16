@@ -101,7 +101,7 @@ public class ColumnSetIndicatorEvaluator extends Evaluator<String> {
                 ModelElement modelElement = analysisElementList.get(0);
                 ColumnSet columnOwnerAsColumnSet = ColumnHelper.getColumnOwnerAsColumnSet(modelElement);
                 Package schema = SchemaHelper.getParentSchema(columnOwnerAsColumnSet);
-                Package catalog = CatalogHelper.getParentCatalog(schema);
+                Package catalog = CatalogHelper.getParentCatalog(schema != null ? schema : columnOwnerAsColumnSet);
                 String catalogName = catalog != null ? catalog.getName() : schema.getName();
                 if (!selectCatalog(catalogName)) {
                     log.error(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalogName));//$NON-NLS-1$
