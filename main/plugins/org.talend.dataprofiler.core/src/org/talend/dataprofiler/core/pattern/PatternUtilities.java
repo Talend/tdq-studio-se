@@ -72,6 +72,7 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.helper.resourcehelper.PatternResourceFileHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
+import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.PatternRepNode;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.IRepositoryNode;
@@ -144,11 +145,19 @@ public final class PatternUtilities {
         for (Indicator indicator : modelElementIndicator.getIndicators()) {
             // MOD xqliu 2009-08-12 bug 7810
             // MOD xwang 2011-08-01 bug TDQ-2730
-            if (UDIHelper.getMatchingIndicatorName(indicatorDefinition, pattern).equals(indicator.getName())
-                    && indicator instanceof PatternMatchingIndicator) {
-                result.setOk(false);
-                result.setMessage(DefaultMessagesImpl.getString("PatternUtilities.Selected")); //$NON-NLS-1$
-                return result;
+            if (indicator instanceof PatternMatchingIndicator) {
+                String matchingIndicatorName = UDIHelper.getMatchingIndicatorName(indicatorDefinition, pattern);
+                if (matchingIndicatorName.equals(indicator.getName())) {
+                    // TDQ-13646 msjian : check if they are also in the same project.
+                    DQRepositoryNode patternNode = RepositoryNodeHelper.recursiveFind(pattern);
+                    DQRepositoryNode indicatorNode =
+                            RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition());
+                    if (RepositoryNodeHelper.isSameProject(patternNode.getProject(), indicatorNode.getProject())) {
+                        result.setOk(false);
+                        result.setMessage(DefaultMessagesImpl.getString("PatternUtilities.Selected")); //$NON-NLS-1$
+                        return result;
+                    }
+                }
             }
             // ~
         }

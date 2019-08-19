@@ -373,18 +373,16 @@ public abstract class AbstractColumnDropTree extends AbstractPagePart implements
             }
             return pattern.getName();
         } else if (indicatorType == IndicatorEnum.UserDefinedIndicatorEnum) {
-            if (unit.getIndicatorName() == null) {
-                IndicatorDefinition indicatorDefinition = unit.getIndicator().getIndicatorDefinition();
-                if (indicatorDefinition.eIsProxy()) {
-                    indicatorDefinition = (IndicatorDefinition) EObjectHelper.resolveObject(indicatorDefinition);
-                }
-                SysIndicatorDefinitionRepNode recursiveFindNode =
-                        RepositoryNodeHelper.recursiveFindIndicatorDefinition(indicatorDefinition);
-                if (recursiveFindNode != null && !recursiveFindNode.getProject().isMainProject()) {
-                    return indicatorDefinition.getLabel() + recursiveFindNode.getDisplayProjectName();
-                }
-                return indicatorDefinition.getLabel();
+            IndicatorDefinition indicatorDefinition = unit.getIndicator().getIndicatorDefinition();
+            if (indicatorDefinition.eIsProxy()) {
+                indicatorDefinition = (IndicatorDefinition) EObjectHelper.resolveObject(indicatorDefinition);
             }
+            SysIndicatorDefinitionRepNode recursiveFindNode =
+                    RepositoryNodeHelper.recursiveFindIndicatorDefinition(indicatorDefinition);
+            if (recursiveFindNode != null && !recursiveFindNode.getProject().isMainProject()) {
+                return indicatorDefinition.getLabel() + recursiveFindNode.getDisplayProjectName();
+            }
+            return indicatorDefinition.getLabel();
         }
         return unit.getIndicatorName();
     }

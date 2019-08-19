@@ -91,6 +91,7 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.SysIndicatorDefinitionRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -598,7 +599,8 @@ public class AnalysisColumnTreeViewer extends AbstractColumnDropTree {
                             IndicatorDefinition udid = ((SysIndicatorDefinitionRepNode) obj).getIndicatorDefinition();
                             allSelectedIndicatorDefinitions.add(udid);
                             if (udid != null) {
-                                allSelectedIndNames.add(udid.getName());
+                                allSelectedIndNames
+                                        .add(RepositoryNodeHelper.recursiveFind(udid).getDisplayTextWithProjectName());
                             }
                         }
                     }
@@ -607,8 +609,11 @@ public class AnalysisColumnTreeViewer extends AbstractColumnDropTree {
                     for (IndicatorUnit indicatorUnit : meIndicator.getIndicatorUnits()) {
                         Indicator indicator = indicatorUnit.getIndicator();
                         if (indicator instanceof UserDefIndicator) {
-                            if (allSelectedIndNames.contains(indicator.getName())) {
-                                oldSelectedIndNames.add(indicator.getName());
+                            String displayIndicatorName = RepositoryNodeHelper
+                                    .recursiveFind(indicator.getIndicatorDefinition())
+                                    .getDisplayTextWithProjectName();
+                            if (allSelectedIndNames.contains(displayIndicatorName)) {
+                                oldSelectedIndNames.add(displayIndicatorName);
                             } else {
                                 // remove the UDI from UI need to insert this UDI into removeList
                                 deleteIndicatorItems(meIndicator, indicatorUnit);
@@ -622,7 +627,8 @@ public class AnalysisColumnTreeViewer extends AbstractColumnDropTree {
                     treeItem.removeAll();
 
                     for (IndicatorDefinition udid : allSelectedIndicatorDefinitions) {
-                        if (udid != null && oldSelectedIndNames.contains(udid.getName())) {
+                        if (udid != null && oldSelectedIndNames
+                                .contains(RepositoryNodeHelper.recursiveFind(udid).getDisplayTextWithProjectName())) {
                             continue;
                         }
                         IndicatorUnit[] addIndicatorUnits = null;
