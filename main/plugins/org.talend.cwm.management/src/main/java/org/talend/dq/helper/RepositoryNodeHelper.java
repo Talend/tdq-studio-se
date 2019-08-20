@@ -1004,11 +1004,12 @@ public final class RepositoryNodeHelper {
         List<RuleRepNode> ruleRepNodes = getRuleRepNodes(librariesFolderNode, true, true);
         if (ruleRepNodes.size() > 0) {
             for (RuleRepNode childNode : ruleRepNodes) {
-                Project nodeInWhichProject = getInWhichProject(childNode.getRule());
-                // TDQ-17346 msjian: find the exact node with matching its project
-                if (isSameProject(nodeInWhichProject, inWhichProject)
-                        && uuid.equals(getUUID(childNode.getRule()))) {
-                    return childNode;
+                if (uuid.equals(getUUID(childNode.getRule()))) {
+                    Project nodeInWhichProject = getInWhichProject(childNode.getRule());
+                    // TDQ-17346 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1052,11 +1053,12 @@ public final class RepositoryNodeHelper {
         List<RuleRepNode> ruleRepNodes = getRuleRepNodes(librariesFolderNode, true, true);
         if (ruleRepNodes.size() > 0) {
             for (RuleRepNode childNode : ruleRepNodes) {
-                Project nodeInWhichProject = getInWhichProject(childNode.getRule());
-                // TDQ-17346 msjian: find the exact node with matching its project
-                if (isSameProject(nodeInWhichProject, inWhichProject)
-                        && uuid.equals(getUUID(childNode.getRule()))) {
-                    return childNode;
+                if (uuid.equals(getUUID(childNode.getRule()))) {
+                    Project nodeInWhichProject = getInWhichProject(childNode.getRule());
+                    // TDQ-17346 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1248,14 +1250,18 @@ public final class RepositoryNodeHelper {
         if (uuid == null) {
             return null;
         }
-
+        Project inWhichProject = getInWhichProject(dbConn);
         IRepositoryNode MetadataDBConnectionFolderNode = getMetadataDBConnectionFolderNode(dbConn);
         List<DBConnectionRepNode> dbConnectionRepNodes =
                 getDBConnectionRepNodes(MetadataDBConnectionFolderNode, true, true);
         if (dbConnectionRepNodes.size() > 0) {
             for (DBConnectionRepNode childNode : dbConnectionRepNodes) {
                 if (uuid.equals(getUUID(childNode.getDatabaseConnection()))) {
-                    return childNode;
+                    Project nodeInWhichProject = getInWhichProject(childNode.getDatabaseConnection());
+                    // TDQ-16396 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1285,14 +1291,18 @@ public final class RepositoryNodeHelper {
         if (uuid == null) {
             return null;
         }
-
+        Project inWhichProject = getInWhichProject(dfConn);
         IRepositoryNode MetadataFileDelimitedFolderNode = getMetadataFileDelimitedFolderNode(dfConn);
         List<DFConnectionRepNode> dfConnectionRepNodes =
                 getDFConnectionRepNodes(MetadataFileDelimitedFolderNode, true, true);
         if (dfConnectionRepNodes.size() > 0) {
             for (DFConnectionRepNode childNode : dfConnectionRepNodes) {
                 if (uuid.equals(getUUID(childNode.getDfConnection()))) {
-                    return childNode;
+                    Project nodeInWhichProject = getInWhichProject(childNode.getDfConnection());
+                    // TDQ-16396 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1350,13 +1360,19 @@ public final class RepositoryNodeHelper {
             return null;
         }
 
+        Project inWhichProject = getInWhichProject(analysis);
+
         IRepositoryNode DataProfilingAnalysisFolderNode = getDataProfilingAnalysisFolderNode(analysis);
         // MOD qiongli 2011-4-6,bug 20218,add parameter withDeleted(true), contain child is in recycle bin.
         List<AnalysisRepNode> analysisRepNodes = getAnalysisRepNodes(DataProfilingAnalysisFolderNode, true, true);
         if (analysisRepNodes.size() > 0) {
             for (AnalysisRepNode childNode : analysisRepNodes) {
                 if (uuid.equals(getUUID(childNode.getAnalysis()))) {
-                    return childNode;
+                    Project nodeInWhichProject = getInWhichProject(childNode.getAnalysis());
+                    // TDQ-16396 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1423,7 +1439,9 @@ public final class RepositoryNodeHelper {
      * @return
      */
     public static org.talend.core.model.general.Project getInWhichProject(ModelElement modelElement) {
-        if (modelElement instanceof DatabaseConnection || modelElement instanceof DelimitedFileConnection) {
+        if (modelElement instanceof DatabaseConnection || modelElement instanceof DelimitedFileConnection
+                || modelElement instanceof MetadataColumn || modelElement instanceof MetadataTable
+                || modelElement instanceof Package) {
             if (modelElement.eIsProxy()) {
                 modelElement = (ModelElement) EObjectHelper.resolveObject(modelElement);
             }
@@ -1450,12 +1468,18 @@ public final class RepositoryNodeHelper {
             return null;
         }
 
+        Project inWhichProject = getInWhichProject(report);
+
         IRepositoryNode DataProfilingReportFolderNode = getDataProfilingReportFolderNode(report);
         List<ReportRepNode> reportRepNodes = getReportRepNodes(DataProfilingReportFolderNode, true, true);
         if (reportRepNodes.size() > 0) {
             for (ReportRepNode childNode : reportRepNodes) {
                 if (uuid.equals(getUUID(childNode.getReport()))) {
-                    return childNode;
+                    Project nodeInWhichProject = getInWhichProject(childNode.getReport());
+                    // TDQ-16396 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1504,11 +1528,12 @@ public final class RepositoryNodeHelper {
 
         if (indicatorDefinitionRepNodes.size() > 0) {
             for (SysIndicatorDefinitionRepNode childNode : indicatorDefinitionRepNodes) {
-                Project nodeInWhichProject = getInWhichProject(childNode.getIndicatorDefinition());
                 // TDQ-17346 msjian: find the exact node with matching its project
-                if (isSameProject(nodeInWhichProject, inWhichProject)
-                        && uuid.equals(getUUID(childNode.getIndicatorDefinition()))) {
-                    return childNode;
+                if (uuid.equals(getUUID(childNode.getIndicatorDefinition()))) {
+                    Project nodeInWhichProject = getInWhichProject(childNode.getIndicatorDefinition());
+                    if(isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1529,11 +1554,12 @@ public final class RepositoryNodeHelper {
 
         if (patternRepNodes.size() > 0) {
             for (PatternRepNode childNode : patternRepNodes) {
-                Project nodeInWhichProject = getInWhichProject(childNode.getPattern());
-                // TDQ-17346 msjian: find the exact node with matching its project
-                if (isSameProject(nodeInWhichProject, inWhichProject)
-                        && uuid.equals(getUUID(childNode.getPattern()))) {
-                    return childNode;
+                if (uuid.equals(getUUID(childNode.getPattern()))) {
+                    Project nodeInWhichProject = getInWhichProject(childNode.getPattern());
+                    // TDQ-17346 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1554,11 +1580,12 @@ public final class RepositoryNodeHelper {
         List<RuleRepNode> ruleRepNodes = getRuleRepNodes(ruleSQLFolderNode, true, true);
         if (ruleRepNodes.size() > 0) {
             for (RuleRepNode childNode : ruleRepNodes) {
-                Project nodeInWhichProject = getInWhichProject(childNode.getRule());
-                // TDQ-17346 msjian: find the exact node with matching its project
-                if (isSameProject(nodeInWhichProject, inWhichProject)
-                        && uuid.equals(getUUID(childNode.getRule()))) {
-                    return childNode;
+                if (uuid.equals(getUUID(childNode.getRule()))) {
+                    Project nodeInWhichProject = getInWhichProject(childNode.getRule());
+                    // TDQ-17346 msjian: find the exact node with matching its project
+                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                        return childNode;
+                    }
                 }
             }
         }
@@ -1589,6 +1616,8 @@ public final class RepositoryNodeHelper {
             return null;
         }
 
+        Project inWhichProject = getInWhichProject(catalog);
+
         IRepositoryNode connNode = recursiveFind(ConnectionHelper.getTdDataProvider(catalog));
         if (connNode == null) {
             return null;
@@ -1601,7 +1630,11 @@ public final class RepositoryNodeHelper {
                     if (childNode != null && childNode instanceof DBCatalogRepNode) {
                         DBCatalogRepNode dbCatalogRepNode = (DBCatalogRepNode) childNode;
                         if (uuidCatalog.equals(getUUID(dbCatalogRepNode.getCatalog()))) {
-                            return dbCatalogRepNode;
+                            Project nodeInWhichProject = getInWhichProject(dbCatalogRepNode.getCatalog());
+                            // TDQ-16396 msjian: find the exact node with matching its project
+                            if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                                return dbCatalogRepNode;
+                            }
                         }
                     }
                 }
@@ -1633,6 +1666,8 @@ public final class RepositoryNodeHelper {
         if (uuidSchema == null) {
             return null;
         }
+
+        Project inWhichProject = getInWhichProject(schema);
         Catalog catalog = CatalogHelper.getParentCatalog(schema);
         // Schema's parent is catalog (MS SQL Server)
         if (catalog != null) {
@@ -1645,7 +1680,11 @@ public final class RepositoryNodeHelper {
                         if (childNode != null && childNode instanceof DBSchemaRepNode) {
                             DBSchemaRepNode dbSchemaRepNode = (DBSchemaRepNode) childNode;
                             if (uuidSchema.equals(getUUID(dbSchemaRepNode.getSchema()))) {
-                                return dbSchemaRepNode;
+                                // TDQ-16396 msjian: find the exact node with matching its project
+                                Project nodeInWhichProject = getInWhichProject(dbSchemaRepNode.getSchema());
+                                if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                                    return dbSchemaRepNode;
+                                }
                             }
                         }
                     }
@@ -1681,6 +1720,7 @@ public final class RepositoryNodeHelper {
         if (uuidTdTable == null) {
             return null;
         }
+        Project inWhichProject = getInWhichProject(tdTable);
         IRepositoryNode schemaOrCatalogNode = recursiveFind(ColumnSetHelper.getParentCatalogOrSchema(tdTable));
         if (schemaOrCatalogNode == null) {
             return null;
@@ -1697,7 +1737,11 @@ public final class RepositoryNodeHelper {
                     if (childNode != null && childNode instanceof DBTableRepNode) {
                         DBTableRepNode dbTableRepNode = (DBTableRepNode) childNode;
                         if (uuidTdTable.equals(getUUID(dbTableRepNode.getTdTable()))) {
-                            return dbTableRepNode;
+                            Project nodeInWhichProject = getInWhichProject(dbTableRepNode.getTdTable());
+                            // TDQ-16396 msjian: find the exact node with matching its project
+                            if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                                return dbTableRepNode;
+                            }
                         }
                     }
                 }
@@ -1714,6 +1758,9 @@ public final class RepositoryNodeHelper {
         if (uuidTdView == null) {
             return null;
         }
+
+        Project inWhichProject = getInWhichProject(tdView);
+
         IRepositoryNode schemaOrCatalogNode = recursiveFind(ColumnSetHelper.getParentCatalogOrSchema(tdView));
         if (schemaOrCatalogNode == null) {
             return null;
@@ -1726,7 +1773,11 @@ public final class RepositoryNodeHelper {
                     if (childNode != null && childNode instanceof DBViewRepNode) {
                         DBViewRepNode dbViewRepNode = (DBViewRepNode) childNode;
                         if (uuidTdView.equals(getUUID(dbViewRepNode.getTdView()))) {
-                            return dbViewRepNode;
+                            Project nodeInWhichProject = getInWhichProject(dbViewRepNode.getTdView());
+                            // TDQ-16396 msjian: find the exact node with matching its project
+                            if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                                return dbViewRepNode;
+                            }
                         }
                     }
                 }
@@ -1744,6 +1795,8 @@ public final class RepositoryNodeHelper {
         if (uuidTdColumn == null) {
             return null;
         }
+
+        Project inWhichProject = getInWhichProject(tdColumn);
         IRepositoryNode columnSetNode = recursiveFind(ColumnHelper.getColumnOwnerAsColumnSet(tdColumn));
         if (columnSetNode == null) {
             return null;
@@ -1765,7 +1818,11 @@ public final class RepositoryNodeHelper {
                 if (childNode != null && childNode instanceof DBColumnRepNode) {
                     DBColumnRepNode dbColumnRepNode = (DBColumnRepNode) childNode;
                     if (uuidTdColumn.equals(getUUID(dbColumnRepNode.getTdColumn()))) {
-                        return dbColumnRepNode;
+                        Project nodeInWhichProject = getInWhichProject(dbColumnRepNode.getTdColumn());
+                        // TDQ-16396 msjian: find the exact node with matching its project
+                        if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                            return dbColumnRepNode;
+                        }
                     }
                 }
             }
@@ -1781,6 +1838,7 @@ public final class RepositoryNodeHelper {
         if (uuidMetadataTable == null) {
             return null;
         }
+        Project inWhichProject = getInWhichProject(metadataTable);
         if (metadataTable.getNamespace() instanceof RecordFile) {
             Connection tdDataProvider = ConnectionHelper.getTdDataProvider(metadataTable);
             if (tdDataProvider != null) {
@@ -1792,7 +1850,11 @@ public final class RepositoryNodeHelper {
                             if (childNode != null && childNode instanceof DFTableRepNode) {
                                 DFTableRepNode dfTableRepNode = (DFTableRepNode) childNode;
                                 if (uuidMetadataTable.equals(getUUID(dfTableRepNode.getMetadataTable()))) {
-                                    return dfTableRepNode;
+                                    Project nodeInWhichProject = getInWhichProject(dfTableRepNode.getMetadataTable());
+                                    // TDQ-16396 msjian: find the exact node with matching its project
+                                    if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                                        return dfTableRepNode;
+                                    }
                                 }
                             }
                         }
@@ -1811,6 +1873,8 @@ public final class RepositoryNodeHelper {
         if (uuidMetadataColumn == null) {
             return null;
         }
+        Project inWhichProject = getInWhichProject(metadataColumn);
+
         IRepositoryNode columnSetNode = recursiveFind(ColumnHelper.getColumnOwnerAsMetadataTable(metadataColumn));
         if (columnSetNode == null) {
             return null;
@@ -1821,7 +1885,11 @@ public final class RepositoryNodeHelper {
                 if (childNode != null && childNode instanceof DFColumnRepNode) {
                     DFColumnRepNode dfColumnRepNode = (DFColumnRepNode) childNode;
                     if (uuidMetadataColumn.equals(getUUID(dfColumnRepNode.getMetadataColumn()))) {
-                        return dfColumnRepNode;
+                        Project nodeInWhichProject = getInWhichProject(dfColumnRepNode.getMetadataColumn());
+                        // TDQ-16396 msjian: find the exact node with matching its project
+                        if (isSameProject(nodeInWhichProject, inWhichProject)) {
+                            return dfColumnRepNode;
+                        }
                     }
                 }
             }
