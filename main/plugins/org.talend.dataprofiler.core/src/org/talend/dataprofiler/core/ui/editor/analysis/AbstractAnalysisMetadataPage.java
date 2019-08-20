@@ -118,6 +118,7 @@ import org.talend.dq.nodes.ReportAnalysisRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -1652,6 +1653,15 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
     public void setWhereClauseDisabled() {
         if (dataFilterComp != null) {
             dataFilterComp.getDataFilterText().setEnabled(false);
+        }
+    }
+
+    /**
+     * DOC msjian Comment method "emptyWhereClauseField".
+     */
+    public void emptyWhereClauseField() {
+        if (dataFilterComp != null) {
+            dataFilterComp.getDataFilterText().setText(""); //$NON-NLS-1$
         }
     }
 

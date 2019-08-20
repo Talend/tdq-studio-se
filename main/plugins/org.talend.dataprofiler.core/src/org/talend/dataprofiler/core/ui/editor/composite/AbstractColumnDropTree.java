@@ -715,7 +715,11 @@ public abstract class AbstractColumnDropTree extends AbstractPagePart implements
         }
         if (connection != null && getMasterPage().getExecCombo() != null) {
             if (ConnectionUtils.isDelimitedFileConnection((DataProvider) connection)) {
+                // TDQ-7444 msjian: when change connection from DB to file connection, we need to empty the WhereClause
+                // field, else can not save analysis.
+                getMasterPage().emptyWhereClauseField();
                 getMasterPage().setWhereClauseDisabled();
+
                 // when the selected column is not DB type,will disable the execute engine combobox.
                 getMasterPage().changeExecuteLanguageToJava(true);
 
