@@ -74,6 +74,7 @@ import org.talend.dq.nodes.DBViewRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sql.TalendTypeConvert;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -393,6 +394,8 @@ public class AnalysisColumnSetTreeViewer extends AbstractColumnDropTree {
         columnSetMultiValueList.clear();
         this.modelElementIndicators = elements;
         addItemElements(elements);
+        // TDQ-7444 msjian: fix columnset change connection from db to file
+        initializedConnection(elements);
         // MOD mzhao 2009-05-05 bug 6587.
         updateBindConnection(masterPage, tree);
     }
