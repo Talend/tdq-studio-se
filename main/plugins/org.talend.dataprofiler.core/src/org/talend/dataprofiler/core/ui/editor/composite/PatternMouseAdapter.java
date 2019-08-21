@@ -41,10 +41,13 @@ import org.talend.dataquality.analysis.AnalysisType;
 import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.PatternMatchingIndicator;
+import org.talend.dq.helper.RepositoryNodeHelper;
+import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.PatternRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.resource.EResourceConstant;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 
 /**
@@ -111,7 +114,7 @@ public class PatternMouseAdapter extends MouseAdapter {
                 if (obj instanceof PatternRepNode) {
                     PatternRepNode patternNode = (PatternRepNode) obj;
                     allSelectedPatternNodes.add(patternNode);
-                    allSelectedNodeNames.add(patternNode.getLabel());
+                    allSelectedNodeNames.add(patternNode.getDisplayTextWithProjectName());
                 }
             }
 
@@ -120,15 +123,18 @@ public class PatternMouseAdapter extends MouseAdapter {
             for (IndicatorUnit indicatorUnit : meIndicator.getIndicatorUnits()) {
                 Indicator indicator = indicatorUnit.getIndicator();
                 if (indicator instanceof PatternMatchingIndicator) {
-                    if (!allSelectedNodeNames.contains(indicator.getName())) {
+                    DQRepositoryNode patternNode =
+                            RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition());
+                    String patternName = patternNode.getDisplayTextWithProjectName();
+                    if (!allSelectedNodeNames.contains(patternName)) {
                         // this method will deal dependency with same time
                         columnDropTree.deleteIndicatorItems(meIndicator, indicatorUnit);
                         if (!columnDropTree.isDirty()) {
                             columnDropTree.setDirty(true);
                         }
                     } else {
-                        oldSelectedNodeNames.add(indicator.getName());
-                        oldSelectedUnits.put(indicator.getName(), indicatorUnit);
+                        oldSelectedNodeNames.add(patternName);
+                        oldSelectedUnits.put(patternName, indicatorUnit);
                     }
                 }
             }
@@ -147,7 +153,7 @@ public class PatternMouseAdapter extends MouseAdapter {
             treeItem.removeAll();
 
             for (PatternRepNode patternNode : allSelectedPatternNodes) {
-                if (oldSelectedNodeNames.contains(patternNode.getLabel()) && !addOldSelected) {
+                if (oldSelectedNodeNames.contains(patternNode.getDisplayTextWithProjectName()) && !addOldSelected) {
                     continue;
                 }
                 TypedReturnCode<IndicatorUnit> trc = PatternUtilities.createIndicatorUnit(patternNode.getPattern(), meIndicator,

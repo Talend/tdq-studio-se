@@ -998,11 +998,16 @@ public final class RepositoryNodeHelper {
         if (uuid == null) {
             return null;
         }
+        Project inWhichProject = getInWhichProject(rule);
+
         IRepositoryNode librariesFolderNode = getParserRuleFolderNode(rule);
         List<RuleRepNode> ruleRepNodes = getRuleRepNodes(librariesFolderNode, true, true);
         if (ruleRepNodes.size() > 0) {
             for (RuleRepNode childNode : ruleRepNodes) {
-                if (uuid.equals(getUUID(childNode.getRule()))) {
+                Project nodeInWhichProject = getInWhichProject(childNode.getRule());
+                // TDQ-17346 msjian: find the exact node with matching its project
+                if (isSameProject(nodeInWhichProject, inWhichProject)
+                        && uuid.equals(getUUID(childNode.getRule()))) {
                     return childNode;
                 }
             }
@@ -1010,6 +1015,9 @@ public final class RepositoryNodeHelper {
         return null;
     }
 
+    public static boolean isSameProject(Project nodeInWhichProject, Project inWhichProject) {
+        return nodeInWhichProject.getTechnicalLabel().equals(inWhichProject.getTechnicalLabel());
+    }
     /**
      * DOC msjian Comment method "getParserRuleFolderNode".
      *
@@ -1039,11 +1047,15 @@ public final class RepositoryNodeHelper {
         if (uuid == null) {
             return null;
         }
+        Project inWhichProject = getInWhichProject(rule);
         IRepositoryNode librariesFolderNode = getMatchRuleFolderNode(rule);
         List<RuleRepNode> ruleRepNodes = getRuleRepNodes(librariesFolderNode, true, true);
         if (ruleRepNodes.size() > 0) {
             for (RuleRepNode childNode : ruleRepNodes) {
-                if (uuid.equals(getUUID(childNode.getRule()))) {
+                Project nodeInWhichProject = getInWhichProject(childNode.getRule());
+                // TDQ-17346 msjian: find the exact node with matching its project
+                if (isSameProject(nodeInWhichProject, inWhichProject)
+                        && uuid.equals(getUUID(childNode.getRule()))) {
                     return childNode;
                 }
             }
@@ -1177,14 +1189,14 @@ public final class RepositoryNodeHelper {
         return result;
     }
 
-    public static List<PatternRepNode> getPatternRepNodes(IRepositoryNode parrentNode, boolean recursiveFind,
+    public static List<PatternRepNode> getPatternRepNodes(IRepositoryNode parentNode, boolean recursiveFind,
             boolean withDeleted) {
         List<PatternRepNode> result = new ArrayList<PatternRepNode>();
-        if (parrentNode != null
-                && (parrentNode instanceof PatternRegexFolderRepNode
-                        || parrentNode instanceof PatternRegexSubFolderRepNode
-                        || parrentNode instanceof PatternSqlFolderRepNode || parrentNode instanceof PatternSqlSubFolderRepNode)) {
-            List<IRepositoryNode> children = parrentNode.getChildren(withDeleted);
+        if (parentNode != null
+                && (parentNode instanceof PatternRegexFolderRepNode
+                        || parentNode instanceof PatternRegexSubFolderRepNode
+                        || parentNode instanceof PatternSqlFolderRepNode || parentNode instanceof PatternSqlSubFolderRepNode)) {
+            List<IRepositoryNode> children = parentNode.getChildren(withDeleted);
             if (children.size() > 0) {
                 for (IRepositoryNode inode : children) {
                     if (inode instanceof PatternRepNode) {
@@ -1410,7 +1422,7 @@ public final class RepositoryNodeHelper {
      * @param analysis
      * @return
      */
-    private static org.talend.core.model.general.Project getInWhichProject(ModelElement modelElement) {
+    public static org.talend.core.model.general.Project getInWhichProject(ModelElement modelElement) {
         if (modelElement instanceof DatabaseConnection || modelElement instanceof DelimitedFileConnection) {
             if (modelElement.eIsProxy()) {
                 modelElement = (ModelElement) EObjectHelper.resolveObject(modelElement);
@@ -1474,6 +1486,7 @@ public final class RepositoryNodeHelper {
             return null;
         }
 
+        Project inWhichProject = getInWhichProject(indDef);
         List<SysIndicatorDefinitionRepNode> indicatorDefinitionRepNodes;
         if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
             indicatorDefinitionRepNodes =
@@ -1482,7 +1495,6 @@ public final class RepositoryNodeHelper {
             indicatorDefinitionRepNodes.addAll(getIndicatorDefinitionRepNodes(
                     getLibrariesFolderNode(EResourceConstant.USER_DEFINED_INDICATORS), true, true));
         } else {
-            Project inWhichProject = getInWhichProject(indDef);
             indicatorDefinitionRepNodes =
                     getIndicatorDefinitionRepNodes(
                             getLibrariesFolderNode(EResourceConstant.SYSTEM_INDICATORS, inWhichProject), true, true);
@@ -1492,7 +1504,10 @@ public final class RepositoryNodeHelper {
 
         if (indicatorDefinitionRepNodes.size() > 0) {
             for (SysIndicatorDefinitionRepNode childNode : indicatorDefinitionRepNodes) {
-                if (uuid.equals(getUUID(childNode.getIndicatorDefinition()))) {
+                Project nodeInWhichProject = getInWhichProject(childNode.getIndicatorDefinition());
+                // TDQ-17346 msjian: find the exact node with matching its project
+                if (isSameProject(nodeInWhichProject, inWhichProject)
+                        && uuid.equals(getUUID(childNode.getIndicatorDefinition()))) {
                     return childNode;
                 }
             }
@@ -1509,23 +1524,15 @@ public final class RepositoryNodeHelper {
             return null;
         }
 
-        List<PatternRepNode> patternRepNodes;
-        if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
-            patternRepNodes = getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX), true, true);
-            patternRepNodes
-                    .addAll(getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_SQL), true, true));
-        } else {
-            Project inWhichProject = getInWhichProject(pattern);
-            patternRepNodes =
-                    getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX, inWhichProject), true,
-                            true);
-            patternRepNodes.addAll(getPatternRepNodes(
-                    getLibrariesFolderNode(EResourceConstant.PATTERN_SQL, inWhichProject), true, true));
-        }
+        Project inWhichProject = getInWhichProject(pattern);
+        List<PatternRepNode> patternRepNodes = getPatternNodesIncludeRefPro(inWhichProject);
 
         if (patternRepNodes.size() > 0) {
             for (PatternRepNode childNode : patternRepNodes) {
-                if (uuid.equals(getUUID(childNode.getPattern()))) {
+                Project nodeInWhichProject = getInWhichProject(childNode.getPattern());
+                // TDQ-17346 msjian: find the exact node with matching its project
+                if (isSameProject(nodeInWhichProject, inWhichProject)
+                        && uuid.equals(getUUID(childNode.getPattern()))) {
                     return childNode;
                 }
             }
@@ -1541,12 +1548,16 @@ public final class RepositoryNodeHelper {
         if (uuid == null) {
             return null;
         }
+        Project inWhichProject = getInWhichProject(rule);
 
         IRepositoryNode ruleSQLFolderNode = getRuleSQLFolderNode(rule);
         List<RuleRepNode> ruleRepNodes = getRuleRepNodes(ruleSQLFolderNode, true, true);
         if (ruleRepNodes.size() > 0) {
             for (RuleRepNode childNode : ruleRepNodes) {
-                if (uuid.equals(getUUID(childNode.getRule()))) {
+                Project nodeInWhichProject = getInWhichProject(childNode.getRule());
+                // TDQ-17346 msjian: find the exact node with matching its project
+                if (isSameProject(nodeInWhichProject, inWhichProject)
+                        && uuid.equals(getUUID(childNode.getRule()))) {
                     return childNode;
                 }
             }
@@ -2278,7 +2289,13 @@ public final class RepositoryNodeHelper {
         return dataProfilingNodes;
     }
 
-    public static List<IRepositoryNode> getPatternsRepositoryNodes(boolean withDeleted) {
+    /**
+     * NOTE: this method only can get pattern nodes in local project, not include the nodes in ref project.
+     * 
+     * @param withDeleted
+     * @return
+     */
+    public static List<IRepositoryNode> getPatternNodes(boolean withDeleted) {
         RepositoryNode node = getRootNode(ERepositoryObjectType.TDQ_LIBRARIES);// .LIBRARIES.getName());
         List<IRepositoryNode> patternsNodes = new ArrayList<IRepositoryNode>();
         if (node != null) {
@@ -2293,12 +2310,32 @@ public final class RepositoryNodeHelper {
                         }
                     }
                     return patternsNodes;
-
                 }
-
             }
         }
         return patternsNodes;
+    }
+
+    /**
+     * DOC msjian Comment method "getPatternRepNodesWithRefProject".
+     * 
+     * @param inWhichProject
+     * @return
+     */
+    private static List<PatternRepNode> getPatternNodesIncludeRefPro(Project inWhichProject) {
+        List<PatternRepNode> patternRepNodes;
+        if (ProxyRepositoryManager.getInstance().isMergeRefProject()) {
+            patternRepNodes = getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX), true, true);
+            patternRepNodes
+                    .addAll(getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_SQL), true, true));
+        } else {
+            patternRepNodes = getPatternRepNodes(
+                    getLibrariesFolderNode(EResourceConstant.PATTERN_REGEX, inWhichProject), true, true);
+            patternRepNodes
+                    .addAll(getPatternRepNodes(getLibrariesFolderNode(EResourceConstant.PATTERN_SQL, inWhichProject),
+                            true, true));
+        }
+        return patternRepNodes;
     }
 
     /**

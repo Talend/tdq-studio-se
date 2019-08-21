@@ -81,6 +81,7 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.dates.DateUtils;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -271,9 +272,19 @@ public final class UDIUtils {
         // can't add the same user defined indicator
         for (Indicator indicator : meIndicator.getIndicators()) {
             // MOD xwang 2011-08-01 bug TDQ-2730
-            if (udid.getName().equals(indicator.getName()) && indicator instanceof UserDefIndicator) {
-                MessageUI.openWarning(DefaultMessagesImpl.getString("UDIUtils.UDISelected", udid.getName())); //$NON-NLS-1$
-                return null;
+            if (indicator instanceof UserDefIndicator) {
+                if (udid.getName().equals(indicator.getName())) {
+                    // TDQ-13646 msjian : check if they are also in the same project.
+                    DQRepositoryNode udidNode = RepositoryNodeHelper.recursiveFind(udid);
+                    DQRepositoryNode indicatorNode =
+                            RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition());
+                    if (RepositoryNodeHelper.isSameProject(udidNode.getProject(), indicatorNode.getProject())) {
+                        MessageUI
+                                .openWarning(DefaultMessagesImpl
+                                        .getString("UDIUtils.UDISelected", udidNode.getDisplayTextWithProjectName())); //$NON-NLS-1$
+                        return null;
+                    }
+                }
             }
         }
 

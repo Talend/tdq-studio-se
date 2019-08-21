@@ -74,6 +74,7 @@ import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.impl.FormatFreqPieIndicatorImpl;
 import org.talend.dataquality.indicators.impl.WellFormIntePhoneCountIndicatorImpl;
 import org.talend.dataquality.indicators.impl.WellFormNationalPhoneCountIndicatorImpl;
+import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.IRepositoryNode;
@@ -161,7 +162,10 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
         if (indicator == null) {
             return false;
         }
-        return this.specialIndicatorUnitList.contains(specialIndicatorUnitMap.get(indicator.getName()));
+        String displayTextWithProjectName =
+                RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition()).getDisplayTextWithProjectName();
+        IndicatorUnit indicatorUnit = specialIndicatorUnitMap.get(displayTextWithProjectName);
+        return this.specialIndicatorUnitList.contains(indicatorUnit);
     }
 
     public List<IndicatorEnum> getTempIndicator() {
@@ -485,7 +489,9 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
      * Remove indicator from special indicator list
      */
     public void removeSpecialIndicator(Indicator indicator) {
-        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(indicator.getName());
+        String displayTextWithProjectName =
+                RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition()).getDisplayTextWithProjectName();
+        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(displayTextWithProjectName);
         if (indicatorUnit != null) {
             this.specialIndicatorUnitList.remove(indicatorUnit);
         }
@@ -495,7 +501,9 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
      * Remove indicator from temp special indicator list
      */
     public void removeTempSpecialIndicator(Indicator indicator) {
-        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(indicator.getName());
+        String displayTextWithProjectName =
+                RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition()).getDisplayTextWithProjectName();
+        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(displayTextWithProjectName);
         if (indicatorUnit != null) {
             this.tempSpecialIndicatorUnitList.remove(indicatorUnit);
         }
@@ -857,7 +865,10 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
         }
         IndicatorUnit indicatorUnit = new ColumnIndicatorUnit(indicatorEnum, tempIndicator, this);
         specialIndicatorUnitList.add(indicatorUnit);
-        this.specialIndicatorUnitMap.put(tempIndicator.getName(), indicatorUnit);
+        String displayTextWithProjectName = RepositoryNodeHelper
+                .recursiveFind(tempIndicator.getIndicatorDefinition())
+                .getDisplayTextWithProjectName();
+        this.specialIndicatorUnitMap.put(displayTextWithProjectName, indicatorUnit);
         return indicatorUnit;
     }
 
@@ -878,14 +889,23 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
             this.specialIndicatorUnitList = new ArrayList<IndicatorUnit>();
         }
         for (IndicatorUnit currentUnit : tempSpecialIndicatorUnitList) {
-            if (tempIndicator.getName().equalsIgnoreCase(currentUnit.getIndicator().getName())) {
+            String tempIndicatorName = RepositoryNodeHelper
+                    .recursiveFind(tempIndicator.getIndicatorDefinition())
+                    .getDisplayTextWithProjectName();
+            String currentUnitName = RepositoryNodeHelper
+                    .recursiveFind(currentUnit.getIndicator().getIndicatorDefinition())
+                    .getDisplayTextWithProjectName();
+            if (tempIndicatorName.equalsIgnoreCase(currentUnitName)) {
                 return currentUnit;
             }
         }
         IndicatorUnit indicatorUnit = new ColumnIndicatorUnit(indicatorEnum, tempIndicator, this);
 
         tempSpecialIndicatorUnitList.add(indicatorUnit);
-        this.specialIndicatorUnitMap.put(tempIndicator.getName(), indicatorUnit);
+        String displayTextWithProjectName = RepositoryNodeHelper
+                .recursiveFind(tempIndicator.getIndicatorDefinition())
+                .getDisplayTextWithProjectName();
+        this.specialIndicatorUnitMap.put(displayTextWithProjectName, indicatorUnit);
         return indicatorUnit;
     }
 

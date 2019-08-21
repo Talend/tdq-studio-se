@@ -456,7 +456,7 @@ public class UnitTestBuildHelper {
 
         property.setAuthor(author);
         property.setCreationDate(new Date());
-        property.setId(StringUtilities.getRandomString(13) + StringUtilities.getRandomString(13));
+        property.setId(StringUtilities.getRandomString(26));
         property.setItem(folderItem);
         property.setLabel(type.getFolder());
         property.setMaxInformationLevel(InformationLevel.DEBUG_LITERAL);

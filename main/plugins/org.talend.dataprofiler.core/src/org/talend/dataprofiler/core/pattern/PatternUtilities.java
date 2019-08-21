@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
@@ -42,7 +41,6 @@ import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.database.JavaSqlFactory;
 import org.talend.cwm.db.connection.ConnectionUtils;
 import org.talend.cwm.dependencies.DependenciesHandler;
-import org.talend.cwm.helper.ResourceHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.ImageLib;
@@ -74,12 +72,14 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.helper.resourcehelper.PatternResourceFileHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
+import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.PatternRepNode;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.Expression;
@@ -145,11 +145,19 @@ public final class PatternUtilities {
         for (Indicator indicator : modelElementIndicator.getIndicators()) {
             // MOD xqliu 2009-08-12 bug 7810
             // MOD xwang 2011-08-01 bug TDQ-2730
-            if (UDIHelper.getMatchingIndicatorName(indicatorDefinition, pattern).equals(indicator.getName())
-                    && indicator instanceof PatternMatchingIndicator) {
-                result.setOk(false);
-                result.setMessage(DefaultMessagesImpl.getString("PatternUtilities.Selected")); //$NON-NLS-1$
-                return result;
+            if (indicator instanceof PatternMatchingIndicator) {
+                String matchingIndicatorName = UDIHelper.getMatchingIndicatorName(indicatorDefinition, pattern);
+                if (matchingIndicatorName.equals(indicator.getName())) {
+                    // TDQ-13646 msjian : check if they are also in the same project.
+                    DQRepositoryNode patternNode = RepositoryNodeHelper.recursiveFind(pattern);
+                    DQRepositoryNode indicatorNode =
+                            RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition());
+                    if (RepositoryNodeHelper.isSameProject(patternNode.getProject(), indicatorNode.getProject())) {
+                        result.setOk(false);
+                        result.setMessage(DefaultMessagesImpl.getString("PatternUtilities.Selected")); //$NON-NLS-1$
+                        return result;
+                    }
+                }
             }
             // ~
         }
@@ -343,16 +351,12 @@ public final class PatternUtilities {
      * @return
      */
     public static Object[] getPatternRepNodesByIndicator(ModelElementIndicator meIndicator) {
-        List<IRepositoryNode> patternRepNodes = RepositoryNodeHelper.getPatternsRepositoryNodes(false);
         ArrayList<Object> ret = new ArrayList<Object>();
         for (Indicator indicator : meIndicator.getPatternIndicators()) {
             Pattern patternInAnalysis = IndicatorHelper.getPattern(indicator);
-            for (IRepositoryNode patternRepNode : patternRepNodes) {
-                Pattern pattern = ((PatternRepNode) patternRepNode).getPattern();
-                if (StringUtils.equals(ResourceHelper.getUUID(patternInAnalysis), ResourceHelper.getUUID(pattern))) {
-                    ret.add(patternRepNode);
-                }
-            }
+            // TDQ-17346 msjian: find the exact node with matching its project
+            PatternRepNode recursiveFindPatternNode = RepositoryNodeHelper.recursiveFindPattern(patternInAnalysis);
+            ret.add(recursiveFindPatternNode);
         }
         return ret.toArray();
     }

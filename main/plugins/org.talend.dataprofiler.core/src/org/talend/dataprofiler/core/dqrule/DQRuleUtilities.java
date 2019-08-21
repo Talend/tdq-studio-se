@@ -12,6 +12,7 @@
 // ============================================================================
 package org.talend.dataprofiler.core.dqrule;
 
+import org.talend.core.model.general.Project;
 import org.talend.cwm.dependencies.DependenciesHandler;
 import org.talend.dataprofiler.core.model.TableIndicator;
 import org.talend.dataprofiler.core.ui.editor.preview.TableIndicatorUnit;
@@ -20,8 +21,11 @@ import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.sql.IndicatorSqlFactory;
 import org.talend.dataquality.indicators.sql.WhereRuleIndicator;
+import org.talend.dq.helper.RepositoryNodeHelper;
+import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.RuleRepNode;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -44,7 +48,14 @@ public final class DQRuleUtilities {
         IndicatorDefinition whereRule = ruleRepNode.getRule();
         for (Indicator indicator : tableIndicator.getIndicators()) {
             if (whereRule.getName().equals(indicator.getName())) {
-                return null;
+                // TDQ-13646 msjian : check if they are also in the same project.
+                Project project = ruleRepNode.getProject();
+                DQRepositoryNode findNode =
+                        RepositoryNodeHelper.recursiveFind(indicator.getIndicatorDefinition());
+                if (RepositoryNodeHelper.isSameProject(project, findNode.getProject())) {
+                    return null;
+                }
+                // TDQ-13646~
             }
         }
 

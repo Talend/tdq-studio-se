@@ -62,10 +62,14 @@ import org.talend.dataquality.indicators.IndicatorsPackage;
 import org.talend.dataquality.indicators.TextParameters;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dq.helper.EObjectHelper;
+import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.DBColumnRepNode;
 import org.talend.dq.nodes.DFColumnRepNode;
+import org.talend.dq.nodes.PatternRepNode;
+import org.talend.dq.nodes.SysIndicatorDefinitionRepNode;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.repository.model.IRepositoryNode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -177,7 +181,8 @@ public abstract class AbstractColumnDropTree extends AbstractPagePart implements
         indicatorItem.setImage(0, getIndicatorImage(unit));
 
         String indicatorName = getIndicatorName(indicatorUnit);
-        String label = indicatorName == null ? "unknown indicator" : indicatorName;//$NON-NLS-1$
+        String label = indicatorName != null ? indicatorName
+                : DefaultMessagesImpl.getString("AnalysisTableTreeViewer.unknownIndicator");//$NON-NLS-1$
         indicatorItem.setText(0, label);
 
         TreeEditor optionEditor = new TreeEditor(tree);
@@ -362,17 +367,22 @@ public abstract class AbstractColumnDropTree extends AbstractPagePart implements
         if (indicatorType == IndicatorEnum.RegexpMatchingIndicatorEnum
                 || indicatorType == IndicatorEnum.SqlPatternMatchingIndicatorEnum) {
             Pattern pattern = unit.getIndicator().getParameters().getDataValidDomain().getPatterns().get(0);
+            PatternRepNode recursiveFindPattern = RepositoryNodeHelper.recursiveFindPattern(pattern);
+            if (recursiveFindPattern != null && !recursiveFindPattern.getProject().isMainProject()) {
+                return pattern.getName() + recursiveFindPattern.getDisplayProjectName();
+            }
             return pattern.getName();
         } else if (indicatorType == IndicatorEnum.UserDefinedIndicatorEnum) {
-            if (unit.getIndicatorName() != null) {
-                return unit.getIndicatorName();
-            } else {
-                IndicatorDefinition indicatorDefinition = unit.getIndicator().getIndicatorDefinition();
-                if (indicatorDefinition.eIsProxy()) {
-                    indicatorDefinition = (IndicatorDefinition) EObjectHelper.resolveObject(indicatorDefinition);
-                }
-                return indicatorDefinition.getLabel();
+            IndicatorDefinition indicatorDefinition = unit.getIndicator().getIndicatorDefinition();
+            if (indicatorDefinition.eIsProxy()) {
+                indicatorDefinition = (IndicatorDefinition) EObjectHelper.resolveObject(indicatorDefinition);
             }
+            SysIndicatorDefinitionRepNode recursiveFindNode =
+                    RepositoryNodeHelper.recursiveFindIndicatorDefinition(indicatorDefinition);
+            if (recursiveFindNode != null && !recursiveFindNode.getProject().isMainProject()) {
+                return indicatorDefinition.getLabel() + recursiveFindNode.getDisplayProjectName();
+            }
+            return indicatorDefinition.getLabel();
         }
         return unit.getIndicatorName();
     }
