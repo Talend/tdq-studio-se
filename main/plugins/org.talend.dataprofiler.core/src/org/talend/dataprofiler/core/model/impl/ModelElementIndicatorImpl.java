@@ -74,6 +74,7 @@ import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.impl.FormatFreqPieIndicatorImpl;
 import org.talend.dataquality.indicators.impl.WellFormIntePhoneCountIndicatorImpl;
 import org.talend.dataquality.indicators.impl.WellFormNationalPhoneCountIndicatorImpl;
+import org.talend.dataquality.indicators.sql.UserDefIndicator;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
@@ -163,7 +164,11 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
             return false;
         }
         // TDQ-17434: fix NPE by getting correct indicator name
-        String indicatorName = RepositoryNodeHelper.getDisplayLabelInEditor(indicator);
+        // String indicatorName = RepositoryNodeHelper.getDisplayLabelInEditor(indicator);
+        String indicatorName = indicator.getName();
+        if (indicator instanceof UserDefIndicator) {
+            indicatorName += " 0.1"; //$NON-NLS-1$
+        }
         IndicatorUnit indicatorUnit = specialIndicatorUnitMap.get(indicatorName);
         return this.specialIndicatorUnitList.contains(indicatorUnit);
     }
