@@ -74,8 +74,6 @@ import org.talend.dataquality.indicators.definition.DefinitionFactory;
 import org.talend.dataquality.indicators.definition.IndicatorCategory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinitionParameter;
 import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefinition;
-import org.talend.dq.dbms.DbmsLanguage;
-import org.talend.dq.dbms.DbmsLanguageFactory;
 import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
@@ -945,6 +943,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
             tempViewInvalidRowsExpressionMap.put(combo, editDialog.getTempViewInvalidRowsExp());
             tempViewValidValuesExpressionMap.put(combo, editDialog.getTempViewValidValuesExp());
             tempViewInvalidValuesExpressionMap.put(combo, editDialog.getTempViewInvalidValuesExp());
+
         } else {
             // get view rows tdExpress list, and set currect tdexpress to temp map
             tempViewRowsExpressionMap.put(combo, editDialog.getTempViewRowsExp());
@@ -1180,69 +1179,9 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
             rc.setMessage(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.classPathError"));//$NON-NLS-1$
             return rc;
         }
-
-        // TDQ-16806 msjian: add drilldown template exist check
-        rc = checkAllTypeshaveItsDrillDowns();
-        if (!rc.isOk()) {
-            ((IndicatorEditor) this.getEditor()).setSaveActionButtonState(false);
-            return rc;
-        }
-        // TDQ-16806~
-
         return rc;
     }
 
-    private ReturnCode checkAllTypeshaveItsDrillDowns() {
-        if (IndicatorCategoryHelper.isUserDefMatching(category)) {
-            ReturnCode rc = CheckOneDrillDownTemplate(tempViewValidRowsExpressionMap);
-            if (!rc.isOk()) {
-                return rc;
-            }
-            rc = CheckOneDrillDownTemplate(tempViewInvalidRowsExpressionMap);
-            if (!rc.isOk()) {
-                return rc;
-            }
-            rc = CheckOneDrillDownTemplate(tempViewValidValuesExpressionMap);
-            if (!rc.isOk()) {
-                return rc;
-            }
-            rc = CheckOneDrillDownTemplate(tempViewInvalidValuesExpressionMap);
-            if (!rc.isOk()) {
-                return rc;
-            }
-            return new ReturnCode();
-        }
-
-        return CheckOneDrillDownTemplate(tempViewRowsExpressionMap);
-    }
-
-    /**
-     * TDQ-16806 msjian Comment method "CheckOneDrillDownTemplate".
-     * 
-     * @param tempExpressionMap
-     * @return
-     */
-    private ReturnCode CheckOneDrillDownTemplate(Map<CCombo, TdExpression> tempDrillDownExpressionMap) {
-        ReturnCode rc = new ReturnCode();
-        Collection<TdExpression> sqlGenericExpressionlist = tempExpressionMap.values();
-        Collection<TdExpression> viewRowsExpression = tempDrillDownExpressionMap.values();
-        for (TdExpression sqlGenericExpression : sqlGenericExpressionlist) {
-            String language2 = sqlGenericExpression.getLanguage();
-            String version = sqlGenericExpression.getVersion();
-            DbmsLanguage dbmsLanguage = DbmsLanguageFactory.createDbmsLanguage(language2, version);
-            TdExpression viewRows = dbmsLanguage
-                    .getSqlExpression(getCurrentModelElement(), language2, viewRowsExpression,
-                            dbmsLanguage.getDbVersion());
-            if (viewRows == null) {
-                rc.setOk(false);
-                rc
-                        .setMessage(DefaultMessagesImpl
-                                .getString("IndicatorDefinitionMaterPage.viewRowsError", language2, version));//$NON-NLS-1$
-                return rc;
-            }
-        }
-        return rc;
-    }
     /**
      * check Java Definition Before Save.
      *
@@ -1266,6 +1205,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
             return cj2e;
         }
         return true;
+
     }
 
     /**

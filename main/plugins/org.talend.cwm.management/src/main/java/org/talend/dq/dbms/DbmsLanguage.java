@@ -16,7 +16,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -1074,7 +1073,7 @@ public class DbmsLanguage {
      * @return
      */
     public TdExpression getSqlExpression(IndicatorDefinition indicatorDefinition, String language,
-            Collection<TdExpression> sqlGenericExpression, ProductVersion dbVersion) {
+            EList<TdExpression> sqlGenericExpression, ProductVersion dbVersion) {
         TdExpression defaultExpression = null;
         if (sqlGenericExpression == null || sqlGenericExpression.size() == 0) {
             return defaultExpression;
