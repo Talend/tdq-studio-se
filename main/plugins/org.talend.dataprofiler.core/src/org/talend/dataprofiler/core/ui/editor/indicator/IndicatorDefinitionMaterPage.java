@@ -1114,7 +1114,6 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
             List<TdExpression> modifyList = new ArrayList<TdExpression>();
             TdExpression expression = tempExpressionMap.get(combo);
             String oldLanguage = expression.getLanguage();
-            String oldSQLTemplate = expression.getBody();
             modifyList.add(expression);
 
             // check whether the java type exist first
@@ -1128,9 +1127,22 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
                 doDeleteOnlyForJava();
             }
 
+            // then update other Temp Maps
+            if (getCurrentModelElement() instanceof UDIndicatorDefinition) {
+                if (IndicatorCategoryHelper.isUserDefMatching(category)) {
+                    modifyList.add(tempViewValidRowsExpressionMap.get(combo));
+                    modifyList.add(tempViewInvalidRowsExpressionMap.get(combo));
+                    modifyList.add(tempViewValidValuesExpressionMap.get(combo));
+                    modifyList.add(tempViewInvalidValuesExpressionMap.get(combo));
+                } else {
+                    modifyList.add(tempViewRowsExpressionMap.get(combo));
+                }
+            }
+
             for (TdExpression exp : modifyList) {
                 String newLanguage = PatternLanguageType.findLanguageByName(name);
                 if (exp == null) {
+                    String oldSQLTemplate = expression.getBody();
                     exp = BooleanExpressionHelper.createTdExpression(newLanguage, oldSQLTemplate);
                     putTdExpressToTempMap(combo, exp);
                 } else {
@@ -1144,19 +1156,6 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
             // do update line and Other Combos
             updateLineAndOtherCombos(combo, expression, oldLanguage);
-
-            // then update other Temp Maps
-            if (getCurrentModelElement() instanceof UDIndicatorDefinition) {
-                if (IndicatorCategoryHelper.isUserDefMatching(category)) {
-                    modifyList.add(tempViewValidRowsExpressionMap.get(combo));
-                    modifyList.add(tempViewInvalidRowsExpressionMap.get(combo));
-                    modifyList.add(tempViewValidValuesExpressionMap.get(combo));
-                    modifyList.add(tempViewInvalidValuesExpressionMap.get(combo));
-
-                } else {
-                    modifyList.add(tempViewRowsExpressionMap.get(combo));
-                }
-            }
 
             removeDisposedComboFromTempExpMap();
 
