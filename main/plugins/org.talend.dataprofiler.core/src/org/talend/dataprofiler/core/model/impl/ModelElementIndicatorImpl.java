@@ -890,8 +890,8 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
         if (this.specialIndicatorUnitList == null) {
             this.specialIndicatorUnitList = new ArrayList<IndicatorUnit>();
         }
+        String tempIndicatorName = RepositoryNodeHelper.getDisplayLabelInEditor(tempIndicator);
         for (IndicatorUnit currentUnit : tempSpecialIndicatorUnitList) {
-            String tempIndicatorName = RepositoryNodeHelper.getDisplayLabelInEditor(tempIndicator);
             String currentUnitName = RepositoryNodeHelper.getDisplayLabelInEditor(currentUnit.getIndicator());
             if (tempIndicatorName.equalsIgnoreCase(currentUnitName)) {
                 return currentUnit;
@@ -901,8 +901,7 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
 
         tempSpecialIndicatorUnitList.add(indicatorUnit);
 
-        String displayTextWithProjectName = RepositoryNodeHelper.getDisplayLabelInEditor(tempIndicator);
-        this.specialIndicatorUnitMap.put(displayTextWithProjectName, indicatorUnit);
+        this.specialIndicatorUnitMap.put(tempIndicatorName, indicatorUnit);
         return indicatorUnit;
     }
 
