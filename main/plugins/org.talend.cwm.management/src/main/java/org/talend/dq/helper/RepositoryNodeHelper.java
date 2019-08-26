@@ -90,6 +90,7 @@ import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.RegexpMatchingIndicator;
 import org.talend.dataquality.indicators.SqlPatternMatchingIndicator;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
+import org.talend.dataquality.indicators.sql.UserDefIndicator;
 import org.talend.dataquality.properties.TDQAnalysisItem;
 import org.talend.dataquality.properties.TDQBusinessRuleItem;
 import org.talend.dataquality.properties.TDQIndicatorDefinitionItem;
@@ -4057,6 +4058,8 @@ public final class RepositoryNodeHelper {
     /**
      * this can support the reference project node.
      * 
+     * NOTE: take care of using this method, sometimes will cause performance issue.
+     * 
      * @param indicator
      * @return like Copy_of_Row Count 0.1(@ref1)
      * @return like Copy_of_Row Count 0.1
@@ -4070,6 +4073,13 @@ public final class RepositoryNodeHelper {
         // for Range/ Inter Quatile Range node is null
         if (node == null) {
             return indicator.getName();
+        }
+
+        if (indicator instanceof UserDefIndicator) {
+            if (node.getProject().isMainProject()) {
+                // return node.getLabel() + node.getDisplayProjectName();
+                return node.getLabel();// no need the version here!!!
+            }
         }
         return node.getDisplayTextWithProjectName();
     }

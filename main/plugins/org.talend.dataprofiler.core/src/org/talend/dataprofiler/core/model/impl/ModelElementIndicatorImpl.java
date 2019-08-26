@@ -74,7 +74,6 @@ import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.impl.FormatFreqPieIndicatorImpl;
 import org.talend.dataquality.indicators.impl.WellFormIntePhoneCountIndicatorImpl;
 import org.talend.dataquality.indicators.impl.WellFormNationalPhoneCountIndicatorImpl;
-import org.talend.dataquality.indicators.sql.UserDefIndicator;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.nodes.indicator.type.IndicatorEnum;
@@ -163,13 +162,7 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
         if (indicator == null) {
             return false;
         }
-        // TDQ-17434: fix NPE by getting correct indicator name
-        // String indicatorName = RepositoryNodeHelper.getDisplayLabelInEditor(indicator);
-        String indicatorName = indicator.getName();
-        if (indicator instanceof UserDefIndicator) {
-            indicatorName += " 0.1"; //$NON-NLS-1$
-        }
-        IndicatorUnit indicatorUnit = specialIndicatorUnitMap.get(indicatorName);
+        IndicatorUnit indicatorUnit = specialIndicatorUnitMap.get(indicator.getName());
         return this.specialIndicatorUnitList.contains(indicatorUnit);
     }
 
@@ -494,8 +487,7 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
      * Remove indicator from special indicator list
      */
     public void removeSpecialIndicator(Indicator indicator) {
-        String displayTextWithProjectName = RepositoryNodeHelper.getDisplayLabelInEditor(indicator);
-        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(displayTextWithProjectName);
+        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(indicator.getName());
         if (indicatorUnit != null) {
             this.specialIndicatorUnitList.remove(indicatorUnit);
         }
@@ -505,8 +497,8 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
      * Remove indicator from temp special indicator list
      */
     public void removeTempSpecialIndicator(Indicator indicator) {
-        String displayTextWithProjectName = RepositoryNodeHelper.getDisplayLabelInEditor(indicator);
-        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(displayTextWithProjectName);
+        // TDQ-17434: until now, this indicator parameter node can only be main project node
+        IndicatorUnit indicatorUnit = this.specialIndicatorUnitMap.get(indicator.getName());
         if (indicatorUnit != null) {
             this.tempSpecialIndicatorUnitList.remove(indicatorUnit);
         }
@@ -890,18 +882,15 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
         if (this.specialIndicatorUnitList == null) {
             this.specialIndicatorUnitList = new ArrayList<IndicatorUnit>();
         }
-        String tempIndicatorName = RepositoryNodeHelper.getDisplayLabelInEditor(tempIndicator);
         for (IndicatorUnit currentUnit : tempSpecialIndicatorUnitList) {
-            String currentUnitName = RepositoryNodeHelper.getDisplayLabelInEditor(currentUnit.getIndicator());
-            if (tempIndicatorName.equalsIgnoreCase(currentUnitName)) {
+            if (tempIndicator.getName().equalsIgnoreCase(currentUnit.getIndicator().getName())) {
                 return currentUnit;
             }
         }
         IndicatorUnit indicatorUnit = new ColumnIndicatorUnit(indicatorEnum, tempIndicator, this);
 
         tempSpecialIndicatorUnitList.add(indicatorUnit);
-
-        this.specialIndicatorUnitMap.put(tempIndicatorName, indicatorUnit);
+        this.specialIndicatorUnitMap.put(tempIndicator.getName(), indicatorUnit);
         return indicatorUnit;
     }
 
