@@ -38,6 +38,7 @@ import org.talend.dataquality.indicators.columnset.AllMatchIndicator;
 import org.talend.dataquality.indicators.columnset.RecordMatchingIndicator;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
 import org.talend.dataquality.indicators.sql.UserDefIndicator;
+
 import orgomg.cwm.objectmodel.core.Expression;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -459,6 +460,10 @@ public final class AnalysisHelper {
      */
     public static boolean isMatchRuleAnalysis(Analysis analysis) {
         return AnalysisType.MATCH_ANALYSIS == analysis.getParameters().getAnalysisType();
+    }
+
+    public static boolean isUseSampleData(Analysis analysis) {
+        return TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_USE_SAMPLE_DATA, analysis);
     }
 
     /**

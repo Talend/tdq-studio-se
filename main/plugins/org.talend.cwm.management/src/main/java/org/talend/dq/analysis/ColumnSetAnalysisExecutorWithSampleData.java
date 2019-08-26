@@ -12,13 +12,9 @@
 // ============================================================================
 package org.talend.dq.analysis;
 
-import java.sql.Connection;
-
-import org.apache.commons.lang.StringUtils;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dq.indicators.ColumnSetIndicatorEvaluator;
 import org.talend.dq.indicators.ColumnSetIndicatorEvaluatorWithSampleData;
-import org.talend.utils.sugars.TypedReturnCode;
 
 /**
  * DOC zshen class global comment. Detailled comment
@@ -38,32 +34,11 @@ public class ColumnSetAnalysisExecutorWithSampleData extends ColumnSetAnalysisEx
     /*
      * (non-Javadoc)
      *
-     * @see org.talend.dq.analysis.ColumnSetAnalysisExecutor#createSqlStatement(org.talend.dataquality.analysis.Analysis)
-     */
-    @Override
-    protected String createSqlStatement(Analysis analysis) {
-        return StringUtils.EMPTY;
-    }
-
-    /*
-     * (non-Javadoc)
-     *
      * @see org.talend.dq.analysis.ColumnSetAnalysisExecutor#createIndicatorEvaluator(org.talend.dataquality.analysis.Analysis)
      */
     @Override
     protected ColumnSetIndicatorEvaluator createIndicatorEvaluator(Analysis analysis) {
         return new ColumnSetIndicatorEvaluatorWithSampleData(analysis);
-    }
-
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.talend.dq.analysis.ColumnSetAnalysisExecutor#initConnection(org.talend.dataquality.analysis.Analysis,
-     * org.talend.dq.indicators.ColumnSetIndicatorEvaluator)
-     */
-    @Override
-    protected TypedReturnCode<Connection> initConnection(Analysis analysis, ColumnSetIndicatorEvaluator eval) {
-        return new TypedReturnCode<Connection>();
     }
 
 }

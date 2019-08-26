@@ -103,7 +103,7 @@ public class ColumnAnalysisExecutor extends AnalysisExecutor {
         Package catalog = CatalogHelper.getParentCatalog(schema);
         String catalogName = catalog != null ? catalog.getName() : schema.getName();
         if (!eval.selectCatalog(catalogName)) {
-            log.error(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalogName));//$NON-NLS-1$
+            log.warn(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalogName));//$NON-NLS-1$
         }
         // TDQ-17324~
 

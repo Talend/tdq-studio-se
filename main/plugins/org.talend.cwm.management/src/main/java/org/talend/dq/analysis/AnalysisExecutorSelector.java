@@ -17,7 +17,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Display;
 import org.talend.cwm.db.connection.ConnectionUtils;
-import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisType;
@@ -28,6 +27,7 @@ import org.talend.dq.helper.resourcehelper.AnaResourceFileHelper;
 import org.talend.dq.writer.impl.AnalysisWriter;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 
 /**
@@ -59,7 +59,7 @@ public final class AnalysisExecutorSelector {
         IAnalysisExecutor exec = null;
         switch (analysisType) {
         case MULTIPLE_COLUMN:
-            exec = getModelElementAnalysisExecutor(analysis, executionEngine);
+            exec = getColumnAnalysisExecutor(analysis, executionEngine);
             break;
         case CONNECTION:
             exec = new ConnectionAnalysisExecutor();
@@ -103,35 +103,24 @@ public final class AnalysisExecutorSelector {
      * @param executionEngine
      * @return
      */
-    private static AnalysisExecutor getModelElementAnalysisExecutor(Analysis analysis, ExecutionLanguage executionEngine) {
+    private static AnalysisExecutor getColumnAnalysisExecutor(Analysis analysis, ExecutionLanguage executionEngine) {
         // MOD qiongli 2010-11-9 feature 16796
         boolean isDelimitedFile = ConnectionUtils.isDelimitedFileConnection((DataProvider) analysis.getContext().getConnection());
-        boolean sql = ExecutionLanguage.SQL.equals(executionEngine);
-        boolean isValid = hasSampleDataValid(analysis);
+        boolean isSQLEngine = ExecutionLanguage.SQL.equals(executionEngine);
+        boolean isUseSampleData = AnalysisHelper.isUseSampleData(analysis);
         if (isDelimitedFile) {
-            if (isValid) {
+            if (isUseSampleData) {
                 return new DelimitedFileAnalysisExecutorWithSampleData();
             } else {
                 return new DelimitedFileAnalysisExecutor();
             }
         } else {
-            if (isValid) {
+            if (isUseSampleData) {
                 return new ColumnAnalysisExecutorWithSampleData();
             } else {
-                return sql ? new ColumnAnalysisSqlExecutor() : new ColumnAnalysisExecutor();
+                return isSQLEngine ? new ColumnAnalysisSqlExecutor() : new ColumnAnalysisExecutor();
             }
         }
-    }
-
-    /**
-     * DOC zshen Comment method "judgeEditorOpenning".
-     *
-     * @param analysisItem
-     * @return
-     */
-    private static boolean hasSampleDataValid(Analysis analysis) {
-        return TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_USE_SAMPLE_DATA, analysis);
-
     }
 
     /**
@@ -143,12 +132,13 @@ public final class AnalysisExecutorSelector {
      */
     private static AnalysisExecutor getColumnSetAnalysisExecutor(Analysis analysis, ExecutionLanguage executionEngine) {
         boolean isDelimitedFile = ConnectionUtils.isDelimitedFileConnection((DataProvider) analysis.getContext().getConnection());
-        boolean sql = ExecutionLanguage.SQL.equals(executionEngine);
-        boolean isValid = hasSampleDataValid(analysis);
-        if (isValid) {
-            return new ColumnSetAnalysisExecutorWithSampleData(false, false);
+        boolean isSQLEngine = ExecutionLanguage.SQL.equals(executionEngine);
+        boolean isUseSampleData = AnalysisHelper.isUseSampleData(analysis);
+        if (isUseSampleData) {
+            return new ColumnSetAnalysisExecutorWithSampleData(isDelimitedFile, false);
         } else {
-            return sql ? new MultiColumnAnalysisExecutor() : new ColumnSetAnalysisExecutor(isDelimitedFile, false);
+            return isSQLEngine ? new MultiColumnAnalysisExecutor()
+                    : new ColumnSetAnalysisExecutor(isDelimitedFile, false);
         }
     }
 
