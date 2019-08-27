@@ -26,7 +26,7 @@ import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
 import org.talend.dq.helper.resourcehelper.PrvResourceFileHelper;
 import org.talend.resource.ResourceManager;
-import org.talend.utils.security.StudioEncryption;
+import org.talend.utils.security.CryptoHelperWrapper;
 
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -98,7 +98,7 @@ public class EncryptAndDecryptPasswordTask extends AbstractWorksapceUpdateTask {
                     if (tvObj != null) {
                         TaggedValue tv = (TaggedValue) tvObj;
                         if (TaggedValueHelper.PASSWORD.equals(tv.getTag())) {
-                            tv.setValue(StudioEncryption.encrypt(tv.getValue()));
+                            tv.setValue(CryptoHelperWrapper.encrypt(tv.getValue()));
                         }
                     }
                 }
