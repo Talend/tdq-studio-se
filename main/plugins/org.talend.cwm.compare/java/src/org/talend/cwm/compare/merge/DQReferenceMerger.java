@@ -28,6 +28,8 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 import org.talend.cwm.helper.SwitchHelpers;
+import org.talend.dq.helper.EObjectHelper;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -77,7 +79,9 @@ public class DQReferenceMerger extends ReferenceChangeMerger {
             }
         } else if (rightToLeft) {
             if (reference.isContainment()) {
-                expectedValue = createCopy(diff.getValue());
+                // TDQ-17429 msjian: we need deepcopy to copy all info, for example: sqlDataType or taggedValue under
+                // the column feature
+                expectedValue = EObjectHelper.deepCopy(diff.getValue());
                 valueMatch.setLeft(expectedValue);
             } else {
                 // qiongli: when I add catalog on remote server,test on reload, should replace "valueMatch.getLeft()"
