@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
@@ -72,12 +73,7 @@ public class HiveOfHCFolderRepNode extends DQFolderRepNode {
     public void getChildrenForProject(boolean withDeleted, Project project) throws PersistenceException {
         // for hive folder, its children are under connections folder, not here, so find children there, and show link
         // here.
-
-        IPath path = RepositoryNodeHelper.getPath(this.getParent());// =metadata/hadoop/hadoopcluster
-        // change it to: metadata/connections
-        path = path.removeLastSegments(2);
-        path = path.append(EResourceConstant.DB_CONNECTIONS.getName());
-
+        IPath path = getPathOfHiveFolder();
         Item clusterConnectionItem = getParent().getObject().getProperty().getItem();
         String clusterId = clusterConnectionItem.getProperty().getId();
 
@@ -108,6 +104,14 @@ public class HiveOfHCFolderRepNode extends DQFolderRepNode {
             viewObject.setRepositoryNode(repNode);
             super.getChildren().add(repNode);
         }
+    }
+
+    private IPath getPathOfHiveFolder() {
+        // TDQ-10570 msjian: normally is metadata/hadoop/hadoopcluster, but when there have a folder is
+        // metadata/hadoop/hadoopcluster/a
+        IPath path = RepositoryNodeHelper.getPath(this.getParent());
+        // change it to: metadata/connections
+        return new Path(path.segment(0)).append(EResourceConstant.DB_CONNECTIONS.getName()); // $NON-NLS-1$
     }
 
     @Override

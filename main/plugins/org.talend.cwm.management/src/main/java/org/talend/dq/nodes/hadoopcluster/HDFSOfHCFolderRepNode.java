@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
@@ -100,11 +101,11 @@ public class HDFSOfHCFolderRepNode extends DQFolderRepNode {
     }
 
     private IPath getPathOfHDFSFolder() {
-        IPath path = RepositoryNodeHelper.getPath(this.getParent());// =metadata/hadoop/hadoopcluster
+        // TDQ-10570 msjian: normally is metadata/hadoop/hadoopcluster, but when there have a folder is
+        // metadata/hadoop/hadoopcluster/a
+        IPath path = RepositoryNodeHelper.getPath(this.getParent());
         // change it to: metadata/hadoop/hdfs
-        path = path.removeLastSegments(1);
-        path = path.append("hdfs"); //$NON-NLS-1$
-        return path;
+        return new Path(path.segment(0)).append(path.segment(1)).append("hdfs"); //$NON-NLS-1$
     }
 
     @Override
