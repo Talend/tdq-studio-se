@@ -12,8 +12,12 @@
 // ============================================================================
 package org.talend.dataprofiler.rcp.intro;
 
+import java.io.File;
+import java.nio.file.Paths;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -53,6 +57,10 @@ public class Application implements IApplication {
 
     protected static Logger log = Logger.getLogger(Application.class);
 
+    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
+
+    private static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
+
     /*
      * (non-Javadoc)
      *
@@ -60,6 +68,13 @@ public class Application implements IApplication {
      */
     @Override
     public Object start(IApplicationContext context) {
+
+        File confDir = ConfigurationScope.INSTANCE.getLocation().toFile();
+        String encryptionKeyFilePath = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
+        log.info("encryptionKeyFilePath: " + encryptionKeyFilePath);
+
+        System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, encryptionKeyFilePath);
+
         Display display = PlatformUI.createDisplay();
         Shell shell = DisplayUtils.getDefaultShell(false);
         // TDQ-12221: do check before use to make sure can popup the "Connect to TalendForge"
