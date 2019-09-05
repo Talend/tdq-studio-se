@@ -445,8 +445,18 @@ public final class ChartTableFactory {
 
                 @Override
                 public void widgetSelected(SelectionEvent e1) {
-                    String query = dataEntity.getKey() == null ? dataEntity.getLabel() : dataEntity.getKey().toString();
-                    createPattern(analysis, query);
+                    Object query = dataEntity.getKey();
+                    if (query == null) {
+                        MessageDialog
+                                .openError(menu.getShell(), DefaultMessagesImpl
+                                        .getString("ChartTableFactory.GenerateRegularPattern.errormessage.title"), //$NON-NLS-1$
+                                        DefaultMessagesImpl
+                                                .getString(
+                                                        "ChartTableFactory.GenerateRegularPattern.errormessage.content")); //$NON-NLS-1$
+                        return;
+                    }
+
+                    createPattern(analysis, dataEntity.getKey().toString());
                 }
             });
         }

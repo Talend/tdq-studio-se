@@ -73,12 +73,14 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
     protected String getPatternFinderFunction(String expression, String charsToReplace, String replacementChars) {
         assert charsToReplace != null && replacementChars != null
                 && charsToReplace.length() == replacementChars.length();
+        String newExpression = expression;
         for (int i = 0; i < charsToReplace.length(); i++) {
             final char charToReplace = charsToReplace.charAt(i);
             final char replacement = replacementChars.charAt(i);
-            expression = replaceOneChar(expression, charToReplace, replacement);
+            newExpression = replaceOneChar(newExpression, charToReplace, replacement);
         }
-        return expression;
+        newExpression = newExpression.equals(expression) ? expression : "BINARY " + newExpression; //$NON-NLS-1$
+        return newExpression;
     }
 
     /*
@@ -254,4 +256,5 @@ public class MySQLDbmsLanguage extends DbmsLanguage {
         statement.setFetchSize(Integer.MIN_VALUE);
         return statement;
     }
+
 }

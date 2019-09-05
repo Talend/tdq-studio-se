@@ -125,7 +125,6 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         this.cachedAnalysis = analysis;
         AnalysisResult results = analysis.getResults();
         assert results != null;
-
         try {
             // --- get data filter
             ModelElementAnalysisHandler handler = new ModelElementAnalysisHandler();
@@ -143,7 +142,6 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 if (!createSqlQuery(stringDataFilter, indicator)) {
                     log.error(Messages.getString(
                             "ColumnAnalysisSqlExecutor.CREATEQUERYERROR", AnalysisExecutorHelper.getIndicatorName(indicator)));//$NON-NLS-1$
-                    // return null;
                 }
             }
         } catch (AnalysisExecutionException e) {
@@ -1313,6 +1311,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 if (monitor != null) {
                     Display.getDefault().syncExec(new Runnable() {
 
+                        @Override
                         public void run() {
                             monitor.subTask(Messages.getString(
                                     "ColumnAnalysisSqlExecutor.AnalyzedElement", indicator.getAnalyzedElement() //$NON-NLS-1$
@@ -1473,6 +1472,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
         if (tdqRepositoryService != null) {
             Display.getDefault().asyncExec(new Runnable() {
 
+                @Override
                 public void run() {
                     tdqRepositoryService.publishDynamicEvent(indicator, IndicatorCommonUtil.getIndicatorValue(indicator));
                 }
@@ -1528,7 +1528,12 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 while (resultSet.next()) {
                     Object[] result = new Object[columnCount];
                     for (int i = 0; i < columnCount; i++) {
+                        // after added BINARY keyword then we need do like below
                         result[i] = ResultSetUtils.getBigObject(resultSet, i + 1);
+                        if (result[i] != null && result[i] instanceof byte[]) {
+                            result[i] = new String((byte[]) result[i]);
+                        }
+                        // ~
                     }
                     myResultSet.add(result);
                 }
