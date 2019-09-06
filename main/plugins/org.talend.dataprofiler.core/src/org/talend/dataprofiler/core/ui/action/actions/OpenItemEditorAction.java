@@ -23,6 +23,9 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.window.Window;
+import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorDescriptor;
 import org.eclipse.ui.IEditorInput;
@@ -86,9 +89,11 @@ import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.nodes.DQRepositoryNode;
 import org.talend.dq.nodes.RecycleBinRepNode;
 import org.talend.dq.nodes.ReportFileRepNode;
+import org.talend.dq.nodes.hadoopcluster.HiveOfHCConnectionNode;
 import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+import org.talend.repository.ui.wizards.metadata.connection.database.DatabaseWizard;
 import org.talend.resource.ResourceManager;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -195,10 +200,22 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     }
                 }
             } else {
-                // if there don't found the correct ItemEditorInput and it is not Report's genetated doc file, try to
-                // open it as a File, this code will not be execute when method computeEditorInput() work well
-                IPath append = WorkbenchUtils.getFilePath(repNode.getObject().getRepositoryNode());
+                // TDQ-17500 msjian: fix for hive node under hadoop cluster can open database wizard
+                if (repNode != null && repNode instanceof HiveOfHCConnectionNode) {
+                    Wizard wizard =
+                            new DatabaseWizard(PlatformUI.getWorkbench(), false, (RepositoryNode) repNode, null);
+                    WizardDialog dialog = new WizardDialog(null, wizard);
+                    if (Window.OK == dialog.open()) {
+                        CorePlugin.getDefault().refreshDQView(repNode);
+                    }
+                    return;
+                }
+                // TDQ-17500~
+
+                // if there don't found the correct ItemEditorInput and it is not Report's genetated doc file, try
+                // to open it as a File, this code will not be execute when method computeEditorInput() work well
                 DQRepositoryNode node = (DQRepositoryNode) repNode.getObject().getRepositoryNode();
+                IPath append = WorkbenchUtils.getFilePath(node);
                 file = ResourceManager.getRoot().getProject(node.getProject().getTechnicalLabel()).getFile(append);
                 if (!file.exists()) {
                     throw ExceptionFactory.getInstance().createBusinessException(repNode.getObject());
