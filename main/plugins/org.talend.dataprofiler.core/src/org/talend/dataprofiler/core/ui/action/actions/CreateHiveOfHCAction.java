@@ -18,6 +18,9 @@ import java.util.Map;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.ui.PlatformUI;
+import org.talend.core.database.EDatabaseTypeName;
+import org.talend.core.model.metadata.builder.connection.Connection;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.action.AbstractMetadataCreationAction;
@@ -39,16 +42,22 @@ public class CreateHiveOfHCAction extends AbstractMetadataCreationAction {
     /*
      * (non-Javadoc)
      *
-     * @see org.talend.dataprofiler.core.ui.action.AbstractMetadataCreationAction#createWizard()
+     * @see org.talend.dataprofiler
+     * .core.ui.action.AbstractMetadataCreationAction#createWizard()
      */
     @Override
     protected IWizard createWizard() {
         RepositoryNode dbRootNode = RepositoryNodeHelper.getDBConnectionRootNode();
-
         Map<String, String> initMap = new HashMap<String, String>();
         HadoopClusterUtils.getDefault().initConnectionParameters(initMap, node);
-        return new DatabaseWizard(PlatformUI.getWorkbench(), true, dbRootNode, getExistingNames(), initMap);
-
+        DatabaseWizard wizard =
+                new DatabaseWizard(PlatformUI.getWorkbench(), true, dbRootNode, getExistingNames(), initMap);
+        // TDQ-17500 msjian: set the connection type is Hive
+        Connection connection = wizard.getConnectionItem().getConnection();
+        if (connection != null && connection instanceof DatabaseConnection) {
+            ((DatabaseConnection) connection).setDatabaseType(EDatabaseTypeName.HIVE.getDisplayName());
+        }
+        return wizard;
     }
 
     /*

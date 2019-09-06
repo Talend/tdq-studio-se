@@ -21,7 +21,10 @@ import org.talend.commons.exception.PersistenceException;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.commons.utils.data.container.RootContainer;
+import org.talend.core.database.EDatabaseTypeName;
 import org.talend.core.model.general.Project;
+import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -84,15 +87,24 @@ public class HiveOfHCFolderRepNode extends DQFolderRepNode {
             if (!withDeleted && viewObject.isDeleted()) {
                 continue;
             }
-            HiveOfHCConnectionNode repNode = null;
             // check if ConnParameterKeys.CONN_PARA_KEY_HADOOP_CLUSTER_ID = current hadoop cluster's id
             if (viewObject != null && viewObject.getProperty() != null) {
                 String hcId = ConnectionUtils.getHadoopClusterIDOfHive(viewObject);
                 if (!clusterId.equals(hcId)) {
                     continue;
+                } else {
+                    // TDQ-17500 msjian: if it is Hbase connection, ignore also(not show under Hive folder)
+                    DatabaseConnectionItem dbItem = (DatabaseConnectionItem) viewObject.getProperty().getItem();
+                    DatabaseConnection dbConnection = (DatabaseConnection) dbItem.getConnection();
+                    String databaseType = dbConnection.getDatabaseType();
+                    if (databaseType != null && EDatabaseTypeName.HBASE.getDbType().equals(databaseType)) {
+                        continue;
+                    }
+                    // TDQ-17500~
                 }
             }
 
+            HiveOfHCConnectionNode repNode = null;
             try {
                 repNode = new HiveOfHCConnectionNode(viewObject, this, ENodeType.REPOSITORY_ELEMENT, project);
             } catch (Exception e) {
