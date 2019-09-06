@@ -472,7 +472,7 @@ public class TOPChartService implements ITOPChartService {
     @Override
     public void refrechChart(Object chartComp, Object chart) {
         ((ChartComposite) chartComp).setChart((JFreeChart) chart);
-        ((ChartComposite) chartComp).forceRedraw();
+        ((ChartComposite) chartComp).redraw();
     }
 
     @Override
