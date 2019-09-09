@@ -90,25 +90,6 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
 
     private static Logger log = Logger.getLogger(UDIMasterPage.class);
 
-    private static final String REMOVE_BUTTON_TEXT = DefaultMessagesImpl.getString("PatternMasterDetailsPage.delete"); //$NON-NLS-1$
-
-    private static final String DEFINITION_PARAMETER_SECTION_DESCRIPTION = DefaultMessagesImpl
-            .getString("IndicatorDefinitionMaterPage.parametersDecription"); //$NON-NLS-1$
-
-    private static final String DEFINITION_PARAMETER_SECTION_TITLE = DefaultMessagesImpl
-            .getString("IndicatorDefinitionMaterPage.parameters"); //$NON-NLS-1$
-
-    private static final String CATEGORY_SECTION_DESCRIPTION = DefaultMessagesImpl
-            .getString("UDIMasterPage.CategorySectionDescription"); //$NON-NLS-1$
-
-    private static final String CATEGORY_SECTION_TITLE = DefaultMessagesImpl.getString("UDIMasterPage.CategorySectionTitle"); //$NON-NLS-1$
-
-    private static final String JAVA_CLASS = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.javaClass"); //$NON-NLS-1$
-
-    private static final String JARS = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.jars"); //$NON-NLS-1$
-
-    private static final String LANGUAGE = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.language"); //$NON-NLS-1$
-
     private static final String PARAMETERS_VALUE = "Parameters Value"; //$NON-NLS-1$
 
     private static final String PARAMETERS_KEY = "Parameters Key"; //$NON-NLS-1$
@@ -239,8 +220,9 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      * create Definition Parameters Section.
      */
     private void createDefinitionParametersSection() {
-        parametersSection = createSection(form, topComp, DEFINITION_PARAMETER_SECTION_TITLE,
-                DEFINITION_PARAMETER_SECTION_DESCRIPTION);
+        parametersSection =
+                createSection(form, topComp, DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.parameters"), //$NON-NLS-1$
+                        DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.parametersDecription")); //$NON-NLS-1$
         parametersComp = createDefinitionParametersComp();
         parametersSection.setClient(parametersComp);
     }
@@ -301,7 +283,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
         });
         final Button romoveButton = new Button(composite, SWT.NONE);
         romoveButton.setImage(ImageLib.getImage(ImageLib.DELETE_ACTION));
-        romoveButton.setToolTipText(REMOVE_BUTTON_TEXT);
+        romoveButton.setToolTipText(DefaultMessagesImpl.getString("PatternMasterDetailsPage.delete")); //$NON-NLS-1$
         GridData reGd = new GridData();
         reGd.horizontalAlignment = SWT.LEFT;
         reGd.widthHint = 65;
@@ -609,19 +591,19 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
 
         // language Label
         Label languageLabel = new Label(javaTitleComp, SWT.NONE);
-        languageLabel.setText(LANGUAGE);
+        languageLabel.setText(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.language")); //$NON-NLS-1$
         languageLabel.setLayoutData(new GridData());
         ((GridData) languageLabel.getLayoutData()).widthHint = 160;
 
         // jar Label
         Label jarLabel = new Label(javaTitleComp, SWT.NONE);
-        jarLabel.setText(JARS);
+        jarLabel.setText(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.jars")); //$NON-NLS-1$
         jarLabel.setLayoutData(new GridData(GridData.BEGINNING));
         ((GridData) jarLabel.getLayoutData()).widthHint = 355;
 
         // class Label
         Label classLabel = new Label(javaTitleComp, SWT.NONE);
-        classLabel.setText(JAVA_CLASS);
+        classLabel.setText(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.javaClass")); //$NON-NLS-1$
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(javaTitleComp);
     }
 
@@ -685,7 +667,9 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
      * create Category Section.
      */
     private void createCategorySection() {
-        categorySection = createSection(form, topComp, CATEGORY_SECTION_TITLE, CATEGORY_SECTION_DESCRIPTION);
+        categorySection =
+                createSection(form, topComp, DefaultMessagesImpl.getString("UDIMasterPage.CategorySectionTitle"), //$NON-NLS-1$
+                        DefaultMessagesImpl.getString("UDIMasterPage.CategorySectionDescription")); //$NON-NLS-1$
         categoryComp = createCategoryComp();
         categorySection.setClient(categoryComp);
     }
