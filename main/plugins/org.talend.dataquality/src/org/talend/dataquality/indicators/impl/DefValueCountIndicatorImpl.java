@@ -18,6 +18,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
+import org.talend.core.utils.TalendQuoteUtils;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SwitchHelpers;
@@ -69,6 +70,8 @@ public class DefValueCountIndicatorImpl extends IndicatorImpl implements DefValu
     private static Logger log = Logger.getLogger(DefValueCountIndicatorImpl.class);
 
     private String pointZeroStr = ".0"; //$NON-NLS-1$
+
+    private String point9ZeroStr = " 00:00:00.000"; //$NON-NLS-1$
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -241,6 +244,11 @@ public class DefValueCountIndicatorImpl extends IndicatorImpl implements DefValu
             if (str.endsWith(pointZeroStr)) {
                 str = StringUtils.removeEnd(str, pointZeroStr);
             }
+            // TDQ-17458 msjian: consider that when the original date is "1998-10-12",
+            // but after data.toString() we get "1998-10-12 00:00:00.000"
+            if (str.endsWith(point9ZeroStr)) {
+                str = StringUtils.removeEnd(str, point9ZeroStr);
+            }
             if (StringUtils.equals(str, defValue.toString())) {
                 isMatch = true;
             }
@@ -280,22 +288,50 @@ public class DefValueCountIndicatorImpl extends IndicatorImpl implements DefValu
         if (defValue != null) {
             if (isOracle) {
                 getDefValueForOracle(tdColumn);
-            } else if (Java2SqlType.isDateInSQL(tdColumn.getSqlDataType().getJavaDataType())) {
-                String defTmp = defValue.toString();
-                try {
-                    if (StringUtils.contains(defTmp, ":")) { //$NON-NLS-1$
-                        defValue = DateFormat.getDateTimeInstance().parse(defTmp);
+            } else if (true) {
+                // TDQ-17458 msjian: becasue from DI side, the default value surrounded by '', so we need to remove ''.
+                int javaDataType = tdColumn.getSqlDataType().getJavaDataType();
+                if (!Java2SqlType.isNumbericInSQL(javaDataType)) {
+                    defValue = TalendQuoteUtils.removeQuotes(defValue.toString(), PluginConstant.SINGLE_QUOTE);
+                }
+                // TDQ-17458 ~
+                if (Java2SqlType.isDateInSQL(javaDataType)) {
+                    String defTmp = defValue.toString();
+                    // TDQ-17458 msjian: when pattern is not null means the columns retrived from DI side,
+                    // we use this to parse get date is more exactly
+                    String pattern = TalendQuoteUtils.removeQuotesIfExist(tdColumn.getPattern());
+                    if (!StringUtils.isBlank(pattern)) {
+                        try {
+                            DateFormat df = new SimpleDateFormat(pattern);
+                            defValue = df.parse(defTmp);
+                        } catch (ParseException exc) {
+                            parseDate(defTmp);
+                        }
                     } else {
-                        defValue = DateFormat.getDateInstance().parse(defTmp);
+                        parseDate(defTmp);
                     }
-                } catch (ParseException exc) {
-                    // if parse fail,reset defValue to String
-                    defValue = defTmp;
-                    log.warn("Parse default value failure!");
                 }
             }
         }
         return super.prepare();
+    }
+
+    /**
+     * DOC msjian Comment method "parseDate".
+     * @param defTmp
+     */
+    private void parseDate(String defTmp) {
+        try {
+            if (StringUtils.contains(defTmp, ":")) { //$NON-NLS-1$
+                defValue = DateFormat.getDateTimeInstance().parse(defTmp);
+            } else {
+                defValue = DateFormat.getDateInstance().parse(defTmp);
+            }
+        } catch (ParseException e) {
+            // if parse fail,reset defValue to String
+            defValue = defTmp;
+            log.warn("Parse default value failure!"); //$NON-NLS-1$
+        }
     }
 
     /**
