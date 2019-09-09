@@ -288,7 +288,7 @@ public class DefValueCountIndicatorImpl extends IndicatorImpl implements DefValu
         if (defValue != null) {
             if (isOracle) {
                 getDefValueForOracle(tdColumn);
-            } else if (true) {
+            } else {
                 // TDQ-17458 msjian: becasue from DI side, the default value surrounded by '', so we need to remove ''.
                 int javaDataType = tdColumn.getSqlDataType().getJavaDataType();
                 if (!Java2SqlType.isNumbericInSQL(javaDataType)) {
