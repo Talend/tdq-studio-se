@@ -21,7 +21,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -90,6 +89,7 @@ import org.talend.dq.nodes.DBViewFolderRepNode;
 import org.talend.dq.nodes.DBViewRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
@@ -121,25 +121,39 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
 
     private SchemaIndicator currentCatalogIndicator = null; // used in sqlserver
 
-    private static final int COLUMN_TABLE_WIDTH = 100;
-
-    private static final int COLUMN_VIEW_WIDTH = 150;
+    /**
+     * Width of the first column from the table/view table.
+     */
+    private static final int TABLE_VIEW_COL1_WIDTH = 200;
 
     /**
-     * Width of the first column.
+     * Width of the other column from the table/view table.
+     */
+    private static final int TABLE_VIEW_COL_WIDTH = 150;
+
+    /**
+     * catalog and schema table's heightHint.
+     */
+    private static final int TABLE_HEIGHTHINT = 140;
+
+    /**
+     * table and view table's heightHint.
+     */
+    private static final int TABLE_VIEW_HEIGHTHINT = 190;
+
+    /**
+     * Width of the first column from the catalog/schema table.
      */
     private static final int COL1_WIDTH = 200;
 
     /**
-     * Width of columns.
+     * Width of the other column from the catalog/schema table.
      */
     private static final int COL_WIDTH = 100;
 
     private TableViewer schemaTableViewer;
 
     private AbstractStatisticalViewerProvider provider;
-
-    private static final Logger log = Logger.getLogger(OverviewResultPage.class);
 
     private SchemaTableSorter[][] tableSorters = {
             { new SchemaTableSorter(SchemaTableSorter.TABLE), new SchemaTableSorter(-SchemaTableSorter.TABLE) },
@@ -231,13 +245,15 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
         Composite sectionClient = toolkit.createComposite(statisticalSection);
         sectionClient.setLayout(new GridLayout());
 
-        catalogTableViewer = new TableViewer(sectionClient, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+        catalogTableViewer = new TableViewer(sectionClient,
+                SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.RESIZE);
         Table catalogTable = catalogTableViewer.getTable();
         TableUtils.addActionTooltip(catalogTable);
         catalogTable.setHeaderVisible(true);
         catalogTable.setBackgroundMode(SWT.INHERIT_FORCE);
         catalogTable.setLinesVisible(true);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(catalogTable);
+        ((GridData) catalogTable.getLayoutData()).heightHint = TABLE_HEIGHTHINT;
         List<Catalog> catalogs = getCatalogs();
         boolean containSubSchema = false;
         for (Catalog catalog : catalogs) {
@@ -363,14 +379,15 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
     }
 
     private void createSchemaTableViewer(Composite parent) {
-        schemaTableViewer = new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION);
+        schemaTableViewer =
+                new TableViewer(parent, SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER | SWT.FULL_SELECTION | SWT.RESIZE);
         Table schemaTable = schemaTableViewer.getTable();
         schemaTable.setHeaderVisible(true);
         schemaTable.setBackgroundMode(SWT.INHERIT_FORCE);
         schemaTable.setLinesVisible(true);
         TableUtils.addActionTooltip(schemaTable);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(schemaTable);
-        ((GridData) schemaTable.getLayoutData()).heightHint = 60;
+        ((GridData) schemaTable.getLayoutData()).heightHint = TABLE_HEIGHTHINT;
         createSchemaTableColumns(schemaTable);
         SchemaViewerProvier svProvider = new SchemaViewerProvier();
         schemaTableViewer.setLabelProvider(svProvider);
@@ -387,7 +404,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
     }
 
     private void createSchemaTableColumns(Table table) {
-        TableColumn tableColumn = new TableColumn(table, SWT.LEFT);
+        TableColumn tableColumn = new TableColumn(table, SWT.LEFT | SWT.FILL);
         tableColumn.setText(DefaultMessagesImpl.getString("ConnectionMasterDetailsPage.schema")); //$NON-NLS-1$
         tableColumn.setWidth(COL1_WIDTH);
         createNbRowsCol(table, DefaultMessagesImpl.getString("ConnectionMasterDetailsPage.schema")); //$NON-NLS-1$
@@ -620,11 +637,11 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
             catalogOrSchemaTable.setHeaderVisible(true);
             catalogOrSchemaTable.setLinesVisible(true);
             GridData layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
-            layoutData.heightHint = 150;
+            layoutData.heightHint = TABLE_VIEW_HEIGHTHINT;
             catalogOrSchemaTable.setLayoutData(layoutData);
             String[] columnTexts = new String[] {
                     DefaultMessagesImpl.getString("AbstractFilterMetadataPage.Table"), DefaultMessagesImpl.getString("AbstractFilterMetadataPage.rows"), DefaultMessagesImpl.getString("AbstractFilterMetadataPage.keys"), DefaultMessagesImpl.getString("AbstractFilterMetadataPage.indexes") }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            createSorterColumns(tableOfCatalogOrSchemaViewer, columnTexts, tableSorters, COLUMN_TABLE_WIDTH);
+            createSorterColumns(tableOfCatalogOrSchemaViewer, columnTexts, tableSorters);
             TableOfCatalogOrSchemaProvider tableProvider = new TableOfCatalogOrSchemaProvider();
             tableOfCatalogOrSchemaViewer.setLabelProvider(tableProvider);
             tableOfCatalogOrSchemaViewer.setContentProvider(tableProvider);
@@ -700,11 +717,11 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
             tableCatalogOrSchemaView.setHeaderVisible(true);
             tableCatalogOrSchemaView.setLinesVisible(true);
             layoutData = new GridData(SWT.FILL, SWT.FILL, true, true);
-            layoutData.heightHint = 150;
+            layoutData.heightHint = TABLE_VIEW_HEIGHTHINT;
             tableCatalogOrSchemaView.setLayoutData(layoutData);
             columnTexts = new String[] {
                     DefaultMessagesImpl.getString("AbstractFilterMetadataPage.view"), DefaultMessagesImpl.getString("AbstractFilterMetadataPage.rows") }; //$NON-NLS-1$ //$NON-NLS-2$
-            createSorterColumns(viewOfCatalogOrSchemaViewer, columnTexts, viewSorters, COLUMN_VIEW_WIDTH);
+            createSorterColumns(viewOfCatalogOrSchemaViewer, columnTexts, viewSorters);
             ViewOfCatalogOrSchemaProvider viewProvider = new ViewOfCatalogOrSchemaProvider();
             viewOfCatalogOrSchemaViewer.setLabelProvider(viewProvider);
             viewOfCatalogOrSchemaViewer.setContentProvider(viewProvider);
@@ -903,14 +920,13 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
         return cataUIEleList;
     }
 
-    private void createSorterColumns(final TableViewer tableViewer, String[] columnTexts, ViewerSorter[][] sorters,
-            int columnWidth) {
+    private void createSorterColumns(final TableViewer tableViewer, String[] columnTexts, ViewerSorter[][] sorters) {
         Table table = tableViewer.getTable();
         TableColumn[] columns = new TableColumn[columnTexts.length];
         for (int i = 0; i < columns.length; i++) {
             columns[i] = new TableColumn(table, SWT.LEFT | SWT.FILL);
             columns[i].setText(columnTexts[i]);
-            columns[i].setWidth(columnWidth);
+            columns[i].setWidth(i == 0 ? TABLE_VIEW_COL1_WIDTH : TABLE_VIEW_COL_WIDTH);
             columns[i].addSelectionListener(new ColumnSortListener(columns, i, tableViewer, sorters));
         }
     }
