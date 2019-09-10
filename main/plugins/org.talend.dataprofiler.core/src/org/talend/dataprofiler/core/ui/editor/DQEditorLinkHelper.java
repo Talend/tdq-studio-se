@@ -34,6 +34,7 @@ import org.talend.dataquality.properties.TDQMatchRuleItem;
 import org.talend.dataquality.properties.TDQPatternItem;
 import org.talend.dataquality.properties.TDQReportItem;
 import org.talend.dq.helper.RepositoryNodeHelper;
+import org.talend.dq.nodes.hadoopcluster.HiveOfHCConnectionNode;
 import org.talend.repository.model.IRepositoryNode;
 
 /**
@@ -86,6 +87,12 @@ public class DQEditorLinkHelper implements ILinkHelper {
 
     public void activateEditor(IWorkbenchPage aPage, IStructuredSelection aSelection) {
         IRepositoryNode repNode = (IRepositoryNode) aSelection.getFirstElement();
+        // TDQ-17500 msjian: fix for hive node under hadoop cluster
+        if (repNode != null && repNode instanceof HiveOfHCConnectionNode) {
+            return;
+        }
+        // TDQ-17500~
+
         OpenItemEditorAction openEditorAction = new OpenItemEditorAction(new IRepositoryNode[] { repNode });
         // MOD msjian TDQ-4209 2012-2-7 : modify to IEditorInput type
         try {
