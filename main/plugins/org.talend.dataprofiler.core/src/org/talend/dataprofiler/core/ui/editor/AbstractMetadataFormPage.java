@@ -254,12 +254,12 @@ public abstract class AbstractMetadataFormPage extends AbstractFormPage {
                     setDirty(true);
 
                     // MOD msjian 2011-7-18 23216: when changed the name of a connection to null, write a warning
-                    String NAMECONNOTBEEMPTY = DefaultMessagesImpl.getString("AbstractMetadataFormPage.nameCannotBeEmpty"); //$NON-NLS-1$
+                    String nameCanNotBeEmpty = DefaultMessagesImpl.getString("AbstractMetadataFormPage.nameCannotBeEmpty"); //$NON-NLS-1$
                     if (PluginConstant.EMPTY_STRING.equals(nameText.getText())) {
-                        getManagedForm().getMessageManager().addMessage(NAMECONNOTBEEMPTY, NAMECONNOTBEEMPTY, null,
+                        getManagedForm().getMessageManager().addMessage(nameCanNotBeEmpty, nameCanNotBeEmpty, null,
                                 IMessageProvider.ERROR, nameText);
                     } else {
-                        getManagedForm().getMessageManager().removeMessage(NAMECONNOTBEEMPTY, nameText);
+                        getManagedForm().getMessageManager().removeMessage(nameCanNotBeEmpty, nameText);
                     }
                 }
             }

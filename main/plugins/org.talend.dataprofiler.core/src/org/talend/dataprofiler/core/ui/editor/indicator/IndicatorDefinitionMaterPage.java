@@ -451,12 +451,12 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
         final Composite cmBodyComp = new Composite(cmComp, SWT.NONE);
         cmBodyComp.setLayout(new GridLayout(2, false));
-        cmBodyComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+        cmBodyComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         int style = SWT.SINGLE | SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION | SWT.HIDE_SELECTION;
         String[] headers = {
                 DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.charReplace"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.replaceChar") };//$NON-NLS-1$//$NON-NLS-2$
-        int[] widths = { 300, 300 };
+        int[] widths = { 500, 500 };
         buildCharactersMappingLineComp(cmBodyComp, charactersMapping, style, headers, widths);
 
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(cmComp);
@@ -477,7 +477,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
-        table.setLayoutData(new GridData(GridData.FILL_BOTH));
+        table.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         for (int i = 0; i < headers.length; ++i) {
             TableColumn tableColumn = new TableColumn(table, SWT.LEFT, i);
@@ -666,7 +666,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
             String title = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.functions");//$NON-NLS-1$
             String[] headers = {
                     DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.hAxis"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.vAxis"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.size") };//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
-            int[] widths = { 120, 120, 240 };
+            int[] widths = { 150, 150, 300 };
             buildAggregateDateComp(expressionBodyComp, aggregateDateExpression, style, title, headers, widths);
         }
 
@@ -674,7 +674,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
             String title = DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.ganttChart");//$NON-NLS-1$
             String[] headers = {
                     DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.lowerValue"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.upperValue"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.totalValue"), DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.highValue") };//$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$ //$NON-NLS-4$
-            int[] widths = { 120, 120, 120, 240 };
+            int[] widths = { 150, 150, 150, 300 };
             buildAggregateDateComp(expressionBodyComp, aggregateDateExpression, style, title, headers, widths);
         }
 
@@ -848,14 +848,16 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
     protected Composite createDefinitionComp() {
         Composite composite = toolkit.createComposite(definitionSection);
         composite.setLayout(new GridLayout());
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         expressionComp = new Composite(composite, SWT.NONE);
         expressionComp.setLayout(new GridLayout());
-        expressionComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+        expressionComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+
         // base sql composite
         dataBaseComp = new Composite(expressionComp, SWT.NONE);
         dataBaseComp.setLayout(new GridLayout());
-        dataBaseComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+        dataBaseComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         // ADD xqliu 2010-02-26 bug 11201
         if (tempExpressionList.size() > 0) {// || !checkJavaUDIBeforeOpen()) {
@@ -884,6 +886,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
     protected void createDatabaseTitleComp() {
         dataBaseTitleComp = new Composite(dataBaseComp, SWT.NONE);
         dataBaseTitleComp.setLayout(new GridLayout(3, false));
+        dataBaseTitleComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         // database Label
         Label databaseLabel = new Label(dataBaseTitleComp, SWT.NONE);
@@ -895,12 +898,11 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
         Label dbversionLabel = new Label(dataBaseTitleComp, SWT.NONE);
         dbversionLabel.setText(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.dbVersion")); //$NON-NLS-1$
         dbversionLabel.setLayoutData(new GridData(GridData.BEGINNING));
-        ((GridData) dbversionLabel.getLayoutData()).widthHint = 38;
+        ((GridData) dbversionLabel.getLayoutData()).widthHint = 70;
 
         // sqlTemplate Label
         Label sqlTemplateLabel = new Label(dataBaseTitleComp, SWT.NONE);
         sqlTemplateLabel.setText(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.sqlTemplate")); //$NON-NLS-1$
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(dataBaseTitleComp);
     }
 
     /**
@@ -916,7 +918,9 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
     private void createNewLineWithExpression(final TdExpression expression) {
         final Composite lineComp = new Composite(dataBaseComp, SWT.NONE);
-        lineComp.setLayout(new GridLayout(3, false));
+        lineComp.setLayout(new GridLayout(2, false));
+        lineComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+        
         final CCombo combo = new CCombo(lineComp, SWT.BORDER);
 
         putTdExpressToTempMap(combo, expression);
@@ -936,8 +940,10 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
             combo.setText(PatternLanguageType.findNameByLanguage(language));
         }
         combo.addSelectionListener(new LangCombSelectionListener());
+
         Composite detailComp = new Composite(lineComp, SWT.NONE);
         detailComp.setLayout(new GridLayout(4, false));
+        detailComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         createDataBaseLineComponent(combo, expression, detailComp);
 
@@ -1213,13 +1219,14 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
     protected void createDataBaseLineComponent(final CCombo combo, TdExpression expression, Composite detailComp) {
         final Text dbVersionText = new Text(detailComp, SWT.BORDER);
         dbVersionText.setText(expression.getVersion() == null ? PluginConstant.EMPTY_STRING : expression.getVersion());
-        dbVersionText.setLayoutData(new GridData(GridData.BEGINNING));
-        ((GridData) dbVersionText.getLayoutData()).widthHint = 30;
+        dbVersionText.setLayoutData(new GridData(SWT.BEGINNING));
+        ((GridData) dbVersionText.getLayoutData()).widthHint = 60;
         dbVersionText.addModifyListener(new DbVersionTextModListener(combo));
 
         final Text expressionText = new Text(detailComp, SWT.BORDER);
-        expressionText.setLayoutData(new GridData(GridData.FILL_BOTH));
+        expressionText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
         ((GridData) expressionText.getLayoutData()).widthHint = 600;
+
         // MOD xqliu 2010-03-23 feature 11201
         expressionText.setText(expression.getBody() == null ? PluginConstant.EMPTY_STRING : expression.getBody());
         // ~11201
@@ -1233,7 +1240,6 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
         // TDQ-7868: when createExpressionEditButton, use the current version value in dbVersionText
         createExpressionEditButton(detailComp, expressionText, combo, dbVersionText);
         createExpressionDelButton(detailComp, combo);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(detailComp);
         detailComp.getParent().layout();
     }
 
@@ -1280,7 +1286,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
         delButton.setToolTipText(DefaultMessagesImpl.getString("IndicatorDefinitionMaterPage.deleteExpression")); //$NON-NLS-1$
         GridData labelGd = new GridData();
         labelGd.horizontalAlignment = SWT.LEFT;
-        labelGd.widthHint = 30;
+        labelGd.widthHint = 40;
         delButton.setLayoutData(labelGd);
         delButton.addSelectionListener(new SelectionAdapter() {
 
