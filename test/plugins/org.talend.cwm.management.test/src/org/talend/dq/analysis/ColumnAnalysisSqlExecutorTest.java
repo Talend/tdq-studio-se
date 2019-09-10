@@ -39,6 +39,7 @@ import org.talend.dataquality.indicators.FrequencyIndicator;
 import org.talend.dataquality.indicators.IndicatorsFactory;
 import org.talend.dataquality.indicators.definition.DefinitionFactory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
+import org.talend.dq.helper.UnitTestBuildHelper;
 
 import junit.framework.Assert;
 import orgomg.cwm.resource.relational.Catalog;
@@ -80,6 +81,8 @@ public class ColumnAnalysisSqlExecutorTest {
      */
     @Before
     public void setUp() throws Exception {
+        // Init TDQ structor
+        UnitTestBuildHelper.initProjectStructure();
         // create analysis element
         TdColumn testTdColumn = RelationalFactory.eINSTANCE.createTdColumn();
         testTdColumn.setName("columnName"); //$NON-NLS-1$

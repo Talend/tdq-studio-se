@@ -7,5 +7,6 @@ Bundle-Vendor: .Talend SA.
 Fragment-Host: org.talend.cwm.management
 Require-Bundle: org.talend.testutils,
  org.talend.model,
- org.junit
+ org.junit,
+ org.talend.dataprofiler.core
 Bundle-ClassPath: .

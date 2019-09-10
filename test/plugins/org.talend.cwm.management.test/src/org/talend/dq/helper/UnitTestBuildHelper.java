@@ -76,6 +76,7 @@ import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdSqlDataType;
 import org.talend.cwm.relational.TdTable;
+import org.talend.dataprofiler.core.manager.DQStructureManager;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.analysis.AnalysisContext;
 import org.talend.dataquality.analysis.AnalysisFactory;
@@ -195,6 +196,9 @@ public class UnitTestBuildHelper {
         IProject rootProject = ReponsitoryContextBridge.getRootProject();
         if (!rootProject.exists()) {
             initProxyRepository(rootProject);
+        }
+        if (DQStructureManager.getInstance().isNeedCreateStructure()) {
+            DQStructureManager.getInstance().createDQStructure();
         }
 
         return rootProject;
