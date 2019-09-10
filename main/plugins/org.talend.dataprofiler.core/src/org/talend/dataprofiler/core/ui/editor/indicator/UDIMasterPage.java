@@ -520,6 +520,7 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
 
         Composite detailComp = new Composite(lineComp, SWT.NONE);
         detailComp.setLayout(new GridLayout(4, false));
+        detailComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
 
         createDataBaseLineComponent(dataBaseCombo, expression, detailComp);
 
@@ -536,7 +537,6 @@ public class UDIMasterPage extends IndicatorDefinitionMaterPage {
             children[0].dispose();
         }
         lineComp.requestLayout();
-
     }
 
     /**

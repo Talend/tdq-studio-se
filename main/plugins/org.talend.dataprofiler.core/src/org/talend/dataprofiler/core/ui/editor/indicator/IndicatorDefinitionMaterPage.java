@@ -949,7 +949,6 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
 
         widgetMap.put(combo, detailComp);
         updateOtherCombos(combo);
-        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, false).applyTo(detailComp);
     }
 
     /**
@@ -1004,16 +1003,16 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
         }
         final Composite lineComp = new Composite(dataBaseComp, SWT.NONE);
         lineComp.setLayout(new GridLayout(5, false));
+        lineComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+
         final CCombo combo = new CCombo(lineComp, SWT.BORDER);
         combo.setLayoutData(new GridData());
         ((GridData) combo.getLayoutData()).widthHint = 150;
-
         combo.setEditable(false);
         // MOD xqliu 2010-02-25 feature 11201
         combo.setItems(allDBTypeList.toArray(new String[allDBTypeList.size()]));
         // ~
         combo.select(0);
-
         combo.addSelectionListener(new LangCombSelectionListener());
 
         // MOD TDQ-6824 msjian 2013-2-8: when create expression, we should set correct language
@@ -1189,6 +1188,7 @@ public class IndicatorDefinitionMaterPage extends AbstractMetadataFormPage {
             detailComp = new Composite(combo.getParent(), SWT.NONE);
             widgetMap.put(combo, detailComp);
             detailComp.setLayout(new GridLayout(4, false));
+            detailComp.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
             // ADD xqliu 2010-04-02 feature 11201
             createDataBaseLineComponent(combo, expression, detailComp);
             // ~
