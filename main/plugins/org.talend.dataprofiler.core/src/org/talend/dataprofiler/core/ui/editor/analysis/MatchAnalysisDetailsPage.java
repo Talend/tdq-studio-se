@@ -108,6 +108,7 @@ import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -1520,6 +1521,7 @@ public class MatchAnalysisDetailsPage extends AbstractAnalysisMetadataPage imple
     @Override
     public ReturnCode canSave() {
         if (this.isDirty) {
+            this.selectAlgorithmSection.getSection().setFocus();
             ReturnCode checkResultStatus = blockingKeySection.checkResultStatus();
             if (checkResultStatus.isOk()) {
                 if (selectAlgorithmSection.isVSRMode()) {

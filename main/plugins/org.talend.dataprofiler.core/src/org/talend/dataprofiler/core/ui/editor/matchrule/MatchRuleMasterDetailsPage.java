@@ -120,6 +120,7 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
     public ReturnCode canSave() {
         ReturnCode rc = new ReturnCode(false);
         if (this.isDirty) {
+            this.selectAlgorithmSection.getSection().setFocus();
             ReturnCode checkResultStatus = blockingKeyDefinitionSection.checkResultStatus();
             String algorithmName = this.selectAlgorithmSection.getAlgorithmName();
             boolean isTSwoosh = RecordMatcherType.T_SwooshAlgorithm.name().equals(algorithmName);
@@ -292,7 +293,6 @@ public class MatchRuleMasterDetailsPage extends AbstractMetadataFormPage impleme
      */
     @Override
     public void doSave(IProgressMonitor monitor) {
-
         ReturnCode rc = canSave();
         if (!rc.isOk()) {
             MessageDialogWithToggle.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
