@@ -123,6 +123,7 @@
       <import plugin="org.eclipse.jface.text" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ltk.core.refactoring" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ltk.ui.refactoring" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.nebula.widgets.grid" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.nebula.widgets.pagination" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.nebula.widgets.tablecombo" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.osgi" version="0.0.0" match="greaterOrEqual"/>
@@ -192,13 +193,6 @@
 
    <plugin
          id="org.talend.libraries.zookeeper"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.nebula.widgets.grid"
          download-size="0"
          install-size="0"
          version="0.0.0"
