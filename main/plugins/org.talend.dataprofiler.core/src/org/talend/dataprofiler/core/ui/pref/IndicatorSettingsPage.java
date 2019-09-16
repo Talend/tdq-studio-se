@@ -50,11 +50,19 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
 
     public static final String LOW_FREQUENCY_TABLE_RESULT_LIMIT_KEY = "org.talend.dataprofiler.core.ui.pref.LowFrequencyResultLimit"; //$NON-NLS-1$
 
-    private int freResultLimit = 10;
+    private static final int FRE_DEFAULT_LIMIT = 10;
 
-    private int lowFreResultLimit = 10;
+    private static final int LOW_FRE_DEFAULT_LIMIT = 10;
+
+    private int freResultLimit = FRE_DEFAULT_LIMIT;
+
+    private int lowFreResultLimit = LOW_FRE_DEFAULT_LIMIT;
 
     private Map<Text, String> errorMessageMap = new HashMap<Text, String>();
+
+    private Text frequenceText;
+
+    private Text lowFrequenceText;
 
     public IndicatorSettingsPage() {
     }
@@ -99,7 +107,7 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
         data = new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 2, 1);
         frequenceLabel.setLayoutData(data);
 
-        final Text frequenceText = new Text(frequenceGroup, SWT.BORDER);
+        frequenceText = new Text(frequenceGroup, SWT.BORDER);
         frequenceText.setText(StringUtils.EMPTY + freResultLimit);
         data = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
         frequenceText.setLayoutData(data);
@@ -140,7 +148,7 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
         data = new GridData(SWT.BEGINNING, SWT.CENTER, false, false, 1, 1);
         lowFrequenceLabel.setLayoutData(data);
 
-        final Text lowFrequenceText = new Text(lowFrequenceGroup, SWT.BORDER);
+        lowFrequenceText = new Text(lowFrequenceGroup, SWT.BORDER);
         lowFrequenceText.setText(StringUtils.EMPTY + lowFreResultLimit);
         data = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
         lowFrequenceText.setLayoutData(data);
@@ -292,6 +300,18 @@ public class IndicatorSettingsPage extends PreferencePage implements IWorkbenchP
         this.getPreferenceStore().setValue(FREQUENCY_TABLE_RESULT_LIMIT_KEY, freResultLimit);
         this.getPreferenceStore().setValue(LOW_FREQUENCY_TABLE_RESULT_LIMIT_KEY, lowFreResultLimit);
         return true;
+    }
+
+    @Override
+    protected void performDefaults() {
+        freResultLimit = FRE_DEFAULT_LIMIT;
+        lowFreResultLimit = LOW_FRE_DEFAULT_LIMIT;
+        this.getPreferenceStore().setValue(FREQUENCY_TABLE_RESULT_LIMIT_KEY, freResultLimit);
+        this.getPreferenceStore().setValue(LOW_FREQUENCY_TABLE_RESULT_LIMIT_KEY, lowFreResultLimit);
+
+        frequenceText.setText(StringUtils.EMPTY + freResultLimit);
+        lowFrequenceText.setText(StringUtils.EMPTY + lowFreResultLimit);
+        super.performDefaults();
     }
 
     /*
