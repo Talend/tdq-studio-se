@@ -103,12 +103,6 @@ public final class WorkbenchUtils {
 
     private static Logger log = Logger.getLogger(WorkbenchUtils.class);
 
-    private static final int AUTO_CHANGE2DATA_PROFILER_TRUE = 1;
-
-    private static final int AUTO_CHANGE2DATA_PROFILER_FALSE = 2;
-
-    private static final boolean AUTO_CHANGE2DATA_PROFILER = true;
-
     private WorkbenchUtils() {
     }
 
