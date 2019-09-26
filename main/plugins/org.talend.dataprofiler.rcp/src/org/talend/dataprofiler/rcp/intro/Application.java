@@ -12,9 +12,6 @@
 // ============================================================================
 package org.talend.dataprofiler.rcp.intro;
 
-import java.io.File;
-import java.nio.file.Paths;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -47,6 +44,7 @@ import org.talend.dataprofiler.rcp.i18n.Messages;
 import org.talend.registration.register.proxy.HttpProxyUtil;
 // import org.talend.dataprofiler.rcp.intro.linksbar.Workbench3xImplementation4CoolBar;
 import org.talend.registration.wizards.register.TalendForgeDialog;
+import org.talend.utils.StudioKeysFileCheck;
 import org.talend.utils.sugars.ReturnCode;
 
 /**
@@ -57,10 +55,6 @@ public class Application implements IApplication {
 
     protected static Logger log = Logger.getLogger(Application.class);
 
-    private static final String ENCRYPTION_KEY_FILE_SYS_PROP = "encryption.keys.file";
-
-    private static final String ENCRYPTION_KEY_FILE_NAME = "studio.keys";
-
     /*
      * (non-Javadoc)
      *
@@ -69,7 +63,7 @@ public class Application implements IApplication {
     @Override
     public Object start(IApplicationContext context) {
 
-        setEncryptions();
+        StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
 
         Display display = PlatformUI.createDisplay();
         Shell shell = DisplayUtils.getDefaultShell(false);
@@ -106,19 +100,6 @@ public class Application implements IApplication {
             return IApplication.EXIT_OK;
         } finally {
             display.dispose();
-        }
-    }
-
-    private void setEncryptions() {
-        String keyFile = System.getProperty(ENCRYPTION_KEY_FILE_SYS_PROP);
-        if (keyFile == null || keyFile.isEmpty() || !new File(keyFile).exists()) {
-            File confDir = ConfigurationScope.INSTANCE.getLocation().toFile();
-            String encryptionKeyFilePath = Paths.get(confDir.getAbsolutePath(), ENCRYPTION_KEY_FILE_NAME).toString();
-            log.info("encryptionKeyFilePath: " + encryptionKeyFilePath);
-
-            System.setProperty(ENCRYPTION_KEY_FILE_SYS_PROP, encryptionKeyFilePath);
-        } else {
-            log.info("encryptionKeyFilePath: " + keyFile);
         }
     }
 
