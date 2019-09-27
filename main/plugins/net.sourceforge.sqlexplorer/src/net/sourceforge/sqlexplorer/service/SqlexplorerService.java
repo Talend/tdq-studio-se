@@ -471,9 +471,12 @@ public class SqlexplorerService implements ISqlexplorerService {
         }
         Collection<Alias> aliases = SQLExplorerPlugin.getDefault().getAliasManager().getAliases();
         String url = JavaSqlFactory.getURL(providerConnection);
+        String dbName = providerConnection.getName();
         User currentUser = null;
         for (Alias alias : aliases) {
-            if (alias.getUrl().equals(url)) {
+            // TDQ-9833 msjian : find the correct alias, sometimes connections' url are the same, only the name is
+            // different
+            if (alias.getUrl().equals(url) && dbName.equals(alias.getName())) {
                 currentUser = alias.getDefaultUser();
                 OpenPasswordConnectDialogAction openDlgAction =
                         new OpenPasswordConnectDialogAction(alias, alias.getDefaultUser(), false);
