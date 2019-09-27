@@ -79,13 +79,18 @@ public class SwitchContextAction extends Action {
 
                     CorePlugin.getDefault().refreshDQView(selectedObject);
                 } else {
-                    MessageDialog.openWarning(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(), "", //$NON-NLS-1$
-                            DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError")); //$NON-NLS-1$
-                    log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "failed"));//$NON-NLS-1$ //$NON-NLS-2$
+                    popupSwitchContextFailedMessage(chooseContext);
                 }
             }
         }
         // TDQ-4559~
+    }
+
+    public static void popupSwitchContextFailedMessage(String chooseContext) {
+        MessageDialog
+                .openWarning(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(), "", //$NON-NLS-1$
+                        DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError")); //$NON-NLS-1$
+        log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "failed"));//$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
