@@ -107,6 +107,13 @@ public class FunctionFrequencyStatExplorer extends FrequencyStatisticsExplorer {
         // MOD mzhao 2009-11-09 bug 9681: Catch the possibility that the sql body contains "TOP" keywords.
         // MOD MOD mzhao 2010-04-12 bug 11554
         String group = matcher.group(1);
+
+        // TDQ-17547 msjian: fix mysql Pattern frequency indicator drill down the same with analysis result.
+        if (DbmsLanguageFactory.isMySQL(dbmsName)) {
+            return "BINARY " + group; // //$NON-NLS-1$
+        }
+        // TDQ-17547~
+
         return group;
     }
 

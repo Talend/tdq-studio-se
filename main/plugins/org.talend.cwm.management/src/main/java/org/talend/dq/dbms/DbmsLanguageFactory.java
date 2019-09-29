@@ -238,7 +238,7 @@ public final class DbmsLanguageFactory {
         }
     }
 
-    private static boolean isMySQL(String dbms) {
+    public static boolean isMySQL(String dbms) {
         return compareDbmsLanguage(DbmsLanguage.MYSQL, dbms);
     }
 
