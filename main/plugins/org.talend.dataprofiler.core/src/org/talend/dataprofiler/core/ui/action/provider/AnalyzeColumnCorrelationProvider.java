@@ -12,8 +12,6 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.action.provider;
 
-import java.util.List;
-
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.navigator.ICommonActionExtensionSite;
@@ -21,6 +19,7 @@ import org.eclipse.ui.navigator.ICommonViewerWorkbenchSite;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.dataprofiler.core.ui.action.actions.AnalyzeColumnCorrelationAction;
+import org.talend.dataprofiler.core.ui.utils.RepNodeUtils;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
 
@@ -35,7 +34,6 @@ public class AnalyzeColumnCorrelationProvider extends AbstractCommonActionProvid
     private AnalyzeColumnCorrelationAction analyzeColumnCorrAction;
 
     public AnalyzeColumnCorrelationProvider() {
-
     }
 
     /*
@@ -45,7 +43,6 @@ public class AnalyzeColumnCorrelationProvider extends AbstractCommonActionProvid
      */
     @Override
     public void init(ICommonActionExtensionSite site) {
-
         if (site.getViewSite() instanceof ICommonViewerWorkbenchSite) {
             analyzeColumnCorrAction = new AnalyzeColumnCorrelationAction();
         }
@@ -56,17 +53,22 @@ public class AnalyzeColumnCorrelationProvider extends AbstractCommonActionProvid
      *
      * @see org.eclipse.ui.actions.ActionGroup#fillContextMenu(org.eclipse.jface.action.IMenuManager)
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void fillContextMenu(IMenuManager menu) {
         // MOD mzhao user readonly role on svn repository mode.
         if (!isShowMenu()) {
             return;
         }
-        boolean showMenu = true;
+
         TreeSelection currentSelection = ((TreeSelection) this.getContext().getSelection());
-        List list = currentSelection.toList();
-        for (Object obj : list) {
+        // TDQ-17251 msjian: when the columns don't come from the same table, not show the menu
+        if (!RepNodeUtils.isValidSelectionFromSameTable(currentSelection.toList())) {
+            return;
+        }
+        // TDQ-17251~
+
+        boolean showMenu = true;
+        for (Object obj : currentSelection.toList()) {
             if (obj instanceof RepositoryNode) {
                 RepositoryNode node = (RepositoryNode) obj;
                 if (ENodeType.TDQ_REPOSITORY_ELEMENT.equals(node.getType())) {
