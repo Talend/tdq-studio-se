@@ -472,7 +472,15 @@ public class TOPChartService implements ITOPChartService {
     @Override
     public void refrechChart(Object chartComp, Object chart) {
         ((ChartComposite) chartComp).setChart((JFreeChart) chart);
-        ((ChartComposite) chartComp).redraw();
+        // TDQ-17520: fix cannot refresh chart
+        if (System.getProperty("os.name").toUpperCase().indexOf("LINUX") > -1) { //$NON-NLS-1$ //$NON-NLS-2$
+            // TDQ-17182 this can work well on ubuntu and centos
+            ((ChartComposite) chartComp).redraw();
+        } else {
+            // this can work well on windows and mac
+            ((ChartComposite) chartComp).forceRedraw();
+        }
+        // TDQ-17520~
     }
 
     @Override
