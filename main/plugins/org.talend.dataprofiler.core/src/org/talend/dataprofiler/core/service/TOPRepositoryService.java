@@ -77,6 +77,7 @@ import org.talend.dataprofiler.core.helper.WorkspaceResourceHelper;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.manager.DQStructureManager;
 import org.talend.dataprofiler.core.ui.action.actions.CreateHiveOfHCAction;
+import org.talend.dataprofiler.core.ui.action.actions.SwitchContextAction;
 import org.talend.dataprofiler.core.ui.dialog.message.DeleteModelElementConfirmDialog;
 import org.talend.dataprofiler.core.ui.editor.PartListener;
 import org.talend.dataprofiler.core.ui.editor.connection.ConnectionEditor;
@@ -115,6 +116,7 @@ import org.talend.resource.ResourceManager;
 import org.talend.utils.dates.DateUtils;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -128,10 +130,12 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     // will not open the connection editor when this parameter=true;
     private boolean noNeedToOpenConnectionEditor = Boolean.FALSE;
 
+    @Override
     public IViewPart getTDQRespositoryView() {
         return CorePlugin.getDefault().getRepositoryView();
     }
 
+    @Override
     public void notifySQLExplorer(Item... items) {
         if (items == null) {
             return;
@@ -145,6 +149,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
     }
 
+    @Override
     public void openConnectionEditor(Item item) {
         // Added TDQ-7504, TDQ-7770, yyin 20130819: when the db wizard is opened in the match analysis editor, no need
         // to open the db edtior any more.
@@ -164,6 +169,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
     }
 
+    @Override
     public void refreshConnectionEditor(Item item) {
         CorePlugin.getDefault().refreshOpenedEditor(item);
     }
@@ -171,6 +177,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     /**
      * Fill MDM connection only.
      */
+    @Override
     public void fillMetadata(ConnectionItem connItem) {
         MetadataConnectionUtils.fillConnectionInformation(connItem);
         // MOD gdbu 2011-7-12 bug : 22598
@@ -181,6 +188,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         // ~22598
     }
 
+    @Override
     public void refresh() {
         CorePlugin.getDefault().refreshWorkSpace();
         // ~ TDQ-5133 mzhao 2012-05-31 when there are many children for a db connection, it's more elegant to collapse
@@ -209,6 +217,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @param node
      */
+    @Override
     public void refresh(Object refreshObject) {
         if (refreshObject == null) {
             this.refresh();
@@ -226,10 +235,12 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
     }
 
+    @Override
     public void initProxyRepository() {
         CorePlugin.getDefault().initProxyRepository();
     }
 
+    @Override
     public void addPartListener() {
         IWorkbenchPage activePage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         // Calculate the extensions to register partListener.
@@ -239,6 +250,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
     }
 
+    @Override
     public boolean removeAliasInSQLExplorer(IRepositoryNode children) {
         boolean hasDependencyItem = true;
         // MOD klliu 2011-04-28 bug 20204 removing connection is synced to the connection view of SQL explore
@@ -255,6 +267,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         return hasDependencyItem;
     }
 
+    @Override
     public void createParserRuleItem(ArrayList<HashMap<String, Object>> values, String parserRuleName) {
         ParserRule parserRule = null;
         DqRuleBuilder ruleBuilder = new DqRuleBuilder();
@@ -287,6 +300,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         refresh(object);
     }
 
+    @Override
     public List<Map<String, String>> getPaserRulesFromRules(Object parser) {
         if (parser != null && parser instanceof ParserRule) {
             List<Map<String, String>> ruleValues = new ArrayList<Map<String, String>>();
@@ -308,6 +322,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#getPaserRulesFromResources(java.lang.Object[])
      */
+    @Override
     public List<Map<String, String>> getPaserRulesFromResources(Object[] rules) {
         List<Map<String, String>> ruleValues = new ArrayList<Map<String, String>>();
         for (Object rule : rules) {
@@ -326,6 +341,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @param connectionItem
      * @deprecated instead of it by TDQCompareService.reloadDatabase
      */
+    @Override
     @Deprecated
     public ReturnCode reloadDatabase(ConnectionItem connectionItem) {
         ReturnCode retCode = new ReturnCode(Boolean.TRUE);
@@ -375,6 +391,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         return retCode;
     }
 
+    @Override
     public void updateImpactOnAnalysis(ConnectionItem connectionItem) {
         try {
             if (connectionItem == null) {
@@ -395,6 +412,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         }
     }
 
+    @Override
     public void reloadMetadataOfDelimitedFile(MetadataTable newMetadataTable) throws BusinessException {
         WorkbenchUtils.reloadMetadataOfDelimitedFile(newMetadataTable);
     }
@@ -404,6 +422,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#confirmUpdateAnalysis(org.talend.core.model.properties.ConnectionItem)
      */
+    @Override
     public boolean confirmUpdateAnalysis(ConnectionItem connectionItem) {
         // optimize code, just open an dialog,don't need to judge if has dependce in here.
         if (MessageDialog.openQuestion(null, DefaultMessagesImpl.getString("TOPRepositoryService.dependcyTile"), //$NON-NLS-1$
@@ -414,6 +433,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         return false;
     }
 
+    @Override
     public boolean hasClientDependences(ConnectionItem connItem) {
         if (connItem != null) {
             Connection connection = connItem.getConnection();
@@ -433,6 +453,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @param deleteObject which you want to delete
      * @return SWT.OK or SWT.Cancel
      */
+    @Override
     public int confimDelete(IRepositoryViewObject deleteObject) {
         Shell workbenchShell = CorePlugin.getDefault().getWorkbench().getActiveWorkbenchWindow().getShell();
         Property deleteProperty = deleteObject.getProperty();
@@ -452,6 +473,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @param get input dialog
      * @return inputDialog
      */
+    @Override
     public InputDialog getInputDialog(final Item newItem) {
         Shell parentShell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
         String dialogTitle = DefaultMessagesImpl.getString("TOPRepositoryService.InputDialog.Title");//$NON-NLS-1$
@@ -461,6 +483,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
                         + DateUtils.formatTimeStamp(DateUtils.PATTERN_6, System.currentTimeMillis()),
                         new IInputValidator() {
 
+                            @Override
                             public String isValid(String newText) {
                                 String returnStr = null;
                                 Item item = newItem;
@@ -501,6 +524,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @param newName
      *
      */
+    @Override
     public void changeElementName(Item item, String newName) {
         Property property = item.getProperty();
         PropertyHelper.changeName(property, newName);
@@ -511,6 +535,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#sourceFileOpening(org.talend.repository.model.RepositoryNode)
      */
+    @Override
     public boolean sourceFileOpening(RepositoryNode node) {
         boolean result = false;
         if (node instanceof SourceFileRepNode) {
@@ -527,6 +552,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @see org.talend.core.ITDQRepositoryService#checkUsernameBeforeSaveConnection(org.talend.core.model.properties.
      * ConnectionItem)
      */
+    @Override
     public void checkUsernameBeforeSaveConnection(ConnectionItem connectionItem) {
         Connection connection = connectionItem.getConnection();
         ConnectionUtils.checkUsernameBeforeSaveConnection4Sqlite(connection);
@@ -537,6 +563,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#removeSoftWareSystem(org.talend.repository.model.IRepositoryNode)
      */
+    @Override
     @Deprecated
     public boolean removeSoftWareSystem(IRepositoryNode children) {
         Item item = children.getObject().getProperty().getItem();
@@ -549,10 +576,12 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     /**
      * TDQ-6166,Add this function for init all connections in DataExplorer perspective.
      */
+    @Override
     public void initAllConnectionsToSQLExplorer() {
         SqlExplorerUtils.getDefault().initAllConnectionsToSQLExplorer();
     }
 
+    @Override
     public void saveConnectionWithDependency(ConnectionItem connectionItem) {
         DataProviderWriter dataProviderWriter = ElementWriterFactory.getInstance().createDataProviderWriter();
         dataProviderWriter.save(connectionItem, true);
@@ -563,6 +592,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#refreshCurrentAnalysisEditor()
      */
+    @Override
     public void refreshCurrentAnalysisEditor(ConnectionItem connectionItem) {
         WorkbenchUtils.nodifyDependedAnalysis(connectionItem);
         // WorkbenchUtils.refreshCurrentAnalysisEditor();
@@ -573,6 +603,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#refreshCurrentAnalysisAndConnectionEditor()
      */
+    @Override
     @Deprecated
     public void refreshCurrentAnalysisAndConnectionEditor() {
         WorkbenchUtils.refreshCurrentAnalysisAndConnectionEditor();
@@ -584,6 +615,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
        * org.talend.core.ITDQRepositoryService#createHiveConnection(org.talend.core.model.metadata.IMetadataConnection)
        */
 
+    @Override
     public java.sql.Connection createHiveConnection(IMetadataConnection metadataConnection) {
         java.sql.Connection connection = null;
         if (metadataConnection != null
@@ -609,6 +641,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     /**
      * judge if the related editor is opened.
      **/
+    @Override
     public boolean isDQEditorOpened(Item item) {
         if (item != null) {
             boolean hasOpened = CorePlugin.getDefault().itemIsOpening(item, false);
@@ -625,6 +658,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#addSoftwareSystemUpdateListener()
      */
+    @Override
     public void addSoftwareSystemUpdateListener() {
         EventReceiver softwareSystemUpdateEventReceiver = new SoftwareSystemUpdateEventReceiver();
         EventManager.getInstance().register(EventEnum.DQ_SOFTWARESYSTEM_UPDATE.name(),
@@ -636,15 +670,18 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#publishSoftwareSystemUpdateEvent()
      */
+    @Override
     public void publishSoftwareSystemUpdateEvent(DatabaseConnection databaseConnection) {
         EventManager.getInstance().publish(EventEnum.DQ_SOFTWARESYSTEM_UPDATE.name(),
                 EventEnum.DQ_SOFTWARESYSTEM_UPDATE, databaseConnection);
     }
 
+    @Override
     public void setIsOpenConnectionEditorAfterCreate(boolean noNeedToOpenConnectionEditor) {
         this.noNeedToOpenConnectionEditor = noNeedToOpenConnectionEditor;
     }
 
+    @Override
     public void refreshTableWithResult(ModelElement analysis, List<Object[]> result) {
         EventManager.getInstance().publish(analysis, EventEnum.DQ_MATCH_ANALYSIS_REFRESH_WITH_RESULT, result);
     }
@@ -654,6 +691,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#updateAliasInSQLExplorer(java.sql.Connection, java.lang.String)
      */
+    @Override
     public void updateAliasInSQLExplorer(ConnectionItem connectionItem, String oldConnName) {
         Connection connection = connectionItem.getConnection();
         CWMPlugin.getDefault().updateConnetionAliasByName(connection, oldConnName);
@@ -664,10 +702,12 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#getAllDataProviders()
      */
+    @Override
     public Collection<Connection> getAllDataProviders() {
         return CorePlugin.getDefault().getAllDataProviders();
     }
 
+    @Override
     public void publishDynamicEvent(ModelElement indicator, Object value) {
         EventManager.getInstance().publish(indicator, EventEnum.DQ_DYMANIC_CHART, value);
     }
@@ -678,6 +718,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @see org.talend.core.ITDQRepositoryService#createFile(java.lang.String, org.eclipse.core.runtime.IPath,
      * java.lang.String, java.lang.String)
      */
+    @Override
     public Item createFile(String content, IPath path, String label, String extension) {
         Item item = DQStructureManager.getInstance().createSourceFileItem(content, path, label, extension);
         // Added TDQ-7532, 20130719 yyin: to lock the editor when creating the sql file from "preview table"
@@ -692,6 +733,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#ChangePerspectiveAction(java.lang.String)
      */
+    @Override
     public void changePerspectiveAction(String perspectiveId) {
         new org.talend.dataprofiler.core.ui.perspective.ChangePerspectiveAction(perspectiveId).run();
     }
@@ -701,6 +743,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      *
      * @see org.talend.core.ITDQRepositoryService#createHive(org.talend.repository.model.RepositoryNode)
      */
+    @Override
     public ConnectionItem createHive(RepositoryNode currentNode) {
         // to open the wizard: create hive
         CreateHiveOfHCAction createHive = new CreateHiveOfHCAction(currentNode.getParent().getParent());
@@ -714,11 +757,13 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * @see
      * org.talend.core.ITDQRepositoryService#reloadTableList(org.talend.core.model.properties.DatabaseConnectionItem)
      */
+    @Override
     public void reloadTableList(final DatabaseConnectionItem hiveConnectionItem2) {
         IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
         IWorkspaceRunnable operation = new IWorkspaceRunnable() {
 
+            @Override
             public void run(IProgressMonitor monitor) throws CoreException {
 
                 RepositoryNode tableFolder = TableUtils.getTableFolder(hiveConnectionItem2);
@@ -745,10 +790,16 @@ public class TOPRepositoryService implements ITDQRepositoryService {
      * Go through every analysis and reports, to find if it imported the current context, and update the context value
      * in it
      */
+    @Override
     public void updateAllContextInAnalysisAndReport(RepositoryUpdateManager ruManager, Object parameter, boolean isUpdated) {
         if (parameter instanceof ContextItem) {
             ContextViewHelper.updateAllContextInAnalysisAndReport(ruManager, (ContextItem) parameter, isUpdated);
         }
+    }
+
+    @Override
+    public void popupSwitchContextFailedMessage(String chooseContext) {
+        SwitchContextAction.popupSwitchContextFailedMessage(chooseContext);
     }
 
 }
