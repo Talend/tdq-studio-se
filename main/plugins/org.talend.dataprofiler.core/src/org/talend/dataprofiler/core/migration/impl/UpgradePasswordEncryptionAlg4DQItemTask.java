@@ -82,7 +82,7 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
                 for (ContextParameterType param : paramTypes) {
                     String value = param.getValue();
                     if (value != null && PasswordEncryptUtil.isPasswordType(param.getType())) {
-                        param.setRawValue(PasswordMigrationUtil.getDecryptPassword(value));
+                        param.setRawValue(PasswordMigrationUtil.decryptPassword(value));
                         modify = true;
                     }
                 }
@@ -106,7 +106,7 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
                 }
                 String oldPass = dbConnection.getPassword();
                 if (oldPass != null) {
-                    dbConnection.setPassword(PasswordMigrationUtil.getEncryptPasswordIfNeed(oldPass));
+                    dbConnection.setPassword(PasswordMigrationUtil.encryptPasswordIfNeeded(oldPass));
                     ElementWriterFactory.getInstance().createDataProviderWriter().save(me);
                 }
                 
@@ -126,7 +126,7 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
                 if (oldPass != null) {
                     // for context mode datamart connection, keep it
                     if (!ContextHelper.isContextVar(oldPass)) {
-                        String newPassword = PasswordMigrationUtil.getEncryptPasswordIfNeed(oldPass);
+                        String newPassword = PasswordMigrationUtil.encryptPasswordIfNeeded(oldPass);
                         TaggedValueHelper.setTaggedValue(report, TaggedValueHelper.REP_DBINFO_PASSWORD, newPassword); // after
                         modify = true;
                     }
@@ -140,7 +140,7 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
                         for (ContextParameterType param : paramTypes) {
                             String value = param.getValue();
                             if (value != null && PasswordEncryptUtil.isPasswordType(param.getType())) {
-                                param.setRawValue(PasswordMigrationUtil.getDecryptPassword(value));
+                                param.setRawValue(PasswordMigrationUtil.decryptPassword(value));
                                 modify = true;
                             }
                         }
