@@ -245,7 +245,8 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                     tdColName = dbms().replaceNullsWithString(tdColName, "'NULL TALEND'");//$NON-NLS-1$
 
                 } else if (textParameter.isUseBlank()
-                        && IndicatorsPackage.eINSTANCE.getFrequencyIndicator().isSuperTypeOf(indicatorEclass)) {
+                        && (IndicatorsPackage.eINSTANCE.getFrequencyIndicator().isSuperTypeOf(indicatorEclass)
+                                || UDIHelper.isFrequency(indicator))) {
                     colName = dbms().trim(colName);
                 }
             }
