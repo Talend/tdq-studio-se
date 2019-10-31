@@ -36,9 +36,14 @@ import org.talend.dataquality.analysis.AnalysisParameters;
 import org.talend.dataquality.analysis.AnalysisResult;
 import org.talend.dataquality.indicators.DataminingType;
 import org.talend.dataquality.indicators.FrequencyIndicator;
+import org.talend.dataquality.indicators.IndicatorParameters;
 import org.talend.dataquality.indicators.IndicatorsFactory;
+import org.talend.dataquality.indicators.TextParameters;
 import org.talend.dataquality.indicators.definition.DefinitionFactory;
 import org.talend.dataquality.indicators.definition.IndicatorDefinition;
+import org.talend.dataquality.indicators.definition.userdefine.UDIndicatorDefinition;
+import org.talend.dataquality.indicators.definition.userdefine.UserdefineFactory;
+import org.talend.dq.helper.UDIHelper;
 import org.talend.dq.helper.UnitTestBuildHelper;
 
 import junit.framework.Assert;
@@ -55,6 +60,10 @@ public class ColumnAnalysisSqlExecutorTest {
     FrequencyIndicator testFrequencyIndicator = null;
 
     IndicatorDefinition testIndicatorDefinition = null;
+
+    UDIndicatorDefinition udiIndicatorDefinition = null;
+
+    FrequencyIndicator udiFrequencyIndicator = null;
 
     /**
      * DOC zshen Comment method "setUpBeforeClass".
@@ -136,6 +145,15 @@ public class ColumnAnalysisSqlExecutorTest {
         testAnalysisResult.getIndicators().add(testFrequencyIndicator);
         testFrequencyIndicator.setAnalyzedElement(testTdColumn);
         testFrequencyIndicator.setIndicatorDefinition(testIndicatorDefinition);
+
+        udiIndicatorDefinition = UserdefineFactory.eINSTANCE.createUDIndicatorDefinition();
+        udiIndicatorDefinition.setName("frequency");
+        udiFrequencyIndicator = IndicatorsFactory.eINSTANCE.createFrequencyIndicator();
+        UDIHelper.setUDICategory(udiFrequencyIndicator, "User define frequency");
+        testAnalysisResult.getIndicators().add(udiFrequencyIndicator);
+        udiFrequencyIndicator.setAnalyzedElement(testTdColumn);
+        udiFrequencyIndicator.setIndicatorDefinition(udiIndicatorDefinition);
+
     }
 
     /**
@@ -188,6 +206,38 @@ public class ColumnAnalysisSqlExecutorTest {
         Assert.assertEquals(StringUtils.EMPTY, actualSqlStatement);
         Assert.assertNotNull(testFrequencyIndicator.getInstantiatedExpressions());
         Assert.assertEquals(expectResult, testFrequencyIndicator.getInstantiatedExpressions().get(0).getBody());
+    }
+
+    /**
+     * Test method for
+     * {@link org.talend.dq.analysis.ColumnAnalysisSqlExecutor#createSqlStatement(org.talend.dataquality.analysis.Analysis)}
+     * .TDQ-10773 msjian case 3:UDI Frequency Indicator when "aggregate blanks" checkbox checked
+     */
+    @Test
+    public void testCreateSqlStatementCase3() {
+        String expectResult =
+                "SELECT  TRIM(`columnName`)  , count(*) FROM  `TBI`.`generateTable`  GROUP BY  TRIM(`columnName`)  LIMIT 10"; //$NON-NLS-1$
+
+        // create TdExpression
+        String sqlGenericExpressionBody =
+                "SELECT <%=__COLUMN_NAMES__%> , count(*) FROM  <%=__TABLE_NAME__%> <%=__WHERE_CLAUSE__%> GROUP BY <%=__GROUP_BY_ALIAS__%>"; //$NON-NLS-1$
+        TdExpression createTdExpression = RelationalFactory.eINSTANCE.createTdExpression();
+        createTdExpression.setBody(sqlGenericExpressionBody);
+        createTdExpression.setLanguage(SupportDBUrlType.MYSQLDEFAULTURL.getDBKey());
+        udiIndicatorDefinition.getSqlGenericExpression().add(createTdExpression);
+
+        // "aggregate blanks" checkbox checked
+        IndicatorParameters createIndicatorParameters = IndicatorsFactory.eINSTANCE.createIndicatorParameters();
+        udiFrequencyIndicator.setParameters(createIndicatorParameters);
+        TextParameters createTextParameters = IndicatorsFactory.eINSTANCE.createTextParameters();
+        createTextParameters.setUseBlank(true);
+        createIndicatorParameters.setTextParameter(createTextParameters);
+
+        ColumnAnalysisSqlExecutor columnAnalysisSqlExecutor = new ColumnAnalysisSqlExecutor();
+        String actualSqlStatement = columnAnalysisSqlExecutor.createSqlStatement(testAnalysis);
+        Assert.assertEquals(StringUtils.EMPTY, actualSqlStatement);
+        Assert.assertNotNull(udiFrequencyIndicator.getInstantiatedExpressions());
+        Assert.assertEquals(expectResult, udiFrequencyIndicator.getInstantiatedExpressions().get(0).getBody());
     }
 
     @SuppressWarnings({ "deprecation", "nls" })
