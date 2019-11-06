@@ -232,6 +232,7 @@ public class ColumnAnalysisSqlExecutorTest {
         TextParameters createTextParameters = IndicatorsFactory.eINSTANCE.createTextParameters();
         createTextParameters.setUseBlank(true);
         createIndicatorParameters.setTextParameter(createTextParameters);
+        createIndicatorParameters.setTopN(10);
 
         ColumnAnalysisSqlExecutor columnAnalysisSqlExecutor = new ColumnAnalysisSqlExecutor();
         String actualSqlStatement = columnAnalysisSqlExecutor.createSqlStatement(testAnalysis);
