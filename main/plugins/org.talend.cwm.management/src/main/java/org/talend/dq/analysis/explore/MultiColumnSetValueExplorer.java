@@ -19,6 +19,7 @@ import org.eclipse.emf.common.util.EList;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.utils.sql.Java2SqlType;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -78,7 +79,8 @@ public final class MultiColumnSetValueExplorer extends DataExplorer {
 
     private String buildWhereClause(String queryString, final TdColumn tdColumn, String name, String value, String where) {
         if (tdColumn.getName().equals(name) && !value.equals("null")) { //$NON-NLS-1$
-            if (Java2SqlType.isTextInSQL(tdColumn.getSqlDataType().getJavaDataType())) {
+            // TDQ-17663 msjian: fix the drill down error for Time correlation analysis
+            if (!Java2SqlType.isNumbericInSQL(tdColumn.getSqlDataType().getJavaDataType())) {
                 queryString += where + dbmsLanguage.quote(name) + dbmsLanguage.equal() + "'" + value + "'"; //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 queryString += where + dbmsLanguage.quote(name) + dbmsLanguage.equal() + value;
