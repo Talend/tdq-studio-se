@@ -24,7 +24,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.2.0",
  org.talend.dataprofiler.service
 Bundle-ClassPath: sqlexplorer.jar,
  lib/rowset.jar,
- lib/dom4j.jar,
+ lib/dom4j-2.1.1.jar,
  lib/squirrel.jar,
  lib/hibernate3.2.4.sp1.jar,
  net.sourceforge.sqlexplorer.oracle_3.6.1.v20120708_SR6.jar

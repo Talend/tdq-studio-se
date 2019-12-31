@@ -8,7 +8,7 @@
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="net.sourceforge.sqlexplorer.oracle_3.6.1.v20120708_SR6.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/rowset.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/dom4j.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/dom4j-2.1.1.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/squirrel.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/hibernate3.2.4.sp1.jar"/>
 	<classpathentry kind="src" path="src"/>
