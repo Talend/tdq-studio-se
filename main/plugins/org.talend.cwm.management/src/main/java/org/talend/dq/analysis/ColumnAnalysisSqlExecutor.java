@@ -1371,12 +1371,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
             for (Indicator ind : list) {
                 // set row count value to each indicator
                 if (rowCount != null && needPercentage(ind)) {
-                    // TDQ-17316 msjian: sometimes, for example UDI matching indicator, the count doesn't equal the
-                    // rowCount. so should not set the rowCount.
-                    if (ind.getCount() == null || ind.getCount() == 0) {
-                        ind.setCount(rowCount.getCount());
-                    }
-                    // TDQ-17316~
+                    ind.setCount(rowCount.getCount());
                 }
                 // set null count value to each indicator
                 if (nullCount != null) {
