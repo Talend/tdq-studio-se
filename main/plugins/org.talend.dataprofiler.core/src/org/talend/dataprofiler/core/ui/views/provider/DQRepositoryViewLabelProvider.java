@@ -73,6 +73,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -110,10 +111,8 @@ public class DQRepositoryViewLabelProvider extends AdapterFactoryLabelProvider i
                 return ImageLib.getImage(ImageLib.EXCHANGE);
             }
 
-            if (node.getType().equals(ENodeType.SYSTEM_FOLDER)) {
-                if (EResourceConstant.REFERENCED_PROJECT.getName().equals(node.getProperties(EProperties.LABEL))) {
-                    return ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
-                }
+            if (ERepositoryObjectType.REFERENCED_PROJECTS.getLabel().equals(node.getProperties(EProperties.LABEL))) {
+                return ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
             } else if (node.getType().equals(ENodeType.REFERENCED_PROJECT)) {
                 return ImageLib.getImage(ImageLib.REFERENCED_PROJECT);
             }

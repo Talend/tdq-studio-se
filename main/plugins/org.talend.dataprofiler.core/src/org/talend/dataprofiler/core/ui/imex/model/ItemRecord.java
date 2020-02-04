@@ -46,6 +46,7 @@ import org.talend.core.model.properties.ContextItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.PropertiesPackage;
 import org.talend.core.model.properties.Property;
+import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.cwm.helper.ModelElementHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
@@ -917,7 +918,7 @@ public class ItemRecord {
             }
             if (ResourceManager.getWorskpacePath().toFile().equals(file)
                     && rootFolder.equals(ResourceManager.getWorskpacePath())) {
-                return "Referenced project";
+                return ERepositoryObjectType.REFERENCED_PROJECTS.getLabel();
             }
             String name = file.getName();
             if (name.equals(EResourceConstant.DATA_PROFILING.getName())

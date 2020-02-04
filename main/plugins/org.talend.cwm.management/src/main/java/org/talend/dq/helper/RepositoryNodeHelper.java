@@ -4091,8 +4091,8 @@ public final class RepositoryNodeHelper {
                     return node.getObject().getLabel() + UNSUPPORTED;
                 }
             }
-            if (EResourceConstant.REFERENCED_PROJECT.getName().equals(node.getProperties(EProperties.LABEL))) {
-                return (String) node.getProperties(EProperties.LABEL);
+            if (ERepositoryObjectType.REFERENCED_PROJECTS.getLabel().equals(node.getProperties(EProperties.LABEL))) {
+                return ERepositoryObjectType.REFERENCED_PROJECTS.getLabel();
             }
 
             // change the TDQ'side system folder nodes display label only

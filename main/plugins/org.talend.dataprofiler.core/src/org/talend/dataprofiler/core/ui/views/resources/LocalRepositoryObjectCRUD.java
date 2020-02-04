@@ -130,7 +130,7 @@ public class LocalRepositoryObjectCRUD extends AbstractRepObjectCRUDAction {
      */
     private boolean allowDND(IRepositoryNode sourceNode, IRepositoryNode targetNode) {
         // TDQ-10579: fix The NPE when drag something to reference project item.
-        if (EResourceConstant.REFERENCED_PROJECT.getName().equals(targetNode.getProperties(EProperties.LABEL))) {
+        if (ERepositoryObjectType.REFERENCED_PROJECTS.getLabel().equals(targetNode.getProperties(EProperties.LABEL))) {
             return false;
         }
         // TDQ-10579~
