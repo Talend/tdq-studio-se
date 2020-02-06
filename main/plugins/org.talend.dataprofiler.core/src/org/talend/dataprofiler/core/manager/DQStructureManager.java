@@ -419,7 +419,9 @@ public final class DQStructureManager {
                     String extendtion = name.substring(indexOf + 1);
                     createSourceFileItem(file, Path.EMPTY, label, extendtion);
                 } else {
-                    copyFileToFolder(openStream, fileName, folder);
+                    // TDQ-18018 Add parameter 'import' as true so as to avoid to call ProxyRepositoryFactory 335
+                    // "checkIfHaveDuplicateName(...)" make not change SystemIndicator path to empty
+                    copyFileToFolder(openStream, fileName, folder, true);
                 }
 
                 openStream.close();
