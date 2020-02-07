@@ -6,10 +6,13 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.emf.ecore.EObject;
 import org.talend.commons.emf.FactoriesUtil;
+import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 public class ContextResourceFileHelper extends ResourceFileMap<ModelElement> {
@@ -38,6 +41,15 @@ public class ContextResourceFileHelper extends ResourceFileMap<ModelElement> {
     public List<IFile> getAllContexts() {
         try {
             return searchAllIFiles(getTypedFolder());
+        } catch (CoreException e) {
+            log.error(e);
+        }
+        return new ArrayList<IFile>();
+    }
+
+    public List<IFile> getAllContextFromProject(IProject project) {
+        try {
+            return searchAllIFiles(ResourceManager.getOneFolder(project, EResourceConstant.CONTEXT));
         } catch (CoreException e) {
             log.error(e);
         }

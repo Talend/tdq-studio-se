@@ -410,7 +410,9 @@ public class ItemRecord {
         if (importedContextName.isEmpty()) {
             return result;
         }
-        List<IFile> contextList = ContextResourceFileHelper.getInstance().getAllContexts();
+        // get contexts from the current project
+        IProject iProject = ReponsitoryContextBridge.findProject(project.getTechnicalLabel());
+        List<IFile> contextList = ContextResourceFileHelper.getInstance().getAllContextFromProject(iProject);
         for (IFile contextFile : contextList) {
             String name = contextFile.getName().substring(0, contextFile.getName().lastIndexOf("_"));
             if (importedContextName.contains(name)) {
