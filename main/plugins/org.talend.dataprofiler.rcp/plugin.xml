@@ -957,8 +957,8 @@
             context="Postgresql 9+ wizard"
             language="java"
             message="Postgresql 9+ wizard for TOP"
-            mvn_uri="mvn:org.postgresql/postgresql/42.2.5"
-            name="postgresql-42.2.5.jar"
+            mvn_uri="mvn:org.postgresql/postgresql/42.2.9"
+            name="postgresql-42.2.9.jar"
             required="true">
       </libraryNeeded>
       <libraryNeeded
