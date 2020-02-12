@@ -130,6 +130,8 @@ public class DbmsLanguage {
 
     public static final String SNOWFLAKE = "Snowflake"; //$NON-NLS-1$
 
+    public static final String MARIADB = "MariaDB"; //$NON-NLS-1$
+
     /**
      * Ansi SQL.
      */

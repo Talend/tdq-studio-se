@@ -117,11 +117,9 @@ public final class DbmsLanguageFactory {
         ProductVersion dbVersion = ProductVersion.fromString(dbVersionStr, true);
         DbmsLanguage dbmsLanguage = null;
         if (isMySQL(dbmsSubtype)) {
-            if (dbVersion.getMajor() >= 10) {
-                dbmsLanguage = new MariaDBDbmsLanguage(dbmsSubtype, dbVersion);
-            } else {
-                dbmsLanguage = new MySQLDbmsLanguage(dbmsSubtype, dbVersion);
-            }
+            dbmsLanguage = new MySQLDbmsLanguage(dbmsSubtype, dbVersion);
+        } else if (isMariaDB(dbmsSubtype)) {
+            dbmsLanguage = new MariaDBDbmsLanguage(dbmsSubtype, dbVersion);
         } else if (isOracle(dbmsSubtype)) {
             dbmsLanguage = new OracleDbmsLanguage(dbmsSubtype, dbVersion);
         } else if (isDB2(dbmsSubtype)) {
@@ -167,6 +165,10 @@ public final class DbmsLanguageFactory {
             dbmsLanguage.setDbQuoteString(dbmsLanguage.getHardCodedQuoteIdentifier());
         }
         return dbmsLanguage;
+    }
+
+    private static boolean isMariaDB(String dbmsSubtype) {
+        return DbmsLanguage.MARIADB.equalsIgnoreCase(dbmsSubtype);
     }
 
     /**

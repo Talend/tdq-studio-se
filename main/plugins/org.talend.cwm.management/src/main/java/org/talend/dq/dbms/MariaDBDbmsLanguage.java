@@ -33,7 +33,8 @@ public class MariaDBDbmsLanguage extends MySQLDbmsLanguage {
      * @param dbVersion
      */
     public MariaDBDbmsLanguage(String dbmsType, ProductVersion dbVersion) {
-        super(dbmsType, dbVersion);
+        super(DbmsLanguage.MYSQL, dbVersion);
+
     }
 
     @Override
