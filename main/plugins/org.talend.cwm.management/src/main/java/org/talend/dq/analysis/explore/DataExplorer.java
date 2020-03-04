@@ -207,7 +207,9 @@ public abstract class DataExplorer implements IDataExplorer {
         if (fromClause == null) {
             return null;
         }
-        return SELECT + columnName + fromClause;
+        // TDQ-18118 msjian: fix just when the column name is "count", caused column reference "count" is ambiguous
+        // error
+        return SELECT + columnName + fromClause.replace("COUNT(*) FROM", "COUNT(*) as count_ FROM"); //$NON-NLS-2$
     }
 
     /**
