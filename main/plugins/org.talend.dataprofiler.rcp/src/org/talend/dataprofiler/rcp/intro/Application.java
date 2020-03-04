@@ -23,6 +23,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -66,6 +67,15 @@ public class Application implements IApplication {
         StudioKeysFileCheck.check(ConfigurationScope.INSTANCE.getLocation().toFile());
 
         Display display = PlatformUI.createDisplay();
+        try {
+            StudioKeysFileCheck.validateJavaVersion();
+        } catch (Exception e) {
+            Shell shell = new Shell(display, SWT.NONE);
+            MessageBox messageBox = new MessageBox(shell, SWT.ICON_ERROR | SWT.OK);
+            messageBox.setMessage(e.getMessage());
+            messageBox.open();
+            return IApplication.EXIT_RELAUNCH;
+        }
         Shell shell = DisplayUtils.getDefaultShell(false);
         // TDQ-12221: do check before use to make sure can popup the "Connect to TalendForge"
         checkBrowserSupport();
