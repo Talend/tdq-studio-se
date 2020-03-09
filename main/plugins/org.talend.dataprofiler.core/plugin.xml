@@ -1811,6 +1811,12 @@
            name="Upgrade the Password Encryption algorithm for DQ Item Task"
            version="7.3.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.AddSnowflakeExpressionInIndicatorsTask"
+           id="org.talend.dataprofiler.core.migration.impl.AddSnowflakeExpressionInIndicatorsTask"
+           name="Add Expression for Snowflake into summary indicators"
+           version="7.4.1">
+     </workspacetask>
   </extension>
   
   <extension
