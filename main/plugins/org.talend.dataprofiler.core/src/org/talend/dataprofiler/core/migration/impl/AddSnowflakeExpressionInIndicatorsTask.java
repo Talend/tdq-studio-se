@@ -43,7 +43,7 @@ public class AddSnowflakeExpressionInIndicatorsTask extends AbstractWorksapceUpd
         insertExpression(LOWER_QUARTILE_UUID, LOWER_QUARTILE_EXPRESSION);
         insertExpression(UPPER_QUARTILE_UUID, UPPER_QUARTILE_EXPRESSION);
         insertExpression(MEDIAN_UUID, MEDIAN_EXPRESSION);
-        DefinitionHandler.getInstance().reloadIndicatorsDefinitions();
+        definitionHandler.reloadIndicatorsDefinitions();
         return true;
     }
 
