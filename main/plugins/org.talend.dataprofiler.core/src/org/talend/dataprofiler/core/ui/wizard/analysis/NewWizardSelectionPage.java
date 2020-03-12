@@ -272,9 +272,12 @@ public class NewWizardSelectionPage extends AbstractAnalysisWizardPage {
                     default:
                         parameter = new AnalysisParameter();
                     }
-
                     selectedWizard = WizardFactory.createAnalysisWizard(parentType, parameter);
-                    setPageComplete(true);
+                    if(selectedWizard==null) {
+                    	setPageComplete(false);
+                    }else {
+                    	setPageComplete(true);
+                    }
                 }
                 // MOD by hcheng,0007483: Add help in analysis wizard
                 OpeningHelpWizardDialog dialog = (OpeningHelpWizardDialog) getWizard().getContainer();
