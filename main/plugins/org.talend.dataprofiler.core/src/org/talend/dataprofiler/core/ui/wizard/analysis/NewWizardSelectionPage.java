@@ -117,7 +117,8 @@ public class NewWizardSelectionPage extends AbstractAnalysisWizardPage {
         typeTreeViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
             public void selectionChanged(SelectionChangedEvent event) {
-                AnalysisTypeNode node = (AnalysisTypeNode) ((IStructuredSelection) event.getSelection()).getFirstElement();
+                AnalysisTypeNode node =
+                        (AnalysisTypeNode) ((IStructuredSelection) event.getSelection()).getFirstElement();
                 if (node == null) {
                     return;
                 }
@@ -163,8 +164,9 @@ public class NewWizardSelectionPage extends AbstractAnalysisWizardPage {
                     AnalysisParameter parameter = null;
                     AnalysisType parentType = AnalysisType.get(parent.getLiteral());
 
-                    FolderProvider folderProvider = getCurrentFolderProvider() == null ? ((CreateNewAnalysisWizard) getWizard())
-                            .getCurrentFolderProvider() : getCurrentFolderProvider();
+                    FolderProvider folderProvider = getCurrentFolderProvider() == null
+                            ? ((CreateNewAnalysisWizard) getWizard()).getCurrentFolderProvider()
+                            : getCurrentFolderProvider();
                     switch (parentType) {
                     case COLUMN_CORRELATION:
                         AnalysisParameter correlationColumnParam = new AnalysisLabelParameter();
@@ -273,10 +275,10 @@ public class NewWizardSelectionPage extends AbstractAnalysisWizardPage {
                         parameter = new AnalysisParameter();
                     }
                     selectedWizard = WizardFactory.createAnalysisWizard(parentType, parameter);
-                    if(selectedWizard==null) {
-                    	setPageComplete(false);
-                    }else {
-                    	setPageComplete(true);
+                    if (selectedWizard == null) {
+                        setPageComplete(false);
+                    } else {
+                        setPageComplete(true);
                     }
                 }
                 // MOD by hcheng,0007483: Add help in analysis wizard
@@ -291,7 +293,8 @@ public class NewWizardSelectionPage extends AbstractAnalysisWizardPage {
 
             public void doubleClick(DoubleClickEvent event) {
 
-                AnalysisTypeNode node = (AnalysisTypeNode) ((IStructuredSelection) event.getSelection()).getFirstElement();
+                AnalysisTypeNode node =
+                        (AnalysisTypeNode) ((IStructuredSelection) event.getSelection()).getFirstElement();
                 if (node.getParent() == null) {
                     typeTreeViewer.expandToLevel(node, 1);
                 } else {
