@@ -20,9 +20,8 @@ import org.eclipse.jface.viewers.Viewer;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.dataprofiler.core.model.nodes.foldernode.AnaElementFolderNode;
-import org.talend.dq.nodes.SysIndicatorFolderRepNode;
-import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.foundation.softwaredeployment.Component;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.util.CoreSwitch;
@@ -90,10 +89,6 @@ public class EMFObjFilter extends AbstractViewerFilter {
                 return false;
             }
             return file.getFileExtension() != null;
-        } else if (element instanceof SysIndicatorFolderRepNode) {
-            if (((SysIndicatorFolderRepNode) element).getLabel().equals(EResourceConstant.SYSTEM_INDICATORS_OVERVIEW.getName())) {//$NON-NLS-1$
-                return false;
-            }
         }
 
         // else if (element instanceof SysIndicatorDefinitionRepNode

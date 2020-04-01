@@ -159,7 +159,9 @@ public class SysIndicatorFolderRepNode extends DQFolderRepNode {
                 EResourceConstant.SYSTEM_INDICATORS_BUSINESS_RULES.getName().equals(folder.getLabel());
         boolean isPhoneNumber =
                 EResourceConstant.SYSTEM_INDICATORS_PHONENUMBER_STATISTICS.getName().equals(folder.getLabel());
-        if (isBusinessRules || isPhoneNumber) {
+        boolean isOverview = EResourceConstant.SYSTEM_INDICATORS_OVERVIEW.getName().equals(folder.getLabel());
+        // TDQ-18154 msjian: hidden overview System Indicator folder
+        if (isBusinessRules || isPhoneNumber || isOverview) {
             return true;
         }
         // TDQ-11110~
