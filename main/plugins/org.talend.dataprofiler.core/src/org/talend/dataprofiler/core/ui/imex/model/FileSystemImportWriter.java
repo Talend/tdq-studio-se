@@ -444,12 +444,16 @@ public class FileSystemImportWriter implements IImportWriter {
         for (int j = 1, size = uri1.segmentCount(); j < size - 1; ++j) {
             if (root.getLocation().segment(j) != null && root.getLocation().segment(j).equals(uri1.segment(j))) {
                 continue;
-            } else if (uri1.segment(j).equals(this.tempFolder.getName())) {
+            }
+            if (uri1.segment(j).equals(this.tempFolder.getName())) {
                 // continue and next one should be project name
                 continue;
-            } else if (!URI
+            }
+            // TDQ-18491 make sure the uri2Segment>=0
+            int uri2Segment = uri2.segmentCount() - (uri1.segmentCount() - j);
+            if (uri2Segment >= 0 && !URI
                     .decode(uri1.segment(j))
-                    .equals(URI.decode(uri2.segment(uri2.segmentCount() - (uri1.segmentCount() - j))))) {
+                    .equals(URI.decode(uri2.segment(uri2Segment)))) {
                 isSamePath = false;
                 break;
             }
