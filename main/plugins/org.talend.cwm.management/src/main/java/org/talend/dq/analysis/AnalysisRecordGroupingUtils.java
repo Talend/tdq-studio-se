@@ -581,6 +581,7 @@ public class AnalysisRecordGroupingUtils {
                 String referenceColumnIndex = findColumnIndex(columnMap, referenceColumn, survivKeyColumn);
                 matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, referenceColumnIndex);
             }
+            matchKeyMap.put(SurvivorshipUtils.SURVIVORSHIP_FUNCTION, surKey.getFunction().getAlgorithmType());
         }
         return matchKeyMap;
     }
