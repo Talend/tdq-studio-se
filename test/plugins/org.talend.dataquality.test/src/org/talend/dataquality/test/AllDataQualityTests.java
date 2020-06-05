@@ -19,6 +19,7 @@ import org.talend.commons.MapDB.utils.ColumnSetDBMapTest;
 import org.talend.commons.MapDB.utils.DBMapTest;
 import org.talend.commons.MapDB.utils.DBSetTest;
 import org.talend.dataquality.helpers.IndicatorHelperTest;
+import org.talend.dataquality.helpers.MetadataHelperTest;
 import org.talend.dataquality.indicators.columnset.impl.ColumnSetMultiValueIndicatorImplTest;
 import org.talend.dataquality.indicators.columnset.impl.RecordMatchingIndicatorImplTest;
 import org.talend.dataquality.indicators.impl.BenfordLawFrequencyIndicatorImplTest;
@@ -46,7 +47,8 @@ import org.talend.dataquality.properties.impl.TDQSourceFileItemImplTest;
         FormatFreqPieIndicatorImplTest.class, MeanIndicatorImplTest.class, ModeIndicatorImplTest.class,
         RegexpMatchingIndicatorImplTest.class, WellFormE164PhoneCountIndicatorImplTest.class,
         WellFormIntePhoneCountIndicatorImplTest.class, WellFormNationalPhoneCountIndicatorImplTest.class,
-        IndicatorHelperTest.class, ColumnSetMultiValueIndicatorImplTest.class, RecordMatchingIndicatorImplTest.class,
+        IndicatorHelperTest.class, MetadataHelperTest.class, ColumnSetMultiValueIndicatorImplTest.class,
+        RecordMatchingIndicatorImplTest.class,
         TDQJrxmlItemImplTest.class, TDQSourceFileItemImplTest.class, DBMapTest.class, DBSetTest.class, ColumnSetDBMapTest.class,
         FrequencyIndicatorImplTest.class, PatternFreqIndicatorImplTest.class, MaxValueIndicatorImplTest.class,
         MinValueIndicatorImplTest.class, IndicatorParametersImplTest.class })

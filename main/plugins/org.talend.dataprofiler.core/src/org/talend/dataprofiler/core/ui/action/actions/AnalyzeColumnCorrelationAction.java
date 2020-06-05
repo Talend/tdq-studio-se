@@ -20,6 +20,7 @@ import org.eclipse.jface.window.Window;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.ui.PlatformUI;
+import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
@@ -123,7 +124,11 @@ public class AnalyzeColumnCorrelationAction extends Action {
                     column = ((DBColumnRepNode) theObject).getTdColumn();
                 }
                 if (Java2SqlType.isNumbericInSQL(column.getSqlDataType().getJavaDataType())) {
-                    hasNumberColumn = true;
+                    // TDQ-16172: from TDQ-1863 to see, when a column is a primary key or a foreign key, it should be
+                    // set to "nominal" data mining type.
+                    if (!ColumnHelper.isPrimaryKey(column) && !ColumnHelper.isForeignKey(column)) {
+                        hasNumberColumn = true;
+                    }
                 } else if (Java2SqlType.isDateInSQL(column.getSqlDataType().getJavaDataType())
                         || Java2SqlType.isDateTimeSQL(column.getSqlDataType().getJavaDataType())) {
                     hasDateColumn = true;
