@@ -13,6 +13,8 @@
 package org.talend.dataprofiler.core.ui.action.actions;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
@@ -74,6 +76,7 @@ import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -92,6 +95,9 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
     private IRepositoryObjectCRUDAction repositoryObjectCRUD = RepNodeUtils.getRepositoryObjectCRUD();
 
     private IRuningStatusListener listener;
+
+    private Map<TDQAnalysisItem, IRuningStatusListener> listenerMap =
+            new HashMap<TDQAnalysisItem, IRuningStatusListener>();
 
     /**
      * Important: keep using the Item, no need to used AnalysisRepNode in this class, remember this!!!
@@ -115,6 +121,10 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
 
     public void setListener(IRuningStatusListener listener) {
         this.listener = listener;
+    }
+
+    public void setListenerMap(Map<TDQAnalysisItem, IRuningStatusListener> listenerMap) {
+        this.listenerMap = listenerMap;
     }
 
     /*
@@ -206,6 +216,8 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
                         public void run() {
                             if (listener != null) {
                                 listener.fireRuningItemChanged(false, isSupportDynamicChart);
+                            } else if (listenerMap.get(anaItem) != null) {
+                                listenerMap.get(anaItem).fireRuningItemChanged(false, isSupportDynamicChart);
                             }
                             // register dynamic event for who supported dynamic chart
                             if (isSupportDynamicChart) {
@@ -249,6 +261,11 @@ public class RunAnalysisAction extends Action implements ICheatSheetAction {
 
                                 if (listener != null) {
                                     listener.fireRuningItemChanged(true);
+                                } else if (listenerMap.get(anaItem) != null) {
+                                    listenerMap.get(anaItem).fireRuningItemChanged(true);
+                                    EventManager
+                                            .getInstance()
+                                            .publish(anaItem.getAnalysis(), EventEnum.DQ_ANALYSIS_RUN_FROM_MENU, null);
                                 } else {
                                     // TODO yyin publish the event from listener.
                                     EventManager.getInstance().publish(anaItem.getAnalysis(),

@@ -95,6 +95,7 @@ import org.talend.dq.nodes.indicator.type.IndicatorEnum;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -124,6 +125,8 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     private UIPagination uiPagination;
 
     private int lastTimePageNumber = 1;
+
+    private Button colSectionRunButton = null;
 
     public ColumnAnalysisDetailsPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -256,7 +259,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
             }
         });
         createIndicatorSelectButton(actionBarComp);
-        createRunButton(actionBarComp);
+        colSectionRunButton = createRunButton(actionBarComp);
 
         navigationComposite = toolkit.createComposite(actionBarComp, SWT.NONE);
 
@@ -583,6 +586,14 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
             ModelElementIndicator indicator = (ModelElementIndicator) ((Widget) evt.getNewValue())
                     .getData(AbstractColumnDropTree.MODELELEMENT_INDICATOR_KEY);
             expandChart(indicator);
+        }
+    }
+
+    @Override
+    protected void newRunButtonChange(boolean status, boolean isSupportDynamicChart) {
+        super.newRunButtonChange(status, isSupportDynamicChart);
+        if (colSectionRunButton != null) {
+            this.colSectionRunButton.setEnabled(status);
         }
     }
 

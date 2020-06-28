@@ -194,6 +194,8 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      */
     protected DataManager oldConn = null;
 
+    private Button dataPreviewRunButton = null;
+
     public AbstractAnalysisMetadataPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
     }
@@ -304,10 +306,17 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
         ((AnalysisEditor) currentEditor).setRunActionButtonState(status);
         ((AnalysisEditor) currentEditor).setRefreshResultPage(isSupportDynamicChart);
         // switch to result page at the beginning of running analysis, the status is false at the time
+        newRunButtonChange(status, isSupportDynamicChart);
         if (!status) {
             switchToResultPage();
         }
     }
+
+    protected void newRunButtonChange(boolean status, boolean isSupportDynamicChart) {
+        if (dataPreviewRunButton != null) {
+            this.dataPreviewRunButton.setEnabled(status);
+        }
+    };
 
     protected void switchToResultPage() {
         IFormPage resultPage = currentEditor.findPage(AnalysisEditor.RESULT_PAGE);
@@ -1007,7 +1016,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
             createIndicatorSelectButton(buttonComposite);
         }
         createRefreshDataButtonComp(buttonComposite);
-        createRunButton(buttonComposite);
+        dataPreviewRunButton = createRunButton(buttonComposite);
         createRunSampleDataButton(buttonComposite);
         // create the data table
         createDataTableComposite(dataPreviewTableCom);
@@ -1383,7 +1392,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
      *
      * @param buttonComposite
      */
-    public void createRunButton(Composite buttonComposite) {
+    public Button createRunButton(Composite buttonComposite) {
         String text = org.talend.dataprofiler.core.PluginConstant.SPACE_STRING
                 + DefaultMessagesImpl.getString("ColumnAnalysisDetailsPage.runButton") //$NON-NLS-1$
                 + org.talend.dataprofiler.core.PluginConstant.SPACE_STRING;
@@ -1406,6 +1415,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
                 }
             }
         });
+        return runBtn;
     }
 
     /**
