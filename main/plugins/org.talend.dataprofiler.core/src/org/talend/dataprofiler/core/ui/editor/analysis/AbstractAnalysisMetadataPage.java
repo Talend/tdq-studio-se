@@ -308,7 +308,7 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
         // switch to result page at the beginning of running analysis, the status is false at the time
         newRunButtonChange(status, isSupportDynamicChart);
         if (!status) {
-            // switchToResultPage();
+            switchToResultPage();
         }
     }
 
