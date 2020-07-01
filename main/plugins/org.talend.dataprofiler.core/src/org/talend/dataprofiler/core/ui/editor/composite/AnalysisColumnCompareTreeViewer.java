@@ -73,6 +73,7 @@ import org.talend.dataquality.indicators.columnset.RowMatchingIndicator;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.DBColumnRepNode;
 import org.talend.repository.model.RepositoryNode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.ColumnSet;
 
@@ -126,6 +127,8 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
     private ColumnSet previewDataColumnOwner = null;
 
     private List<TDQObserver<ModelElement[]>> Observers = null;
+
+    private Button createRunButton;
 
     /**
      * AnalysisColumnCompareTreeViewer constructor used for FunctionalDependencyAnalysisDetailsPage.
@@ -283,7 +286,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
 
             });
 
-            masterPage.createRunButton(compareToplevelComp);
+            createRunButton = masterPage.createRunButton(compareToplevelComp);
         } else {
             masterPage.createConnBindWidget(compareToplevelComp);
         }
@@ -989,4 +992,9 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
     public ColumnSet getPreviewDataColumnOwner() {
         return this.previewDataColumnOwner;
     }
+
+    public Button getCreateRunButton() {
+        return createRunButton;
+    }
+
 }

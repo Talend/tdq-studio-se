@@ -308,17 +308,21 @@ public abstract class AbstractAnalysisMetadataPage extends AbstractMetadataFormP
         // switch to result page at the beginning of running analysis, the status is false at the time
         newRunButtonChange(status, isSupportDynamicChart);
         if (!status) {
-            switchToResultPage();
+            // switchToResultPage();
         }
     }
 
     protected void newRunButtonChange(boolean status, boolean isSupportDynamicChart) {
-        if (dataPreviewRunButton != null) {
+        if (dataPreviewRunButton != null && !dataPreviewRunButton.isDisposed()) {
             this.dataPreviewRunButton.setEnabled(status);
         }
     };
 
     protected void switchToResultPage() {
+        if (this.getEditor().getActivePage() < 0) {
+            // the editor is not open
+            return;
+        }
         IFormPage resultPage = currentEditor.findPage(AnalysisEditor.RESULT_PAGE);
         if (resultPage != null && !resultPage.isActive()) {
             IFormPage activePageInstance = currentEditor.getActivePageInstance();

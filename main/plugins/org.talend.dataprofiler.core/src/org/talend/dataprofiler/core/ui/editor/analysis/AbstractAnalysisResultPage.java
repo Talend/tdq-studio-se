@@ -31,6 +31,7 @@ import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.ui.IRuningStatusListener;
 import org.talend.dataprofiler.core.ui.editor.AbstractFormPage;
+import org.talend.dataprofiler.core.ui.editor.AbstractMetadataFormPage;
 import org.talend.dataprofiler.core.ui.editor.CommonFormEditor;
 import org.talend.dq.analysis.AnalysisHandler;
 
@@ -185,6 +186,10 @@ public abstract class AbstractAnalysisResultPage extends AbstractFormPage implem
         ((AnalysisEditor) currentEditor).setRunActionButtonState(status);
         ((AnalysisEditor) currentEditor).setRefreshResultPage(isSupportDynamicChart);
         IEditorPart editor = CorePlugin.getDefault().getCurrentActiveEditor();
+        AbstractMetadataFormPage masterPage = currentEditor.getMasterPage();
+        if (masterPage instanceof AbstractAnalysisMetadataPage) {
+            ((AbstractAnalysisMetadataPage) masterPage).newRunButtonChange(status, isSupportDynamicChart);
+        }
         if (editor instanceof AnalysisEditor && status) {
             refresh(((AnalysisEditor) editor).getMasterPage());
         }

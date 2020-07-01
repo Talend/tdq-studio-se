@@ -592,7 +592,7 @@ public class ColumnAnalysisDetailsPage extends DynamicAnalysisMasterPage {
     @Override
     protected void newRunButtonChange(boolean status, boolean isSupportDynamicChart) {
         super.newRunButtonChange(status, isSupportDynamicChart);
-        if (colSectionRunButton != null) {
+        if (colSectionRunButton != null && !colSectionRunButton.isDisposed()) {
             this.colSectionRunButton.setEnabled(status);
         }
     }

@@ -317,8 +317,10 @@ public class ColumnAnalysisResultPage extends AbstractAnalysisResultPage impleme
     }
 
     public void reLayoutChartComposite() {
-        chartComposite.getParent().layout();
-        chartComposite.layout();
+        if (!chartComposite.isDisposed()) {
+            chartComposite.getParent().layout();
+            chartComposite.layout();
+        }
     }
 
     /**

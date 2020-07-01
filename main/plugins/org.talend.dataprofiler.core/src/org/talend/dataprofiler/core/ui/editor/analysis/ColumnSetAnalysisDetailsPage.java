@@ -102,6 +102,7 @@ import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 
@@ -143,6 +144,8 @@ public class ColumnSetAnalysisDetailsPage extends AbstractAnalysisMetadataPage i
     private SashForm sForm;
 
     private Composite previewComp;
+
+    private Button createRunButton;
 
     public ColumnSetAnalysisDetailsPage(FormEditor editor, String id, String title) {
         super(editor, id, title);
@@ -336,7 +339,7 @@ public class ColumnSetAnalysisDetailsPage extends AbstractAnalysisMetadataPage i
         Composite buttonComp = toolkit.createComposite(topComp);
         buttonComp.setLayout(new GridLayout(2, false));
         createColumnSelectButton(buttonComp);
-        createRunButton(buttonComp);
+        createRunButton = createRunButton(buttonComp);
 
         Composite tree = toolkit.createComposite(topComp, SWT.None);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.FILL).grab(true, true).applyTo(tree);
@@ -1011,6 +1014,15 @@ public class ColumnSetAnalysisDetailsPage extends AbstractAnalysisMetadataPage i
             return true;
         }
         return false;
+    }
+
+    @Override
+    protected void newRunButtonChange(boolean status, boolean isSupportDynamicChart) {
+        if (this.getEditor().getActivePage() < 0) {
+            return;
+        }
+        super.newRunButtonChange(status, isSupportDynamicChart);
+        this.createRunButton.setEnabled(status);
     }
 
 }

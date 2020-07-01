@@ -22,6 +22,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.forms.IManagedForm;
@@ -58,6 +59,7 @@ import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.ColumnSet;
@@ -435,6 +437,19 @@ public class FunctionalDependencyAnalysisDetailsPage extends AbstractAnalysisMet
     protected void createRunSampleDataButton(Composite buttonComposite) {
         // here no need to implement anything override this method just to hide the checkbox.
         // anytime we want to reuse the checkbox just remove this override method
+    }
+
+    @Override
+    protected void newRunButtonChange(boolean status, boolean isSupportDynamicChart) {
+        if (this.getEditor().getActivePage() < 0) {
+            // the editor is not open
+            return;
+        }
+        super.newRunButtonChange(status, isSupportDynamicChart);
+        Button createRunButton = this.anaColumnCompareViewer.getCreateRunButton();
+        if (createRunButton != null && !createRunButton.isDisposed()) {
+            createRunButton.setEnabled(status);
+        }
     }
 
 }
