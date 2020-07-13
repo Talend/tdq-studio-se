@@ -15,6 +15,8 @@ package org.talend.dataprofiler.core.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.talend.core.model.metadata.builder.connection.Connection;
 import org.talend.core.model.metadata.builder.connection.MetadataColumn;
@@ -25,6 +27,7 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.model.repository.ISubRepositoryObject;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.cwm.helper.ColumnHelper;
+import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdSqlDataType;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.model.ColumnIndicator;
@@ -38,12 +41,17 @@ import org.talend.dq.nodes.DBColumnRepNode;
 import org.talend.dq.nodes.DFColumnRepNode;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.utils.sql.TalendTypeConvert;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * DOC xqliu class global comment. Detailled comment
  */
 public final class ModelElementIndicatorHelper {
+
+    public final static int COLUMN_NAME_MAX_LENGTH = 30;
+
+    private static Logger log = Logger.getLogger(ModelElementIndicatorHelper.class);
 
     private ModelElementIndicatorHelper() {
     }
@@ -247,18 +255,73 @@ public final class ModelElementIndicatorHelper {
      * @return
      */
     public static final String getModelElementDisplayName(ModelElementIndicator meIndicator) {
+        return getModelElementDisplayName(meIndicator, true);
+    }
+
+    /**
+     * Get the display name of model element
+     *
+     * @param meIndicator
+     * @param isFullName true return complete name else will return apart of name if length more than 30 like aaa...bbb
+     * @return EMPTY when any NullPointerException generated
+     */
+    public static final String getModelElementDisplayName(ModelElementIndicator meIndicator, boolean isFullName) {
+        try {
         String meName = meIndicator.getElementName();
-        String typeName = "";//$NON-NLS-1$
+        String typeName = StringUtils.EMPTY;// $NON-NLS-1$
         if (meIndicator instanceof ColumnIndicator) {
-            // MOD scorreia 2010-10-20 bug 16403 avoid NPE here
-            TdSqlDataType sqlDataType = ((ColumnIndicator) meIndicator).getTdColumn().getSqlDataType();
+            TdColumn tdColumn = ((ColumnIndicator) meIndicator).getTdColumn();
+            TdSqlDataType sqlDataType = tdColumn.getSqlDataType();
             typeName = sqlDataType != null ? sqlDataType.getName() : "unknown";//$NON-NLS-1$
         } else if (meIndicator instanceof DelimitedFileIndicatorImpl) {
             MetadataColumn mColumn = ((DelimitedFileIndicatorImpl) meIndicator).getMetadataColumn();
             typeName = TalendTypeConvert.convertToJavaType(mColumn.getTalendType());
         }
-        return meName != null ? meName + PluginConstant.SPACE_STRING + PluginConstant.PARENTHESIS_LEFT + typeName
-                + PluginConstant.PARENTHESIS_RIGHT : "null";//$NON-NLS-1$
+        String fullNameResult = meName != null
+                ? meName + PluginConstant.SPACE_STRING + PluginConstant.PARENTHESIS_LEFT + typeName
+                        + PluginConstant.PARENTHESIS_RIGHT
+                : "null";//$NON-NLS-1$
+        if (isFullName) {
+            return fullNameResult;
+        } else {
+            return getCutOutData(meName, typeName, fullNameResult);
+        }
+        } catch (NullPointerException e) {
+            log.warn(e.getMessage(), e);
+            return StringUtils.EMPTY;
+        }
+    }
+
+    /**
+     * Cut out the String as "aaa...bbb (string)" style if length more than 30
+     * 
+     * @param meName Original column name
+     * @param typeName The data type of column
+     * @param fullNameResult Original name before cut out
+     * @return StringUtils.EMPTY if meName is null or fullNameResult is null or the length of fullNameResult less than
+     * meName. Else return a length less than or equal 30 string
+     */
+    public static String getCutOutData(String meName, String typeName, String fullNameResult) {
+        if (fullNameResult == null) {
+            return StringUtils.EMPTY;
+        }
+        int fullLength = fullNameResult.length();
+        if (fullLength <= ModelElementIndicatorHelper.COLUMN_NAME_MAX_LENGTH) {
+            return fullNameResult;
+        }
+        if (meName == null || fullNameResult.length() < meName.length()) {
+            return StringUtils.EMPTY;
+        }
+        String realName = meName == null ? StringUtils.EMPTY : meName;
+        int realLength = meName.length();
+        int parameterLength = fullLength - realLength;
+        int displayRealNameLength = ModelElementIndicatorHelper.COLUMN_NAME_MAX_LENGTH - parameterLength;
+        String preRealName = realName.substring(0, displayRealNameLength / 2);
+        String backRealName = realName
+                .substring(realName.length() - (displayRealNameLength - displayRealNameLength / 2) + 3,
+                        realName.length());
+        return preRealName + "..." + backRealName + PluginConstant.SPACE_STRING + PluginConstant.PARENTHESIS_LEFT
+                + (typeName == null ? "unknown" : typeName) + PluginConstant.PARENTHESIS_RIGHT;
     }
 
     /**
