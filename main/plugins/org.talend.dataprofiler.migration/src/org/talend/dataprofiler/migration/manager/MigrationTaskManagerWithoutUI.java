@@ -92,7 +92,9 @@ public class MigrationTaskManagerWithoutUI {
             List<IMigrationTask> tasks) {
 
         List<IMigrationTask> validTasks = new ArrayList<IMigrationTask>();
-        if (log.isInfoEnabled()) {
+        // TDQ-18624: not output debug log because cause studio slowly
+        boolean isDebugEnabled = log.isDebugEnabled();
+        if (isDebugEnabled) {
             log.info("workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
             log.info("currentVersion: " + currentVersion); //$NON-NLS-1$
         }
@@ -100,11 +102,11 @@ public class MigrationTaskManagerWithoutUI {
             if (task.getTaskCategory() == MigrationTaskCategory.WORKSPACE) {
                 IWorkspaceMigrationTask wTask = (IWorkspaceMigrationTask) task;
                 ProductVersion taskVersion = ProductVersion.fromString(wTask.getVersion());
-                if (log.isInfoEnabled()) {
+                if (isDebugEnabled) {
                     log.info("one new task check begin and current taskVersion: " + taskVersion); //$NON-NLS-1$
                 }
                 if (taskVersion.compareTo(workspaceVersion) > 0 && taskVersion.compareTo(currentVersion) <= 0) {
-                    if (log.isInfoEnabled()) {
+                    if (isDebugEnabled) {
                         log
                                 .info(taskVersion + " > " + workspaceVersion + "&&" + taskVersion + "<=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                         + currentVersion + ", so"); //$NON-NLS-1$
@@ -116,12 +118,12 @@ public class MigrationTaskManagerWithoutUI {
                     // for example: when workspace is 731 or 731R4
                     // 7.3.1-R2020-04 DisplayVersion format is: 7.3.1.20200417_1111-patch
                     String displayVersion = VersionUtils.getDisplayVersion();
-                    if (log.isInfoEnabled()) {
+                    if (isDebugEnabled) {
                         log.info("taskVersion = workspaceVersion: " + taskVersion + " = " + workspaceVersion); //$NON-NLS-1$ //$NON-NLS-2$
                         log.info("current studio displayVersion is: " + displayVersion); //$NON-NLS-1$
                     }
                     if (displayVersion.endsWith("-patch")) { //$NON-NLS-1$
-                        if (log.isInfoEnabled()) {
+                        if (isDebugEnabled) {
                             log.info("current studio is a patched studio"); //$NON-NLS-1$
                         }
                         ProductVersion displayVersionE = ProductVersion.fromString(displayVersion, true, true);
@@ -129,7 +131,7 @@ public class MigrationTaskManagerWithoutUI {
                         // migration task Version format is: 7.3.1.20200724
                         ProductVersion taskVersionE = new ProductVersion(taskVersion, taskDate);
                         if (displayVersionE.compareTo(taskVersionE) < 0) {
-                            if (log.isInfoEnabled()) {
+                            if (isDebugEnabled) {
                                 log
                                         .info("displayVersionE < taskVersionE: " + displayVersionE + "<" + taskVersionE //$NON-NLS-1$ //$NON-NLS-2$
                                                 + ", so"); //$NON-NLS-1$
@@ -137,7 +139,7 @@ public class MigrationTaskManagerWithoutUI {
                             }
                             validTasks.add(task);
                         } else {
-                            if (log.isInfoEnabled()) {
+                            if (isDebugEnabled) {
                                 log
                                         .info("displayVersionE is not < taskVersionE: " + displayVersionE //$NON-NLS-1$
                                                 + " is not < " //$NON-NLS-1$
@@ -146,20 +148,20 @@ public class MigrationTaskManagerWithoutUI {
                             }
                         }
                     } else {
-                        if (log.isInfoEnabled()) {
+                        if (isDebugEnabled) {
                             log.info("current studio is a NOT patched studio, so"); //$NON-NLS-1$
                             log.info(task.getId() + " is NOT valid task"); //$NON-NLS-1$
                         }
                     }
                 } else {
-                    if (log.isInfoEnabled()) {
+                    if (isDebugEnabled) {
                         log.info(task.getId() + " is NOT valid task"); //$NON-NLS-1$
                     }
                 }
             }
 
             if (task.getTaskCategory() == MigrationTaskCategory.PROJECT) {
-                if (log.isInfoEnabled()) {
+                if (isDebugEnabled) {
                     log.info(task.getId() + " is project valid task"); //$NON-NLS-1$
                 }
                 validTasks.add(task);
