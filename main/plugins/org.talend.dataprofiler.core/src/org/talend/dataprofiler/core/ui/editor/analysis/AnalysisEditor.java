@@ -188,7 +188,7 @@ public class AnalysisEditor extends SupportContextEditor {
      */
     private void initContext() {
         Analysis analysis = getMasterPage().getCurrentModelElement();
-        contextManager = new JobContextManager(analysis.getContextType(), analysis.getDefaultContext());
+        checkAndUpdateContext(analysis, analysis.getDefaultContext());
         this.setLastRunContextGroupName(AnalysisHelper.getContextGroupName(analysis));
     }
 

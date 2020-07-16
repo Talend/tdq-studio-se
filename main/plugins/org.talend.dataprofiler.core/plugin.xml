@@ -1817,6 +1817,12 @@
            name="Add Expression for Snowflake into summary indicators"
            version="7.4.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask"
+           id="org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask"
+           name=" create context link files migration"
+           version="7.4.1">
+     </workspacetask>
   </extension>
   
   <extension
