@@ -15,6 +15,7 @@ package org.talend.dataprofiler.core.ui.editor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -231,18 +232,18 @@ public abstract class SupportContextEditor extends CommonFormEditor {
                     }
                 }
 
-                // case7: delete context variable: --->change to buildIn mode
+                // case7: delete context variable:
+                // TDQ-18644: if preference page checked-->delete context variable
                 for (Item item : deleteParams.getContexts()) {
                     Set<String> deleteContextNames = deleteParams.get(item);
                     if (deleteContextNames != null && !deleteContextNames.isEmpty()) {
                         for (IContext context : contextManager.getListContext()) {
                             for (String deleteContextName : deleteContextNames) {
-                                for (IContextParameter param : context.getContextParameterList()) {
-                                    if (param.isBuiltIn()) { // for buildin, no need to update
-                                        continue;
-                                    }
+                                Iterator<IContextParameter> iterator = context.getContextParameterList().iterator();
+                                while (iterator.hasNext()) {
+                                    IContextParameter param = iterator.next();
                                     if (deleteContextName.equals(param.getName())) {
-                                        param.setSource(IContextParameter.BUILT_IN);
+                                        iterator.remove();
                                     }
                                 }
                             }
@@ -257,6 +258,26 @@ public abstract class SupportContextEditor extends CommonFormEditor {
 
                 if (!builtInMap.isEmpty()) {
                     // do nothing here, just at last need save.
+
+                    // case7: delete context variable:
+                    // TDQ-18644: if preference page not checked-->change to buildIn mode
+                    for (Item item : builtInMap.getContexts()) {
+                        Set<String> deleteContextNames = builtInMap.get(item);
+                        if (deleteContextNames != null && !deleteContextNames.isEmpty()) {
+                            for (IContext context : contextManager.getListContext()) {
+                                for (String deleteContextName : deleteContextNames) {
+                                    for (IContextParameter param : context.getContextParameterList()) {
+                                        if (param.isBuiltIn()) { // for buildin, no need to update
+                                            continue;
+                                        }
+                                        if (deleteContextName.equals(param.getName())) {
+                                            param.setSource(IContextParameter.BUILT_IN);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 // case 12: add new context in current used context group
@@ -330,7 +351,7 @@ public abstract class SupportContextEditor extends CommonFormEditor {
                     sb
                             .append("Delete " + deleteContextParamName + " detect from repository Context:" //$NON-NLS-1$ //$NON-NLS-2$
                                     + getContextItemDisplayName(item)
-                                    + ", will change to BuildIn mode."); //$NON-NLS-1$
+                                    + ", will delete it."); //$NON-NLS-1$
                     sb.append(lineSeparator);
                 }
             }
