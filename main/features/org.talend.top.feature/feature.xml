@@ -21,7 +21,7 @@
     <import plugin="com.thoughtworks.paranamer" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="net.jeeeyul.eclipse.themes" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="net.jeeeyul.swtend" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.apache.commons.beanutils" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.commons.commons-beanutils" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.codec" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.collections" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.httpclient" version="0.0.0" match="greaterOrEqual"/>
