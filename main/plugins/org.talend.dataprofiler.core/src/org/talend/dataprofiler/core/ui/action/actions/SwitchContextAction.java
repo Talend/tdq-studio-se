@@ -65,8 +65,7 @@ public class SwitchContextAction extends Action {
 
                 boolean isUpdated = SwitchContextGroupNameImpl.getInstance().updateContextGroup(connItem, chooseContext);
 
-                if (isUpdated) {
-
+                 if(isUpdated) {
                     if (log.isDebugEnabled()) {
                         log.debug(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "successful"));//$NON-NLS-1$ //$NON-NLS-2$
                     }
@@ -78,9 +77,9 @@ public class SwitchContextAction extends Action {
                     // TDQ-8834~
 
                     CorePlugin.getDefault().refreshDQView(selectedObject);
-                } else {
-                    popupSwitchContextFailedMessage(chooseContext);
-                }
+                 } else {
+                     popupSwitchContextFailedMessage(chooseContext);
+                 }
             }
         }
         // TDQ-4559~
