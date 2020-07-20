@@ -405,7 +405,7 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     }
 
     @Override
-    public boolean hasClientDependences(ConnectionItem connItem) {
+    public boolean hasClientDependences(ConnectionItem connItem) {      
         if (connItem != null) {
             Connection connection = connItem.getConnection();
             if (connection != null) {
@@ -769,8 +769,11 @@ public class TOPRepositoryService implements ITDQRepositoryService {
     }
 
     @Override
-    public void popupSwitchContextFailedMessage(String chooseContext) {
-        SwitchContextAction.popupSwitchContextFailedMessage(chooseContext);
+    public boolean popupSwitchContextFailedMessage(String chooseContext) {
+    	boolean confirm = MessageDialog.openConfirm(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(), "", //$NON-NLS-1$
+                DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError")); //$NON-NLS-1$;
+        //SwitchContextAction.popupSwitchContextFailedMessage(chooseContext);
+        return confirm;
     }
 
 }

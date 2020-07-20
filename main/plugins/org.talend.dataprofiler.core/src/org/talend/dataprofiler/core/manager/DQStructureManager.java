@@ -63,6 +63,7 @@ import org.talend.dataprofiler.core.ui.progress.ProgressUI;
 import org.talend.dataprofiler.core.ui.utils.HadoopClusterUtils;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
 import org.talend.dataprofiler.core.ui.views.provider.RepositoryNodeBuilder;
+import org.talend.dataprofiler.migration.MigrationPlugin;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.properties.TDQSourceFileItem;
 import org.talend.dq.factory.ModelElementFileFactory;
@@ -77,6 +78,7 @@ import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
 import org.talend.resource.ResourceService;
 import org.talend.utils.ProductVersion;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -573,7 +575,8 @@ public final class DQStructureManager {
         }
 
         ProductVersion wVersion = WorkspaceVersionHelper.getVesion();
-        ProductVersion cVersion = CorePlugin.getDefault().getProductVersion();
+        // TDQ-18627: use the display version to compare to support monthly release patch version check
+        ProductVersion cVersion = MigrationPlugin.getDefault().getProductDisplayVersionWithPatch();
         return wVersion.compareTo(cVersion) < 0;
     }
 

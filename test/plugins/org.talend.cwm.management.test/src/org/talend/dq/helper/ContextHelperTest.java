@@ -15,8 +15,6 @@ package org.talend.dq.helper;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.dataquality.reports.ReportsFactory;
@@ -24,6 +22,8 @@ import org.talend.dataquality.reports.TdReport;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.designer.core.model.utils.emf.talendfile.TalendFileFactory;
+
+import junit.framework.Assert;
 import orgomg.cwm.objectmodel.core.CoreFactory;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
@@ -209,5 +209,31 @@ public class ContextHelperTest {
         tdReport2.getTaggedValue().clear();
         tdReport2.getTaggedValue().add(tv2);
         Assert.assertNull(ContextHelper.getOutputFolderFromReports(reports));
+    }
+
+    /**
+     * Test method for {@link org.talend.dq.helper.ContextHelper#removeContextPreffix(java.lang.String)}.
+     */
+    @Test
+    public void testRemoveContextPreffix() {
+        String varName = null;
+        Assert.assertEquals(null, ContextHelper.removeContextPreffix(varName));
+
+        // TDQ-18578: fix a StringIndexOutOfBoundsException
+        varName = ""; //$NON-NLS-1$
+        Assert.assertEquals("", ContextHelper.removeContextPreffix(varName));
+
+        varName = "        "; //$NON-NLS-1$
+        Assert.assertEquals("        ", ContextHelper.removeContextPreffix(varName));
+
+        varName = "varName"; //$NON-NLS-1$
+        Assert.assertEquals("varName", ContextHelper.removeContextPreffix(varName));
+
+        varName = "context.varName"; //$NON-NLS-1$
+        Assert.assertEquals("varName", ContextHelper.removeContextPreffix(varName));
+
+        varName = "contextvarName"; //$NON-NLS-1$
+        Assert.assertEquals("contextvarName", ContextHelper.removeContextPreffix(varName));
+
     }
 }

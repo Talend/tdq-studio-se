@@ -20,14 +20,23 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
+import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.exception.PersistenceException;
 import org.talend.core.language.ECodeLanguage;
 import org.talend.core.language.LanguageManager;
+import org.talend.core.model.context.ContextUtils;
 import org.talend.core.model.context.JobContextManager;
+import org.talend.core.model.context.link.ContextLinkService;
+import org.talend.core.model.context.link.ItemContextLink;
+import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.utils.ContextParameterUtils;
 import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.helpers.ReportHelper;
+import org.talend.dataquality.properties.TDQAnalysisItem;
+import org.talend.dataquality.properties.TDQReportItem;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
@@ -389,12 +398,56 @@ public final class ContextHelper {
      * @return
      */
     public static String removeContextPreffix(String strWithContext) {
-        return strWithContext == null ? null : strWithContext.substring(CONTEXT_PREFFIX.length(),
+        if (!ContextHelper.isContextVar(strWithContext)) {
+            return strWithContext;
+        }
+        return strWithContext.substring(CONTEXT_PREFFIX.length(),
                 strWithContext.length());
     }
 
     public static String addContetPreffix(String paramName) {
         return paramName == null ? null : CONTEXT_PREFFIX + paramName;
+    }
+
+    public static boolean isDQSupportContextItem(Item item) {
+        return item instanceof TDQAnalysisItem || item instanceof TDQReportItem || item instanceof ConnectionItem;
+    }
+    public static EList<ContextType> getAllContextType(Item item) {
+        // here is some related methods on DQ side
+        // more can refer to ContextUtils
+        if (item instanceof TDQAnalysisItem) {
+            TDQAnalysisItem tdqAnalysisItem = (TDQAnalysisItem) item;
+            if (tdqAnalysisItem.getAnalysis() != null) {
+                return tdqAnalysisItem.getAnalysis().getContextType();
+            }
+        } else if (item instanceof TDQReportItem) {
+            TDQReportItem tdqReportItem = (TDQReportItem) item;
+            if (tdqReportItem.getReport() != null) {
+                return ((TdReport) tdqReportItem.getReport()).getContext();
+            }
+        }
+        return ContextUtils.getAllContextType(item);
+    }
+
+    public static Map<String, String> getContextParamterRenamedMap(Item item) {
+        ItemContextLink itemContextLink = null;
+        try {
+            itemContextLink = ContextLinkService.getInstance().loadContextLinkFromJson(item);
+        } catch (PersistenceException e) {
+            ExceptionHandler.process(e);
+        }
+        if (itemContextLink != null) {
+            if (item instanceof TDQAnalysisItem || item instanceof TDQReportItem) {
+                return compareContextParamName(item, itemContextLink);
+            }
+        }
+
+        return ContextUtils.getContextParamterRenamedMap(item);
+    }
+
+    private static Map<String, String> compareContextParamName(Item item, ItemContextLink itemContextLink) {
+        List<ContextType> contextTypeList = getAllContextType(item);
+        return ContextUtils.compareContextParamName(contextTypeList, itemContextLink);
     }
 
 }

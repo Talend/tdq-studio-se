@@ -26,7 +26,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.talend.core.model.context.ContextUtils;
+import org.talend.core.model.context.JobContext;
 import org.talend.core.model.context.JobContextManager;
+import org.talend.core.model.context.JobContextParameter;
 import org.talend.core.model.process.IContext;
 import org.talend.core.model.process.IContextParameter;
 import org.talend.core.model.properties.ContextItem;
@@ -38,7 +40,9 @@ import org.talend.dataprofiler.core.ui.editor.SupportContextEditor;
 import org.talend.dataprofiler.core.ui.utils.WorkbenchUtils;
 import org.talend.dataprofiler.core.ui.views.context.TdqContextView;
 import org.talend.dataquality.analysis.Analysis;
+import org.talend.dataquality.domain.Domain;
 import org.talend.dataquality.helpers.AnalysisHelper;
+import org.talend.dataquality.helpers.DomainHelper;
 import org.talend.dataquality.helpers.ReportHelper;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
@@ -52,6 +56,7 @@ import org.talend.dq.nodes.ReportRepNode;
 import org.talend.dq.writer.impl.ElementWriterFactory;
 import org.talend.resource.EResourceConstant;
 
+import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.TaggedValue;
 
 /**
@@ -140,9 +145,13 @@ public final class ContextViewHelper {
                 EList<ContextType> contextList = anaNode.getAnalysis().getContextType();
                 if (findAndUpdateContext(contextList, contextItem, ruManager, isUpdated)) {
                     if (!contextRenamedMap.isEmpty()) {
-                        findAndUpdateFieldUseContext(anaNode.getAnalysis(), contextRenamedMap.get(contextItem), isUpdated);
+                        findAndUpdateFieldUseContext(anaNode.getAnalysis(), contextRenamedMap.get(contextItem));
                     }
-                    ElementWriterFactory.getInstance().createAnalysisWrite().save(anaNode.getAnalysis());
+                    // TDQ-18569: save context link file correctly
+                    ElementWriterFactory
+                            .getInstance()
+                            .createAnalysisWrite()
+                            .save(anaNode.getObject().getProperty().getItem(), true);
                     // refresh the analysis
                     WorkbenchUtils.refreshCurrentAnalysisEditor(anaNode.getAnalysis().getName());
                 }
@@ -154,8 +163,13 @@ public final class ContextViewHelper {
             for (ReportRepNode repNode : repList) {
                 EList<ContextType> contextList = ((TdReport) repNode.getReport()).getContext();
                 if (findAndUpdateContext(contextList, contextItem, ruManager, isUpdated)) {
-                    findAndUpdateFieldUseContext((TdReport) repNode.getReport(), ruManager.getContextRenamedMap().get(contextItem), isUpdated);
-                    ElementWriterFactory.getInstance().createReportWriter().save(repNode.getReport());
+                    findAndUpdateFieldUseContext((TdReport) repNode.getReport(),
+                            ruManager.getContextRenamedMap().get(contextItem));
+                    // TDQ-18569: save context link file correctly
+                    ElementWriterFactory
+                            .getInstance()
+                            .createReportWriter()
+                            .save(repNode.getObject().getProperty().getItem(), true);
                     // refresh the report
                     WorkbenchUtils.refreshCurrentReportEditor(repNode.getReport().getName());
                 }
@@ -294,6 +308,27 @@ public final class ContextViewHelper {
         return newCtx;
     }
 
+    public static IContext convert2IContext(ContextType contextType, String repositoryContextId) {
+        if (contextType == null) {
+            return null;
+        }
+        IContext jobContext = new JobContext(contextType.getName());
+        List<ContextParameterType> repoParams = contextType.getContextParameter();
+        for (ContextParameterType repoParam : repoParams) {
+            IContextParameter jobParam = new JobContextParameter();
+            jobParam.setName(repoParam.getName());
+            jobParam.setContext(jobContext);
+            jobParam.setComment(repoParam.getComment());
+            jobParam.setPrompt(repoParam.getPrompt());
+            jobParam.setSource(repositoryContextId);
+            jobParam.setType(repoParam.getType());
+            jobParam.setValue(repoParam.getValue());
+            jobParam.setInternalId(repoParam.getInternalId());
+            jobContext.getContextParameterList().add(jobParam);
+        }
+        return jobContext;
+    }
+
     /**
      * check each parameter's repositoryContextId, if parameter's repositoryContextId == contextId,
      *
@@ -345,25 +380,60 @@ public final class ContextViewHelper {
         }
     }
 
-    private static void findAndUpdateFieldUseContext(Analysis analysis, Map<String, String> renamedMap, boolean isUpdated) {
+    public static void findAndUpdateFieldUseContext(ModelElement element, Map<String, String> renamedMap) {
+        if (element instanceof Analysis) {
+            findAndUpdateFieldUseContext((Analysis) element, renamedMap);
+        } else if (element instanceof TdReport) {
+            findAndUpdateFieldUseContext((TdReport) element, renamedMap);
+        }
+    }
+
+    private static void findAndUpdateFieldUseContext(Analysis analysis, Map<String, String> renamedMap) {
         findAndUpdateTaggedValue(analysis.getTaggedValue(), TdqAnalysisConnectionPool.NUMBER_OF_CONNECTIONS_PER_ANALYSIS,
                 renamedMap);
+
         // check "data filter" in analysis
         String dataFilter = AnalysisHelper.getStringDataFilter(analysis);
         if (ContextHelper.isContextVar(dataFilter)) {
-            String changedValue = ContextHelper.checkRenamedContextParameter(renamedMap, dataFilter);
-            if (StringUtils.isNotBlank(changedValue)) {
-                AnalysisHelper.setStringDataFilter(analysis, changedValue);
+            String changedContextName = ContextHelper.checkRenamedContextParameter(renamedMap, dataFilter);
+            if (StringUtils.isNotBlank(changedContextName)) {
+                AnalysisHelper.setStringDataFilter(analysis, changedContextName);
+            }
+        }
+
+        // TDQ-18572: for Redundancy Analysis, update its Where sql part for Right Columns.
+        String dataFilter2 = AnalysisHelper.getStringDataFilter(analysis, 1);
+        if (ContextHelper.isContextVar(dataFilter2)) {
+            String changedContextName = ContextHelper.checkRenamedContextParameter(renamedMap, dataFilter2);
+            if (StringUtils.isNotBlank(changedContextName)) {
+                AnalysisHelper.setStringDataFilter(analysis, changedContextName, 1);
+            }
+        }
+
+        // TDQ-18572: for Overview Analysis, update its table Filter, view Filter context
+        EList<Domain> dataFilters = analysis.getParameters().getDataFilter();
+        String tablePattern = DomainHelper.getTablePattern(dataFilters);
+        if (ContextHelper.isContextVar(tablePattern)) {
+            String changedContextName = ContextHelper.checkRenamedContextParameter(renamedMap, tablePattern);
+            if (StringUtils.isNotBlank(changedContextName)) {
+                DomainHelper.setDataFilterTablePattern(dataFilters, changedContextName);
+            }
+        }
+        String viewPattern = DomainHelper.getViewPattern(dataFilters);
+        if (ContextHelper.isContextVar(viewPattern)) {
+            String changedContextName = ContextHelper.checkRenamedContextParameter(renamedMap, viewPattern);
+            if (StringUtils.isNotBlank(changedContextName)) {
+                DomainHelper.setDataFilterViewPattern(dataFilters, changedContextName);
             }
         }
     }
 
     private static void findAndUpdateTaggedValue(List<TaggedValue> values, String tagName, Map<String, String> renamedMap) {
         TaggedValue tagValue = TaggedValueHelper.getTaggedValue(tagName, values);
-        if (ContextHelper.isContextVar(tagValue.getValue())) {
-            String changedName = ContextHelper.checkRenamedContextParameter(renamedMap, tagValue.getValue());
-            if (StringUtils.isNotBlank(changedName)) {
-                tagValue.setValue(changedName);
+        if (tagValue != null && ContextHelper.isContextVar(tagValue.getValue())) {
+            String changedContextName = ContextHelper.checkRenamedContextParameter(renamedMap, tagValue.getValue());
+            if (StringUtils.isNotBlank(changedContextName)) {
+                tagValue.setValue(changedContextName);
             }
         }
     }
@@ -371,7 +441,7 @@ public final class ContextViewHelper {
     private static Map<String, String> findAndUpdateTaggedValueWithNewName(List<TaggedValue> values, String tagName,
             Map<String, String> renamedMap) {
         TaggedValue tagValue = TaggedValueHelper.getTaggedValue(tagName, values);
-        if (ContextHelper.isContextVar(tagValue.getValue())) {
+        if (tagValue != null && ContextHelper.isContextVar(tagValue.getValue())) {
             String changedName = ContextHelper.checkRenamedContextParameter(renamedMap, tagValue.getValue());
             if (StringUtils.isNotBlank(changedName)) {
                 Map<String, String> nameMap = new HashMap<String, String>();
@@ -386,10 +456,12 @@ public final class ContextViewHelper {
     private static String[] reportContextTagValues = { TaggedValueHelper.OUTPUT_FOLDER_TAG, TaggedValueHelper.REP_DBINFO_USER,
             TaggedValueHelper.REP_DBINFO_PASSWORD };
 
+    // TDQ-18571: support context "additional parameter" and "warehouse"
     private static String[] reportContextDBTagValues = { TaggedValueHelper.REP_DBINFO_DBNAME, TaggedValueHelper.REP_DBINFO_HOST,
-            TaggedValueHelper.REP_DBINFO_PORT };
+                    TaggedValueHelper.REP_DBINFO_PORT, TaggedValueHelper.REP_DBINFO_WAREHOUSE,
+                    TaggedValueHelper.REP_DBINFO_PARAMETER };
 
-    private static void findAndUpdateFieldUseContext(TdReport report, Map<String, String> renamedMap, boolean isUpdated) {
+    private static void findAndUpdateFieldUseContext(TdReport report, Map<String, String> renamedMap) {
         for (String tagName : reportContextTagValues) {
             findAndUpdateTaggedValue(report.getTaggedValue(), tagName, renamedMap);
         }

@@ -113,14 +113,14 @@ public class ZipFileExportWriter extends FileSystemExportWriter {
      * .model.ItemRecord[])
      */
     @Override
-    public void finish(ItemRecord[] records) throws IOException, CoreException {
+    public void finish(ItemRecord[] records) throws Exception {
         List<IProject> projects = new ArrayList<>();
         projects.add(ResourceManager.getRootProject());
         finish(records, projects);
     }
 
     @Override
-    public void finish(ItemRecord[] records, List<IProject> projects) throws IOException, CoreException {
+    public void finish(ItemRecord[] records, List<IProject> projects) throws Exception {
         super.finish(records, projects);
 
         addFilesToExistingZip(getBasePath().toFile(), tempMap);

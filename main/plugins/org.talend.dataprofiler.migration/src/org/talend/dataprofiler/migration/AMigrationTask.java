@@ -97,7 +97,7 @@ public abstract class AMigrationTask implements IMigrationTask {
      */
     protected Date createDate(int year, int month, int day) {
         Calendar calender = Calendar.getInstance();
-        calender.set(year, month, day);
+        calender.set(year, month - 1, day);
         return calender.getTime();
     }
 

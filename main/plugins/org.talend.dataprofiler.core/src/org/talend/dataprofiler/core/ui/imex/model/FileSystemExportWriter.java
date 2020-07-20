@@ -33,12 +33,15 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.talend.commons.emf.FactoriesUtil;
 import org.talend.commons.utils.io.FilesUtils;
+import org.talend.core.model.context.link.ContextLinkService;
+import org.talend.core.model.properties.Item;
 import org.talend.core.model.properties.Property;
 import org.talend.core.repository.constants.FileConstants;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.migration.helper.WorkspaceVersionHelper;
 import org.talend.dataprofiler.core.ui.utils.DqFileUtils;
+import org.talend.dq.helper.ContextHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.model.bridge.ReponsitoryContextBridge;
@@ -183,7 +186,7 @@ public class FileSystemExportWriter implements IExportWriter {
         }
     }
 
-    public void finish(ItemRecord[] records) throws IOException, CoreException {
+    public void finish(ItemRecord[] records) throws Exception {
         List<IProject> projects = new ArrayList<>();
         projects.add(ResourceManager.getRootProject());
         finish(records, projects);
@@ -196,7 +199,7 @@ public class FileSystemExportWriter implements IExportWriter {
      * org.talend.dataprofiler.core.ui.imex.model.IImexWriter#finish(org.talend.dataprofiler.core.ui.imex.model.ItemRecord
      * [])
      */
-    public void finish(ItemRecord[] records, List<IProject> projects) throws IOException, CoreException {
+    public void finish(ItemRecord[] records, List<IProject> projects) throws Exception {
         for (IProject project : projects) {
             IFile projFile = project.getFile(FileConstants.LOCAL_PROJECT_FILENAME);// named 'talend.project'
 
@@ -208,6 +211,19 @@ public class FileSystemExportWriter implements IExportWriter {
             IFile versionFile = WorkspaceVersionHelper.getVersionFile(project);
             writeSysFile(versionFile);
         }
+
+        // TDQ-18173 msjian: export the context link file of analysis, report, connection.
+        for (ItemRecord itemRecord: records) {
+            Property property = itemRecord.getProperty();
+            if (property != null) {
+                Item item = property.getItem();
+                if (ContextHelper.isDQSupportContextItem(item)) {
+                    IFile contextlinkFile = ContextLinkService.calContextLinkFile(item);
+                    writeSysFile(contextlinkFile);
+                }
+            }
+        }
+        // TDQ-18173~
 
         ItemRecord.clear();
 

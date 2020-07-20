@@ -90,6 +90,9 @@ public interface IMigrationTask {
      * DOC bzhou Comment method "getOrder".
      *
      * Use to manage task order. Tasks are sorted (ASC) by this date, then executed following this order.
+     * 
+     * second use: use this to compare with patch version to check task is valid or not.(see
+     * MigrationTaskManagerWithoutUI getValidTasks )
      *
      * @return
      */
