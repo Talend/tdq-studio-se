@@ -34,7 +34,7 @@
       <import plugin="org.antlr.runtime" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.ant" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.axis" version="0.0.0" match="greaterOrEqual"/>
-      <import plugin="org.apache.commons.beanutils" version="0.0.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.commons.commons-beanutils" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.collections" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.discovery" version="0.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="0.0.0" match="greaterOrEqual"/>
