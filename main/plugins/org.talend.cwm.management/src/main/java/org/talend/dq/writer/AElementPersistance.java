@@ -74,6 +74,7 @@ import org.talend.repository.ProjectManager;
 import org.talend.resource.ResourceManager;
 import org.talend.utils.sugars.ReturnCode;
 import org.talend.utils.sugars.TypedReturnCode;
+
 import orgomg.cwm.analysis.informationvisualization.RenderedObject;
 import orgomg.cwm.objectmodel.core.Dependency;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -342,7 +343,10 @@ public abstract class AElementPersistance {
      *
      * @param element
      * @return
+     * @deprecated use {@link AElementPersistance#save(org.talend.core.model.properties.Item, boolean)} class instead.
+     * the reason is this cannot support context link file and see ResourceFileMap line 190
      */
+    @Deprecated
     public ReturnCode save(ModelElement element) {
         return save(element, true);
     }
@@ -355,7 +359,10 @@ public abstract class AElementPersistance {
      * @param element
      * @param withProperty
      * @return
+     * @deprecated use {@link AElementPersistance#save(org.talend.core.model.properties.Item, boolean)} class instead
+     * the reason is this cannot support context link file and see ResourceFileMap line 190
      */
+    @Deprecated
     public ReturnCode save(ModelElement element, boolean withProperty) {
         ReturnCode rc = new ReturnCode();
 

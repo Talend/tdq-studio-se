@@ -141,7 +141,8 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                             }
                         }
                     };
-            workUnit.setAvoidUnloadResources(true);
+            // TDQ-18553: fix git cannot get latest context info even after dqview refresh
+            workUnit.setAvoidUnloadResources(false);
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
         }
     }

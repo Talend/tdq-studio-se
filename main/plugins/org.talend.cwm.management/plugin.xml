@@ -29,5 +29,11 @@
             class="org.talend.dq.CWMPreferenceInitializer">
       </initializer>
    </extension>
+    <extension
+          point="org.talend.core.runtime.saveItemContextLinkService">
+       <creator
+             class="org.talend.dq.DQItemContextLinkService">
+       </creator>
+    </extension>
 
 </plugin>

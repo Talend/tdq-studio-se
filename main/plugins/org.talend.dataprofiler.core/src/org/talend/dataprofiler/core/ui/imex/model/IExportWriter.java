@@ -84,10 +84,9 @@ public interface IExportWriter {
      * DOC bZhou Comment method "finish".
      *
      * @param records
-     * @throws IOException
-     * @throws CoreException
+     * @throws Exception
      */
-    public void finish(ItemRecord[] records) throws IOException, CoreException;
+    public void finish(ItemRecord[] records) throws Exception;
 
-    public void finish(ItemRecord[] records, List<IProject> projects) throws IOException, CoreException;
+    public void finish(ItemRecord[] records, List<IProject> projects) throws Exception;
 }

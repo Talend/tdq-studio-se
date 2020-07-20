@@ -68,8 +68,17 @@ public class MigrationPlugin implements BundleActivator {
         return ProductVersion.fromString(VersionUtils.getTalendVersion());
     }
 
+    /*
+     *
+     * @deprecated use MigrationPlugin.getProductDisplayVersionWithPatch()
+     */
+    @Deprecated
     public ProductVersion getProductDisplayVersion() {
         return ProductVersion.fromString(VersionUtils.getDisplayVersion());
+    }
+
+    public ProductVersion getProductDisplayVersionWithPatch() {
+        return ProductVersion.fromString(VersionUtils.getDisplayVersion(), true, true);
     }
 
 }
