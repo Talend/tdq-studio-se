@@ -511,32 +511,28 @@
             language="java"
             message="Wizard use for TOP"
             name="derby-10.4.2.0.jar" mvn_uri="mvn:org.talend.libraries/derby-10.4.2.0/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.jdbc.derby/lib/derby-10.4.2.0.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="derby.jar" mvn_uri="mvn:org.talend.libraries/derby/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.jdbc.derby/lib/derby.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="derbyclient.jar" mvn_uri="mvn:org.talend.libraries/derbyclient/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.jdbc.derby/lib/derbyclient.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="derbynet.jar" mvn_uri="mvn:org.talend.libraries/derbynet/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.jdbc.derby/lib/derbynet.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
