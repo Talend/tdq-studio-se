@@ -75,7 +75,8 @@ Require-Bundle: org.talend.utils;visibility:=reexport,
  org.talend.libraries.mapdb;visibility:=reexport,
  org.talend.dataquality.common,
  org.talend.core.runtime,
- org.talend.dataquality.statistics
+ org.talend.dataquality.statistics,
+ org.slf4j.api
 Eclipse-RegisterBuddy: org.apache.log4j,
  org.talend.testutils,
  org.talend.libraries.mapdb
