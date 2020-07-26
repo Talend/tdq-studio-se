@@ -673,9 +673,8 @@
             context="Postgresql wizard"
             language="java"
             message="Wizard use for TOP"
-            name="postgresql-9.4-1201.jdbc41.jar" mvn_uri="mvn:org.talend.libraries/postgresql-9.4-1201.jdbc41/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.jdbc.postgresql/lib/postgresql-9.4-1201.jdbc41.jar">
+            name="postgresql-42.2.14.jar" mvn_uri="mvn:org.postgresql/postgresql/42.2.14" 
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
