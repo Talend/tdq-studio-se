@@ -12,9 +12,11 @@
 // ============================================================================
 package org.talend.dq.analysis;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -42,6 +44,8 @@ import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
 import org.talend.dataquality.rules.RulesPackage;
 import org.talend.dq.helper.UnitTestBuildHelper;
+
+import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
  * created by zhao on Aug 28, 2013 Detailled comment
@@ -117,7 +121,8 @@ public class MatchAnalysisExecutorTest {
     private void assertScenario1(MatchAnalysisExecutor matchAnalysisExecutor, Analysis analysis, MetadataColumn name,
             String nameVar, double groupQualityThreshold, double matchInterval) {
         // Set indicators into analysis result.
-        RecordMatchingIndicator matchIndicator = ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
+        RecordMatchingIndicator matchIndicator =
+                ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
         // Match key: name, no block key, levenshtein attribute algorithm.
         matchIndicator.setAnalyzedElement(name);
 
@@ -148,7 +153,8 @@ public class MatchAnalysisExecutorTest {
     private void assertScenario2(MatchAnalysisExecutor matchAnalysisExecutor, Analysis analysis, MetadataColumn name,
             String nameVar, double groupQualityThreshold, double matchInterval) {
         // Set indicators into analysis result.
-        RecordMatchingIndicator matchIndicator = ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
+        RecordMatchingIndicator matchIndicator =
+                ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
         // Match key: name, no block key, levenshtein attribute algorithm.
         matchIndicator.setAnalyzedElement(name);
 
@@ -180,7 +186,8 @@ public class MatchAnalysisExecutorTest {
     private void assertScenario3(MatchAnalysisExecutor matchAnalysisExecutor, Analysis analysis, MetadataColumn name,
             String nameVar, double groupQualityThreshold, double matchInterval) {
         // Set indicators into analysis result.
-        RecordMatchingIndicator matchIndicator = ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
+        RecordMatchingIndicator matchIndicator =
+                ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
         // Match key: name, no block key, levenshtein attribute algorithm.
         matchIndicator.setAnalyzedElement(name);
 
@@ -214,7 +221,8 @@ public class MatchAnalysisExecutorTest {
     private void assertScenario4(MatchAnalysisExecutor matchAnalysisExecutor, Analysis analysis, MetadataColumn name,
             String nameVar, double groupQualityThreshold, double matchInterval) {
         // Set indicators into analysis result.
-        RecordMatchingIndicator matchIndicator = ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
+        RecordMatchingIndicator matchIndicator =
+                ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
         // Match key: name, no block key, levenshtein attribute algorithm.
         matchIndicator.setAnalyzedElement(name);
 
@@ -262,7 +270,8 @@ public class MatchAnalysisExecutorTest {
      */
     private void executeAnalysis(MatchAnalysisExecutor matchAnalysisExecutor, Analysis analysis,
             RecordMatchingIndicator matchIndicator) {
-        BlockKeyIndicator blockKeyIndicator = ColumnsetPackage.eINSTANCE.getColumnsetFactory().createBlockKeyIndicator();
+        BlockKeyIndicator blockKeyIndicator =
+                ColumnsetPackage.eINSTANCE.getColumnsetFactory().createBlockKeyIndicator();
 
         AnalysisResult anaResult = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisResult();
         anaResult.setResultMetadata(AnalysisPackage.eINSTANCE.getAnalysisFactory().createExecutionInformations());
@@ -302,5 +311,170 @@ public class MatchAnalysisExecutorTest {
 
         matchRuleDefinition.getMatchRules().add(matchRule);
         matchIndicator.setBuiltInMatchRuleDefinition(matchRuleDefinition);
+    }
+
+    /**
+     * Test method for
+     * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
+     */
+    @SuppressWarnings("nls")
+    @Test
+    public void testExecuteWithMultiMatchRule() {
+        MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
+        Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
+        AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
+        analysis.setContext(context);
+
+        AnalysisParameters params = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisParameters();
+        analysis.setParameters(params);
+        TaggedValueHelper.setTaggedValue(analysis, TaggedValueHelper.PREVIEW_ROW_NUMBER, String.valueOf(100));
+
+        context.setConnection(delimitedFileconnection);
+        URL fileUrl = this.getClass().getResource("multi_match_rule_test_data"); //$NON-NLS-1$
+        metadataTable = UnitTestBuildHelper.getDefault().initFileConnection(fileUrl, delimitedFileconnection);
+
+        // this list contain 2 column list
+        List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, this.metadataTable);
+
+        double groupQualityThreshold = 0.85d;
+        double matchInterval = 0.9d;
+
+        // Scenario 1 only 1 Rule tab
+        List<List<MetadataColumn>> columnListList1 = new ArrayList<List<MetadataColumn>>();
+        columnListList1.add(columnListList.get(0));
+        RecordMatchingIndicator matchIndicator =
+                createMatchIndicatorWithMathRules(columnListList1, groupQualityThreshold, matchInterval);
+        executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
+
+        // Assert group size and frequency.
+        Map<Object, Long> size2Frequency = matchIndicator.getGroupSize2groupFrequency();
+        assertTrue(size2Frequency.get(String.valueOf(1)) == 1l);
+        assertTrue(size2Frequency.get(String.valueOf(2)) == 1l);
+
+        // Assert row count, unique records, matched records and suspect records.
+        assertTrue(matchIndicator.getCount() == 3);
+        assertTrue(matchIndicator.getMatchedRecordCount() == 2);
+        assertTrue(matchIndicator.getSuspectRecordCount() == 0);
+
+        // Scenario 2 with 2 Rule tab
+        matchIndicator = createMatchIndicatorWithMathRules(columnListList, groupQualityThreshold, matchInterval);
+        executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
+
+        // Assert group size and frequency.
+        size2Frequency = matchIndicator.getGroupSize2groupFrequency();
+        assertTrue(size2Frequency.get(String.valueOf(1)) == 1l);
+        assertTrue(size2Frequency.get(String.valueOf(2)) == 1l);
+
+        // Assert row count, unique records, matched records and suspect records.
+        assertTrue(matchIndicator.getCount() == 3);
+        assertTrue(matchIndicator.getMatchedRecordCount() == 2);
+        assertTrue(matchIndicator.getSuspectRecordCount() == 0);
+    }
+
+    private RecordMatchingIndicator createMatchIndicatorWithMathRules(List<List<MetadataColumn>> columnListList,
+            double groupQualityThreshold, double matchInterval) {
+        // Set indicators into analysis result.
+        RecordMatchingIndicator matchIndicator =
+                ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
+        // Match key: name, no block key, Exact attribute algorithm.
+        matchIndicator.setAnalyzedElement(name);
+
+        int i = 1;
+        for (List<MetadataColumn> columnList : columnListList) {
+            MatchRuleDefinition matchRuleDefinition =
+                    RulesPackage.eINSTANCE.getRulesFactory().createMatchRuleDefinition();
+            // matchRuleDefinition.setRecordLinkageAlgorithm(RecordMatcherType.T_SwooshAlgorithm.getLabel());
+
+            // // MostCommon
+            // AlgorithmDefinition mostCommon = RulesFactory.eINSTANCE.createAlgorithmDefinition();
+            // mostCommon.setAlgorithmParameters(""); //$NON-NLS-1$
+            // mostCommon.setAlgorithmType("MostCommon"); //$NON-NLS-1$
+            //
+            // // Concatenate
+            // AlgorithmDefinition concatenate = RulesFactory.eINSTANCE.createAlgorithmDefinition();
+            // mostCommon.setAlgorithmParameters(""); //$NON-NLS-1$
+            // mostCommon.setAlgorithmType("Concatenate"); //$NON-NLS-1$
+
+            matchRuleDefinition.setMatchGroupQualityThreshold(groupQualityThreshold);
+            MatchRule matchRule = RulesPackage.eINSTANCE.getRulesFactory().createMatchRule();
+            matchRule.setMatchInterval(matchInterval);
+            matchRule.setName("match rule " + i);
+
+
+            for (MetadataColumn column : columnList) {
+                MatchKeyDefinition matchkeyDef = RulesPackage.eINSTANCE.getRulesFactory().createMatchKeyDefinition();
+                matchkeyDef.setName(column.getName() + i);
+                matchkeyDef.setColumn(column.getName());
+                AlgorithmDefinition algoDef = RulesPackage.eINSTANCE.getRulesFactory().createAlgorithmDefinition();
+                algoDef.setAlgorithmType(AttributeMatcherType.EXACT.name());
+                matchkeyDef.setAlgorithm(algoDef);
+                matchkeyDef.setConfidenceWeight(1);
+                matchRule.getMatchKeys().add(matchkeyDef);
+            }
+
+            i++;
+
+            matchRuleDefinition.getMatchRules().add(matchRule);
+            // matchRuleDefinition.getSurvivorshipKeys().add();
+            matchIndicator.setBuiltInMatchRuleDefinition(matchRuleDefinition);
+        }
+
+        return matchIndicator;
+    }
+
+    // private DefaultSurvivorshipDefinition createDefaultsurvivShip(String dataType, AlgorithmDefinition algorDef) {
+    // DefaultSurvivorshipDefinition createDefaultSurvivorshipDefinition =
+    // RulesFactory.eINSTANCE.createDefaultSurvivorshipDefinition();
+    // createDefaultSurvivorshipDefinition.setDataType(dataType);
+    // createDefaultSurvivorshipDefinition.setFunction(algorDef);
+    // return createDefaultSurvivorshipDefinition;
+    // }
+
+    private List<List<MetadataColumn>> initColumns4MutilMatchRule(AnalysisContext context,
+            MetadataTable metadataTable2) {
+        List<List<MetadataColumn>> result = new ArrayList<List<MetadataColumn>>();
+        List<MetadataColumn> columns1 = new ArrayList<MetadataColumn>();
+        List<MetadataColumn> columns2 = new ArrayList<MetadataColumn>();
+
+        List<ModelElement> anaElements = context.getAnalysedElements();
+
+        // id
+        MetadataColumn id = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        id.setName("id"); //$NON-NLS-1$
+        id.setLabel("id"); //$NON-NLS-1$
+        anaElements.add(id);
+        metadataTable2.getColumns().add(id);
+
+        // name
+        MetadataColumn name = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        name.setName("name"); //$NON-NLS-1$
+        name.setLabel("name"); //$NON-NLS-1$
+        anaElements.add(name);
+        metadataTable.getColumns().add(name);
+
+        // address
+        MetadataColumn address = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        address.setName("address"); //$NON-NLS-1$
+        address.setLabel("address"); //$NON-NLS-1$
+        anaElements.add(address);
+        metadataTable.getColumns().add(address);
+
+        // provinceID
+        MetadataColumn provinceID = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+        provinceID.setName("provinceID"); //$NON-NLS-1$
+        provinceID.setLabel("provinceID"); //$NON-NLS-1$
+        anaElements.add(provinceID);
+        metadataTable.getColumns().add(provinceID);
+
+        columns1.add(name);
+        columns1.add(address);
+
+        columns2.add(address);
+        columns2.add(provinceID);
+
+        result.add(columns1);
+        result.add(columns2);
+
+        return result;
     }
 }
