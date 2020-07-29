@@ -77,6 +77,7 @@ import org.talend.dataquality.indicators.TextIndicator;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.UpperQuartileIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.ValidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.WeekFrequencyIndicator;
 import org.talend.dataquality.indicators.WeekLowFrequencyIndicator;
@@ -595,6 +596,11 @@ class IndcatorSwitchImp extends IndicatorsSwitch<Boolean> {
     @Override
     public Boolean caseValidPhoneCountIndicator(ValidPhoneCountIndicator object) {
         return setIndicatorDefinition(object, IndicatorEnum.ValidPhoneCountIndicatorEnum.getLabel());
+    }
+
+    @Override
+    public Boolean caseValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator object) {
+        return setIndicatorDefinition(object, IndicatorEnum.ValidPhoneForRegionCountIndicatorEnum.getLabel());
     }
 
     @Override

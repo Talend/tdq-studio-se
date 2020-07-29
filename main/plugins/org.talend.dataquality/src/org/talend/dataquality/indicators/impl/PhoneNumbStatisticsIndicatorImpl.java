@@ -20,6 +20,7 @@ import org.talend.dataquality.indicators.InvalidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator;
 import org.talend.dataquality.indicators.PossiblePhoneCountIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.ValidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.WellFormIntePhoneCountIndicator;
@@ -31,6 +32,7 @@ import org.talend.dataquality.indicators.WellFormNationalPhoneCountIndicator;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getWellFormNationalPhoneCountIndicator <em>Well Form National Phone Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getWellFormIntePhoneCountIndicator <em>Well Form Inte Phone Count Indicator</em>}</li>
@@ -39,9 +41,9 @@ import org.talend.dataquality.indicators.WellFormNationalPhoneCountIndicator;
  *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getPossiblePhoneCountIndicator <em>Possible Phone Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getValidRegCodeCountIndicator <em>Valid Reg Code Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getValidPhoneCountIndicator <em>Valid Phone Count Indicator</em>}</li>
+ *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getValidPhoneForRegionCountIndicator <em>Valid Phone For Region Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.impl.PhoneNumbStatisticsIndicatorImpl#getFormatFreqPieIndicator <em>Format Freq Pie Indicator</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -110,6 +112,15 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
      */
     protected ValidPhoneCountIndicator validPhoneCountIndicator;
 
+    /**
+     * The cached value of the '{@link #getValidPhoneForRegionCountIndicator() <em>Valid Phone For Region Count Indicator</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getValidPhoneForRegionCountIndicator()
+     * @generated
+     * @ordered
+     */
+    protected ValidPhoneForRegionCountIndicator validPhoneForRegionCountIndicator;
     /**
      * The cached value of the '{@link #getFormatFreqPieIndicator() <em>Format Freq Pie Indicator</em>}' containment reference.
      * <!-- begin-user-doc -->
@@ -445,6 +456,49 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
      * <!-- end-user-doc -->
      * @generated
      */
+    public ValidPhoneForRegionCountIndicator getValidPhoneForRegionCountIndicator() {
+        return validPhoneForRegionCountIndicator;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator newValidPhoneForRegionCountIndicator, NotificationChain msgs) {
+        ValidPhoneForRegionCountIndicator oldValidPhoneForRegionCountIndicator = validPhoneForRegionCountIndicator;
+        validPhoneForRegionCountIndicator = newValidPhoneForRegionCountIndicator;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR, oldValidPhoneForRegionCountIndicator, newValidPhoneForRegionCountIndicator);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator newValidPhoneForRegionCountIndicator) {
+        if (newValidPhoneForRegionCountIndicator != validPhoneForRegionCountIndicator) {
+            NotificationChain msgs = null;
+            if (validPhoneForRegionCountIndicator != null)
+                msgs = ((InternalEObject)validPhoneForRegionCountIndicator).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR, null, msgs);
+            if (newValidPhoneForRegionCountIndicator != null)
+                msgs = ((InternalEObject)newValidPhoneForRegionCountIndicator).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR, null, msgs);
+            msgs = basicSetValidPhoneForRegionCountIndicator(newValidPhoneForRegionCountIndicator, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR, newValidPhoneForRegionCountIndicator, newValidPhoneForRegionCountIndicator));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public FormatFreqPieIndicator getFormatFreqPieIndicator() {
         return formatFreqPieIndicator;
     }
@@ -505,6 +559,8 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
                 return basicSetValidRegCodeCountIndicator(null, msgs);
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR:
                 return basicSetValidPhoneCountIndicator(null, msgs);
+            case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR:
+                return basicSetValidPhoneForRegionCountIndicator(null, msgs);
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR:
                 return basicSetFormatFreqPieIndicator(null, msgs);
         }
@@ -533,6 +589,8 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
                 return getValidRegCodeCountIndicator();
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR:
                 return getValidPhoneCountIndicator();
+            case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR:
+                return getValidPhoneForRegionCountIndicator();
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR:
                 return getFormatFreqPieIndicator();
         }
@@ -567,6 +625,9 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
                 return;
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR:
                 setValidPhoneCountIndicator((ValidPhoneCountIndicator)newValue);
+                return;
+            case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR:
+                setValidPhoneForRegionCountIndicator((ValidPhoneForRegionCountIndicator)newValue);
                 return;
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR:
                 setFormatFreqPieIndicator((FormatFreqPieIndicator)newValue);
@@ -604,6 +665,9 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR:
                 setValidPhoneCountIndicator((ValidPhoneCountIndicator)null);
                 return;
+            case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR:
+                setValidPhoneForRegionCountIndicator((ValidPhoneForRegionCountIndicator)null);
+                return;
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR:
                 setFormatFreqPieIndicator((FormatFreqPieIndicator)null);
                 return;
@@ -633,6 +697,8 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
                 return validRegCodeCountIndicator != null;
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR:
                 return validPhoneCountIndicator != null;
+            case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR:
+                return validPhoneForRegionCountIndicator != null;
             case IndicatorsPackage.PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR:
                 return formatFreqPieIndicator != null;
         }
@@ -648,6 +714,7 @@ public class PhoneNumbStatisticsIndicatorImpl extends CompositeIndicatorImpl imp
     public EList<Indicator> getChildIndicators() {
         EList<Indicator> children = new BasicEList<Indicator>();
         addChildToList(this.getValidPhoneCountIndicator(), children);
+        addChildToList(this.getValidPhoneForRegionCountIndicator(), children);
         addChildToList(this.getPossiblePhoneCountIndicator(), children);
         addChildToList(this.getValidRegCodeCountIndicator(), children);
         addChildToList(this.getInvalidRegCodeCountIndicator(), children);

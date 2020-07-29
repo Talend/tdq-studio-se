@@ -69,6 +69,7 @@ import org.talend.dataquality.indicators.TextIndicator;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.UpperQuartileIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.ValidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.impl.FormatFreqPieIndicatorImpl;
@@ -426,6 +427,11 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
                     createPlainIndicatorUnit(IndicatorEnum.ValidPhoneCountIndicatorEnum,
                             phoneNumbIndicator.getValidPhoneCountIndicator()));
             this.plainIndicatorUnitMap.put(
+                            IndicatorEnum.ValidPhoneForRegionCountIndicatorEnum,
+                            createPlainIndicatorUnit(IndicatorEnum.ValidPhoneForRegionCountIndicatorEnum,
+                                    phoneNumbIndicator.getValidPhoneForRegionCountIndicator()));
+            this.plainIndicatorUnitMap
+                    .put(
                     IndicatorEnum.PossiblePhoneCountIndicatorEnum,
                     createPlainIndicatorUnit(IndicatorEnum.PossiblePhoneCountIndicatorEnum,
                             phoneNumbIndicator.getPossiblePhoneCountIndicator()));
@@ -728,6 +734,9 @@ public abstract class ModelElementIndicatorImpl implements ModelElementIndicator
                 PhoneNumbStatisticsIndicator phoneNumbIndicator = (PhoneNumbStatisticsIndicator) indicatorUnit.getIndicator();
                 phoneNumbIndicator.setValidPhoneCountIndicator((ValidPhoneCountIndicator) getPlainIndicatorUnit(
                         IndicatorEnum.ValidPhoneCountIndicatorEnum).getIndicator());
+                phoneNumbIndicator
+                        .setValidPhoneForRegionCountIndicator((ValidPhoneForRegionCountIndicator) getPlainIndicatorUnit(
+                                IndicatorEnum.ValidPhoneForRegionCountIndicatorEnum).getIndicator());
                 phoneNumbIndicator.setPossiblePhoneCountIndicator((PossiblePhoneCountIndicator) getPlainIndicatorUnit(
                         IndicatorEnum.PossiblePhoneCountIndicatorEnum).getIndicator());
                 phoneNumbIndicator.setValidRegCodeCountIndicator((ValidRegCodeCountIndicator) getPlainIndicatorUnit(

@@ -444,6 +444,10 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//indicators/ValidPhoneCountIndicator/validPhoneNumCount"/>
         <genOperations ecoreOperation="dataquality.ecore#//indicators/ValidPhoneCountIndicator/getValidPhoneValues"/>
       </genClasses>
+      <genClasses ecoreClass="dataquality.ecore#//indicators/ValidPhoneForRegionCountIndicator">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//indicators/ValidPhoneForRegionCountIndicator/validPhoneNumCount"/>
+        <genOperations ecoreOperation="dataquality.ecore#//indicators/ValidPhoneForRegionCountIndicator/getValidPhoneValues"/>
+      </genClasses>
       <genClasses ecoreClass="dataquality.ecore#//indicators/PossiblePhoneCountIndicator">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dataquality.ecore#//indicators/PossiblePhoneCountIndicator/possiblePhoneCount"/>
         <genOperations ecoreOperation="dataquality.ecore#//indicators/PossiblePhoneCountIndicator/getPossiblePhoneValues"/>
@@ -476,6 +480,7 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//indicators/PhoneNumbStatisticsIndicator/possiblePhoneCountIndicator"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//indicators/PhoneNumbStatisticsIndicator/validRegCodeCountIndicator"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//indicators/PhoneNumbStatisticsIndicator/validPhoneCountIndicator"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//indicators/PhoneNumbStatisticsIndicator/validPhoneForRegionCountIndicator"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dataquality.ecore#//indicators/PhoneNumbStatisticsIndicator/formatFreqPieIndicator"/>
       </genClasses>
       <genClasses ecoreClass="dataquality.ecore#//indicators/FormatFreqPieIndicator">

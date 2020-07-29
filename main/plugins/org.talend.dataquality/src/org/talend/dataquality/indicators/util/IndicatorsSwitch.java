@@ -785,6 +785,15 @@ public class IndicatorsSwitch<T> {
                 if (result == null) result = defaultCase(theEObject);
                 return result;
             }
+            case IndicatorsPackage.VALID_PHONE_FOR_REGION_COUNT_INDICATOR: {
+                ValidPhoneForRegionCountIndicator validPhoneForRegionCountIndicator = (ValidPhoneForRegionCountIndicator)theEObject;
+                T result = caseValidPhoneForRegionCountIndicator(validPhoneForRegionCountIndicator);
+                if (result == null) result = caseIndicator(validPhoneForRegionCountIndicator);
+                if (result == null) result = caseModelElement(validPhoneForRegionCountIndicator);
+                if (result == null) result = caseElement(validPhoneForRegionCountIndicator);
+                if (result == null) result = defaultCase(theEObject);
+                return result;
+            }
             case IndicatorsPackage.POSSIBLE_PHONE_COUNT_INDICATOR: {
                 PossiblePhoneCountIndicator possiblePhoneCountIndicator = (PossiblePhoneCountIndicator)theEObject;
                 T result = casePossiblePhoneCountIndicator(possiblePhoneCountIndicator);
@@ -1651,6 +1660,21 @@ public class IndicatorsSwitch<T> {
      * @generated
      */
     public T caseValidPhoneCountIndicator(ValidPhoneCountIndicator object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Valid Phone For Region Count Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * This implementation returns null;
+     * returning a non-null result will terminate the switch.
+     * <!-- end-user-doc -->
+     * @param object the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Valid Phone For Region Count Indicator</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator object) {
         return null;
     }
 

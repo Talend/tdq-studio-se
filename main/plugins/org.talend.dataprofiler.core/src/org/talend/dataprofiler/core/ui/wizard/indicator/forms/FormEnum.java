@@ -240,6 +240,7 @@ public enum FormEnum {
             }
             break;
         case ValidPhoneCountIndicatorEnum:
+        case ValidPhoneForRegionCountIndicatorEnum:
         case PossiblePhoneCountIndicatorEnum:
         case WellFormNationalPhoneCountIndicatorEnum:
         case WellFormIntePhoneCountIndicatorEnum:

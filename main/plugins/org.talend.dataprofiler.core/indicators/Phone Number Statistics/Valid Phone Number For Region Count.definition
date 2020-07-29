@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataquality.indicators.definition:IndicatorDefinition xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dataquality.indicators.definition="http://dataquality.indicators.definition" xmi:id="_wnCBkLEJEeCVX-ofo2XCue" name="Valid Phone Number For Region Count" label="Valid Phone Number For Region Count">
+  <taggedValue xmi:id="_RBkaQLEKEeCVY-ofo3XCux" tag="Description" value="counts the valid phone number for region"/>
+  <taggedValue xmi:id="_X01d0LEKEeCVY-ofo3XCux" tag="Purpose" value="evaluates the valid phone number for region of records"/>
+  <categories href="../../../.Talend.definition#_Ohyz4bEEEeCVE-ofo1XCug"/>
+</dataquality.indicators.definition:IndicatorDefinition>

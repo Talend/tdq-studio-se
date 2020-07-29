@@ -190,8 +190,7 @@ public class ValidPhoneCountIndicatorImpl extends IndicatorImpl implements Valid
             TextParameters textParameters = indParameters == null ? null : indParameters.getTextParameter();
             String country = IndicatorHelper.getCountryCodeByParameter(textParameters);
             PhoneNumber phoneNumber = phoneUtil.parse(data.toString(), country);
-            if (phoneUtil.isValidNumberForRegion(phoneNumber, country)) {
-                // if (phoneUtil.isValidNumber(phoneNumber)) {
+            if (phoneUtil.isValidNumber(phoneNumber)) {
                 validPhoneNumCount++;
                 if (checkMustStoreCurrentRow() || checkMustStoreCurrentRow(drillDownValueCount)) {
                     this.mustStoreRow = true;

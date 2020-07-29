@@ -201,6 +201,7 @@ public class IndicatorsFactoryImpl extends EFactoryImpl implements IndicatorsFac
             case IndicatorsPackage.YEAR_LOW_FREQUENCY_INDICATOR: return createYearLowFrequencyIndicator();
             case IndicatorsPackage.BIN_LOW_FREQUENCY_INDICATOR: return createBinLowFrequencyIndicator();
             case IndicatorsPackage.VALID_PHONE_COUNT_INDICATOR: return createValidPhoneCountIndicator();
+            case IndicatorsPackage.VALID_PHONE_FOR_REGION_COUNT_INDICATOR: return createValidPhoneForRegionCountIndicator();
             case IndicatorsPackage.POSSIBLE_PHONE_COUNT_INDICATOR: return createPossiblePhoneCountIndicator();
             case IndicatorsPackage.VALID_REG_CODE_COUNT_INDICATOR: return createValidRegCodeCountIndicator();
             case IndicatorsPackage.INVALID_REG_CODE_COUNT_INDICATOR: return createInvalidRegCodeCountIndicator();
@@ -891,6 +892,16 @@ public class IndicatorsFactoryImpl extends EFactoryImpl implements IndicatorsFac
     public ValidPhoneCountIndicator createValidPhoneCountIndicator() {
         ValidPhoneCountIndicatorImpl validPhoneCountIndicator = new ValidPhoneCountIndicatorImpl();
         return validPhoneCountIndicator;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public ValidPhoneForRegionCountIndicator createValidPhoneForRegionCountIndicator() {
+        ValidPhoneForRegionCountIndicatorImpl validPhoneForRegionCountIndicator = new ValidPhoneForRegionCountIndicatorImpl();
+        return validPhoneForRegionCountIndicator;
     }
 
     /**

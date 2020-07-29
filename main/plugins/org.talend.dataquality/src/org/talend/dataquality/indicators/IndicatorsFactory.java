@@ -575,6 +575,15 @@ public interface IndicatorsFactory extends EFactory {
     ValidPhoneCountIndicator createValidPhoneCountIndicator();
 
     /**
+     * Returns a new object of class '<em>Valid Phone For Region Count Indicator</em>'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return a new object of class '<em>Valid Phone For Region Count Indicator</em>'.
+     * @generated
+     */
+    ValidPhoneForRegionCountIndicator createValidPhoneForRegionCountIndicator();
+
+    /**
      * Returns a new object of class '<em>Possible Phone Count Indicator</em>'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->

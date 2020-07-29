@@ -379,6 +379,12 @@ public enum IndicatorEnum {
             "Valid Phone Number Count", //$NON-NLS-1$
             true,
             null),
+    ValidPhoneForRegionCountIndicatorEnum(
+            IndicatorsPackage.VALID_PHONE_FOR_REGION_COUNT_INDICATOR,
+            IndicatorsPackage.Literals.VALID_PHONE_FOR_REGION_COUNT_INDICATOR,
+            "Valid Phone Number For Region Count", //$NON-NLS-1$
+            true,
+            null),
     PossiblePhoneCountIndicatorEnum(
             IndicatorsPackage.POSSIBLE_PHONE_COUNT_INDICATOR,
             IndicatorsPackage.Literals.POSSIBLE_PHONE_COUNT_INDICATOR,
@@ -426,7 +432,8 @@ public enum IndicatorEnum {
             IndicatorsPackage.Literals.PHONE_NUMB_STATISTICS_INDICATOR,
             "Phone Number Statistics", //$NON-NLS-1$
             true,
-            new IndicatorEnum[] { ValidPhoneCountIndicatorEnum, ValidRegCodeCountIndicatorEnum, InvalidRegCodeCountIndicatorEnum,
+            new IndicatorEnum[] { ValidPhoneCountIndicatorEnum, ValidPhoneForRegionCountIndicatorEnum,
+                    ValidRegCodeCountIndicatorEnum, InvalidRegCodeCountIndicatorEnum,
                     PossiblePhoneCountIndicatorEnum, WellFormIntePhoneCountIndicatorEnum,
                     WellFormNationalPhoneCountIndicatorEnum, WellFormE164PhoneCountIndicatorEnum, FormatFreqPieIndictorEnum }),
     BenfordLawFrequencyIndicatorEnum(
@@ -688,6 +695,8 @@ public enum IndicatorEnum {
             returnEnum = AllMatchIndicatorEnum;
         } else if (indicatorType == ValidPhoneCountIndicatorEnum.getIndicatorType()) {
             returnEnum = ValidPhoneCountIndicatorEnum;
+        } else if (indicatorType == ValidPhoneForRegionCountIndicatorEnum.getIndicatorType()) {
+            returnEnum = ValidPhoneForRegionCountIndicatorEnum;
         } else if (indicatorType == ValidRegCodeCountIndicatorEnum.getIndicatorType()) {
             returnEnum = ValidRegCodeCountIndicatorEnum;
         } else if (indicatorType == PossiblePhoneCountIndicatorEnum.getIndicatorType()) {

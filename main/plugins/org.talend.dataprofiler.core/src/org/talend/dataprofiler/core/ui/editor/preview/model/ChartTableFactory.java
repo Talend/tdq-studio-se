@@ -73,6 +73,7 @@ import org.talend.dataquality.indicators.PossiblePhoneCountIndicator;
 import org.talend.dataquality.indicators.SqlPatternMatchingIndicator;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.WellFormIntePhoneCountIndicator;
 import org.talend.dataquality.indicators.WellFormNationalPhoneCountIndicator;
@@ -723,6 +724,11 @@ public final class ChartTableFactory {
             }
 
             @Override
+            public Indicator caseValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator object) {
+                return object;
+            }
+
+            @Override
             public Indicator caseWellFormE164PhoneCountIndicator(WellFormE164PhoneCountIndicator object) {
                 // TODO Auto-generated method stub
                 return object;
@@ -739,6 +745,7 @@ public final class ChartTableFactory {
                 // TODO Auto-generated method stub
                 return object;
             }
+
         };
 
         return iSwitch.doSwitch(indicator) != null;

@@ -14,6 +14,7 @@ package org.talend.dataquality.indicators;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getWellFormNationalPhoneCountIndicator <em>Well Form National Phone Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getWellFormIntePhoneCountIndicator <em>Well Form Inte Phone Count Indicator</em>}</li>
@@ -22,9 +23,9 @@ package org.talend.dataquality.indicators;
  *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getPossiblePhoneCountIndicator <em>Possible Phone Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getValidRegCodeCountIndicator <em>Valid Reg Code Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getValidPhoneCountIndicator <em>Valid Phone Count Indicator</em>}</li>
+ *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getValidPhoneForRegionCountIndicator <em>Valid Phone For Region Count Indicator</em>}</li>
  *   <li>{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getFormatFreqPieIndicator <em>Format Freq Pie Indicator</em>}</li>
  * </ul>
- * </p>
  *
  * @see org.talend.dataquality.indicators.IndicatorsPackage#getPhoneNumbStatisticsIndicator()
  * @model
@@ -213,6 +214,32 @@ public interface PhoneNumbStatisticsIndicator extends CompositeIndicator {
      * @generated
      */
     void setValidPhoneCountIndicator(ValidPhoneCountIndicator value);
+
+    /**
+     * Returns the value of the '<em><b>Valid Phone For Region Count Indicator</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Valid Phone For Region Count Indicator</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Valid Phone For Region Count Indicator</em>' containment reference.
+     * @see #setValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator)
+     * @see org.talend.dataquality.indicators.IndicatorsPackage#getPhoneNumbStatisticsIndicator_ValidPhoneForRegionCountIndicator()
+     * @model containment="true"
+     * @generated
+     */
+    ValidPhoneForRegionCountIndicator getValidPhoneForRegionCountIndicator();
+
+    /**
+     * Sets the value of the '{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getValidPhoneForRegionCountIndicator <em>Valid Phone For Region Count Indicator</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Valid Phone For Region Count Indicator</em>' containment reference.
+     * @see #getValidPhoneForRegionCountIndicator()
+     * @generated
+     */
+    void setValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator value);
 
     /**
      * Returns the value of the '<em><b>Format Freq Pie Indicator</b></em>' containment reference.

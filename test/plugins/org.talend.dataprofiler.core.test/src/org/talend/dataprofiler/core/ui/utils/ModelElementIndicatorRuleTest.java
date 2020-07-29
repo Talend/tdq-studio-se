@@ -85,7 +85,8 @@ public class ModelElementIndicatorRuleTest {
             // Soundex Frequency Statistics
             IndicatorEnum.SoundexIndicatorEnum, IndicatorEnum.SoundexLowIndicatorEnum,
             // Phone Number Statistics
-            IndicatorEnum.ValidPhoneCountIndicatorEnum, IndicatorEnum.ValidRegCodeCountIndicatorEnum,
+            IndicatorEnum.ValidPhoneCountIndicatorEnum, IndicatorEnum.ValidPhoneForRegionCountIndicatorEnum,
+            IndicatorEnum.ValidRegCodeCountIndicatorEnum,
             IndicatorEnum.InvalidRegCodeCountIndicatorEnum, IndicatorEnum.PossiblePhoneCountIndicatorEnum,
             IndicatorEnum.WellFormIntePhoneCountIndicatorEnum, IndicatorEnum.WellFormNationalPhoneCountIndicatorEnum,
             IndicatorEnum.WellFormE164PhoneCountIndicatorEnum, IndicatorEnum.FormatFreqPieIndictorEnum,

@@ -304,6 +304,7 @@ public final class ModelElementIndicatorRule {
             }
             break;
         case ValidPhoneCountIndicatorEnum:
+        case ValidPhoneForRegionCountIndicatorEnum:
         case PossiblePhoneCountIndicatorEnum:
         case ValidRegCodeCountIndicatorEnum:
         case InvalidRegCodeCountIndicatorEnum:

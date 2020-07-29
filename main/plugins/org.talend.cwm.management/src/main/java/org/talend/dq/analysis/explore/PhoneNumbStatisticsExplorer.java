@@ -30,6 +30,7 @@ public class PhoneNumbStatisticsExplorer extends DataExplorer {
         Map<String, String> map = new HashMap<String, String>();
         switch (this.indicatorEnum) {
         case ValidPhoneCountIndicatorEnum:
+        case ValidPhoneForRegionCountIndicatorEnum:
         case PossiblePhoneCountIndicatorEnum:
         case ValidRegCodeCountIndicatorEnum:
         case InvalidRegCodeCountIndicatorEnum:

@@ -57,6 +57,7 @@ import org.talend.dataquality.indicators.SoundexFreqIndicator;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.UpperQuartileIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.ValidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
 import org.talend.dataquality.indicators.WellFormIntePhoneCountIndicator;
@@ -249,6 +250,9 @@ public final class IndicatorCommonUtil {
                     // MOD qiongli 2011-7-21 feature 22362
                     case ValidPhoneCountIndicatorEnum:
                         value = ((ValidPhoneCountIndicator) indicator).getValidPhoneNumCount();
+                        break;
+                    case ValidPhoneForRegionCountIndicatorEnum:
+                        value = ((ValidPhoneForRegionCountIndicator) indicator).getValidPhoneNumCount();
                         break;
                     case ValidRegCodeCountIndicatorEnum:
                         value = ((ValidRegCodeCountIndicator) indicator).getValidRegCount();

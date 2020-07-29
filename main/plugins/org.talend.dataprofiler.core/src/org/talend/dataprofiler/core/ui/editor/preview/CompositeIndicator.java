@@ -331,6 +331,7 @@ public final class CompositeIndicator {
                 }
                 break;
             case ValidPhoneCountIndicatorEnum:
+            case ValidPhoneForRegionCountIndicatorEnum:
             case PossiblePhoneCountIndicatorEnum:
             case ValidRegCodeCountIndicatorEnum:
             case InvalidRegCodeCountIndicatorEnum:

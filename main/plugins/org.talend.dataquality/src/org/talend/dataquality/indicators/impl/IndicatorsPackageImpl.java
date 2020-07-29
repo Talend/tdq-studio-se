@@ -108,6 +108,7 @@ import org.talend.dataquality.indicators.TextParameters;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.UpperQuartileIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.ValidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.ValueIndicator;
 import org.talend.dataquality.indicators.WeekFrequencyIndicator;
@@ -558,6 +559,13 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
      * <!-- end-user-doc -->
      * @generated
      */
+    private EClass validPhoneForRegionCountIndicatorEClass = null;
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     private EClass possiblePhoneCountIndicatorEClass = null;
 
     /**
@@ -737,7 +745,7 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
 
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
-     * 
+     *
      * <p>This method is used to initialize {@link IndicatorsPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
      * <!-- begin-user-doc
@@ -2031,6 +2039,24 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
      * <!-- end-user-doc -->
      * @generated
      */
+    public EClass getValidPhoneForRegionCountIndicator() {
+        return validPhoneForRegionCountIndicatorEClass;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EAttribute getValidPhoneForRegionCountIndicator_ValidPhoneNumCount() {
+        return (EAttribute)validPhoneForRegionCountIndicatorEClass.getEStructuralFeatures().get(0);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     public EClass getPossiblePhoneCountIndicator() {
         return possiblePhoneCountIndicatorEClass;
     }
@@ -2211,8 +2237,17 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
      * <!-- end-user-doc -->
      * @generated
      */
-    public EReference getPhoneNumbStatisticsIndicator_FormatFreqPieIndicator() {
+    public EReference getPhoneNumbStatisticsIndicator_ValidPhoneForRegionCountIndicator() {
         return (EReference)phoneNumbStatisticsIndicatorEClass.getEStructuralFeatures().get(7);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getPhoneNumbStatisticsIndicator_FormatFreqPieIndicator() {
+        return (EReference)phoneNumbStatisticsIndicatorEClass.getEStructuralFeatures().get(8);
     }
 
     /**
@@ -2634,6 +2669,9 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
         validPhoneCountIndicatorEClass = createEClass(VALID_PHONE_COUNT_INDICATOR);
         createEAttribute(validPhoneCountIndicatorEClass, VALID_PHONE_COUNT_INDICATOR__VALID_PHONE_NUM_COUNT);
 
+        validPhoneForRegionCountIndicatorEClass = createEClass(VALID_PHONE_FOR_REGION_COUNT_INDICATOR);
+        createEAttribute(validPhoneForRegionCountIndicatorEClass, VALID_PHONE_FOR_REGION_COUNT_INDICATOR__VALID_PHONE_NUM_COUNT);
+
         possiblePhoneCountIndicatorEClass = createEClass(POSSIBLE_PHONE_COUNT_INDICATOR);
         createEAttribute(possiblePhoneCountIndicatorEClass, POSSIBLE_PHONE_COUNT_INDICATOR__POSSIBLE_PHONE_COUNT);
 
@@ -2660,6 +2698,7 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
         createEReference(phoneNumbStatisticsIndicatorEClass, PHONE_NUMB_STATISTICS_INDICATOR__POSSIBLE_PHONE_COUNT_INDICATOR);
         createEReference(phoneNumbStatisticsIndicatorEClass, PHONE_NUMB_STATISTICS_INDICATOR__VALID_REG_CODE_COUNT_INDICATOR);
         createEReference(phoneNumbStatisticsIndicatorEClass, PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR);
+        createEReference(phoneNumbStatisticsIndicatorEClass, PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR);
         createEReference(phoneNumbStatisticsIndicatorEClass, PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR);
 
         formatFreqPieIndicatorEClass = createEClass(FORMAT_FREQ_PIE_INDICATOR);
@@ -2800,6 +2839,7 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
         yearLowFrequencyIndicatorEClass.getESuperTypes().add(this.getLowFrequencyIndicator());
         binLowFrequencyIndicatorEClass.getESuperTypes().add(this.getLowFrequencyIndicator());
         validPhoneCountIndicatorEClass.getESuperTypes().add(this.getIndicator());
+        validPhoneForRegionCountIndicatorEClass.getESuperTypes().add(this.getIndicator());
         possiblePhoneCountIndicatorEClass.getESuperTypes().add(this.getIndicator());
         validRegCodeCountIndicatorEClass.getESuperTypes().add(this.getIndicator());
         invalidRegCodeCountIndicatorEClass.getESuperTypes().add(this.getIndicator());
@@ -3099,6 +3139,11 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
 
         addEOperation(validPhoneCountIndicatorEClass, this.getJavaSet(), "getValidPhoneValues", 0, 1, IS_UNIQUE, IS_ORDERED);
 
+        initEClass(validPhoneForRegionCountIndicatorEClass, ValidPhoneForRegionCountIndicator.class, "ValidPhoneForRegionCountIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        initEAttribute(getValidPhoneForRegionCountIndicator_ValidPhoneNumCount(), ecorePackage.getELongObject(), "validPhoneNumCount", "0", 0, 1, ValidPhoneForRegionCountIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        addEOperation(validPhoneForRegionCountIndicatorEClass, this.getJavaSet(), "getValidPhoneValues", 0, 1, IS_UNIQUE, IS_ORDERED);
+
         initEClass(possiblePhoneCountIndicatorEClass, PossiblePhoneCountIndicator.class, "PossiblePhoneCountIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getPossiblePhoneCountIndicator_PossiblePhoneCount(), ecorePackage.getELongObject(), "possiblePhoneCount", "0", 0, 1, PossiblePhoneCountIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3137,6 +3182,7 @@ public class IndicatorsPackageImpl extends EPackageImpl implements IndicatorsPac
         initEReference(getPhoneNumbStatisticsIndicator_PossiblePhoneCountIndicator(), this.getPossiblePhoneCountIndicator(), null, "possiblePhoneCountIndicator", null, 0, 1, PhoneNumbStatisticsIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getPhoneNumbStatisticsIndicator_ValidRegCodeCountIndicator(), this.getValidRegCodeCountIndicator(), null, "validRegCodeCountIndicator", null, 0, 1, PhoneNumbStatisticsIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getPhoneNumbStatisticsIndicator_ValidPhoneCountIndicator(), this.getValidPhoneCountIndicator(), null, "validPhoneCountIndicator", null, 0, 1, PhoneNumbStatisticsIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getPhoneNumbStatisticsIndicator_ValidPhoneForRegionCountIndicator(), this.getValidPhoneForRegionCountIndicator(), null, "validPhoneForRegionCountIndicator", null, 0, 1, PhoneNumbStatisticsIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getPhoneNumbStatisticsIndicator_FormatFreqPieIndicator(), this.getFormatFreqPieIndicator(), null, "formatFreqPieIndicator", null, 0, 1, PhoneNumbStatisticsIndicator.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(formatFreqPieIndicatorEClass, FormatFreqPieIndicator.class, "FormatFreqPieIndicator", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

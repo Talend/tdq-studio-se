@@ -396,6 +396,10 @@ public class IndicatorsAdapterFactory extends AdapterFactoryImpl {
                 return createValidPhoneCountIndicatorAdapter();
             }
             @Override
+            public Adapter caseValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator object) {
+                return createValidPhoneForRegionCountIndicatorAdapter();
+            }
+            @Override
             public Adapter casePossiblePhoneCountIndicator(PossiblePhoneCountIndicator object) {
                 return createPossiblePhoneCountIndicatorAdapter();
             }
@@ -1362,6 +1366,20 @@ public class IndicatorsAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createValidPhoneCountIndicatorAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '{@link org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator <em>Valid Phone For Region Count Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * This default implementation returns null so that we can easily ignore cases;
+     * it's useful to ignore a case when inheritance will catch all the cases anyway.
+     * <!-- end-user-doc -->
+     * @return the new adapter.
+     * @see org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator
+     * @generated
+     */
+    public Adapter createValidPhoneForRegionCountIndicatorAdapter() {
         return null;
     }
 

@@ -5,6 +5,7 @@
   <aggregatedDefinitions href="Invalid Region Code Count.definition#_LuVZgLEfEeCVE-ofo1XCug"/>
   <aggregatedDefinitions href="Possible Phone Number Count.definition#_wnCBkLEJEeCVE-ofo1XCug"/>
   <aggregatedDefinitions href="Valid Phone Number Count.definition#_wnCBkLEJEeCVE-ofo1XCug"/>
+  <aggregatedDefinitions href="Valid Phone Number For Region Count.definition#_wnCBkLEJEeCVX-ofo2XCue"/>
   <aggregatedDefinitions href="Valid Region Code Count.definition#_aXbmULEeEeCVE-ofo1XCug"/>
   <aggregatedDefinitions href="Well Formed E164 Phone Number Count.definition#_e3AMILEiEeCVE-ofo1XCug"/>
   <aggregatedDefinitions href="Well Formed International Phone Number Count.definition#_qqT3kLEhEeCVE-ofo1XCug"/>

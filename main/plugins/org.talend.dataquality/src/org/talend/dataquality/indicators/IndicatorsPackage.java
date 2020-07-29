@@ -20844,6 +20844,331 @@ public interface IndicatorsPackage extends EPackage {
     int VALID_PHONE_COUNT_INDICATOR_FEATURE_COUNT = INDICATOR_FEATURE_COUNT + 1;
 
     /**
+     * The meta object id for the '{@link org.talend.dataquality.indicators.impl.ValidPhoneForRegionCountIndicatorImpl <em>Valid Phone For Region Count Indicator</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see org.talend.dataquality.indicators.impl.ValidPhoneForRegionCountIndicatorImpl
+     * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getValidPhoneForRegionCountIndicator()
+     * @generated
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR = 63;
+
+    /**
+     * The feature id for the '<em><b>Name</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__NAME = INDICATOR__NAME;
+
+    /**
+     * The feature id for the '<em><b>Visibility</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__VISIBILITY = INDICATOR__VISIBILITY;
+
+    /**
+     * The feature id for the '<em><b>Client Dependency</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__CLIENT_DEPENDENCY = INDICATOR__CLIENT_DEPENDENCY;
+
+    /**
+     * The feature id for the '<em><b>Supplier Dependency</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__SUPPLIER_DEPENDENCY = INDICATOR__SUPPLIER_DEPENDENCY;
+
+    /**
+     * The feature id for the '<em><b>Constraint</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__CONSTRAINT = INDICATOR__CONSTRAINT;
+
+    /**
+     * The feature id for the '<em><b>Namespace</b></em>' container reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__NAMESPACE = INDICATOR__NAMESPACE;
+
+    /**
+     * The feature id for the '<em><b>Importer</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__IMPORTER = INDICATOR__IMPORTER;
+
+    /**
+     * The feature id for the '<em><b>Stereotype</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__STEREOTYPE = INDICATOR__STEREOTYPE;
+
+    /**
+     * The feature id for the '<em><b>Tagged Value</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__TAGGED_VALUE = INDICATOR__TAGGED_VALUE;
+
+    /**
+     * The feature id for the '<em><b>Document</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__DOCUMENT = INDICATOR__DOCUMENT;
+
+    /**
+     * The feature id for the '<em><b>Description</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__DESCRIPTION = INDICATOR__DESCRIPTION;
+
+    /**
+     * The feature id for the '<em><b>Responsible Party</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__RESPONSIBLE_PARTY = INDICATOR__RESPONSIBLE_PARTY;
+
+    /**
+     * The feature id for the '<em><b>Element Node</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__ELEMENT_NODE = INDICATOR__ELEMENT_NODE;
+
+    /**
+     * The feature id for the '<em><b>Set</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__SET = INDICATOR__SET;
+
+    /**
+     * The feature id for the '<em><b>Rendered Object</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__RENDERED_OBJECT = INDICATOR__RENDERED_OBJECT;
+
+    /**
+     * The feature id for the '<em><b>Vocabulary Element</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__VOCABULARY_ELEMENT = INDICATOR__VOCABULARY_ELEMENT;
+
+    /**
+     * The feature id for the '<em><b>Measurement</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__MEASUREMENT = INDICATOR__MEASUREMENT;
+
+    /**
+     * The feature id for the '<em><b>Change Request</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__CHANGE_REQUEST = INDICATOR__CHANGE_REQUEST;
+
+    /**
+     * The feature id for the '<em><b>Dasdl Property</b></em>' reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__DASDL_PROPERTY = INDICATOR__DASDL_PROPERTY;
+
+    /**
+     * The feature id for the '<em><b>Count</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__COUNT = INDICATOR__COUNT;
+
+    /**
+     * The feature id for the '<em><b>Null Count</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__NULL_COUNT = INDICATOR__NULL_COUNT;
+
+    /**
+     * The feature id for the '<em><b>Parameters</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__PARAMETERS = INDICATOR__PARAMETERS;
+
+    /**
+     * The feature id for the '<em><b>Analyzed Element</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__ANALYZED_ELEMENT = INDICATOR__ANALYZED_ELEMENT;
+
+    /**
+     * The feature id for the '<em><b>Datamining Type</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__DATAMINING_TYPE = INDICATOR__DATAMINING_TYPE;
+
+    /**
+     * The feature id for the '<em><b>Indicator Definition</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__INDICATOR_DEFINITION = INDICATOR__INDICATOR_DEFINITION;
+
+    /**
+     * The feature id for the '<em><b>Instantiated Expressions</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__INSTANTIATED_EXPRESSIONS = INDICATOR__INSTANTIATED_EXPRESSIONS;
+
+    /**
+     * The feature id for the '<em><b>Computed</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__COMPUTED = INDICATOR__COMPUTED;
+
+    /**
+     * The feature id for the '<em><b>Join Conditions</b></em>' containment reference list.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__JOIN_CONDITIONS = INDICATOR__JOIN_CONDITIONS;
+
+    /**
+     * The feature id for the '<em><b>Max Number Rows</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__MAX_NUMBER_ROWS = INDICATOR__MAX_NUMBER_ROWS;
+
+    /**
+     * The feature id for the '<em><b>Valid Row</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__VALID_ROW = INDICATOR__VALID_ROW;
+
+    /**
+     * The feature id for the '<em><b>In Valid Row</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__IN_VALID_ROW = INDICATOR__IN_VALID_ROW;
+
+    /**
+     * The feature id for the '<em><b>Store Data</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__STORE_DATA = INDICATOR__STORE_DATA;
+
+    /**
+     * The feature id for the '<em><b>Built In Indicator Definition</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__BUILT_IN_INDICATOR_DEFINITION = INDICATOR__BUILT_IN_INDICATOR_DEFINITION;
+
+    /**
+     * The feature id for the '<em><b>Valid Phone Num Count</b></em>' attribute.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR__VALID_PHONE_NUM_COUNT = INDICATOR_FEATURE_COUNT + 0;
+
+    /**
+     * The number of structural features of the '<em>Valid Phone For Region Count Indicator</em>' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int VALID_PHONE_FOR_REGION_COUNT_INDICATOR_FEATURE_COUNT = INDICATOR_FEATURE_COUNT + 1;
+
+    /**
      * The meta object id for the '{@link org.talend.dataquality.indicators.impl.PossiblePhoneCountIndicatorImpl <em>Possible Phone Count Indicator</em>}' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -20851,7 +21176,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getPossiblePhoneCountIndicator()
      * @generated
      */
-    int POSSIBLE_PHONE_COUNT_INDICATOR = 63;
+    int POSSIBLE_PHONE_COUNT_INDICATOR = 64;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -21176,7 +21501,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getValidRegCodeCountIndicator()
      * @generated
      */
-    int VALID_REG_CODE_COUNT_INDICATOR = 64;
+    int VALID_REG_CODE_COUNT_INDICATOR = 65;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -21501,7 +21826,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getInvalidRegCodeCountIndicator()
      * @generated
      */
-    int INVALID_REG_CODE_COUNT_INDICATOR = 65;
+    int INVALID_REG_CODE_COUNT_INDICATOR = 66;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -21826,7 +22151,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getWellFormNationalPhoneCountIndicator()
      * @generated
      */
-    int WELL_FORM_NATIONAL_PHONE_COUNT_INDICATOR = 66;
+    int WELL_FORM_NATIONAL_PHONE_COUNT_INDICATOR = 67;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -22151,7 +22476,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getWellFormIntePhoneCountIndicator()
      * @generated
      */
-    int WELL_FORM_INTE_PHONE_COUNT_INDICATOR = 67;
+    int WELL_FORM_INTE_PHONE_COUNT_INDICATOR = 68;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -22476,7 +22801,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getWellFormE164PhoneCountIndicator()
      * @generated
      */
-    int WELL_FORM_E164_PHONE_COUNT_INDICATOR = 68;
+    int WELL_FORM_E164_PHONE_COUNT_INDICATOR = 69;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -22801,7 +23126,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getPhoneNumbStatisticsIndicator()
      * @generated
      */
-    int PHONE_NUMB_STATISTICS_INDICATOR = 69;
+    int PHONE_NUMB_STATISTICS_INDICATOR = 70;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -23164,13 +23489,22 @@ public interface IndicatorsPackage extends EPackage {
     int PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR = COMPOSITE_INDICATOR_FEATURE_COUNT + 6;
 
     /**
+     * The feature id for the '<em><b>Valid Phone For Region Count Indicator</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR = COMPOSITE_INDICATOR_FEATURE_COUNT + 7;
+
+    /**
      * The feature id for the '<em><b>Format Freq Pie Indicator</b></em>' containment reference.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR = COMPOSITE_INDICATOR_FEATURE_COUNT + 7;
+    int PHONE_NUMB_STATISTICS_INDICATOR__FORMAT_FREQ_PIE_INDICATOR = COMPOSITE_INDICATOR_FEATURE_COUNT + 8;
 
     /**
      * The number of structural features of the '<em>Phone Numb Statistics Indicator</em>' class.
@@ -23179,7 +23513,7 @@ public interface IndicatorsPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int PHONE_NUMB_STATISTICS_INDICATOR_FEATURE_COUNT = COMPOSITE_INDICATOR_FEATURE_COUNT + 8;
+    int PHONE_NUMB_STATISTICS_INDICATOR_FEATURE_COUNT = COMPOSITE_INDICATOR_FEATURE_COUNT + 9;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.indicators.impl.FormatFreqPieIndicatorImpl <em>Format Freq Pie Indicator</em>}' class.
@@ -23189,7 +23523,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getFormatFreqPieIndicator()
      * @generated
      */
-    int FORMAT_FREQ_PIE_INDICATOR = 70;
+    int FORMAT_FREQ_PIE_INDICATOR = 71;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -23595,7 +23929,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getBenfordLawFrequencyIndicator()
      * @generated
      */
-    int BENFORD_LAW_FREQUENCY_INDICATOR = 71;
+    int BENFORD_LAW_FREQUENCY_INDICATOR = 72;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -23956,7 +24290,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getEastAsiaPatternFreqIndicator()
      * @generated
      */
-    int EAST_ASIA_PATTERN_FREQ_INDICATOR = 72;
+    int EAST_ASIA_PATTERN_FREQ_INDICATOR = 73;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -24317,7 +24651,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getEastAsiaPatternLowFreqIndicator()
      * @generated
      */
-    int EAST_ASIA_PATTERN_LOW_FREQ_INDICATOR = 73;
+    int EAST_ASIA_PATTERN_LOW_FREQ_INDICATOR = 74;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -24678,7 +25012,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getCSWordPatternFreqIndicator()
      * @generated
      */
-    int CS_WORD_PATTERN_FREQ_INDICATOR = 74;
+    int CS_WORD_PATTERN_FREQ_INDICATOR = 75;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -25039,7 +25373,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getCSWordPatternLowFreqIndicator()
      * @generated
      */
-    int CS_WORD_PATTERN_LOW_FREQ_INDICATOR = 75;
+    int CS_WORD_PATTERN_LOW_FREQ_INDICATOR = 76;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -25400,7 +25734,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getCIWordPatternFreqIndicator()
      * @generated
      */
-    int CI_WORD_PATTERN_FREQ_INDICATOR = 76;
+    int CI_WORD_PATTERN_FREQ_INDICATOR = 77;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -25761,7 +26095,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getCIWordPatternLowFreqIndicator()
      * @generated
      */
-    int CI_WORD_PATTERN_LOW_FREQ_INDICATOR = 77;
+    int CI_WORD_PATTERN_LOW_FREQ_INDICATOR = 78;
 
     /**
      * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -26122,7 +26456,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getEnumStatistics()
      * @generated
      */
-    int ENUM_STATISTICS = 78;
+    int ENUM_STATISTICS = 79;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.indicators.DataminingType <em>Datamining Type</em>}' enum.
@@ -26132,7 +26466,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getDataminingType()
      * @generated
      */
-    int DATAMINING_TYPE = 79;
+    int DATAMINING_TYPE = 80;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.indicators.DateGrain <em>Date Grain</em>}' enum.
@@ -26142,7 +26476,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getDateGrain()
      * @generated
      */
-    int DATE_GRAIN = 80;
+    int DATE_GRAIN = 81;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.indicators.MatchingAlgorithm <em>Matching Algorithm</em>}' enum.
@@ -26152,7 +26486,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getMatchingAlgorithm()
      * @generated
      */
-    int MATCHING_ALGORITHM = 81;
+    int MATCHING_ALGORITHM = 82;
 
     /**
      * The meta object id for the '{@link org.talend.dataquality.indicators.IndicatorValueType <em>Indicator Value Type</em>}' enum.
@@ -26162,7 +26496,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getIndicatorValueType()
      * @generated
      */
-    int INDICATOR_VALUE_TYPE = 82;
+    int INDICATOR_VALUE_TYPE = 83;
 
     /**
      * The meta object id for the '<em>Java Set</em>' data type.
@@ -26172,7 +26506,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getJavaSet()
      * @generated
      */
-    int JAVA_SET = 83;
+    int JAVA_SET = 84;
 
     /**
      * The meta object id for the '<em>Java Hash Map</em>' data type.
@@ -26182,7 +26516,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getJavaHashMap()
      * @generated
      */
-    int JAVA_HASH_MAP = 84;
+    int JAVA_HASH_MAP = 85;
 
     /**
      * The meta object id for the '<em>Java Tree Map</em>' data type.
@@ -26192,7 +26526,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getJavaTreeMap()
      * @generated
      */
-    int JAVA_TREE_MAP = 85;
+    int JAVA_TREE_MAP = 86;
 
     /**
      * The meta object id for the '<em>Object Array</em>' data type.
@@ -26201,7 +26535,7 @@ public interface IndicatorsPackage extends EPackage {
      * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getObjectArray()
      * @generated
      */
-    int OBJECT_ARRAY = 86;
+    int OBJECT_ARRAY = 87;
 
     /**
      * Returns the meta object for class '{@link org.talend.dataquality.indicators.Indicator <em>Indicator</em>}'.
@@ -27703,6 +28037,27 @@ public interface IndicatorsPackage extends EPackage {
     EAttribute getValidPhoneCountIndicator_ValidPhoneNumCount();
 
     /**
+     * Returns the meta object for class '{@link org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator <em>Valid Phone For Region Count Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for class '<em>Valid Phone For Region Count Indicator</em>'.
+     * @see org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator
+     * @generated
+     */
+    EClass getValidPhoneForRegionCountIndicator();
+
+    /**
+     * Returns the meta object for the attribute '{@link org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator#getValidPhoneNumCount <em>Valid Phone Num Count</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the attribute '<em>Valid Phone Num Count</em>'.
+     * @see org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator#getValidPhoneNumCount()
+     * @see #getValidPhoneForRegionCountIndicator()
+     * @generated
+     */
+    EAttribute getValidPhoneForRegionCountIndicator_ValidPhoneNumCount();
+
+    /**
      * Returns the meta object for class '{@link org.talend.dataquality.indicators.PossiblePhoneCountIndicator <em>Possible Phone Count Indicator</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -27916,6 +28271,17 @@ public interface IndicatorsPackage extends EPackage {
     EReference getPhoneNumbStatisticsIndicator_ValidPhoneCountIndicator();
 
     /**
+     * Returns the meta object for the containment reference '{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getValidPhoneForRegionCountIndicator <em>Valid Phone For Region Count Indicator</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Valid Phone For Region Count Indicator</em>'.
+     * @see org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getValidPhoneForRegionCountIndicator()
+     * @see #getPhoneNumbStatisticsIndicator()
+     * @generated
+     */
+    EReference getPhoneNumbStatisticsIndicator_ValidPhoneForRegionCountIndicator();
+
+    /**
      * Returns the meta object for the containment reference '{@link org.talend.dataquality.indicators.PhoneNumbStatisticsIndicator#getFormatFreqPieIndicator <em>Format Freq Pie Indicator</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -28117,7 +28483,7 @@ public interface IndicatorsPackage extends EPackage {
      * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Java Set</em>'.
      * @see java.util.Set
-     * @model instanceClass="java.util.Set<java.lang.Object>"
+     * @model instanceClass="java.util.Set&lt;java.lang.Object&gt;"
      * @generated
      */
     EDataType getJavaSet();
@@ -28128,7 +28494,7 @@ public interface IndicatorsPackage extends EPackage {
      * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Java Hash Map</em>'.
      * @see java.util.HashMap
-     * @model instanceClass="java.util.HashMap<java.lang.Object, java.lang.Long>"
+     * @model instanceClass="java.util.HashMap&lt;java.lang.Object, java.lang.Long&gt;"
      * @generated
      */
     EDataType getJavaHashMap();
@@ -28139,7 +28505,7 @@ public interface IndicatorsPackage extends EPackage {
      * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Java Tree Map</em>'.
      * @see java.util.TreeMap
-     * @model instanceClass="java.util.TreeMap<java.lang.Object, java.lang.Long>"
+     * @model instanceClass="java.util.TreeMap&lt;java.lang.Object, java.lang.Long&gt;"
      * @generated
      */
     EDataType getJavaTreeMap();
@@ -28149,7 +28515,7 @@ public interface IndicatorsPackage extends EPackage {
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @return the meta object for data type '<em>Object Array</em>'.
-     * @model instanceClass="java.util.List<java.lang.Object[]>"
+     * @model instanceClass="java.util.List&lt;java.lang.Object[]&gt;"
      * @generated
      */
     EDataType getObjectArray();
@@ -29439,6 +29805,24 @@ public interface IndicatorsPackage extends EPackage {
         EAttribute VALID_PHONE_COUNT_INDICATOR__VALID_PHONE_NUM_COUNT = eINSTANCE.getValidPhoneCountIndicator_ValidPhoneNumCount();
 
         /**
+         * The meta object literal for the '{@link org.talend.dataquality.indicators.impl.ValidPhoneForRegionCountIndicatorImpl <em>Valid Phone For Region Count Indicator</em>}' class.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @see org.talend.dataquality.indicators.impl.ValidPhoneForRegionCountIndicatorImpl
+         * @see org.talend.dataquality.indicators.impl.IndicatorsPackageImpl#getValidPhoneForRegionCountIndicator()
+         * @generated
+         */
+        EClass VALID_PHONE_FOR_REGION_COUNT_INDICATOR = eINSTANCE.getValidPhoneForRegionCountIndicator();
+
+        /**
+         * The meta object literal for the '<em><b>Valid Phone Num Count</b></em>' attribute feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EAttribute VALID_PHONE_FOR_REGION_COUNT_INDICATOR__VALID_PHONE_NUM_COUNT = eINSTANCE.getValidPhoneForRegionCountIndicator_ValidPhoneNumCount();
+
+        /**
          * The meta object literal for the '{@link org.talend.dataquality.indicators.impl.PossiblePhoneCountIndicatorImpl <em>Possible Phone Count Indicator</em>}' class.
          * <!-- begin-user-doc -->
          * <!-- end-user-doc -->
@@ -29611,6 +29995,14 @@ public interface IndicatorsPackage extends EPackage {
          * @generated
          */
         EReference PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_COUNT_INDICATOR = eINSTANCE.getPhoneNumbStatisticsIndicator_ValidPhoneCountIndicator();
+
+        /**
+         * The meta object literal for the '<em><b>Valid Phone For Region Count Indicator</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference PHONE_NUMB_STATISTICS_INDICATOR__VALID_PHONE_FOR_REGION_COUNT_INDICATOR = eINSTANCE.getPhoneNumbStatisticsIndicator_ValidPhoneForRegionCountIndicator();
 
         /**
          * The meta object literal for the '<em><b>Format Freq Pie Indicator</b></em>' containment reference feature.

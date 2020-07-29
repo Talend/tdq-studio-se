@@ -57,6 +57,7 @@ import org.talend.dataquality.indicators.RowCountIndicator;
 import org.talend.dataquality.indicators.TextParameters;
 import org.talend.dataquality.indicators.UniqueCountIndicator;
 import org.talend.dataquality.indicators.ValidPhoneCountIndicator;
+import org.talend.dataquality.indicators.ValidPhoneForRegionCountIndicator;
 import org.talend.dataquality.indicators.ValidRegCodeCountIndicator;
 import org.talend.dataquality.indicators.ValueIndicator;
 import org.talend.dataquality.indicators.WellFormE164PhoneCountIndicator;
@@ -69,6 +70,7 @@ import org.talend.dataquality.indicators.sql.UserDefIndicator;
 import org.talend.dataquality.indicators.sql.WhereRuleIndicator;
 import org.talend.dataquality.indicators.sql.util.IndicatorSqlSwitch;
 import org.talend.dataquality.indicators.util.IndicatorsSwitch;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -669,6 +671,11 @@ public final class IndicatorHelper {
             }
 
             @Override
+            public String caseValidPhoneForRegionCountIndicator(ValidPhoneForRegionCountIndicator object) {
+                return String.valueOf(object.getValidPhoneNumCount());
+            }
+
+            @Override
             public String casePossiblePhoneCountIndicator(PossiblePhoneCountIndicator object) {
                 return String.valueOf(object.getPossiblePhoneCount());
             }
@@ -841,12 +848,14 @@ public final class IndicatorHelper {
             WellFormIntePhoneCountIndicator wellFormInteIndi = phoneIndicator.getWellFormIntePhoneCountIndicator();
             WellFormNationalPhoneCountIndicator wellFormNatiIndi = phoneIndicator.getWellFormNationalPhoneCountIndicator();
             ValidPhoneCountIndicator validPhoneIndi = phoneIndicator.getValidPhoneCountIndicator();
+            ValidPhoneForRegionCountIndicator validPhoneForRegionIndi=phoneIndicator.getValidPhoneForRegionCountIndicator();
             PossiblePhoneCountIndicator possiblePhoneIndi = phoneIndicator.getPossiblePhoneCountIndicator();
             FormatFreqPieIndicator formatFreqPieIndicator = phoneIndicator.getFormatFreqPieIndicator();
             setCountryCodeParameter(wellFormE164Indi, countryCode);
             setCountryCodeParameter(wellFormInteIndi, countryCode);
             setCountryCodeParameter(wellFormNatiIndi, countryCode);
             setCountryCodeParameter(validPhoneIndi, countryCode);
+            setCountryCodeParameter(validPhoneForRegionIndi, countryCode);
             setCountryCodeParameter(possiblePhoneIndi, countryCode);
             setCountryCodeParameter(formatFreqPieIndicator, countryCode);
         }
