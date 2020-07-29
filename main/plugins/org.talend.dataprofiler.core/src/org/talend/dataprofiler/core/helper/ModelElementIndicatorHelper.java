@@ -302,10 +302,12 @@ public final class ModelElementIndicatorHelper {
      * meName. Else return a length less than or equal 30 string
      */
     public static String getCutOutData(String meName, String typeName, String fullNameResult) {
+       
+        
         if (fullNameResult == null) {
             return StringUtils.EMPTY;
         }
-        int fullLength = fullNameResult.length();
+        int fullLength = fullNameResult.codePointCount(0, fullNameResult.length());
         if (fullLength <= ModelElementIndicatorHelper.COLUMN_NAME_MAX_LENGTH) {
             return fullNameResult;
         }
@@ -313,13 +315,16 @@ public final class ModelElementIndicatorHelper {
             return StringUtils.EMPTY;
         }
         String realName = meName == null ? StringUtils.EMPTY : meName;
-        int realLength = meName.length();
+        int realLength = realName.codePointCount(0, realName.length());
         int parameterLength = fullLength - realLength;
         int displayRealNameLength = ModelElementIndicatorHelper.COLUMN_NAME_MAX_LENGTH - parameterLength;
-        String preRealName = realName.substring(0, displayRealNameLength / 2);
+        String preRealName = realName.substring(0, realName.offsetByCodePoints(0, displayRealNameLength / 2));
         String backRealName = realName
-                .substring(realName.length() - (displayRealNameLength - displayRealNameLength / 2) + 3,
+                .substring(realName
+                        .offsetByCodePoints(0, realLength - (displayRealNameLength - displayRealNameLength / 2) + 3),
                         realName.length());
+        // meName.codePointCount(0, meName.length());
+        // meName.offsetByCodePoints(0, meName.codePointCount(0, meName.length()));
         return preRealName + "..." + backRealName + PluginConstant.SPACE_STRING + PluginConstant.PARENTHESIS_LEFT
                 + (typeName == null ? "unknown" : typeName) + PluginConstant.PARENTHESIS_RIGHT;
     }

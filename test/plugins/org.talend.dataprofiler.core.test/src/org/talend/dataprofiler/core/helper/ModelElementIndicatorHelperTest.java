@@ -222,6 +222,65 @@ public class ModelElementIndicatorHelperTest {
         Assert.assertEquals("The modelElementDisplayName should be EMPTY", StringUtils.EMPTY, modelElementDisplayName);
     }
 
+    /**
+     * Test method for
+     * {@link org.talend.dataprofiler.core.helper.ModelElementIndicatorHelper#getModelElementDisplayName(org.talend.dataprofiler.core.model.ModelElementIndicator,Boolean
+     * isFullName)}.
+     * 
+     * case 9 Chinese column name
+     */
+    @Test
+    public void testGetModelElementDisplayNameModelElementIndicatorBooleanCase9() {
+        ColumnIndicatorImpl colIndicator =
+                createColumnIndicator("一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十", "String");
+        String modelElementDisplayName = ModelElementIndicatorHelper.getModelElementDisplayName(colIndicator, false);
+        Assert
+                .assertEquals("The modelElementDisplayName should be 一二三四五六七八九十...三四五六七八九十 (String)",
+                        "一二三四五六七八九十...三四五六七八九十 (String)", modelElementDisplayName);
+    }
+
+    /**
+     * Test method for
+     * {@link org.talend.dataprofiler.core.helper.ModelElementIndicatorHelper#getModelElementDisplayName(org.talend.dataprofiler.core.model.ModelElementIndicator,Boolean
+     * isFullName)}.
+     * 
+     * case 10 Chinese column name with surrogate pair
+     */
+    @Test
+    public void testGetModelElementDisplayNameModelElementIndicatorBooleanCase10() {
+        ColumnIndicatorImpl colIndicator =
+                createColumnIndicator("一二三四五六七八𠀀𠀀一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十𠀁𠀁𠀁四五六七八九十", "String");
+        String modelElementDisplayName = ModelElementIndicatorHelper.getModelElementDisplayName(colIndicator, false);
+        Assert
+                .assertEquals("The modelElementDisplayName should be 一二三四五六七八𠀀𠀀...𠀁四五六七八九十 (String)",
+                        "一二三四五六七八𠀀𠀀...𠀁四五六七八九十 (String)", modelElementDisplayName);
+
+        colIndicator = createColumnIndicator("一二三四五六七八𠀀一𠀀二三四五六七八九十一二三四五六七八九十一二三四五六七八九十𠀁𠀁𠀁四五六七八九十", "String");
+        modelElementDisplayName = ModelElementIndicatorHelper.getModelElementDisplayName(colIndicator, false);
+        Assert
+                .assertEquals("The modelElementDisplayName should be 一二三四五六七八𠀀一...𠀁四五六七八九十 (String)",
+                        "一二三四五六七八𠀀一...𠀁四五六七八九十 (String)", modelElementDisplayName);
+
+        colIndicator = createColumnIndicator("一二三四五六七八𠀀一𠀀二三四五六七八九十一二三四五六七八九十一二三四五六七八九十𠀁𠀁四𠀁五六七八九十", "String");
+        modelElementDisplayName = ModelElementIndicatorHelper.getModelElementDisplayName(colIndicator, false);
+        Assert
+                .assertEquals("The modelElementDisplayName should be 一二三四五六七八𠀀一...四𠀁五六七八九十 (String)",
+                        "一二三四五六七八𠀀一...四𠀁五六七八九十 (String)", modelElementDisplayName);
+
+        colIndicator = createColumnIndicator("一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十𠀁𠀁四𠀁五六七八九十", "String");
+        modelElementDisplayName = ModelElementIndicatorHelper.getModelElementDisplayName(colIndicator, false);
+        Assert
+                .assertEquals("The modelElementDisplayName should be 一二三四五六七八九十...四𠀁五六七八九十 (String)",
+                        "一二三四五六七八九十...四𠀁五六七八九十 (String)", modelElementDisplayName);
+
+        colIndicator = createColumnIndicator("一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十𠀁𠀁𠀁四五六七八九十", "String");
+        modelElementDisplayName = ModelElementIndicatorHelper.getModelElementDisplayName(colIndicator, false);
+        Assert
+                .assertEquals("The modelElementDisplayName should be 一二三四五六七八九十...𠀁四五六七八九十 (String)",
+                        "一二三四五六七八九十...𠀁四五六七八九十 (String)", modelElementDisplayName);
+
+    }
+
     private ColumnIndicatorImpl createColumnIndicator(String colName, String typeName) {
         DQRepositoryNode dqNode = new DQRepositoryNode(null, null, null, null);
         TdColumn createTdColumn = RelationalFactory.eINSTANCE.createTdColumn();
