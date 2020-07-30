@@ -96,7 +96,7 @@ public class SchemaEvaluator extends AbstractSchemaEvaluator<Schema> {
                         } catch (SQLException e) {
                             // TDQ-18628: for Azure Synapse cannot support switch between databases
                             // log error, but continue.
-                            log.error(e);
+                            log.warn(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catName), e);//$NON-NLS-1$
                         }
 
                     }

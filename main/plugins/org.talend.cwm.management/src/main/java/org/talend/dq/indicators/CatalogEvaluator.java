@@ -27,6 +27,7 @@ import org.talend.dataquality.indicators.schema.SchemaFactory;
 import org.talend.dataquality.indicators.schema.SchemaIndicator;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.utils.sugars.ReturnCode;
+
 import orgomg.cwm.foundation.softwaredeployment.DataProvider;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -83,7 +84,13 @@ public class CatalogEvaluator extends AbstractSchemaEvaluator<Catalog> {
             // ~
             // MOD qiongli 2012-8-9,Method 'Method not supported' not supported for HiveConnection
             if (dbms().supportCatalogSelection()) {
-                connection.setCatalog(catName);
+                try {
+                    connection.setCatalog(catName);
+                } catch (SQLException e) {
+                    // TDQ-18628: for Azure Synapse cannot support switch between databases
+                    // log error, but continue.
+                    log.warn(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catName), e);//$NON-NLS-1$
+                }
             }
 
             List<Schema> schemas = CatalogHelper.getSchemas(catalog);
