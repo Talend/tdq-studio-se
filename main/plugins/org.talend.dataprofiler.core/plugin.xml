@@ -1821,7 +1821,7 @@
            class="org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicatorTask"
            id="org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator"
            name="org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator"
-           version="7.4.1">
+           version="7.3.1">
      </workspacetask>
   </extension>
   
