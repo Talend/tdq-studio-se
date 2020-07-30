@@ -639,7 +639,7 @@ public class TableAnalysisSqlExecutor extends AnalysisExecutor {
         Package catalog = CatalogHelper.getParentCatalog(schema);
         String catalogName = catalog != null ? catalog.getName() : schema.getName();
         if (!eval.selectCatalog(catalogName)) {
-            log.warn("Failed to select catalog " + catalogName + " for connection.");//$NON-NLS-1$//$NON-NLS-2$
+            log.warn(Messages.getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalogName));//$NON-NLS-1$
         }
         // TDQ-17324~
         ReturnCode retCode = eval.evaluateIndicators(sqlStatement, closeAtTheEnd);

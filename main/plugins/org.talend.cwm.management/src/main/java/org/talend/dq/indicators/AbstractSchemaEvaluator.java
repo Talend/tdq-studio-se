@@ -692,7 +692,10 @@ public abstract class AbstractSchemaEvaluator<T> extends Evaluator<T> {
                     } catch (SQLException e) {
                         // TDQ-18628: for Azure Synapse cannot support switch between databases
                         // log error, but continue.
-                        log.error(e);
+                        log
+                                .warn(Messages
+                                        .getString("ColumnAnalysisExecutor.FAILEDTOSELECTCATALOG", catalog.getName()), //$NON-NLS-1$
+                                        e);
                     }
                     Connection databaseConnection = getDataManager();
                     DatabaseConnection origValueConn = null;
