@@ -123,6 +123,7 @@ public class ModelElementIndicatorRuleTest {
             false, false, false, false,
             // Phone Number Statistics
             true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+            true, false,
             // Fraud Detection
             true, true,
             // User Defined Indicators
@@ -150,7 +151,7 @@ public class ModelElementIndicatorRuleTest {
             // Soundex Frequency Statistics
             true, true, true, true,
             // Phone Number Statistics
-            true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+            true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,true, false,
             // Fraud Detection
             true, true,
             // User Defined Indicators
@@ -178,6 +179,7 @@ public class ModelElementIndicatorRuleTest {
             false, false, false, false,
             // Phone Number Statistics
             true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
+            true, false,
             // Fraud Detection
             false, false,
             // User Defined Indicators
@@ -206,7 +208,7 @@ public class ModelElementIndicatorRuleTest {
             false, false, false, false,
             // Phone Number Statistics
             false, false, false, false, false, false, false, false, false, false, false, false, false, false, false,
-            false,
+            false, false, false,
             // Fraud Detection
             false, false,
             // User Defined Indicators
