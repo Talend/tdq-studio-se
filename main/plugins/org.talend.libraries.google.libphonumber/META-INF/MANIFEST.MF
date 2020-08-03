@@ -7,7 +7,7 @@ Bundle-Vendor: .Talend SA.
 Bundle-ClassPath: .,
  lib/carrier-1.103.jar,
  lib/geocoder-2.113.jar,
- lib/libphonenumber-8.10.7.jar,
+ lib/libphonenumber-8.12.3.jar,
  lib/prefixmapper-2.113.jar
 Require-Bundle: org.junit;bundle-version="3.8.2";resolution:=optional
 Bundle-ActivationPolicy: lazy

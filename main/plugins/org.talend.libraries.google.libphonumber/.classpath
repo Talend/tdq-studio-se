@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/libphonenumber-8.12.3.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/carrier-1.103.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/geocoder-2.113.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/libphonenumber-8.10.7.jar"  sourcepath="libs_src/libphonenumber-8.10.7-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/prefixmapper-2.113.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
