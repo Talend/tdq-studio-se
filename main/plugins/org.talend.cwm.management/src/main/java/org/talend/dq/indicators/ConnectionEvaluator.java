@@ -227,7 +227,8 @@ public class ConnectionEvaluator extends AbstractSchemaEvaluator<DataProvider> {
         if (catalogs != null) {
             List<Catalog> temp = new ArrayList<Catalog>();
             for (Catalog catalog : catalogs) {
-                if (checkCatalog(catalog.getName()) && setCatalogOk(connection, catalog.getName())) {
+                // TDQ-18658: fix some type connection cannot support connection.setCatalog. for example: Azure synapse
+                if (checkCatalog(catalog.getName())) {
                     temp.add(catalog);
                 }
             }

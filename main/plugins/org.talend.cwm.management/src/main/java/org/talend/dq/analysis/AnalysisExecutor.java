@@ -646,11 +646,12 @@ public abstract class AnalysisExecutor implements IAnalysisExecutor {
         try {
             connection.setCatalog(catalogName);
             return true;
-        } catch (TalendRuntimeException e) {
-            traceError(Messages.getString("ColumnAnalysisSqlExecutor.ERRORWHENSETCATALOG", catalogName, e.getMessage()));//$NON-NLS-1$
-            return Boolean.FALSE;
         } catch (SQLException e) {
-            traceError(Messages.getString("ColumnAnalysisSqlExecutor.ERRORWHENSETCATALOGSQL", catalogName, e.getMessage()));//$NON-NLS-1$
+            // TDQ-18628: for Azure Synapse cannot support switch between databases
+            log
+                    .warn(Messages
+                            .getString("ColumnAnalysisSqlExecutor.ERRORWHENSETCATALOGSQL", catalogName, //$NON-NLS-1$
+                                    e.getMessage()));
             return Boolean.FALSE;
         }
     }
