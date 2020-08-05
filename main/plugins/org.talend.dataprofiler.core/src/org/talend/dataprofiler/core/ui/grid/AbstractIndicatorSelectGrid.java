@@ -209,7 +209,9 @@ public abstract class AbstractIndicatorSelectGrid extends TalendGrid {
             headerRenderer.setRotation(COLUMN_HEADER_ROTATION);
             newCol.setHeaderRenderer(headerRenderer);
             newCol.setCellRenderer(getCellRenderer());
-            newCol.setText(ModelElementIndicatorHelper.getModelElementDisplayName(_modelElementIndicator));
+            newCol
+                    .setText(ModelElementIndicatorHelper.getModelElementDisplayName(_modelElementIndicator, false));
+            newCol.setHeaderTooltip(ModelElementIndicatorHelper.getModelElementDisplayName(_modelElementIndicator));
             newCol.setWidth(getPreferWidth(index));
             newCol.setData(_modelElementIndicator);
             newCol.setMoveable(true);
