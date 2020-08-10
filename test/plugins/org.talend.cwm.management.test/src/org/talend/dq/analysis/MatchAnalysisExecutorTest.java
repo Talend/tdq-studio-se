@@ -398,11 +398,10 @@ public class MatchAnalysisExecutorTest {
 
     private RecordMatchingIndicator createMatchIndicatorWithMathRules(String recordLinkageAlgorithm,
             List<List<MetadataColumn>> columnListList, double groupQualityThreshold, double matchInterval) {
+        boolean isTSwoosh = "T_SwooshAlgorithm".equals(recordLinkageAlgorithm);
         // Set indicators into analysis result.
         RecordMatchingIndicator matchIndicator =
                 ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
-        // Match key: name, no block key, Exact attribute algorithm.
-        matchIndicator.setAnalyzedElement(name);
 
         int i = 1;
         for (List<MetadataColumn> columnList : columnListList) {
@@ -417,16 +416,23 @@ public class MatchAnalysisExecutorTest {
             List<SurvivorshipKeyDefinition> survivorDefs = new ArrayList<SurvivorshipKeyDefinition>();
 
             String survivorAlgorithmType = "Concatenate";
+            String algorithmParameters = ",";
             if (i == 1) {
                 survivorAlgorithmType = "Concatenate";
+                algorithmParameters = ",";
             } else if (i == 2) {
                 survivorAlgorithmType = "MostCommon";
+                algorithmParameters = "";
             }
             for (MetadataColumn column : columnList) {
                 MatchKeyDefinition matchkeyDef =
-                        createMatchKeyDefinition(column, AttributeMatcherType.EXACT.name(), 1, i);
+                        createMatchKeyDefinition(column, AttributeMatcherType.EXACT.name(), i);
                 matchRule.getMatchKeys().add(matchkeyDef);
-                survivorDefs.add(createConcatenateKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType, ""));
+                if (isTSwoosh) {
+                    survivorDefs
+                            .add(createConcatenateKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType,
+                                    algorithmParameters));
+                }
             }
 
             i++;
@@ -444,19 +450,20 @@ public class MatchAnalysisExecutorTest {
      * 
      * @param column the MetadataColumn
      * @param algorithmType the AlgorithmType
-     * @param confidenceWeight the ConfidenceWeight
      * @param suffix the suffix of the name of the MatchKeyDefinition, if the column name is id, the suffix is 1, then
      * the name of the MatchKeyDefinition is id1
      */
-    private MatchKeyDefinition createMatchKeyDefinition(MetadataColumn column, String algorithmType,
-            int confidenceWeight, int suffix) {
+    private MatchKeyDefinition createMatchKeyDefinition(MetadataColumn column, String algorithmType, int suffix) {
         MatchKeyDefinition matchkeyDef = RulesPackage.eINSTANCE.getRulesFactory().createMatchKeyDefinition();
         matchkeyDef.setName(column.getName() + suffix);
         matchkeyDef.setColumn(column.getName());
         AlgorithmDefinition algoDef = RulesPackage.eINSTANCE.getRulesFactory().createAlgorithmDefinition();
         algoDef.setAlgorithmType(algorithmType);
         matchkeyDef.setAlgorithm(algoDef);
-        matchkeyDef.setConfidenceWeight(confidenceWeight);
+        matchkeyDef.setThreshold(1.0);
+        matchkeyDef.setConfidenceWeight(1);
+        matchkeyDef.setTokenizationType("No");
+        matchkeyDef.setHandleNull("nullMatchNull");
         return matchkeyDef;
     }
 
@@ -472,10 +479,14 @@ public class MatchAnalysisExecutorTest {
         AlgorithmDefinition concatenateAlgoDef = RulesFactory.eINSTANCE.createAlgorithmDefinition();
         concatenateAlgoDef.setAlgorithmParameters(algorithmParameters);
         concatenateAlgoDef.setAlgorithmType(algorithmType);
+        concatenateAlgoDef.setReferenceColumn("");
+
         SurvivorshipKeyDefinition createSurvivorshipKeyDefinition =
                 RulesFactory.eINSTANCE.createSurvivorshipKeyDefinition();
         createSurvivorshipKeyDefinition.setName(name);
+        createSurvivorshipKeyDefinition.setAllowManualResolution(true);
         createSurvivorshipKeyDefinition.setFunction(concatenateAlgoDef);
+
         return createSurvivorshipKeyDefinition;
     }
 
