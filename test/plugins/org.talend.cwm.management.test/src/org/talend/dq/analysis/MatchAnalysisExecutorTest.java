@@ -42,7 +42,9 @@ import org.talend.dataquality.rules.BlockKeyDefinition;
 import org.talend.dataquality.rules.MatchKeyDefinition;
 import org.talend.dataquality.rules.MatchRule;
 import org.talend.dataquality.rules.MatchRuleDefinition;
+import org.talend.dataquality.rules.RulesFactory;
 import org.talend.dataquality.rules.RulesPackage;
+import org.talend.dataquality.rules.SurvivorshipKeyDefinition;
 import org.talend.dq.helper.UnitTestBuildHelper;
 
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -314,12 +316,34 @@ public class MatchAnalysisExecutorTest {
     }
 
     /**
+     * the Record Linkage Algorithm is Simple VSR Matcher
+     * https://jira.talendforge.org/browse/TDQ-18542
+     * 
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    @SuppressWarnings("nls")
     @Test
-    public void testExecuteWithMultiMatchRule() {
+    public void testExecuteWithMultiMatchRuleVSR() {
+        testExecuteWithMultiMatchRule("simpleVSRMatcher");
+    }
+
+    /**
+     * the Record Linkage Algorithm is T-Swoosh
+     * https://jira.talendforge.org/browse/TDQ-18542
+     * 
+     * Test method for
+     * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
+     */
+    @Test
+    public void testExecuteWithMultiMatchRuleTSwoosh() {
+        testExecuteWithMultiMatchRule("T_SwooshAlgorithm");
+    }
+
+    /**
+     * @param recordLinkageAlgorithm the label of Record Linkage Algorithm
+     * {@link org.talend.dataquality.record.linkage.constant.RecordMatcherType}
+     */
+    private void testExecuteWithMultiMatchRule(String recordLinkageAlgorithm) {
         MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
         Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
@@ -336,14 +360,14 @@ public class MatchAnalysisExecutorTest {
         // this list contain 2 column list
         List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, this.metadataTable);
 
-        double groupQualityThreshold = 0.85d;
-        double matchInterval = 0.9d;
+        double groupQualityThreshold = 0.9d;
+        double matchInterval = 0.85d;
 
         // Scenario 1 only 1 Rule tab
         List<List<MetadataColumn>> columnListList1 = new ArrayList<List<MetadataColumn>>();
         columnListList1.add(columnListList.get(0));
-        RecordMatchingIndicator matchIndicator =
-                createMatchIndicatorWithMathRules(columnListList1, groupQualityThreshold, matchInterval);
+        RecordMatchingIndicator matchIndicator = createMatchIndicatorWithMathRules(recordLinkageAlgorithm,
+                columnListList1, groupQualityThreshold, matchInterval);
         executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
 
         // Assert group size and frequency.
@@ -357,7 +381,8 @@ public class MatchAnalysisExecutorTest {
         assertTrue(matchIndicator.getSuspectRecordCount() == 0);
 
         // Scenario 2 with 2 Rule tab
-        matchIndicator = createMatchIndicatorWithMathRules(columnListList, groupQualityThreshold, matchInterval);
+        matchIndicator = createMatchIndicatorWithMathRules(recordLinkageAlgorithm, columnListList,
+                groupQualityThreshold, matchInterval);
         executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
 
         // Assert group size and frequency.
@@ -371,8 +396,8 @@ public class MatchAnalysisExecutorTest {
         assertTrue(matchIndicator.getSuspectRecordCount() == 0);
     }
 
-    private RecordMatchingIndicator createMatchIndicatorWithMathRules(List<List<MetadataColumn>> columnListList,
-            double groupQualityThreshold, double matchInterval) {
+    private RecordMatchingIndicator createMatchIndicatorWithMathRules(String recordLinkageAlgorithm,
+            List<List<MetadataColumn>> columnListList, double groupQualityThreshold, double matchInterval) {
         // Set indicators into analysis result.
         RecordMatchingIndicator matchIndicator =
                 ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
@@ -383,52 +408,76 @@ public class MatchAnalysisExecutorTest {
         for (List<MetadataColumn> columnList : columnListList) {
             MatchRuleDefinition matchRuleDefinition =
                     RulesPackage.eINSTANCE.getRulesFactory().createMatchRuleDefinition();
-            // matchRuleDefinition.setRecordLinkageAlgorithm(RecordMatcherType.T_SwooshAlgorithm.getLabel());
-
-            // // MostCommon
-            // AlgorithmDefinition mostCommon = RulesFactory.eINSTANCE.createAlgorithmDefinition();
-            // mostCommon.setAlgorithmParameters(""); //$NON-NLS-1$
-            // mostCommon.setAlgorithmType("MostCommon"); //$NON-NLS-1$
-            //
-            // // Concatenate
-            // AlgorithmDefinition concatenate = RulesFactory.eINSTANCE.createAlgorithmDefinition();
-            // mostCommon.setAlgorithmParameters(""); //$NON-NLS-1$
-            // mostCommon.setAlgorithmType("Concatenate"); //$NON-NLS-1$
-
+            matchRuleDefinition.setRecordLinkageAlgorithm(recordLinkageAlgorithm);
             matchRuleDefinition.setMatchGroupQualityThreshold(groupQualityThreshold);
+
             MatchRule matchRule = RulesPackage.eINSTANCE.getRulesFactory().createMatchRule();
             matchRule.setMatchInterval(matchInterval);
             matchRule.setName("match rule " + i);
+            List<SurvivorshipKeyDefinition> survivorDefs = new ArrayList<SurvivorshipKeyDefinition>();
 
-
+            String survivorAlgorithmType = "Concatenate";
+            if (i == 1) {
+                survivorAlgorithmType = "Concatenate";
+            } else if (i == 2) {
+                survivorAlgorithmType = "MostCommon";
+            }
             for (MetadataColumn column : columnList) {
-                MatchKeyDefinition matchkeyDef = RulesPackage.eINSTANCE.getRulesFactory().createMatchKeyDefinition();
-                matchkeyDef.setName(column.getName() + i);
-                matchkeyDef.setColumn(column.getName());
-                AlgorithmDefinition algoDef = RulesPackage.eINSTANCE.getRulesFactory().createAlgorithmDefinition();
-                algoDef.setAlgorithmType(AttributeMatcherType.EXACT.name());
-                matchkeyDef.setAlgorithm(algoDef);
-                matchkeyDef.setConfidenceWeight(1);
+                MatchKeyDefinition matchkeyDef =
+                        createMatchKeyDefinition(column, AttributeMatcherType.EXACT.name(), 1, i);
                 matchRule.getMatchKeys().add(matchkeyDef);
+                survivorDefs.add(createConcatenateKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType, ""));
             }
 
             i++;
 
             matchRuleDefinition.getMatchRules().add(matchRule);
-            // matchRuleDefinition.getSurvivorshipKeys().add();
+            matchRuleDefinition.getSurvivorshipKeys().addAll(survivorDefs);
             matchIndicator.setBuiltInMatchRuleDefinition(matchRuleDefinition);
         }
 
         return matchIndicator;
     }
 
-    // private DefaultSurvivorshipDefinition createDefaultsurvivShip(String dataType, AlgorithmDefinition algorDef) {
-    // DefaultSurvivorshipDefinition createDefaultSurvivorshipDefinition =
-    // RulesFactory.eINSTANCE.createDefaultSurvivorshipDefinition();
-    // createDefaultSurvivorshipDefinition.setDataType(dataType);
-    // createDefaultSurvivorshipDefinition.setFunction(algorDef);
-    // return createDefaultSurvivorshipDefinition;
-    // }
+    /**
+     * create a MatchKeyDefinition
+     * 
+     * @param column the MetadataColumn
+     * @param algorithmType the AlgorithmType
+     * @param confidenceWeight the ConfidenceWeight
+     * @param suffix the suffix of the name of the MatchKeyDefinition, if the column name is id, the suffix is 1, then
+     * the name of the MatchKeyDefinition is id1
+     */
+    private MatchKeyDefinition createMatchKeyDefinition(MetadataColumn column, String algorithmType,
+            int confidenceWeight, int suffix) {
+        MatchKeyDefinition matchkeyDef = RulesPackage.eINSTANCE.getRulesFactory().createMatchKeyDefinition();
+        matchkeyDef.setName(column.getName() + suffix);
+        matchkeyDef.setColumn(column.getName());
+        AlgorithmDefinition algoDef = RulesPackage.eINSTANCE.getRulesFactory().createAlgorithmDefinition();
+        algoDef.setAlgorithmType(algorithmType);
+        matchkeyDef.setAlgorithm(algoDef);
+        matchkeyDef.setConfidenceWeight(confidenceWeight);
+        return matchkeyDef;
+    }
+
+    /**
+     * create a SurvivorshipKeyDefinition
+     * 
+     * @param name
+     * @param algorithmType
+     * @param algorithmParameters
+     */
+    private SurvivorshipKeyDefinition createConcatenateKeyDefinition(String name, String algorithmType,
+            String algorithmParameters) {
+        AlgorithmDefinition concatenateAlgoDef = RulesFactory.eINSTANCE.createAlgorithmDefinition();
+        concatenateAlgoDef.setAlgorithmParameters(algorithmParameters);
+        concatenateAlgoDef.setAlgorithmType(algorithmType);
+        SurvivorshipKeyDefinition createSurvivorshipKeyDefinition =
+                RulesFactory.eINSTANCE.createSurvivorshipKeyDefinition();
+        createSurvivorshipKeyDefinition.setName(name);
+        createSurvivorshipKeyDefinition.setFunction(concatenateAlgoDef);
+        return createSurvivorshipKeyDefinition;
+    }
 
     private List<List<MetadataColumn>> initColumns4MutilMatchRule(AnalysisContext context,
             MetadataTable metadataTable2) {
