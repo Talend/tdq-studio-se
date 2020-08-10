@@ -419,7 +419,7 @@ public class MatchAnalysisExecutorTest {
             String algorithmParameters = ",";
             if (i == 1) {
                 survivorAlgorithmType = "Concatenate";
-                algorithmParameters = ",";
+                algorithmParameters = ""; // let the parameter empty even if the survivor type is Concatenate
             } else if (i == 2) {
                 survivorAlgorithmType = "MostCommon";
                 algorithmParameters = "";
