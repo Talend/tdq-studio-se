@@ -262,7 +262,7 @@ public class RefreshActionDelegate implements IObjectActionDelegate {
                 for (int i = 0; i < count; i++) {
                     Object o = treepaths[0].getSegment(i);
                     if (o instanceof IFile) {
-                        if (((IFile) o).getFileExtension().toLowerCase().equals("prv")) { //$NON-NLS-1$
+                        if (((IFile) o).getFileExtension().equalsIgnoreCase("prv")) { //$NON-NLS-1$
                             selectedFileObject = (IFile) o;
                         }
                     } else if (o instanceof Schema) {
