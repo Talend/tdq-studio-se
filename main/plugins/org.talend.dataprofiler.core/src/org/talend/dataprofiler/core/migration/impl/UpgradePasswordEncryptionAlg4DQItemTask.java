@@ -15,23 +15,19 @@ package org.talend.dataprofiler.core.migration.impl;
 import java.util.Date;
 import java.util.List;
 
-import org.eclipse.core.resources.IFile;
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.talend.commons.utils.PasswordEncryptUtil;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
-import org.talend.core.model.properties.Property;
+import org.talend.core.model.properties.ContextItem;
+import org.talend.core.model.repository.ERepositoryObjectType;
+import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
-import org.talend.designer.core.model.utils.emf.talendfile.util.TalendFileSwitch;
 import org.talend.dq.helper.ContextHelper;
-import org.talend.dq.helper.PropertyHelper;
-import org.talend.dq.helper.resourcehelper.ContextResourceFileHelper;
 import org.talend.dq.helper.resourcehelper.PrvResourceFileHelper;
 import org.talend.dq.helper.resourcehelper.RepResourceFileHelper;
 import org.talend.dq.writer.impl.ElementWriterFactory;
@@ -53,45 +49,36 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
         return MigrationTaskType.FILE;
     }
 
-    TalendFileSwitch contextSwitch = new TalendFileSwitch() {
-
-        @Override
-        public ContextType caseContextType(ContextType object) {
-            return object;
-        };
-    };
-
     @Override
     protected boolean doExecute() throws Exception {
-        // for context file, consider the password
-        List<IFile> contextList = ContextResourceFileHelper.getInstance().getAllContexts();
-        for (IFile contextFile : contextList) {
+        // TDQ-18623 msjian : for context file, consider the password
+        List<IRepositoryViewObject> allContextObject =
+                ProxyRepositoryFactory.getInstance().getAll(ERepositoryObjectType.CONTEXT);
+
+        for (IRepositoryViewObject object : allContextObject) {
+            ContextItem contextItem = (ContextItem) object.getProperty().getItem();
+
+            List<ContextType> contextTypeList = contextItem.getContext();
             boolean modify = false;
-            ContextType type = null;
-            Resource fileResource = ContextResourceFileHelper.getInstance().getFileResource(contextFile);
-            EList<EObject> contents = fileResource.getContents();
-            for (EObject object : contents) {
-                Object doSwitch = contextSwitch.doSwitch(object);
-                type = doSwitch != null ? (ContextType) doSwitch : null;
-            }
-            if (type == null) {
-                continue;
-            }
-            List<ContextParameterType> paramTypes = type.getContextParameter();
-            if (paramTypes != null) {
-                for (ContextParameterType param : paramTypes) {
-                    String value = param.getValue();
-                    if (value != null && PasswordEncryptUtil.isPasswordType(param.getType())) {
-                        param.setRawValue(PasswordMigrationUtil.decryptPassword(value));
-                        modify = true;
+            if (contextTypeList != null) {
+                for (ContextType type : contextTypeList) {
+                    List<ContextParameterType> paramTypes = type.getContextParameter();
+                    if (paramTypes != null) {
+                        for (ContextParameterType param : paramTypes) {
+                            String value = param.getValue();
+                            if (value != null && PasswordEncryptUtil.isPasswordType(param.getType())) {
+                                String decryptValue = PasswordMigrationUtil.decryptPassword(value);
+                                if (decryptValue != null) {
+                                    param.setRawValue(decryptValue);
+                                    modify = true;
+                                }
+                            }
+                        }
                     }
                 }
             }
             if (modify) {
-                Property property = PropertyHelper.getProperty(contextFile);
-                if (property != null) {
-                    ProxyRepositoryFactory.getInstance().save(property.getItem(), true);
-                }
+                ProxyRepositoryFactory.getInstance().save(contextItem, true);
             }
         }
 
