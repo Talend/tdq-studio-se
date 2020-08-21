@@ -24,10 +24,12 @@ import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
+import org.talend.dataquality.analysis.Analysis;
 import org.talend.dataquality.reports.TdReport;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextParameterType;
 import org.talend.designer.core.model.utils.emf.talendfile.ContextType;
 import org.talend.dq.helper.ContextHelper;
+import org.talend.dq.helper.resourcehelper.AnaResourceFileHelper;
 import org.talend.dq.helper.resourcehelper.PrvResourceFileHelper;
 import org.talend.dq.helper.resourcehelper.RepResourceFileHelper;
 import org.talend.dq.writer.impl.ElementWriterFactory;
@@ -101,8 +103,8 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
         }
 
         // for report datamart part, consider the password
-        List<? extends ModelElement> allElement = RepResourceFileHelper.getInstance().getAllElement();
-        for (ModelElement me : allElement) {
+        List<? extends ModelElement> allReportElement = RepResourceFileHelper.getInstance().getAllElement();
+        for (ModelElement me : allReportElement) {
             if (me instanceof TdReport) {
                 boolean modify = false;
                 TdReport report = (TdReport) me;
@@ -138,6 +140,33 @@ public class UpgradePasswordEncryptionAlg4DQItemTask extends AbstractWorksapceUp
                 }
             }
         }
+
+        // for analysis, consider the password type context variables
+        List<? extends ModelElement> allAnalysisElement = AnaResourceFileHelper.getInstance().getAllElement();
+        for (ModelElement me : allAnalysisElement) {
+            if (me instanceof Analysis) {
+                boolean modify = false;
+                Analysis ana = (Analysis) me;
+
+                EList<ContextType> anaContextList = ana.getContextType();
+                for (ContextType type : anaContextList) {
+                    List<ContextParameterType> paramTypes = type.getContextParameter();
+                    if (paramTypes != null) {
+                        for (ContextParameterType param : paramTypes) {
+                            String value = param.getValue();
+                            if (value != null && PasswordEncryptUtil.isPasswordType(param.getType())) {
+                                param.setRawValue(PasswordMigrationUtil.decryptPassword(value));
+                                modify = true;
+                            }
+                        }
+                    }
+                }
+                if (modify) {
+                    ElementWriterFactory.getInstance().createAnalysisWrite().save(me);
+                }
+            }
+        }
+
 
         return true;
     }
