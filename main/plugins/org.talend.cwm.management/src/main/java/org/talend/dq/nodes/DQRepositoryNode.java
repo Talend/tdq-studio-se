@@ -31,6 +31,16 @@ import org.talend.repository.model.RepositoryNode;
  */
 public class DQRepositoryNode extends RepositoryNode {
 
+    private String displayName;
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
+    }
+
     /**
      * this can tell us which project(reference project, or current project) the node belongs to
      */

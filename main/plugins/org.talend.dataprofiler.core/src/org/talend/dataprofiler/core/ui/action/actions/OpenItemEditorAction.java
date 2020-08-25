@@ -94,6 +94,7 @@ import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -130,7 +131,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                             try {
                                 for (IRepositoryNode repNode : repNodes) {
                                     setImageDescriptor(ImageLib.getImageDescriptorByRepositoryNode(repNode));
-                                    duRun(repNode);
+                                    doRun(repNode);
                                 }
                             } catch (BusinessException e) {
                                 org.talend.dataprofiler.core.exception.ExceptionHandler.process(e, Level.FATAL);
@@ -144,9 +145,12 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
         }
     }
 
-    protected void duRun(IRepositoryNode repNode) throws BusinessException {
+    protected void doRun(IRepositoryNode repNode) throws BusinessException {
         // TDQ-12200: fix a NPE when the open item is unsynchronized status(for example is deleted by others).
-        repositoryObjectCRUD.refreshDQViewForRemoteProject();
+        // TDQ-18701 comment out the following line, don't refresh the DQ View before open one item because it's
+        // time-consuming, this waiting time is unbearable for users on remote projects, check the RepositoryNode
+        // directly, pop up a dialog and return if the item is deleted by other user.
+        // repositoryObjectCRUD.refreshDQViewForRemoteProject();
 
         // TDQ-13357: fix NPE, because for ReportFileRepNode, repNode.getObject() == null
         if (repNode.getObject() != null) {

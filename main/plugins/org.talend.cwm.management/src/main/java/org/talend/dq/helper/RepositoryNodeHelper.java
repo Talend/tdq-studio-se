@@ -163,6 +163,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
+
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.objectmodel.core.Package;
@@ -3976,6 +3977,24 @@ public final class RepositoryNodeHelper {
         }
 
         return ""; //$NON-NLS-1$
+    }
+
+    /**
+     * call getDisplayLabel() to get the display name and cache it at the first time, return the cached display name
+     * 
+     * @param node
+     */
+    public static String getDisplayName(IRepositoryNode node) {
+        if (node instanceof DQRepositoryNode) {
+            DQRepositoryNode dqNode = (DQRepositoryNode) node;
+            String result = dqNode.getDisplayName();
+            if (null == result) {
+                result = getDisplayLabel(node);
+                dqNode.setDisplayName(null == result ? "" : result);
+            }
+            return result;
+        }
+        return "";
     }
 
     public static boolean isSupportedConnection(IRepositoryNode repNode) {

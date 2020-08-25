@@ -27,8 +27,10 @@ public class RepositoryNodeComparator implements Comparator<IRepositoryNode> {
         if (o1 == null || o2 == null) {
             return 0;
         }
-        String label1 = RepositoryNodeHelper.getDisplayLabel(o1);
-        String label2 = RepositoryNodeHelper.getDisplayLabel(o2);
+        // TDQ-18701 using getDisplayName() to cache the name to reduce the duration of sorting
+        String label1 = RepositoryNodeHelper.getDisplayName(o1);
+        String label2 = RepositoryNodeHelper.getDisplayName(o2);
+        // TDQ-18701~
         if ("".equals(label1) || "".equals(label2)) { //$NON-NLS-1$ //$NON-NLS-2$
             return 0;
         }
