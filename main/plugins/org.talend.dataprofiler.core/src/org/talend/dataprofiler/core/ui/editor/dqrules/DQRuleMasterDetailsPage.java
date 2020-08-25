@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
@@ -76,6 +77,8 @@ import org.talend.utils.sugars.ReturnCode;
  * DOC xqliu class global comment. Detailled comment
  */
 public class DQRuleMasterDetailsPage extends AbstractMetadataFormPage implements PropertyChangeListener {
+
+    protected static Logger log = Logger.getLogger(DQRuleMasterDetailsPage.class);
 
     final LocalSelectionTransfer transfer = LocalSelectionTransfer.getTransfer();
 
@@ -213,11 +216,23 @@ public class DQRuleMasterDetailsPage extends AbstractMetadataFormPage implements
             MessageUI.openError(DefaultMessagesImpl.getString("AbstractMetadataFormPage.whitespace")); //$NON-NLS-1$
             return;
         }
-        if (!canSave().isOk()) {
+
+        long start = System.currentTimeMillis();
+        boolean canSave = canSave().isOk();
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+        log.error("doSave().canSave() duration: " + duration);
+
+        if (!canSave) {
             return;
         }
 
+        start = System.currentTimeMillis();
         super.doSave(monitor);
+        end = System.currentTimeMillis();
+        duration = end - start;
+        log.error("doSave().super.doSave() duration: " + duration);
+
         if (saveDQRule()) {
             this.isDirty = false;
         }
@@ -229,6 +244,7 @@ public class DQRuleMasterDetailsPage extends AbstractMetadataFormPage implements
      * @return
      */
     private boolean saveDQRule() {
+        long start = System.currentTimeMillis();
         boolean ret = false;
         this.tempJoinElements = cleanJoins(tempJoinElements);
         if (checkValus()) {
@@ -246,6 +262,9 @@ public class DQRuleMasterDetailsPage extends AbstractMetadataFormPage implements
             ret = rc.isOk();
             this.joinConditionTableViewer.updateModelViewer();
         }
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+        log.error("saveDQRule() duration: " + duration);
         return ret;
 
     }

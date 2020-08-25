@@ -94,6 +94,7 @@ import org.talend.repository.RepositoryWorkUnit;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.ResourceManager;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -125,28 +126,35 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
         if (repNodes != null) {
             RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("Open an DQ editor") {//$NON-NLS-1$
 
-                        @Override
-                        protected void run() {
-                            try {
-                                for (IRepositoryNode repNode : repNodes) {
-                                    setImageDescriptor(ImageLib.getImageDescriptorByRepositoryNode(repNode));
-                                    duRun(repNode);
-                                }
-                            } catch (BusinessException e) {
-                                org.talend.dataprofiler.core.exception.ExceptionHandler.process(e, Level.FATAL);
-                            } catch (Throwable e) {
-                                log.error(e, e);
-                            }
+                @Override
+                protected void run() {
+                    try {
+                        for (IRepositoryNode repNode : repNodes) {
+                            setImageDescriptor(ImageLib.getImageDescriptorByRepositoryNode(repNode));
+                            doRun(repNode);
                         }
-                    };
+                    } catch (BusinessException e) {
+                        org.talend.dataprofiler.core.exception.ExceptionHandler.process(e, Level.FATAL);
+                    } catch (Throwable e) {
+                        log.error(e, e);
+                    }
+                }
+            };
             workUnit.setAvoidUnloadResources(true);
             ProxyRepositoryFactory.getInstance().executeRepositoryWorkUnit(workUnit);
         }
     }
 
-    protected void duRun(IRepositoryNode repNode) throws BusinessException {
+    protected void doRun(IRepositoryNode repNode) throws BusinessException {
+        long start = System.currentTimeMillis();
         // TDQ-12200: fix a NPE when the open item is unsynchronized status(for example is deleted by others).
-        repositoryObjectCRUD.refreshDQViewForRemoteProject();
+        // TDQ-18701 comment out the following line, don't refresh the DQ View before open one item because it's
+        // time-consuming, this waiting time is unbearable for users on remote projects, check the RepositoryNode
+        // directly, pop up a dialog and return if the item is deleted by other user.
+        // srepositoryObjectCRUD.refreshDQViewForRemoteProject();
+        long end = System.currentTimeMillis();
+        long duration = end - start;
+        // log.error("doRun().repositoryObjectCRUD.refreshDQViewForRemoteProject() duration: " + duration);
 
         // TDQ-13357: fix NPE, because for ReportFileRepNode, repNode.getObject() == null
         if (repNode.getObject() != null) {
@@ -159,18 +167,43 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
             // TDQ-12034: before open the object editor, reload it first especially for git remote project
             // TDQ-12771: for local, also can avoid error when the cache node is changed but not save it.
             try {
+                start = System.currentTimeMillis();
                 ProxyRepositoryFactory.getInstance().reload(repNode.getObject().getProperty());
+                end = System.currentTimeMillis();
+                duration = end - start;
+                log.error("doRun().ProxyRepositoryFactory.getInstance().reload() duration: " + duration);
+
+                start = System.currentTimeMillis();
                 IFile objFile = PropertyHelper.getItemFile(repNode.getObject().getProperty());
+                end = System.currentTimeMillis();
+                duration = end - start;
+                log.error("doRun().PropertyHelper.getItemFile() duration: " + duration);
+
+                start = System.currentTimeMillis();
                 objFile.refreshLocal(IResource.DEPTH_INFINITE, null);
+                end = System.currentTimeMillis();
+                duration = end - start;
+                log.error("doRun().objFile.refreshLocal() duration: " + duration);
+
             } catch (Exception e1) {
                 log.error(e1, e1);
             }
         }
+
         // TDQ-12034~
+        start = System.currentTimeMillis();
         IEditorInput itemEditorInput = computeEditorInput(repNode, true);
+        end = System.currentTimeMillis();
+        duration = end - start;
+        log.error("doRun().computeEditorInput() duration: " + duration);
+
         if (itemEditorInput != null) {
             // open ItemEditorInput
+            start = System.currentTimeMillis();
             CorePlugin.getDefault().openEditor(itemEditorInput, editorID);
+            end = System.currentTimeMillis();
+            duration = end - start;
+            log.error("doRun().CorePlugin.getDefault().openEditor() duration: " + duration);
         } else {
             // not find ItemEditorInput
             if (repNode.getObject() == null) {
@@ -179,10 +212,9 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     ReportFileRepNode reportFileNode = (ReportFileRepNode) repNode;
                     IPath location = Path.fromOSString(reportFileNode.getResource().getRawLocation().toOSString());
                     // TDQ-5458 sizhaoliu 2012-07-17 add "." before the full name to make sure it is ignored by SVN.
-                    IFile latestRepIFile =
-                            ResourceManager
-                                    .getRootProject()
-                                    .getFile(PluginConstant.DOT_STRING + location.lastSegment());
+                    IFile latestRepIFile = ResourceManager
+                            .getRootProject()
+                            .getFile(PluginConstant.DOT_STRING + location.lastSegment());
                     try {
                         // TDQ-5458 sizhaoliu 2012-07-17 the link creation should be after report generation, but not at
                         // the openning.
@@ -191,9 +223,10 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                         // MOD yyin 20121224 TDQ-5329, using the default editor setted by the user.
                         IDE.openEditor(page, latestRepIFile);
                     } catch (PartInitException e) {
-                        MessageDialog.openError(Display.getCurrent().getActiveShell(),
-                                Messages.getString("NewFolderWizard.failureTitle"), //$NON-NLS-1$
-                                e.getMessage());
+                        MessageDialog
+                                .openError(Display.getCurrent().getActiveShell(),
+                                        Messages.getString("NewFolderWizard.failureTitle"), //$NON-NLS-1$
+                                        e.getMessage());
                         ExceptionHandler.process(e);
                     }
                 }
