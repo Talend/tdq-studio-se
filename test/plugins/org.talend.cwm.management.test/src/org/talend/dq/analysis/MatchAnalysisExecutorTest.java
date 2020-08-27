@@ -64,7 +64,6 @@ public class MatchAnalysisExecutorTest {
     @Before
     public void setUp() throws Exception {
         delimitedFileconnection = ConnectionPackage.eINSTANCE.getConnectionFactory().createDelimitedFileConnection();
-
     }
 
     /**
@@ -72,7 +71,7 @@ public class MatchAnalysisExecutorTest {
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
     @SuppressWarnings("nls")
-    // @Test
+    @Test
     public void testExecute() {
         MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
         Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
@@ -324,8 +323,27 @@ public class MatchAnalysisExecutorTest {
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
     @Test
-    public void testExecuteWithMultiMatchRuleVSR() {
-        testExecuteWithMultiMatchRule(null);
+    public void testExecuteWithMultiMatchRuleVSR1() {
+        AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
+        // Scenario 1 only 1 Rule tab
+        List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 1);
+        testExecuteWithMultiMatchRule(null, context, columnListList);
+    }
+
+    /**
+     * the Record Linkage Algorithm is Simple VSR Matcher
+     * https://jira.talendforge.org/browse/TDQ-18542
+     * 
+     * Test method for
+     * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
+     */
+    // @Test
+    public void testExecuteWithMultiMatchRuleVSR2() {
+        // TODO enable this junit test case after https://jira.talendforge.org/browse/TDQ-18732 done
+        AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
+        // Scenario 2 include 2 Rule tabs
+        List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 2);
+        testExecuteWithMultiMatchRule(null, context, columnListList);
     }
 
     /**
@@ -335,19 +353,37 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    // @Test
-    public void testExecuteWithMultiMatchRuleTSwoosh() {
-        testExecuteWithMultiMatchRule("T_SwooshAlgorithm");
+    @Test
+    public void testExecuteWithMultiMatchRuleTSwoosh1() {
+        AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
+        // Scenario 1 only 1 Rule tab
+        List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 1);
+        testExecuteWithMultiMatchRule("T_SwooshAlgorithm", context, columnListList);
+    }
+
+    /**
+     * the Record Linkage Algorithm is T-Swoosh
+     * https://jira.talendforge.org/browse/TDQ-18542
+     * 
+     * Test method for
+     * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
+     */
+    @Test
+    public void testExecuteWithMultiMatchRuleTSwoosh2() {
+        AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
+        // Scenario 2 include 2 Rule tabs
+        List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 2);
+        testExecuteWithMultiMatchRule("T_SwooshAlgorithm", context, columnListList);
     }
 
     /**
      * @param recordLinkageAlgorithm the label of Record Linkage Algorithm
      * {@link org.talend.dataquality.record.linkage.constant.RecordMatcherType}
      */
-    private void testExecuteWithMultiMatchRule(String recordLinkageAlgorithm) {
+    private void testExecuteWithMultiMatchRule(String recordLinkageAlgorithm, AnalysisContext context,
+            List<List<MetadataColumn>> columnListList) {
         MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
         Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
-        AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         analysis.setContext(context);
 
         AnalysisParameters params = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisParameters();
@@ -355,36 +391,12 @@ public class MatchAnalysisExecutorTest {
         TaggedValueHelper.setTaggedValue(analysis, TaggedValueHelper.PREVIEW_ROW_NUMBER, String.valueOf(100));
 
         context.setConnection(delimitedFileconnection);
-        URL fileUrl = this.getClass().getResource("multi_match_rule_test_data"); //$NON-NLS-1$
-        metadataTable = UnitTestBuildHelper.getDefault().initFileConnection(fileUrl, delimitedFileconnection);
-
-        // this list contain 2 column list
-        List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, this.metadataTable);
 
         double groupQualityThreshold = 0.9d;
         double matchInterval = 0.85d;
 
-        // Scenario 1 only 1 Rule tab
-        // List<List<MetadataColumn>> columnListList1 = new ArrayList<List<MetadataColumn>>();
-        // columnListList1.add(columnListList.get(0));
-        // RecordMatchingIndicator matchIndicator = createMatchIndicatorWithMathRules(recordLinkageAlgorithm,
-        // columnListList1, groupQualityThreshold, matchInterval);
-        // executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
-        //
-        // // Assert group size and frequency.
-        // Map<Object, Long> size2Frequency = matchIndicator.getGroupSize2groupFrequency();
-        // assertTrue(size2Frequency.get(String.valueOf(1)) == 1l);
-        // assertTrue(size2Frequency.get(String.valueOf(2)) == 1l);
-        //
-        // // Assert row count, unique records, matched records and suspect records.
-        // assertTrue(matchIndicator.getCount() == 3);
-        // assertTrue(matchIndicator.getMatchedRecordCount() == 2);
-        // assertTrue(matchIndicator.getSuspectRecordCount() == 0);
-
-        // Scenario 2 with 2 Rule tab
-        RecordMatchingIndicator matchIndicator =
-                createMatchIndicatorWithMathRules(recordLinkageAlgorithm, columnListList,
-                groupQualityThreshold, matchInterval);
+        RecordMatchingIndicator matchIndicator = createMatchIndicatorWithMathRules(recordLinkageAlgorithm,
+                columnListList, groupQualityThreshold, matchInterval);
         executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
 
         // Assert group size and frequency.
@@ -405,8 +417,9 @@ public class MatchAnalysisExecutorTest {
         RecordMatchingIndicator matchIndicator =
                 ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
 
-        int i = 1;
+        List<SurvivorshipKeyDefinition> survivorDefs = new ArrayList<SurvivorshipKeyDefinition>();
         for (List<MetadataColumn> columnList : columnListList) {
+            int i = 1;
             MatchRuleDefinition matchRuleDefinition =
                     RulesPackage.eINSTANCE.getRulesFactory().createMatchRuleDefinition();
             if (recordLinkageAlgorithm != null) {
@@ -417,7 +430,6 @@ public class MatchAnalysisExecutorTest {
             MatchRule matchRule = RulesPackage.eINSTANCE.getRulesFactory().createMatchRule();
             matchRule.setMatchInterval(matchInterval);
             matchRule.setName("match rule " + i);
-            List<SurvivorshipKeyDefinition> survivorDefs = new ArrayList<SurvivorshipKeyDefinition>();
 
             String survivorAlgorithmType = "Concatenate";
             String algorithmParameters = ",";
@@ -496,7 +508,10 @@ public class MatchAnalysisExecutorTest {
     }
 
     private List<List<MetadataColumn>> initColumns4MutilMatchRule(AnalysisContext context,
-            MetadataTable metadataTable2) {
+            int size) {
+        URL fileUrl = this.getClass().getResource("multi_match_rule_test_data"); //$NON-NLS-1$
+        this.metadataTable = UnitTestBuildHelper.getDefault().initFileConnection(fileUrl, delimitedFileconnection);
+
         List<List<MetadataColumn>> result = new ArrayList<List<MetadataColumn>>();
         List<MetadataColumn> columns1 = new ArrayList<MetadataColumn>();
         List<MetadataColumn> columns2 = new ArrayList<MetadataColumn>();
@@ -508,28 +523,28 @@ public class MatchAnalysisExecutorTest {
         id.setName("id"); //$NON-NLS-1$
         id.setLabel("id"); //$NON-NLS-1$
         anaElements.add(id);
-        metadataTable2.getColumns().add(id);
+        this.metadataTable.getColumns().add(id);
 
         // name
         MetadataColumn name = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         name.setName("name"); //$NON-NLS-1$
         name.setLabel("name"); //$NON-NLS-1$
         anaElements.add(name);
-        metadataTable.getColumns().add(name);
+        this.metadataTable.getColumns().add(name);
 
         // address
         MetadataColumn address = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         address.setName("address"); //$NON-NLS-1$
         address.setLabel("address"); //$NON-NLS-1$
         anaElements.add(address);
-        metadataTable.getColumns().add(address);
+        this.metadataTable.getColumns().add(address);
 
         // provinceID
         MetadataColumn provinceID = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
         provinceID.setName("provinceID"); //$NON-NLS-1$
         provinceID.setLabel("provinceID"); //$NON-NLS-1$
         anaElements.add(provinceID);
-        metadataTable.getColumns().add(provinceID);
+        this.metadataTable.getColumns().add(provinceID);
 
         columns1.add(name);
         columns1.add(address);
@@ -537,8 +552,13 @@ public class MatchAnalysisExecutorTest {
         columns2.add(address);
         columns2.add(provinceID);
 
-        result.add(columns1);
-        result.add(columns2);
+        if (size > 0) {
+            result.add(columns1);
+        }
+
+        if (size > 1) {
+            result.add(columns2);
+        }
 
         return result;
     }
