@@ -28,7 +28,7 @@ public class AddValidPhoneForRegionCountIndicatorTask extends AbstractWorksapceU
 
     @Override
     public Date getOrder() {
-        return createDate(2020, 9, 5);// bigger then R8 0831
+        return createDate(2020, 9, 5);// bigger than R8 0831
     }
 
     @Override
