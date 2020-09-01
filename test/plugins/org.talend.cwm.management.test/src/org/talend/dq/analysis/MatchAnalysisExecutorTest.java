@@ -71,7 +71,7 @@ public class MatchAnalysisExecutorTest {
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
     @SuppressWarnings("nls")
-    @Test
+    // @Test
     public void testExecute() {
         MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
         Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
@@ -86,7 +86,7 @@ public class MatchAnalysisExecutorTest {
 
         context.setConnection(delimitedFileconnection);
         URL fileUrl = this.getClass().getResource("match_test_data"); //$NON-NLS-1$
-        metadataTable = UnitTestBuildHelper.getDefault().initFileConnection(fileUrl, delimitedFileconnection);
+        this.metadataTable = UnitTestBuildHelper.getDefault().initFileConnection(fileUrl, delimitedFileconnection);
 
         this.name = UnitTestBuildHelper.getDefault().initColumns(context, this.metadataTable);
 
@@ -322,7 +322,7 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    @Test
+    // @Test
     public void testExecuteWithMultiMatchRuleVSR1() {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 1 only 1 Rule tab
@@ -337,7 +337,7 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    // @Test
+    @Test
     public void testExecuteWithMultiMatchRuleVSR2() {
         // TODO enable this junit test case after https://jira.talendforge.org/browse/TDQ-18732 done
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
@@ -353,7 +353,7 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    @Test
+    // @Test
     public void testExecuteWithMultiMatchRuleTSwoosh1() {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 1 only 1 Rule tab
@@ -368,7 +368,7 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    @Test
+    // @Test
     public void testExecuteWithMultiMatchRuleTSwoosh2() {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 2 include 2 Rule tabs
