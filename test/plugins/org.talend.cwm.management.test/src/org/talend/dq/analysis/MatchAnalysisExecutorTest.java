@@ -322,12 +322,12 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    // @Test
+    @Test
     public void testExecuteWithMultiMatchRuleVSR1() {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 1 only 1 Rule tab
         List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 1);
-        testExecuteWithMultiMatchRule(null, context, columnListList);
+        testExecuteWithMultiMatchRule(null, context, columnListList, false);
     }
 
     /**
@@ -343,7 +343,7 @@ public class MatchAnalysisExecutorTest {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 2 include 2 Rule tabs
         List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 2);
-        testExecuteWithMultiMatchRule(null, context, columnListList);
+        testExecuteWithMultiMatchRule(null, context, columnListList, true);
     }
 
     /**
@@ -353,12 +353,12 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    // @Test
+    @Test
     public void testExecuteWithMultiMatchRuleTSwoosh1() {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 1 only 1 Rule tab
         List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 1);
-        testExecuteWithMultiMatchRule("T_SwooshAlgorithm", context, columnListList);
+        testExecuteWithMultiMatchRule("T_SwooshAlgorithm", context, columnListList, false);
     }
 
     /**
@@ -368,12 +368,12 @@ public class MatchAnalysisExecutorTest {
      * Test method for
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
-    // @Test
+    @Test
     public void testExecuteWithMultiMatchRuleTSwoosh2() {
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 2 include 2 Rule tabs
         List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 2);
-        testExecuteWithMultiMatchRule("T_SwooshAlgorithm", context, columnListList);
+        testExecuteWithMultiMatchRule("T_SwooshAlgorithm", context, columnListList, true);
     }
 
     /**
@@ -381,7 +381,7 @@ public class MatchAnalysisExecutorTest {
      * {@link org.talend.dataquality.record.linkage.constant.RecordMatcherType}
      */
     private void testExecuteWithMultiMatchRule(String recordLinkageAlgorithm, AnalysisContext context,
-            List<List<MetadataColumn>> columnListList) {
+            List<List<MetadataColumn>> columnListList, boolean dummy) {
         MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
         Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
         analysis.setContext(context);
@@ -396,7 +396,7 @@ public class MatchAnalysisExecutorTest {
         double matchInterval = 0.85d;
 
         RecordMatchingIndicator matchIndicator = createMatchIndicatorWithMathRules(recordLinkageAlgorithm,
-                columnListList, groupQualityThreshold, matchInterval);
+                columnListList, groupQualityThreshold, matchInterval, dummy);
         executeAnalysis(matchAnalysisExecutor, analysis, matchIndicator);
 
         // Assert group size and frequency.
@@ -411,37 +411,72 @@ public class MatchAnalysisExecutorTest {
     }
 
     private RecordMatchingIndicator createMatchIndicatorWithMathRules(String recordLinkageAlgorithm,
-            List<List<MetadataColumn>> columnListList, double groupQualityThreshold, double matchInterval) {
+            List<List<MetadataColumn>> columnListList, double groupQualityThreshold, double matchInterval,
+            boolean dummy) {
         boolean isTSwoosh = "T_SwooshAlgorithm".equals(recordLinkageAlgorithm);
         // Set indicators into analysis result.
         RecordMatchingIndicator matchIndicator =
                 ColumnsetPackage.eINSTANCE.getColumnsetFactory().createRecordMatchingIndicator();
 
         List<SurvivorshipKeyDefinition> survivorDefs = new ArrayList<SurvivorshipKeyDefinition>();
-        for (List<MetadataColumn> columnList : columnListList) {
-            int i = 1;
-            MatchRuleDefinition matchRuleDefinition =
-                    RulesPackage.eINSTANCE.getRulesFactory().createMatchRuleDefinition();
-            if (recordLinkageAlgorithm != null) {
-                matchRuleDefinition.setRecordLinkageAlgorithm(recordLinkageAlgorithm);
-            }
-            matchRuleDefinition.setMatchGroupQualityThreshold(groupQualityThreshold);
+        MatchRuleDefinition matchRuleDefinition = RulesPackage.eINSTANCE.getRulesFactory().createMatchRuleDefinition();
+        if (recordLinkageAlgorithm != null) {
+            matchRuleDefinition.setRecordLinkageAlgorithm(recordLinkageAlgorithm);
+        }
+        matchRuleDefinition.setMatchGroupQualityThreshold(groupQualityThreshold);
 
+        int columnListListSize = columnListList.size();
+        if (columnListListSize > 0) {
             MatchRule matchRule = RulesPackage.eINSTANCE.getRulesFactory().createMatchRule();
             matchRule.setMatchInterval(matchInterval);
-            matchRule.setName("match rule " + i);
+            matchRule.setName("match rule 1");
 
             String survivorAlgorithmType = "Concatenate";
-            String algorithmParameters = ",";
-            if (i == 1) {
-                survivorAlgorithmType = "Concatenate";
-                algorithmParameters = ""; // let the parameter empty even if the survivor type is Concatenate
-            } else if (i == 2) {
-                survivorAlgorithmType = "MostCommon";
-                algorithmParameters = "";
+            String algorithmParameters = "";// let the parameter empty even if the survivor type is Concatenate
+            for (MetadataColumn column : columnListList.get(0)) {
+                MatchKeyDefinition matchkeyDef = createMatchKeyDefinition(column, AttributeMatcherType.EXACT.name(), 1);
+                matchRule.getMatchKeys().add(matchkeyDef);
+                if (isTSwoosh) {
+                    survivorDefs
+                            .add(createConcatenateKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType,
+                                    algorithmParameters));
+                }
             }
-            for (MetadataColumn column : columnList) {
-                MatchKeyDefinition matchkeyDef = createMatchKeyDefinition(column, AttributeMatcherType.EXACT.name(), i);
+            // if (dummy) {
+            // // add dummy column
+            // MetadataColumn dummyColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+            // dummyColumn.setName(""); //$NON-NLS-1$
+            // dummyColumn.setLabel(""); //$NON-NLS-1$
+            // MatchKeyDefinition matchkeyDefDummy =
+            // createMatchKeyDefinition(dummyColumn, AttributeMatcherType.DUMMY.name(), 0);
+            // matchRule.getMatchKeys().add(matchkeyDefDummy);
+            // }
+
+            matchRuleDefinition.getMatchRules().add(matchRule);
+            if (isTSwoosh) {
+                matchRuleDefinition.getSurvivorshipKeys().addAll(survivorDefs);
+            }
+        }
+
+        if (columnListListSize > 1) {
+            MatchRule matchRule = RulesPackage.eINSTANCE.getRulesFactory().createMatchRule();
+            matchRule.setMatchInterval(matchInterval);
+            matchRule.setName("match rule 2");
+
+            // if (dummy) {
+            // // add dummy column
+            // MetadataColumn dummyColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
+            // dummyColumn.setName(""); //$NON-NLS-1$
+            // dummyColumn.setLabel(""); //$NON-NLS-1$
+            // MatchKeyDefinition matchkeyDefDummy =
+            // createMatchKeyDefinition(dummyColumn, AttributeMatcherType.DUMMY.name(), 0);
+            // matchRule.getMatchKeys().add(matchkeyDefDummy);
+            // }
+
+            String survivorAlgorithmType = "MostCommon";
+            String algorithmParameters = "";
+            for (MetadataColumn column : columnListList.get(1)) {
+                MatchKeyDefinition matchkeyDef = createMatchKeyDefinition(column, AttributeMatcherType.EXACT.name(), 2);
                 matchRule.getMatchKeys().add(matchkeyDef);
                 if (isTSwoosh) {
                     survivorDefs
@@ -450,14 +485,13 @@ public class MatchAnalysisExecutorTest {
                 }
             }
 
-            i++;
-
             matchRuleDefinition.getMatchRules().add(matchRule);
             if (isTSwoosh) {
                 matchRuleDefinition.getSurvivorshipKeys().addAll(survivorDefs);
             }
-            matchIndicator.setBuiltInMatchRuleDefinition(matchRuleDefinition);
         }
+
+        matchIndicator.setBuiltInMatchRuleDefinition(matchRuleDefinition);
 
         return matchIndicator;
     }
@@ -472,7 +506,8 @@ public class MatchAnalysisExecutorTest {
      */
     private MatchKeyDefinition createMatchKeyDefinition(MetadataColumn column, String algorithmType, int suffix) {
         MatchKeyDefinition matchkeyDef = RulesPackage.eINSTANCE.getRulesFactory().createMatchKeyDefinition();
-        matchkeyDef.setName(column.getName() + suffix);
+        String name = suffix > 0 ? column.getName() + suffix : column.getName();
+        matchkeyDef.setName(name);
         matchkeyDef.setColumn(column.getName());
         AlgorithmDefinition algoDef = RulesPackage.eINSTANCE.getRulesFactory().createAlgorithmDefinition();
         algoDef.setAlgorithmType(algorithmType);
