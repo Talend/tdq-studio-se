@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,6 +43,10 @@ public class MigrationTaskManagerWithoutUI {
     protected ProductVersion currentVersion;
 
     protected MigrationTaskType taskType;
+
+    protected static List<String> MONTHLY_RELEASE_MIGRATION_IDS = new ArrayList<String>(Arrays
+            .asList("org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask", // 7.3.1R7 //$NON-NLS-1$
+                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicatorTask"));// 7.3.1R8 //$NON-NLS-1$
 
     public MigrationTaskManagerWithoutUI(ProductVersion workspaceVersion) {
         this(null, workspaceVersion, null, null);
@@ -93,7 +96,7 @@ public class MigrationTaskManagerWithoutUI {
 
         List<IMigrationTask> validTasks = new ArrayList<IMigrationTask>();
         // TDQ-18624: not output debug log because cause studio slowly
-        boolean isDebugEnabled = log.isDebugEnabled();
+        boolean isDebugEnabled = log.isInfoEnabled();
         if (isDebugEnabled) {
             log.info("workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
             log.info("currentVersion: " + currentVersion); //$NON-NLS-1$
@@ -126,26 +129,13 @@ public class MigrationTaskManagerWithoutUI {
                         if (isDebugEnabled) {
                             log.info("current studio is a patched studio"); //$NON-NLS-1$
                         }
-                        ProductVersion displayVersionE = ProductVersion.fromString(displayVersion, true, true);
-                        Date taskDate = task.getOrder();
-                        // migration task Version format is: 7.3.1.20200724
-                        ProductVersion taskVersionE = new ProductVersion(taskVersion, taskDate);
-                        if (displayVersionE.compareTo(taskVersionE) < 0) {
+                        // TDQ-18736 msjian: in order to make check migration tasks correctly,
+                        // make all monthly release migration tasks valid
+                        if (MONTHLY_RELEASE_MIGRATION_IDS.contains(task.getId())) {
                             if (isDebugEnabled) {
-                                log
-                                        .info("displayVersionE < taskVersionE: " + displayVersionE + "<" + taskVersionE //$NON-NLS-1$ //$NON-NLS-2$
-                                                + ", so"); //$NON-NLS-1$
                                 log.info(task.getId() + " is valid task"); //$NON-NLS-1$
                             }
                             validTasks.add(task);
-                        } else {
-                            if (isDebugEnabled) {
-                                log
-                                        .info("displayVersionE is not < taskVersionE: " + displayVersionE //$NON-NLS-1$
-                                                + " is not < " //$NON-NLS-1$
-                                                + taskVersionE + ", so"); //$NON-NLS-1$
-                                log.info(task.getId() + " is NOT valid task"); //$NON-NLS-1$
-                            }
                         }
                     } else {
                         if (isDebugEnabled) {
