@@ -46,7 +46,7 @@ public class MigrationTaskManagerWithoutUI {
 
     protected static List<String> MONTHLY_RELEASE_MIGRATION_IDS = new ArrayList<String>(Arrays
             .asList("org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask", // 7.3.1R7 //$NON-NLS-1$
-                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicatorTask"));// 7.3.1R8 //$NON-NLS-1$
+                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator"));// 7.3.1R8 //$NON-NLS-1$
 
     public MigrationTaskManagerWithoutUI(ProductVersion workspaceVersion) {
         this(null, workspaceVersion, null, null);
@@ -136,6 +136,12 @@ public class MigrationTaskManagerWithoutUI {
                                 log.info(task.getId() + " is valid task"); //$NON-NLS-1$
                             }
                             validTasks.add(task);
+                        } else {
+                            if (isDebugEnabled) {
+                                log
+                                        .info(task.getId()
+                                                + " is NOT in  MONTHLY_RELEASE_MIGRATION_IDS list, so is invalid task"); //$NON-NLS-1$
+                            }
                         }
                     } else {
                         if (isDebugEnabled) {
