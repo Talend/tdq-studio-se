@@ -46,7 +46,8 @@ public class MigrationTaskManagerWithoutUI {
 
     protected static List<String> MONTHLY_RELEASE_MIGRATION_IDS = new ArrayList<String>(Arrays
             .asList("org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask", // 7.3.1R7 //$NON-NLS-1$
-                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator"));// 7.3.1R8 //$NON-NLS-1$
+                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator", // 7.3.1R8 //$NON-NLS-1$
+                    "org.talend.dataprofiler.core.migration.impl.UpgradePasswordEncryptionAlg4DQItemTask"));// 7.3.1R9 //$NON-NLS-1$
 
     public MigrationTaskManagerWithoutUI(ProductVersion workspaceVersion) {
         this(null, workspaceVersion, null, null);
@@ -96,7 +97,7 @@ public class MigrationTaskManagerWithoutUI {
 
         List<IMigrationTask> validTasks = new ArrayList<IMigrationTask>();
         // TDQ-18624: not output debug log because cause studio slowly
-        boolean isDebugEnabled = log.isInfoEnabled();
+        boolean isDebugEnabled = log.isDebugEnabled();
         if (isDebugEnabled) {
             log.info("workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
             log.info("currentVersion: " + currentVersion); //$NON-NLS-1$
