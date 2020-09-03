@@ -339,7 +339,6 @@ public class MatchAnalysisExecutorTest {
      */
     @Test
     public void testExecuteWithMultiMatchRuleVSR2() {
-        // TODO enable this junit test case after https://jira.talendforge.org/browse/TDQ-18732 done
         AnalysisContext context = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysisContext();
         // Scenario 2 include 2 Rule tabs
         List<List<MetadataColumn>> columnListList = initColumns4MutilMatchRule(context, 2);
@@ -442,15 +441,6 @@ public class MatchAnalysisExecutorTest {
                                     algorithmParameters));
                 }
             }
-            // if (dummy) {
-            // // add dummy column
-            // MetadataColumn dummyColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
-            // dummyColumn.setName(""); //$NON-NLS-1$
-            // dummyColumn.setLabel(""); //$NON-NLS-1$
-            // MatchKeyDefinition matchkeyDefDummy =
-            // createMatchKeyDefinition(dummyColumn, AttributeMatcherType.DUMMY.name(), 0);
-            // matchRule.getMatchKeys().add(matchkeyDefDummy);
-            // }
 
             matchRuleDefinition.getMatchRules().add(matchRule);
             if (isTSwoosh) {
@@ -462,16 +452,6 @@ public class MatchAnalysisExecutorTest {
             MatchRule matchRule = RulesPackage.eINSTANCE.getRulesFactory().createMatchRule();
             matchRule.setMatchInterval(matchInterval);
             matchRule.setName("match rule 2");
-
-            // if (dummy) {
-            // // add dummy column
-            // MetadataColumn dummyColumn = ConnectionPackage.eINSTANCE.getConnectionFactory().createMetadataColumn();
-            // dummyColumn.setName(""); //$NON-NLS-1$
-            // dummyColumn.setLabel(""); //$NON-NLS-1$
-            // MatchKeyDefinition matchkeyDefDummy =
-            // createMatchKeyDefinition(dummyColumn, AttributeMatcherType.DUMMY.name(), 0);
-            // matchRule.getMatchKeys().add(matchkeyDefDummy);
-            // }
 
             String survivorAlgorithmType = "MostCommon";
             String algorithmParameters = "";
