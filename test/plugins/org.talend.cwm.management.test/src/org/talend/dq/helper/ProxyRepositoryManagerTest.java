@@ -12,26 +12,13 @@
 // ============================================================================
 package org.talend.dq.helper;
 
-import static org.mockito.Mockito.*;
-import static org.powermock.api.support.membermodification.MemberMatcher.*;
-import static org.powermock.api.support.membermodification.MemberModifier.*;
-import junit.framework.Assert;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.talend.commons.runtime.model.repository.ERepositoryStatus;
-import org.talend.core.model.properties.Item;
 import org.talend.core.repository.model.ProxyRepositoryFactory;
 
 /**
  * DOC yyin class global comment. Detailled comment
  */
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ ProxyRepositoryFactory.class })
+// @RunWith(PowerMockRunner.class)
+// @PrepareForTest({ ProxyRepositoryFactory.class })
 public class ProxyRepositoryManagerTest {
 
     private ProxyRepositoryFactory proxFactory;
@@ -41,10 +28,10 @@ public class ProxyRepositoryManagerTest {
      *
      * @throws java.lang.Exception
      */
-    @Before
+    // @Before
     public void setUp() throws Exception {
-        proxFactory = mock(ProxyRepositoryFactory.class);
-        stub(method(ProxyRepositoryFactory.class, "getInstance")).toReturn(proxFactory);//$NON-NLS-1$
+        // proxFactory = mock(ProxyRepositoryFactory.class);
+        // stub(method(ProxyRepositoryFactory.class, "getInstance")).toReturn(proxFactory);//$NON-NLS-1$
 
     }
 
@@ -53,7 +40,7 @@ public class ProxyRepositoryManagerTest {
      *
      * @throws java.lang.Exception
      */
-    @After
+    // @After
     public void tearDown() throws Exception {
     }
 
@@ -61,20 +48,20 @@ public class ProxyRepositoryManagerTest {
      * Test method for
      * {@link org.talend.dq.helper.ProxyRepositoryManager#isLocked(org.talend.core.model.properties.Item)}.
      */
-    @Test
+    // @Test
     public void testIsLocked() {
-        Item item = mock(Item.class);
-        when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.LOCK_BY_USER);
-        Assert.assertTrue(ProxyRepositoryManager.getInstance().isLocked(item));
-
-        when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.LOCK_BY_OTHER);
-        Assert.assertTrue(ProxyRepositoryManager.getInstance().isLocked(item));
-
-        when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.DEFAULT);
-        Assert.assertFalse(ProxyRepositoryManager.getInstance().isLocked(item));
-
-        when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.READ_ONLY);
-        Assert.assertFalse(ProxyRepositoryManager.getInstance().isLocked(item));
+        // Item item = mock(Item.class);
+        // when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.LOCK_BY_USER);
+        // Assert.assertTrue(ProxyRepositoryManager.getInstance().isLocked(item));
+        //
+        // when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.LOCK_BY_OTHER);
+        // Assert.assertTrue(ProxyRepositoryManager.getInstance().isLocked(item));
+        //
+        // when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.DEFAULT);
+        // Assert.assertFalse(ProxyRepositoryManager.getInstance().isLocked(item));
+        //
+        // when(proxFactory.getStatus(item)).thenReturn(ERepositoryStatus.READ_ONLY);
+        // Assert.assertFalse(ProxyRepositoryManager.getInstance().isLocked(item));
     }
 
 }
