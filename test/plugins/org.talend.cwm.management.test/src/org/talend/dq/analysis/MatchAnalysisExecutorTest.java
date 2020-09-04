@@ -71,7 +71,7 @@ public class MatchAnalysisExecutorTest {
      * {@link org.talend.dq.analysis.MatchAnalysisExecutor#execute(org.talend.dataquality.analysis.Analysis)}.
      */
     @SuppressWarnings("nls")
-    // @Test
+    @Test
     public void testExecute() {
         MatchAnalysisExecutor matchAnalysisExecutor = new MatchAnalysisExecutor();
         Analysis analysis = AnalysisPackage.eINSTANCE.getAnalysisFactory().createAnalysis();
@@ -437,7 +437,7 @@ public class MatchAnalysisExecutorTest {
                 matchRule.getMatchKeys().add(matchkeyDef);
                 if (isTSwoosh) {
                     survivorDefs
-                            .add(createConcatenateKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType,
+                            .add(createSurvivorshipKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType,
                                     algorithmParameters));
                 }
             }
@@ -460,7 +460,7 @@ public class MatchAnalysisExecutorTest {
                 matchRule.getMatchKeys().add(matchkeyDef);
                 if (isTSwoosh) {
                     survivorDefs
-                            .add(createConcatenateKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType,
+                            .add(createSurvivorshipKeyDefinition(matchkeyDef.getName(), survivorAlgorithmType,
                                     algorithmParameters));
                 }
             }
@@ -506,7 +506,7 @@ public class MatchAnalysisExecutorTest {
      * @param algorithmType
      * @param algorithmParameters
      */
-    private SurvivorshipKeyDefinition createConcatenateKeyDefinition(String name, String algorithmType,
+    private SurvivorshipKeyDefinition createSurvivorshipKeyDefinition(String name, String algorithmType,
             String algorithmParameters) {
         AlgorithmDefinition concatenateAlgoDef = RulesFactory.eINSTANCE.createAlgorithmDefinition();
         concatenateAlgoDef.setAlgorithmParameters(algorithmParameters);

@@ -581,7 +581,9 @@ public class AnalysisRecordGroupingUtils {
                 String referenceColumnIndex = findColumnIndex(columnMap, referenceColumn, survivKeyColumn);
                 matchKeyMap.put(IRecordGrouping.REFERENCE_COLUMN_IDX, referenceColumnIndex);
             }
-            matchKeyMap.put(SurvivorshipUtils.SURVIVORSHIP_FUNCTION, surKey.getFunction().getAlgorithmType());
+            if (StringUtils.equals(matchKeyMap.get(IRecordGrouping.MATCH_KEY_NAME), surKey.getName())) {
+                matchKeyMap.put(SurvivorshipUtils.SURVIVORSHIP_FUNCTION, surKey.getFunction().getAlgorithmType());
+            }
         }
         return matchKeyMap;
     }
