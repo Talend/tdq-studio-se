@@ -498,8 +498,8 @@ public class UnitTestBuildHelper {
             delimitedFileconnection.setRowSeparatorValue("\n"); //$NON-NLS-1$
             delimitedFileconnection.setEncoding("UTF-8"); //$NON-NLS-1$
             delimitedFileconnection.setFieldSeparatorValue(","); //$NON-NLS-1$
-            // delimitedFileconnection.setName(ERepositoryObjectType.METADATA_FILE_DELIMITED.getKey());
-            delimitedFileconnection.setName("METADATA_FILE_DELIMITED");
+            delimitedFileconnection.setName(ERepositoryObjectType.METADATA_FILE_DELIMITED.getKey());
+            // delimitedFileconnection.setName("METADATA_FILE_DELIMITED");
 
             MetadataTable metadataTable = ConnectionFactory.eINSTANCE.createMetadataTable();
             // IProxyRepositoryFactory factory = ProxyRepositoryFactory.getInstance();
