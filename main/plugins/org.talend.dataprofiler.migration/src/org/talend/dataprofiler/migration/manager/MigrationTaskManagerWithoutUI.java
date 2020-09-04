@@ -44,10 +44,9 @@ public class MigrationTaskManagerWithoutUI {
 
     protected MigrationTaskType taskType;
 
+    // TODO: on master(7.4), should add monthly release migration task id here.
     protected static List<String> MONTHLY_RELEASE_MIGRATION_IDS = new ArrayList<String>(Arrays
-            .asList("org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask", // 7.3.1R7 //$NON-NLS-1$
-                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator", // 7.3.1R8 //$NON-NLS-1$
-                    "org.talend.dataprofiler.core.migration.impl.UpgradePasswordEncryptionAlg4DQItemTask"));// 7.3.1R9 //$NON-NLS-1$
+            .asList("")); //$NON-NLS-1$
 
     public MigrationTaskManagerWithoutUI(ProductVersion workspaceVersion) {
         this(null, workspaceVersion, null, null);
