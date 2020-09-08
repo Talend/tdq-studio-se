@@ -78,7 +78,7 @@ public class SwitchContextAction extends Action {
 
                     CorePlugin.getDefault().refreshDQView(selectedObject);
                  } else {
-                     popupSwitchContextFailedMessage(chooseContext);
+                    popupSwitchContextFailedMessage(chooseContext);
                  }
             }
         }
@@ -87,9 +87,21 @@ public class SwitchContextAction extends Action {
 
     public static void popupSwitchContextFailedMessage(String chooseContext) {
         MessageDialog
-                .openWarning(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(), "", //$NON-NLS-1$
-                        DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError")); //$NON-NLS-1$
+                .openWarning(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(),
+                        DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError.title"), //$NON-NLS-1$
+                        DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError.nochoose.content")); //$NON-NLS-1$
         log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "failed"));//$NON-NLS-1$ //$NON-NLS-2$
+    }
+
+    public static boolean popupSwitchContextConfirmDialog(String chooseContext) {
+        boolean confirm = MessageDialog
+                .openConfirm(CorePlugin.getDefault().getWorkbench().getDisplay().getActiveShell(),
+                        DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError.title"), //$NON-NLS-1$
+                        DefaultMessagesImpl.getString("SwitchContextAction.nullParameterError.confirm.content")); //$NON-NLS-1$
+        if (!confirm) {
+            log.error(DefaultMessagesImpl.getString("SwitchContextAction.saveMessage", chooseContext, "failed"));//$NON-NLS-1$ //$NON-NLS-2$
+        }
+        return confirm;
     }
 
     /**
