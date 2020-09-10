@@ -99,15 +99,17 @@ public class MigrationTaskManagerWithoutUI {
         for (IMigrationTask task : tasks) {
             if (task.getTaskCategory() == MigrationTaskCategory.WORKSPACE) {
                 IWorkspaceMigrationTask wTask = (IWorkspaceMigrationTask) task;
-                // taskVersion format like 7.3.1.20200910
-                ProductVersion taskVersion = ProductVersion.fromString(wTask.getVersion(), true, true);
+                ProductVersion taskVersion = ProductVersion.fromString(wTask.getVersion());
+                // migration task Display Version format like 7.3.1.20200910
+                ProductVersion taskDisplayVersion = new ProductVersion(taskVersion, task.getOrder());
                 if (isDebugEnabled) {
-                    log.info("one new task check begin and current taskVersion: " + taskVersion); //$NON-NLS-1$
+                    log.info("one new task's DisplayVersion is: " + taskDisplayVersion); //$NON-NLS-1$
                 }
-                if (taskVersion.compareTo(workspaceVersion) > 0 && taskVersion.compareTo(currentVersion) <= 0) {
+                if (taskDisplayVersion.compareTo(workspaceVersion) > 0
+                        && taskDisplayVersion.compareTo(currentVersion) <= 0) {
                     if (isDebugEnabled) {
                         log
-                                .info(taskVersion + " > " + workspaceVersion + "&&" + taskVersion + "<=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                .info(taskDisplayVersion + " > " + workspaceVersion + "&&" + taskDisplayVersion + "<=" //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                         + currentVersion + ", so"); //$NON-NLS-1$
                         log.info(task.getId() + " is valid task"); //$NON-NLS-1$
                     }
