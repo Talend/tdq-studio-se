@@ -38,7 +38,7 @@ public final class WorkspaceVersionHelper {
 
     public static final String VERSION = "version"; //$NON-NLS-1$
 
-    public static final String DISPLAY_VERSION = "dispalyVersion"; //$NON-NLS-1$
+    public static final String DISPLAY_VERSION = "displayVersion"; //$NON-NLS-1$
 
     private WorkspaceVersionHelper() {
 
