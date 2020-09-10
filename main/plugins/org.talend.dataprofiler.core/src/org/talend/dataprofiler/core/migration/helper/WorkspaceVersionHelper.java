@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
-import org.talend.dataprofiler.core.CorePlugin;
+import org.talend.commons.utils.VersionUtils;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.resource.EResourceConstant;
 import org.talend.resource.ResourceManager;
@@ -37,6 +37,8 @@ public final class WorkspaceVersionHelper {
     protected static Logger log = Logger.getLogger(WorkspaceVersionHelper.class);
 
     public static final String VERSION = "version"; //$NON-NLS-1$
+
+    public static final String DISPLAY_VERSION = "dispalyVersion"; //$NON-NLS-1$
 
     private WorkspaceVersionHelper() {
 
@@ -61,13 +63,26 @@ public final class WorkspaceVersionHelper {
     }
 
     /**
+     * Method "isSecludedVersion" created by bzhou@talend.com.
+     *
+     * @return true if version is before 3.0.0
+     */
+    public static boolean isSecludedVersion() {
+        return !getVersionFile().exists();
+    }
+
+    /**
      *
      * MOD mzhao Get version file by static way, not by IFile. See feature 6066
      *
      * @return
      */
     public static ProductVersion getVesion() {
-        return getVesion(getVersionFile());
+        return getVersion(getVersionFile());
+    }
+
+    public static ProductVersion getDisplayVersion() {
+        return getDisplayVersion(getVersionFile());
     }
 
     /**
@@ -76,8 +91,12 @@ public final class WorkspaceVersionHelper {
      * @param versionFile
      * @return
      */
-    public static ProductVersion getVesion(IFile versionFile) {
+    public static ProductVersion getVersion(IFile versionFile) {
         return getVesion(versionFile.getLocation());
+    }
+
+    public static ProductVersion getDisplayVersion(IFile versionFile) {
+        return getDisplayVersion(versionFile.getLocation());
     }
 
     /**
@@ -87,9 +106,7 @@ public final class WorkspaceVersionHelper {
      * @return
      */
     public static ProductVersion getVesion(IPath versionPath) {
-
         File versionFile = versionPath == null ? null : versionPath.toFile();
-
         ProductVersion pVersion = null;
         try {
             if (versionFile != null && versionFile.exists()) {
@@ -115,12 +132,53 @@ public final class WorkspaceVersionHelper {
     }
 
     /**
+     * DOC msjian Comment method "getDisplayVesion".
+     * 
+     * @param versionPath
+     * @return return DisplayVersion format is: 7.3.1.20200417_1111-patch.
+     * if not exist, return version
+     */
+    public static ProductVersion getDisplayVersion(IPath versionPath) {
+        File versionFile = versionPath == null ? null : versionPath.toFile();
+        ProductVersion pVersion = null;
+        try {
+            if (versionFile != null && versionFile.exists()) {
+                FileInputStream inStream = new FileInputStream(versionFile);
+
+                Properties pros = new Properties();
+                pros.load(inStream);
+
+                String version = pros.getProperty(DISPLAY_VERSION);
+                if (version != null && !"".equals(version)) { //$NON-NLS-1$
+                    pVersion = ProductVersion.fromString(version, true, true);
+                } else {
+                    version = pros.getProperty(VERSION);
+                    if (version != null && !"".equals(version)) { //$NON-NLS-1$
+                        pVersion = ProductVersion.fromString(version);
+                    }
+                }
+
+                inStream.close();
+            } else {
+                pVersion = new ProductVersion(0, 0, 0);
+            }
+        } catch (Exception e) {
+            log.error(e, e);
+        }
+
+        return pVersion;
+    }
+
+    /**
      *
      * MOD mzhao 2009-04-03.
      */
     public static void storeVersion(File file) {
         Properties pros = new Properties();
-        pros.setProperty(VERSION, CorePlugin.getDefault().getProductVersion().toString());
+        // Version format is: 7.3.1
+        pros.setProperty(VERSION, VersionUtils.getTalendVersion());
+        // TDQ-18736: store DisplayVersion which format is: 7.3.1.20200417_1111-patch
+        pros.setProperty(DISPLAY_VERSION, VersionUtils.getDisplayVersion());
         try {
             FileOutputStream outStream = new FileOutputStream(file);
             pros.store(outStream, null);

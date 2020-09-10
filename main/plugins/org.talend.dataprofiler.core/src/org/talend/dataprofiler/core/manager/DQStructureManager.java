@@ -570,23 +570,14 @@ public final class DQStructureManager {
      * @return
      */
     public boolean isNeedMigration() {
-        if (isSecludedVersion()) {
+        if (WorkspaceVersionHelper.isSecludedVersion()) {
             return true;
         }
 
-        ProductVersion wVersion = WorkspaceVersionHelper.getVesion();
+        ProductVersion wVersion = WorkspaceVersionHelper.getDisplayVersion();
         // TDQ-18627: use the display version to compare to support monthly release patch version check
         ProductVersion cVersion = MigrationPlugin.getDefault().getProductDisplayVersionWithPatch();
         return wVersion.compareTo(cVersion) < 0;
-    }
-
-    /**
-     * Method "isSecludedVersion" created by bzhou@talend.com.
-     *
-     * @return true if version is before 3.0.0
-     */
-    private boolean isSecludedVersion() {
-        return !WorkspaceVersionHelper.getVersionFile().exists();
     }
 
     /**
