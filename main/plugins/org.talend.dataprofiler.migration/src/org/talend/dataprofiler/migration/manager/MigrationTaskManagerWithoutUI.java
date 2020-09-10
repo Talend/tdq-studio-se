@@ -43,11 +43,6 @@ public class MigrationTaskManagerWithoutUI {
 
     protected MigrationTaskType taskType;
 
-    protected static List<String> MONTHLY_RELEASE_MIGRATION_IDS = new ArrayList<String>(Arrays
-            .asList("org.talend.dataprofiler.core.migration.impl.CreateContextLinkFileTask", // 7.3.1R7 //$NON-NLS-1$
-                    "org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator", // 7.3.1R8 //$NON-NLS-1$
-                    "org.talend.dataprofiler.core.migration.impl.UpgradePasswordEncryptionAlg4DQItemTask"));// 7.3.1R9 //$NON-NLS-1$
-
     public MigrationTaskManagerWithoutUI(ProductVersion workspaceVersion) {
         this(null, workspaceVersion, null, null);
     }
@@ -104,7 +99,7 @@ public class MigrationTaskManagerWithoutUI {
         for (IMigrationTask task : tasks) {
             if (task.getTaskCategory() == MigrationTaskCategory.WORKSPACE) {
                 IWorkspaceMigrationTask wTask = (IWorkspaceMigrationTask) task;
-                // 7.3.1 or 7.3.1.20200930
+                // taskVersion format like 7.3.1.20200910
                 ProductVersion taskVersion = ProductVersion.fromString(wTask.getVersion(), true, true);
                 if (isDebugEnabled) {
                     log.info("one new task check begin and current taskVersion: " + taskVersion); //$NON-NLS-1$
