@@ -43,10 +43,6 @@ public class MigrationTaskManagerWithoutUI {
 
     protected MigrationTaskType taskType;
 
-    // TODO: on master(7.4), should add monthly release migration task id here.
-    protected static List<String> MONTHLY_RELEASE_MIGRATION_IDS = new ArrayList<String>(Arrays
-            .asList("")); //$NON-NLS-1$
-
     public MigrationTaskManagerWithoutUI(ProductVersion workspaceVersion) {
         this(null, workspaceVersion, null, null);
     }
@@ -95,7 +91,7 @@ public class MigrationTaskManagerWithoutUI {
 
         List<IMigrationTask> validTasks = new ArrayList<IMigrationTask>();
         // TDQ-18624: not output debug log because cause studio slowly
-        boolean isDebugEnabled = log.isInfoEnabled();
+        boolean isDebugEnabled = log.isDebugEnabled();
         if (isDebugEnabled) {
             log.info("workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
             log.info("currentVersion: " + currentVersion); //$NON-NLS-1$
@@ -103,7 +99,7 @@ public class MigrationTaskManagerWithoutUI {
         for (IMigrationTask task : tasks) {
             if (task.getTaskCategory() == MigrationTaskCategory.WORKSPACE) {
                 IWorkspaceMigrationTask wTask = (IWorkspaceMigrationTask) task;
-                // 7.3.1 or 7.3.1.20200930
+                // taskVersion format like 7.3.1.20200910
                 ProductVersion taskVersion = ProductVersion.fromString(wTask.getVersion(), true, true);
                 if (isDebugEnabled) {
                     log.info("one new task check begin and current taskVersion: " + taskVersion); //$NON-NLS-1$
