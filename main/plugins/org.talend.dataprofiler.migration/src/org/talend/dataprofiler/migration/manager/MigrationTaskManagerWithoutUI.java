@@ -93,7 +93,16 @@ public class MigrationTaskManagerWithoutUI {
         // TDQ-18624: not output debug log because cause studio slowly
         boolean isDebugEnabled = log.isInfoEnabled();
         if (isDebugEnabled) {
-            log.info("workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
+            log.info("old workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
+        }
+        // consider 7.3.1,7.2.1...old migration tasks work as before.
+        if (workspaceVersion.toString().length() == 5) {
+            // because our monthly release begin from 2020
+            workspaceVersion = new ProductVersion(workspaceVersion.getMajor(), workspaceVersion.getMinor(),
+                    workspaceVersion.getMicro(), "20200101"); //$NON-NLS-1$
+        }
+        if (isDebugEnabled) {
+            log.info("new workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
             log.info("currentVersion: " + currentVersion); //$NON-NLS-1$
         }
         for (IMigrationTask task : tasks) {
