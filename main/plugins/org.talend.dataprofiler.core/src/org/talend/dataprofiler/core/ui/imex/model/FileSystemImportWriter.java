@@ -1791,7 +1791,7 @@ public class FileSystemImportWriter implements IImportWriter {
         List<IMigrationTask> modelTasks = new ArrayList<IMigrationTask>();
 
         if (versionFile != null && versionFile.exists()) {
-            ProductVersion version = WorkspaceVersionHelper.getVesion(new Path(versionFile.getAbsolutePath()));
+            ProductVersion version = WorkspaceVersionHelper.getDisplayVersion(new Path(versionFile.getAbsolutePath()));
             MigrationTaskManager manager = new MigrationTaskManager(version, MigrationTaskType.FILE);
             List<IMigrationTask> taskList = manager.getValidTasks();
 
