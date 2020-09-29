@@ -1009,9 +1009,24 @@ public class DQRespositoryView extends CommonNavigator {
                 protected void run() throws LoginException, PersistenceException {
                     // equals super.run()
                     // new RefreshAction(PlatformUI.getWorkbench().getActiveWorkbenchWindow()).run();
+                    long start = System.currentTimeMillis();                	
                     CorePlugin.getDefault().refreshWorkSpace();
+                    long end1 = System.currentTimeMillis();
+                    long duration = end1 - start;
+                	log.error("CorePlugin.getDefault().refreshWorkSpace(): " + duration);
+                	
                     ProxyRepositoryManager.getInstance().refresh();
-                    getCommonViewer().refresh();
+                    long end2 = System.currentTimeMillis();
+                    long duration2 = end1 - end2;
+                	log.error("ProxyRepositoryManager.getInstance().refresh(): " + duration2);
+                	
+                    //getCommonViewer().refresh();
+                    long end3 = System.currentTimeMillis();
+                    //long duration3 = end3 - end2;
+                	//log.error("getCommonViewer().refresh(): " + duration3);
+                	
+                	long duration4= end3 - start;
+                	log.error("RefreshDQReponsitoryViewAction.run(): " + duration4);
                 }
 
             };

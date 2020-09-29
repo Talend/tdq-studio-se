@@ -256,14 +256,20 @@ public class DQRuleMasterDetailsPage extends AbstractMetadataFormPage implements
 
             TDQBusinessRuleItem whereRuleItem = (TDQBusinessRuleItem) getCurrentRepNode().getObject().getProperty().getItem();
 
+            long end1 = System.currentTimeMillis();
+            long duration = end1 - start;
+            log.error("checkValus() and prepare duration: " + duration);
             // MOD yyi 2012-02-08 TDQ-4621:Explicitly set true for updating dependencies.
             ReturnCode rc = ElementWriterFactory.getInstance().createdRuleWriter().save(whereRuleItem, true);
+            long end2 = System.currentTimeMillis();
+            long duration2 = end2 - end1;
+            log.error("ElementWriterFactory.getInstance().createdRuleWriter().save() duration: " + duration2);
 
             ret = rc.isOk();
             this.joinConditionTableViewer.updateModelViewer();
         }
-        long end = System.currentTimeMillis();
-        long duration = end - start;
+        long end2 = System.currentTimeMillis();
+        long duration = end2 - start;
         log.error("saveDQRule() duration: " + duration);
         return ret;
 

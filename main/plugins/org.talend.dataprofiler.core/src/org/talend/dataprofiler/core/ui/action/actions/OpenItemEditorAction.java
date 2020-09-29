@@ -104,7 +104,7 @@ import orgomg.cwm.resource.relational.Schema;
  */
 public class OpenItemEditorAction extends Action implements IIntroAction {
 
-    protected static Logger log = Logger.getLogger(OpenItemEditorAction.class);
+    protected static Logger LOGGER = Logger.getLogger(OpenItemEditorAction.class);
 
     private IRepositoryObjectCRUDAction repositoryObjectCRUD = RepNodeUtils.getRepositoryObjectCRUD();
 
@@ -123,7 +123,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
     public void run() {
         // MOD qiongli 2011-7-14 bug 21707,unload all unlocked resources before opening an editor.move all code in this
         // method to method doRun().
-        if (repNodes != null) {
+        if (this.repNodes != null) {
             RepositoryWorkUnit<Object> workUnit = new RepositoryWorkUnit<Object>("Open an DQ editor") {//$NON-NLS-1$
 
                 @Override
@@ -136,7 +136,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                     } catch (BusinessException e) {
                         org.talend.dataprofiler.core.exception.ExceptionHandler.process(e, Level.FATAL);
                     } catch (Throwable e) {
-                        log.error(e, e);
+                        LOGGER.error(e, e);
                     }
                 }
             };
@@ -148,18 +148,15 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
     protected void doRun(IRepositoryNode repNode) throws BusinessException {
         long start = System.currentTimeMillis();
         // TDQ-12200: fix a NPE when the open item is unsynchronized status(for example is deleted by others).
-        // TDQ-18701 comment out the following line, don't refresh the DQ View before open one item because it's
-        // time-consuming, this waiting time is unbearable for users on remote projects, check the RepositoryNode
-        // directly, pop up a dialog and return if the item is deleted by other user.
-        // srepositoryObjectCRUD.refreshDQViewForRemoteProject();
+        this.repositoryObjectCRUD.refreshDQViewForRemoteProject();
         long end = System.currentTimeMillis();
         long duration = end - start;
-        // log.error("doRun().repositoryObjectCRUD.refreshDQViewForRemoteProject() duration: " + duration);
+        LOGGER.error("doRun().repositoryObjectCRUD.refreshDQViewForRemoteProject() duration: " + duration);
 
         // TDQ-13357: fix NPE, because for ReportFileRepNode, repNode.getObject() == null
         if (repNode.getObject() != null) {
             if (repNode.getObject().getProperty() == null) {
-                repositoryObjectCRUD.showWarningDialog();
+                this.repositoryObjectCRUD.showWarningDialog();
                 return;
             }
             // TDQ-12200~
@@ -171,22 +168,22 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                 ProxyRepositoryFactory.getInstance().reload(repNode.getObject().getProperty());
                 end = System.currentTimeMillis();
                 duration = end - start;
-                log.error("doRun().ProxyRepositoryFactory.getInstance().reload() duration: " + duration);
+                LOGGER.error("doRun().ProxyRepositoryFactory.getInstance().reload() duration: " + duration);
 
                 start = System.currentTimeMillis();
                 IFile objFile = PropertyHelper.getItemFile(repNode.getObject().getProperty());
                 end = System.currentTimeMillis();
                 duration = end - start;
-                log.error("doRun().PropertyHelper.getItemFile() duration: " + duration);
+                LOGGER.error("doRun().PropertyHelper.getItemFile() duration: " + duration);
 
                 start = System.currentTimeMillis();
                 objFile.refreshLocal(IResource.DEPTH_INFINITE, null);
                 end = System.currentTimeMillis();
                 duration = end - start;
-                log.error("doRun().objFile.refreshLocal() duration: " + duration);
+                LOGGER.error("doRun().objFile.refreshLocal() duration: " + duration);
 
             } catch (Exception e1) {
-                log.error(e1, e1);
+                LOGGER.error(e1, e1);
             }
         }
 
@@ -195,15 +192,15 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
         IEditorInput itemEditorInput = computeEditorInput(repNode, true);
         end = System.currentTimeMillis();
         duration = end - start;
-        log.error("doRun().computeEditorInput() duration: " + duration);
+        LOGGER.error("doRun().computeEditorInput() duration: " + duration);
 
         if (itemEditorInput != null) {
             // open ItemEditorInput
             start = System.currentTimeMillis();
-            CorePlugin.getDefault().openEditor(itemEditorInput, editorID);
+            CorePlugin.getDefault().openEditor(itemEditorInput, this.editorID);
             end = System.currentTimeMillis();
             duration = end - start;
-            log.error("doRun().CorePlugin.getDefault().openEditor() duration: " + duration);
+            LOGGER.error("doRun().CorePlugin.getDefault().openEditor() duration: " + duration);
         } else {
             // not find ItemEditorInput
             if (repNode.getObject() == null) {
@@ -235,14 +232,14 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                 // open it as a File, this code will not be execute when method computeEditorInput() work well
                 IPath append = WorkbenchUtils.getFilePath(repNode.getObject().getRepositoryNode());
                 DQRepositoryNode node = (DQRepositoryNode) repNode.getObject().getRepositoryNode();
-                file = ResourceManager.getRoot().getProject(node.getProject().getTechnicalLabel()).getFile(append);
-                if (!file.exists()) {
+                this.file = ResourceManager.getRoot().getProject(node.getProject().getTechnicalLabel()).getFile(append);
+                if (!this.file.exists()) {
                     throw ExceptionFactory.getInstance().createBusinessException(repNode.getObject());
                 }
                 try {
-                    IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), file, true);
+                    IDE.openEditor(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage(), this.file, true);
                 } catch (PartInitException e) {
-                    log.error(e, e);
+                    LOGGER.error(e, e);
                 }
             }
         }
@@ -295,7 +292,7 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                 if (connection == null || connection.getDataPackage().size() == 0) {
                     throw ExceptionFactory.getInstance().createBusinessException(repViewObj);
                 }
-                editorID = ConnectionEditor.class.getName();
+                this.editorID = ConnectionEditor.class.getName();
             } else if (ERepositoryObjectType.TDQ_ANALYSIS_ELEMENT.getKey().equals(key)) {
                 result = new AnalysisItemEditorInput(repNode);
                 Analysis analysis = ((TDQAnalysisItem) item).getAnalysis();
@@ -337,9 +334,9 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
 
                 if (analysis.getParameters() != null
                         && analysis.getParameters().getAnalysisType().equals(AnalysisType.MATCH_ANALYSIS)) {
-                    editorID = MatchAnalysisEditor.class.getName();
+                    this.editorID = MatchAnalysisEditor.class.getName();
                 } else {
-                    editorID = AnalysisEditor.class.getName();
+                    this.editorID = AnalysisEditor.class.getName();
                 }
             } else if (ERepositoryObjectType.TDQ_INDICATOR_ELEMENT.getKey().equals(key)) {
                 result = new IndicatorDefinitionItemEditorInput(repNode);
@@ -350,19 +347,19 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                 if (UDIHelper.getUDICategory(definitionItem.getIndicatorDefinition()) == null) {
                     throw ExceptionFactory.getInstance().createBusinessException(definitionItem.getFilename());
                 }
-                editorID = IndicatorEditor.class.getName();
+                this.editorID = IndicatorEditor.class.getName();
             } else if (ERepositoryObjectType.TDQ_RULES_SQL.getKey().equals(key)
                     || ERepositoryObjectType.TDQ_RULES_PARSER.getKey().equals(key)
                     || ERepositoryObjectType.TDQ_RULES_MATCHER.getKey().equals(key)) {
                 result = new BusinessRuleItemEditorInput(repNode);
-                editorID = DQRuleEditor.class.getName();
+                this.editorID = DQRuleEditor.class.getName();
             } else if (ERepositoryObjectType.TDQ_PATTERN_ELEMENT.getKey().equals(key)) {
                 result = new PatternItemEditorInput(repNode);
                 TDQPatternItem patternItem = (TDQPatternItem) item;
                 if (patternItem.getPattern() == null || patternItem.getPattern().eResource() == null) {
                     throw ExceptionFactory.getInstance().createBusinessException(patternItem.getFilename());
                 }
-                editorID = PatternEditor.class.getName();
+                this.editorID = PatternEditor.class.getName();
             } else if (ERepositoryObjectType.TDQ_REPORT_ELEMENT.getKey().equals(key)) {
                 result = new ReportItemEditorInput(repNode);
                 TDQReportItem reportItem = (TDQReportItem) item;
@@ -375,30 +372,30 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                         throw ExceptionFactory.getInstance().createBusinessException(reportItem.getFilename());
                     }
                 }
-                editorID = "org.talend.dataprofiler.core.tdq.ui.editor.report.ReportEditror"; //$NON-NLS-1$
+                this.editorID = "org.talend.dataprofiler.core.tdq.ui.editor.report.ReportEditror"; //$NON-NLS-1$
             } else if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)
                     || ERepositoryObjectType.TDQ_JRAXML_ELEMENT.getKey().equals(key)) {
                 IPath append = WorkbenchUtils.getFilePath(repViewObj.getRepositoryNode());
                 DQRepositoryNode node = (DQRepositoryNode) repViewObj.getRepositoryNode();
-                file = ResourceManager.getRoot().getProject(node.getProject().getTechnicalLabel()).getFile(append);
-                if (!file.exists()) {
+                this.file = ResourceManager.getRoot().getProject(node.getProject().getTechnicalLabel()).getFile(append);
+                if (!this.file.exists()) {
                     throw ExceptionFactory.getInstance().createBusinessException(repViewObj);
                 }
 
                 // TDQ-14934 msjian: fix can use the studio associate application to open file
-                IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(file.getName());
+                IEditorDescriptor desc = PlatformUI.getWorkbench().getEditorRegistry().getDefaultEditor(this.file.getName());
                 if (desc != null) {
-                    editorID = desc.getId();
+                    this.editorID = desc.getId();
                 } else {
                     if (ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)) {
-                        editorID = SqlExplorerUtils.SQLEDITOR_ID;
+                        this.editorID = SqlExplorerUtils.SQLEDITOR_ID;
                     } else {
-                        editorID = TDQFileTextEditor.FILE_EDITOR_ID;
+                        this.editorID = TDQFileTextEditor.FILE_EDITOR_ID;
                     }
                 }
                 // TDQ-14934~
 
-                result = new TDQFileEditorInput(file);
+                result = new TDQFileEditorInput(this.file);
                 // Added TDQ-7143 yyin 20130531
                 ((TDQFileEditorInput) result).setFileItem(item);
                 CorePlugin.getDefault().refreshDQView(repNode);
@@ -410,8 +407,8 @@ public class OpenItemEditorAction extends Action implements IIntroAction {
                         || ERepositoryObjectType.TDQ_SOURCE_FILE_ELEMENT.getKey().equals(key)) {
 
                     // if there don't found the correct ItemEditorInput, try to open it as a File
-                    result = new FileEditorInput(file);
-                    editorID = FileEditorInput.class.getName();
+                    result = new FileEditorInput(this.file);
+                    this.editorID = FileEditorInput.class.getName();
                 }
             }
             // TDQ-4209~
