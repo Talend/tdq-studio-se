@@ -53,13 +53,14 @@ public class RuleRepNode extends DQRepositoryNode {
         return null;
     }
 
-    @Override
-    public String getLabel() {
-        if (this.getRule() != null && this.getRule().getName() != null) {
-            return this.getRule().getName();
-        }
-        return super.getLabel();
-    }
+    // TDQ-18701 using super.getLable() directly, this.getRule() is very time-consuming
+//    @Override
+//    public String getLabel() {
+//        if (this.getRule() != null && this.getRule().getName() != null) {
+//            return this.getRule().getName();
+//        }
+//        return super.getLabel();
+//    }
 
     @Override
     public boolean canExpandForDoubleClick() {
