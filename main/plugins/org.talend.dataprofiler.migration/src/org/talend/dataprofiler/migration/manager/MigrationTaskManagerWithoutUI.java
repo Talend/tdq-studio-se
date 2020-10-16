@@ -96,7 +96,7 @@ public class MigrationTaskManagerWithoutUI {
             log.info("old workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
         }
         // consider 7.3.1,7.2.1...old migration tasks work as before.
-        if (workspaceVersion.toString().length() == 5) {
+        if (workspaceVersion.toString().length() < 6) {
             // because our monthly release begin from 2020
             workspaceVersion = new ProductVersion(workspaceVersion.getMajor(), workspaceVersion.getMinor(),
                     workspaceVersion.getMicro(), "20200101"); //$NON-NLS-1$
