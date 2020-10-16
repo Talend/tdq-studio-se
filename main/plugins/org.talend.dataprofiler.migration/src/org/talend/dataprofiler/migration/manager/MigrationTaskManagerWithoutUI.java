@@ -96,7 +96,7 @@ public class MigrationTaskManagerWithoutUI {
             log.info("old workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
         }
         // consider 7.3.1,7.2.1...old migration tasks work as before.
-        if (workspaceVersion.toString().length() == 5) {// means versions like "7.3.1" or "7.2.1"
+        if (workspaceVersion.toString().length() < 6) {// means versions like "7.3.1" or "7.2.1"
             // for master, when import 7.2.1, make all task version="7.2.1" to be invalid
             workspaceVersion = new ProductVersion(workspaceVersion.getMajor(), workspaceVersion.getMinor(),
                     workspaceVersion.getMicro(), "99999999"); //$NON-NLS-1$
