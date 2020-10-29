@@ -778,8 +778,7 @@
             language="java"
             message="Wizard use for TOP"
             name="zookeeper-3.4.5.2.1.1.0-385.jar" mvn_uri="mvn:org.talend.libraries/zookeeper-3.4.5.2.1.1.0-385/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.zookeeper/lib/zookeeper-3.4.5.2.1.1.0-385.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.apache.axis2"
@@ -814,8 +813,7 @@
             message="Wizard use for TOP"
             mvn_uri="mvn:org.talend.libraries/zookeeper-3.4.6.2.2.0.0-2041/6.0.0"
             name="zookeeper-3.4.6.2.2.0.0-2041.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.zookeeper/lib/zookeeper-3.4.6.2.2.0.0-2041.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.zookeeper"
@@ -823,8 +821,7 @@
             message="Wizard use for TOP"
             mvn_uri="mvn:org.talend.libraries/zookeeper-3.4.6.2.3.2.0-2950/6.1.0"
             name="zookeeper-3.4.6.2.3.2.0-2950.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.zookeeper/lib/zookeeper-3.4.6.2.3.2.0-2950.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.hadoop.hdp.2.3"
