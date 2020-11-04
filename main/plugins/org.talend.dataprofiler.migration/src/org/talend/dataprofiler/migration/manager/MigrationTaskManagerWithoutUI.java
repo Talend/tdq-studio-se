@@ -91,7 +91,7 @@ public class MigrationTaskManagerWithoutUI {
 
         List<IMigrationTask> validTasks = new ArrayList<IMigrationTask>();
         // TDQ-18624: not output debug log because cause studio slowly
-        boolean isDebugEnabled = log.isDebugEnabled();
+        boolean isDebugEnabled = log.isInfoEnabled();
         if (isDebugEnabled) {
             log.info("old workspaceVersion: " + workspaceVersion); //$NON-NLS-1$
         }
