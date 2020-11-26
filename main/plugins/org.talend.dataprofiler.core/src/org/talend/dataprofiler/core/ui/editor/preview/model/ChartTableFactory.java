@@ -44,6 +44,7 @@ import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.helper.TableHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdTable;
+import org.talend.cwm.relational.TdView;
 import org.talend.dataprofiler.core.ImageLib;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
 import org.talend.dataprofiler.core.pattern.actions.CreatePatternAction;
@@ -665,11 +666,13 @@ public final class ChartTableFactory {
                 EDatabaseTypeName.ORACLEFORSID.getDisplayName(), EDatabaseTypeName.ORACLESN.getDisplayName(),
                 EDatabaseTypeName.ORACLE_OCI.getDisplayName(), EDatabaseTypeName.MSSQL.getDisplayName(),
                 EDatabaseTypeName.MSSQL05_08.getDisplayName(), EDatabaseTypeName.AMAZON_AURORA.getDisplayName() };
+        // TDQ-18976 msjian: support create job for both table and view.
         TdTable table = SwitchHelpers.TABLE_SWITCH.doSwitch(indicator.getAnalyzedElement());
-        if (table == null) {
+        TdView view = SwitchHelpers.VIEW_SWITCH.doSwitch(indicator.getAnalyzedElement());
+        if (table == null && view == null) {
             return false;
         }
-        Connection tdDataProvider = TableHelper.getFirstConnection(table);
+        Connection tdDataProvider = TableHelper.getFirstConnection(table != null ? table : view);
         if (tdDataProvider instanceof DatabaseConnection) {
             String type = ((DatabaseConnection) tdDataProvider).getDatabaseType();
             boolean isSupport = false;
