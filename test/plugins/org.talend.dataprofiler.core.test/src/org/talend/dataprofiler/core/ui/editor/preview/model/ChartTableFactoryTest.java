@@ -12,8 +12,8 @@
 // ============================================================================
 package org.talend.dataprofiler.core.ui.editor.preview.model;
 
-import static org.mockito.Mockito.*;
-import junit.framework.Assert;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import org.junit.After;
 import org.junit.Before;
@@ -29,6 +29,8 @@ import org.talend.cwm.relational.TdTable;
 import org.talend.cwm.relational.TdView;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.sql.IndicatorSqlFactory;
+
+import junit.framework.Assert;
 
 /**
  * DOC yyin  class global comment. Detailled comment
@@ -108,7 +110,7 @@ public class ChartTableFactoryTest {
         TdView createTdView = RelationalFactory.eINSTANCE.createTdView();
         dqRule.setAnalyzedElement(createTdView);
 
-        Assert.assertFalse(ChartTableFactory.isDqRule(dqRule));
+        Assert.assertTrue(ChartTableFactory.isDqRule(dqRule));
     }
 
     // test for other surpported db type
