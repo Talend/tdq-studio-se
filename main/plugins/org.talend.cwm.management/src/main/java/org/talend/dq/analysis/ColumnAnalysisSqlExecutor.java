@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.emf.common.util.EList;
@@ -1359,7 +1360,13 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
             }
             // Added TDQ-8388 20140530 yyin: only show one message to let the user check detail in error log.
             if (hasErrorMessage) {
-                setError(Messages.getString("ColumnAnalysisSqlExecutor.ERRORREFERTOLOG"));//$NON-NLS-1$
+                // TDQ-18960 msjian: when tDqReportRun job run, don't show "For more information please refer to the
+                // Error Log view."
+                if (Platform.isRunning()) {
+                    setError(Messages.getString("ColumnAnalysisSqlExecutor.ERRORREFERTOLOG"));//$NON-NLS-1$
+                } else {
+                    setError("Run analysis failed"); //$NON-NLS-1$
+                }
             }
 
         } catch (Throwable thr) {
