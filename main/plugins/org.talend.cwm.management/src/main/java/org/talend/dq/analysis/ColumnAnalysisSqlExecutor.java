@@ -1365,7 +1365,7 @@ public class ColumnAnalysisSqlExecutor extends ColumnAnalysisExecutor {
                 if (Platform.isRunning()) {
                     setError(Messages.getString("ColumnAnalysisSqlExecutor.ERRORREFERTOLOG"));//$NON-NLS-1$
                 } else {
-                    setError(""); //$NON-NLS-1$
+                    setError("Run analysis failed"); //$NON-NLS-1$
                 }
             }
 
