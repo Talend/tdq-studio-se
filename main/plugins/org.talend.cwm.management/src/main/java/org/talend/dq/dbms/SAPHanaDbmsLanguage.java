@@ -13,6 +13,7 @@
 package org.talend.dq.dbms;
 
 import org.talend.dataquality.PluginConstant;
+import org.talend.dataquality.indicators.DateGrain;
 import org.talend.utils.ProductVersion;
 
 import orgomg.cwm.objectmodel.core.Expression;
@@ -80,6 +81,26 @@ public class SAPHanaDbmsLanguage extends DbmsLanguage {
         String functionNameSQL = element + " NOT " + regularExpressionFunction + " " + regex;//$NON-NLS-1$ //$NON-NLS-2$
 
         return surroundWithSpaces(functionNameSQL);
+    }
+
+    /*
+     * (non-Javadoc)
+     *
+     * @see org.talend.cwm.management.api.DbmsLanguage#extract(org.talend.dataquality.indicators.DateGrain,
+     * java.lang.String)
+     */
+    @Override
+    protected String extract(DateGrain dateGrain, String colName) {
+        return extract(dateGrain.getName(), colName);
+    }
+
+    private String extract(String dateGrainName, String colName) {
+        return dateGrainName + surroundWith('(', colName, ')');
+    }
+
+    @Override
+    public String extractDay(String colName) {
+        return extract("DAYOFMONTH", colName);//$NON-NLS-1$
     }
 
 }
