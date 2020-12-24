@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import org.talend.commons.ui.runtime.image.ECoreImage;
 import org.talend.commons.ui.runtime.image.IImage;
 import org.talend.core.model.metadata.builder.database.DqRepositoryViewService;
+import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase.ETableTypes;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.repository.ERepositoryObjectType;
 import org.talend.core.model.repository.IRepositoryViewObject;
@@ -36,6 +37,7 @@ import org.talend.dq.nodes.factory.DQRepNodeCreateFactory;
 import org.talend.dq.nodes.foldernode.IConnectionElementSubFolder;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -91,7 +93,8 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
             dbParentRepNode = DQRepNodeCreateFactory.createDBCatalogRepNode(viewObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT,
                     getProject());
         } else if (viewObject instanceof MetadataSchemaRepositoryObject) {
-            dbParentRepNode = new DBSchemaRepNode(viewObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
+            dbParentRepNode = DQRepNodeCreateFactory
+                    .createDBSchemaRepNode(viewObject, null, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
         }
         viewObject.setRepositoryNode(dbParentRepNode);
         return dbParentRepNode;
@@ -123,65 +126,15 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
      * @param metadataObject parent CatalogViewObject or SchemaViewObject
      */
     private void createRepositoryNodeTableFolderNode(IRepositoryViewObject metadataObject) {
-        List<TdTable> tables = new ArrayList<TdTable>();
+        List<TdTable> tables = new ArrayList<>();
         String filterCharacter = null;
         try {
             if (metadataObject instanceof MetadataCatalogRepositoryObject) {
-                viewObject = ((MetadataCatalogRepositoryObject) metadataObject).getViewObject();
-                setItem((ConnectionItem) viewObject.getProperty().getItem());
-                setConnection(getItem().getConnection());
-                if (((MetadataCatalogRepositoryObject) metadataObject).getCatalog().eIsProxy()) {
-                    // reload the connection to make sure the connection(and all it's owned elements) is not proxy
-                    reloadConnectionViewObject();
-                }
-                catalog = ((MetadataCatalogRepositoryObject) metadataObject).getCatalog();
-
-                tables = PackageHelper.getTables(catalog);
-                filterCharacter = RepositoryNodeHelper.getTableFilter(catalog, schema);
-
-                // MOD TDQ-8718 20140505 yyin --the repository view cares about if use the filter or not, the column
-                // select dialog cares about if connect to DB or not.
-                if (tables.isEmpty()) {
-                    if (isCallingFromColumnDialog()) {
-                        tables = DqRepositoryViewService.getTables(getConnection(), catalog, null, isLoadDBFromDialog(), true);
-                    } else if (!isOnFilterring()) {
-                        // MOD mzhao 0022204 : when the tree is rendering with a filter, do not loading from db.
-                        tables = DqRepositoryViewService.getTables(getConnection(), catalog, null, true, true);
-                    }
-                    if (tables != null && tables.size() > 0) {
-                        ProxyRepositoryFactory.getInstance().save(getItem(), false);
-                    }
-                }
+                tables = createTableUnderCatalog(metadataObject, tables, filterCharacter);
 
             } else {
-                viewObject = ((MetadataSchemaRepositoryObject) metadataObject).getViewObject();
-                setItem((ConnectionItem) viewObject.getProperty().getItem());
-                setConnection(getItem().getConnection());
-                if (((MetadataSchemaRepositoryObject) metadataObject).getSchema().eIsProxy()) {
-                    // reload the connection to make sure the connection(and all it's owned elements) is not proxy
-                    reloadConnectionViewObject();
-                }
-                schema = ((MetadataSchemaRepositoryObject) metadataObject).getSchema();
-                tables = PackageHelper.getTables(schema);
-                filterCharacter = RepositoryNodeHelper.getTableFilter(catalog, schema);
-                RepositoryNode parent = metadataObject.getRepositoryNode().getParent();
-                IRepositoryViewObject object = parent.getObject();
-                if (object instanceof MetadataCatalogRepositoryObject && filterCharacter.equals(PluginConstant.EMPTY_STRING)) {
-                    filterCharacter = RepositoryNodeHelper.getTableFilter(
-                            ((MetadataCatalogRepositoryObject) object).getCatalog(), null);
-                }
+                tables = createTableUnderSchema(metadataObject, tables, filterCharacter);
 
-                if (tables.isEmpty()) {
-                    if (isCallingFromColumnDialog()) {
-                        tables = DqRepositoryViewService.getTables(getConnection(), schema, null, isLoadDBFromDialog(), true);
-                    } else if (!isOnFilterring()) {
-                        // MOD mzhao 0022204 : when the tree is rendering with a filter, do not loading from db.
-                        tables = DqRepositoryViewService.getTables(getConnection(), schema, null, true, true);
-                    }
-                    if (tables != null && tables.size() > 0) {
-                        ProxyRepositoryFactory.getInstance().save(getItem(), false);
-                    }
-                }
             }
 
             ConnectionUtils.retrieveColumn(tables);
@@ -195,6 +148,79 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
         createTableRepositoryNode(tables, children);
     }
 
+    protected List<TdTable> createTableUnderSchema(IRepositoryViewObject metadataObject, List<TdTable> tables,
+            String filterCharacter) throws Exception {
+        viewObject = ((MetadataSchemaRepositoryObject) metadataObject).getViewObject();
+        setItem((ConnectionItem) viewObject.getProperty().getItem());
+        setConnection(getItem().getConnection());
+        if (((MetadataSchemaRepositoryObject) metadataObject).getSchema().eIsProxy()) {
+            // reload the connection to make sure the connection(and all it's owned elements) is not proxy
+            reloadConnectionViewObject();
+        }
+        schema = ((MetadataSchemaRepositoryObject) metadataObject).getSchema();
+        tables = getExistEmelents(schema);
+        filterCharacter = RepositoryNodeHelper.getTableFilter(catalog, schema);
+        RepositoryNode parent = metadataObject.getRepositoryNode().getParent();
+        IRepositoryViewObject object = parent.getObject();
+        if (object instanceof MetadataCatalogRepositoryObject && filterCharacter.equals(PluginConstant.EMPTY_STRING)) {
+            filterCharacter =
+                    RepositoryNodeHelper.getTableFilter(((MetadataCatalogRepositoryObject) object).getCatalog(), null);
+        }
+
+        if (tables.isEmpty()) {
+            if (isCallingFromColumnDialog()) {
+                tables = loadElementWhenEmpty(isLoadDBFromDialog(), schema);
+            } else if (!isOnFilterring()) {
+                // MOD mzhao 0022204 : when the tree is rendering with a filter, do not loading from db.
+                tables = loadElementWhenEmpty(true, schema);
+            }
+            if (tables != null && tables.size() > 0) {
+                ProxyRepositoryFactory.getInstance().save(getItem(), false);
+            }
+        }
+        return tables;
+
+    }
+
+    protected List<TdTable> loadElementWhenEmpty(boolean isLoad, Schema parent) throws Exception {
+        return DqRepositoryViewService.getTables(getConnection(), parent, null, isLoad, true);
+    }
+
+    protected List<TdTable> getExistEmelents(Schema parent) {
+        return PackageHelper.getTables(parent);
+    }
+
+    private List<TdTable> createTableUnderCatalog(IRepositoryViewObject metadataObject, List<TdTable> tables,
+            String filterCharacter) throws Exception {
+        viewObject = ((MetadataCatalogRepositoryObject) metadataObject).getViewObject();
+        setItem((ConnectionItem) viewObject.getProperty().getItem());
+        setConnection(getItem().getConnection());
+        if (((MetadataCatalogRepositoryObject) metadataObject).getCatalog().eIsProxy()) {
+            // reload the connection to make sure the connection(and all it's owned elements) is not proxy
+            reloadConnectionViewObject();
+        }
+        catalog = ((MetadataCatalogRepositoryObject) metadataObject).getCatalog();
+
+        tables = PackageHelper.getTables(catalog);
+        filterCharacter = RepositoryNodeHelper.getTableFilter(catalog, schema);
+
+        // MOD TDQ-8718 20140505 yyin --the repository view cares about if use the filter or not, the column
+        // select dialog cares about if connect to DB or not.
+        if (tables.isEmpty()) {
+            if (isCallingFromColumnDialog()) {
+                tables = DqRepositoryViewService.getTables(getConnection(), catalog, null, isLoadDBFromDialog(), true);
+            } else if (!isOnFilterring()) {
+                // MOD mzhao 0022204 : when the tree is rendering with a filter, do not loading from db.
+                tables = DqRepositoryViewService.getTables(getConnection(), catalog, null, true, true);
+            }
+            if (tables != null && tables.size() > 0) {
+                ProxyRepositoryFactory.getInstance().save(getItem(), false);
+            }
+        }
+        return tables;
+
+    }
+
     /**
      * DOC klliu Comment method "createTableRepositoryNode".
      *
@@ -203,7 +229,7 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
     private void createTableRepositoryNode(List<TdTable> tables, List<IRepositoryNode> node) {
         if (tables != null) {
             for (TdTable table : tables) {
-                table.setTableType("TABLE"); //$NON-NLS-1$
+                table.setTableType(getTableType());
                 TdTableRepositoryObject metadataTable = new TdTableRepositoryObject(viewObject, table);
                 metadataTable.setTableName(table.getName());
                 metadataTable.setLabel(table.getName());
@@ -219,6 +245,10 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
         }
     }
 
+    protected String getTableType() {
+        return ETableTypes.TABLETYPE_TABLE.getName();
+    }
+
     /*
      * (non-Javadoc)
      *
@@ -232,15 +262,15 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
         return Messages.getString("DBTableFolderRepNode.Tables"); //$NON-NLS-1$
     }
 
-    private int getChildrenCount() {
-        List<TdTable> tables = new ArrayList<TdTable>();
+    protected int getChildrenCount() {
+        List<TdTable> tables = new ArrayList<>();
         IRepositoryViewObject object = this.getParent().getObject();
         if (object instanceof MetadataCatalogRepositoryObject) {
             catalog = ((MetadataCatalogRepositoryObject) object).getCatalog();
             tables = PackageHelper.getTables(catalog);
         } else {
             schema = ((MetadataSchemaRepositoryObject) object).getSchema();
-            tables = PackageHelper.getTables(schema);
+            tables = getExistEmelents(schema);
         }
         return tables.size();
     }

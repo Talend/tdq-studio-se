@@ -28,6 +28,7 @@ import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.nodes.factory.DQRepNodeCreateFactory;
 import org.talend.repository.model.IRepositoryNode;
 import org.talend.repository.model.RepositoryNode;
+
 import orgomg.cwm.objectmodel.core.Package;
 import orgomg.cwm.resource.relational.Catalog;
 import orgomg.cwm.resource.relational.Schema;
@@ -132,7 +133,8 @@ public class DBConnectionRepNode extends ConnectionRepNode {
 
     private void initializedSchemaRepNode(List<IRepositoryNode> nodes, Package pack) {
         MetadataSchemaRepositoryObject metadataSchema = new MetadataSchemaRepositoryObject(getObject(), (Schema) pack);
-        RepositoryNode schemaNode = new DBSchemaRepNode(metadataSchema, this, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
+        RepositoryNode schemaNode = DQRepNodeCreateFactory
+                .createDBSchemaRepNode(metadataSchema, this, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
         schemaNode.setProperties(EProperties.LABEL, ERepositoryObjectType.METADATA_CON_SCHEMA);
         schemaNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_CON_SCHEMA);
         metadataSchema.setRepositoryNode(schemaNode);

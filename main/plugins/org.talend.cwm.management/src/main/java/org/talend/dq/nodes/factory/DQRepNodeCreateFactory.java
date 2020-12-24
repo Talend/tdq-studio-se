@@ -18,6 +18,8 @@ import org.talend.core.model.properties.DatabaseConnectionItem;
 import org.talend.core.model.properties.Item;
 import org.talend.core.model.repository.IRepositoryViewObject;
 import org.talend.dq.nodes.DBCatalogRepNode;
+import org.talend.dq.nodes.DBHDBSchemaRepNode;
+import org.talend.dq.nodes.DBSchemaRepNode;
 import org.talend.dq.nodes.DBSybaseCatalogRepNode;
 import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.RepositoryNode;
@@ -49,6 +51,29 @@ public class DQRepNodeCreateFactory {
             return new DBSybaseCatalogRepNode(viewObject, parent, type, inWhichProject);
         default:
             return new DBCatalogRepNode(viewObject, parent, type, inWhichProject);
+        }
+    }
+
+    /**
+     *
+     * this method is used to create a DBSchemaRepNode. And SAPHana is a specal case because will contains a calculation
+     * view folder.So we will create DBHDBSchemaRepNode to deal with this special case.
+     *
+     * @param viewObject
+     * @param parent parent of repositoryNode
+     * @param type
+     * @return
+     */
+    public static RepositoryNode createDBSchemaRepNode(IRepositoryViewObject viewObject, RepositoryNode parent,
+            ENodeType type, org.talend.core.model.general.Project inWhichProject) {
+        Item databaseItem = viewObject.getProperty().getItem();
+        DatabaseConnection dbConnection = (DatabaseConnection) ((DatabaseConnectionItem) databaseItem).getConnection();
+        SupportDBUrlType dbTypeByKey = SupportDBUrlType.getDBTypeByKey(dbConnection.getDatabaseType());
+        switch (dbTypeByKey == null ? SupportDBUrlType.MYSQLDEFAULTURL : dbTypeByKey) {
+        case SAPHANA:
+            return new DBHDBSchemaRepNode(viewObject, parent, type, inWhichProject);
+        default:
+            return new DBSchemaRepNode(viewObject, parent, type, inWhichProject);
         }
     }
 
