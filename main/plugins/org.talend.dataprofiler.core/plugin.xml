@@ -1829,6 +1829,12 @@
            name="org.talend.dataprofiler.core.migration.impl.AddValidPhoneForRegionCountIndicator"
            version="7.4.1">
      </workspacetask>
+     <workspacetask
+           class="org.talend.dataprofiler.core.migration.impl.AddTextStatisticsAndRegular4SAPHanaTask"
+           id="org.talend.dataprofiler.core.migration.impl.AddTextStatisticsAndRegular4SAPHanaTask"
+           name="Add TextStatistics for SAPHana database and regex expression in Regular Expression Matching indicator"
+           version="7.3.1">
+     </workspacetask>
   </extension>
   
   <extension

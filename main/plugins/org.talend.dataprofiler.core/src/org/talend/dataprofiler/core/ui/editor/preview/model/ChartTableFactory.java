@@ -665,8 +665,9 @@ public final class ChartTableFactory {
         String[] supportDB = { EDatabaseTypeName.MYSQL.getDisplayName(), EDatabaseTypeName.PSQL.getDisplayName(),
                 EDatabaseTypeName.ORACLEFORSID.getDisplayName(), EDatabaseTypeName.ORACLESN.getDisplayName(),
                 EDatabaseTypeName.ORACLE_OCI.getDisplayName(), EDatabaseTypeName.MSSQL.getDisplayName(),
-                EDatabaseTypeName.MSSQL05_08.getDisplayName(), EDatabaseTypeName.AMAZON_AURORA.getDisplayName() };
-        // TDQ-18976 msjian: support create job for both table and view.
+                EDatabaseTypeName.MSSQL05_08.getDisplayName(), EDatabaseTypeName.AMAZON_AURORA.getDisplayName(),
+                EDatabaseTypeName.SAPHana.getDisplayName() };
+     // TDQ-18976 msjian: support create job for both table and view.
         TdTable table = SwitchHelpers.TABLE_SWITCH.doSwitch(indicator.getAnalyzedElement());
         TdView view = SwitchHelpers.VIEW_SWITCH.doSwitch(indicator.getAnalyzedElement());
         if (table == null && view == null) {
@@ -679,6 +680,7 @@ public final class ChartTableFactory {
             for (String support : supportDB) {
                 if (support.equals(type)) {
                     isSupport = true;
+                    break;
                 }
             }
             if (!isSupport) {

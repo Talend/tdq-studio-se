@@ -132,6 +132,8 @@ public class DbmsLanguage {
 
     public static final String MARIADB = "MariaDB"; //$NON-NLS-1$
 
+    public static final String SAPHANA = SupportDBUrlType.SAPHANA.getLanguage();
+
     /**
      * Ansi SQL.
      */
@@ -1309,7 +1311,7 @@ public class DbmsLanguage {
      * @param regex
      * @return false if every one is not empty else return true
      */
-    private boolean existEmptyInParameter(String element, String regex) {
+    protected boolean existEmptyInParameter(String element, String regex) {
         return null == element || PluginConstant.EMPTY_STRING.equals(element) || null == regex
                 || PluginConstant.EMPTY_STRING.equals(regex);
     }
