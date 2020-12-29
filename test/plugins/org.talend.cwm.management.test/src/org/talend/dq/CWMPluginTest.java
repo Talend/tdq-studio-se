@@ -14,8 +14,6 @@ package org.talend.dq;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.talend.core.database.EDatabaseTypeName;
@@ -23,6 +21,8 @@ import org.talend.core.model.metadata.builder.connection.ConnectionFactory;
 import org.talend.core.model.metadata.builder.connection.DatabaseConnection;
 import org.talend.dq.helper.SqlExplorerUtils;
 import org.talend.metadata.managment.utils.MetadataConnectionUtils;
+
+import junit.framework.TestCase;
 
 /**
  * created by qiongli on 2013-11-26 Detailled comment
@@ -56,8 +56,7 @@ public class CWMPluginTest extends TestCase {
                 EDatabaseTypeName.GREENPLUM.getXmlName(), EDatabaseTypeName.HBASE.getXmlName(),
                 EDatabaseTypeName.H2.getXmlName(), EDatabaseTypeName.INTERBASE.getXmlName(),
                 EDatabaseTypeName.MAXDB.getXmlName(), EDatabaseTypeName.PARACCEL.getXmlName(),
-                EDatabaseTypeName.SAPHana.getXmlName(), EDatabaseTypeName.SAS.getXmlName(),
-                EDatabaseTypeName.VECTORWISE.getXmlName() };
+                EDatabaseTypeName.SAS.getXmlName(), EDatabaseTypeName.VECTORWISE.getXmlName() };
         for (String dbType : allNoSupportedType) {
             dbConn.setDatabaseType(dbType);
             runAddConnetionAliasToSQLPlugin(false);
