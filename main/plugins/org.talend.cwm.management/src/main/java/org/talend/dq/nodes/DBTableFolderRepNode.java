@@ -148,7 +148,7 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
         createTableRepositoryNode(tables, children);
     }
 
-    protected List<TdTable> createTableUnderSchema(IRepositoryViewObject metadataObject, List<TdTable> tables,
+    private List<TdTable> createTableUnderSchema(IRepositoryViewObject metadataObject, List<TdTable> tables,
             String filterCharacter) throws Exception {
         viewObject = ((MetadataSchemaRepositoryObject) metadataObject).getViewObject();
         setItem((ConnectionItem) viewObject.getProperty().getItem());
@@ -235,7 +235,7 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
                 metadataTable.setLabel(table.getName());
                 metadataTable.setId(table.getName());
 
-                DBTableRepNode tableNode = new DBTableRepNode(metadataTable, this, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
+                DBTableRepNode tableNode = createTableRepNode(metadataTable);
                 tableNode.setProperties(EProperties.LABEL, ERepositoryObjectType.METADATA_CON_TABLE);
                 tableNode.setProperties(EProperties.CONTENT_TYPE, ERepositoryObjectType.METADATA_CON_TABLE);
 
@@ -243,6 +243,10 @@ public class DBTableFolderRepNode extends DQDBFolderRepositoryNode implements IC
                 node.add(tableNode);
             }
         }
+    }
+
+    protected DBTableRepNode createTableRepNode(TdTableRepositoryObject metadataTable) {
+        return new DBTableRepNode(metadataTable, this, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
     }
 
     protected String getTableType() {

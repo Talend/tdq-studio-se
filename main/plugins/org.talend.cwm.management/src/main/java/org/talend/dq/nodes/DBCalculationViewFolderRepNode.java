@@ -18,6 +18,7 @@ import org.talend.core.model.general.Project;
 import org.talend.core.model.metadata.builder.database.DqRepositoryViewService;
 import org.talend.core.model.metadata.builder.database.ExtractMetaDataFromDataBase.ETableTypes;
 import org.talend.core.model.repository.IRepositoryViewObject;
+import org.talend.core.repository.model.repositoryObject.TdTableRepositoryObject;
 import org.talend.cwm.helper.PackageHelper;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdTable;
@@ -47,9 +48,8 @@ public class DBCalculationViewFolderRepNode extends DBTableFolderRepNode {
     }
 
     @Override
-    protected List<TdTable> createTableUnderSchema(IRepositoryViewObject metadataObject, List<TdTable> tables,
-            String filterCharacter) throws Exception {
-        return super.createTableUnderSchema(metadataObject, tables, filterCharacter);
+    protected DBTableRepNode createTableRepNode(TdTableRepositoryObject metadataTable) {
+        return new DBCalculationViewRepNode(metadataTable, this, ENodeType.TDQ_REPOSITORY_ELEMENT, getProject());
     }
 
     @Override
