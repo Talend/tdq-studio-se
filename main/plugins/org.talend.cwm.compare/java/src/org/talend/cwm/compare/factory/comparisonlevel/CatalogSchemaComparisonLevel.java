@@ -48,6 +48,7 @@ import org.talend.cwm.helper.ViewHelper;
 import org.talend.cwm.relational.TdTable;
 import org.talend.cwm.relational.TdView;
 import org.talend.dq.helper.RepositoryNodeHelper;
+import org.talend.dq.nodes.DBCalculationViewFolderRepNode;
 import org.talend.dq.nodes.DBTableFolderRepNode;
 import org.talend.dq.nodes.DBViewFolderRepNode;
 import org.talend.dq.nodes.DQDBFolderRepositoryNode;
@@ -65,6 +66,8 @@ import orgomg.cwm.resource.relational.Schema;
  */
 public class CatalogSchemaComparisonLevel extends AbstractComparisonLevel {
 
+    private boolean isCompareCalculationView;
+
     private boolean isCompareTabel;
 
     private boolean isCompareView;
@@ -73,7 +76,9 @@ public class CatalogSchemaComparisonLevel extends AbstractComparisonLevel {
 
     public CatalogSchemaComparisonLevel(RepositoryNode dbFolderNode) {
         super(dbFolderNode);
-        if (dbFolderNode instanceof DBTableFolderRepNode) {
+        if (dbFolderNode instanceof DBCalculationViewFolderRepNode) {
+            isCompareCalculationView = true;
+        } else if (dbFolderNode instanceof DBTableFolderRepNode) {
             isCompareTabel = true;
         }
 
@@ -233,6 +238,10 @@ public class CatalogSchemaComparisonLevel extends AbstractComparisonLevel {
             columnSets.addAll(PackageHelper.getViews(findMatchPackage));
         }
 
+        if (isCompareCalculationView) {
+            columnSets.addAll(PackageHelper.getCalculationViews(findMatchPackage));
+        }
+
         Resource leftResource = copyedDataProvider.eResource();
 
         // ComparatorsFactory.sort(columnSets,
@@ -281,6 +290,13 @@ public class CatalogSchemaComparisonLevel extends AbstractComparisonLevel {
             }
         }
 
+        if (isCompareCalculationView) {
+            for (ColumnSet columnset : TableHelper.getCalculationView(columnSetList)) {
+                DQStructureComparer.clearSubNode(columnset);
+                rightResource.getContents().add(columnset);
+            }
+        }
+
         EMFSharedResources.getInstance().saveResource(rightResource);
         return upperCaseResource(rightResource);
     }
@@ -310,6 +326,11 @@ public class CatalogSchemaComparisonLevel extends AbstractComparisonLevel {
                 List<TdView> views = DqRepositoryViewService.getViews(tempReloadProvider, schemaObj, null, true, true);
                 SchemaHelper.addViews(views, schemaObj);
                 columnSetList.addAll(views);
+
+                List<TdTable> calculationView =
+                        DqRepositoryViewService.getCalculationViews(tempReloadProvider, schemaObj, null, true, true);
+                SchemaHelper.addTables(calculationView, schemaObj);
+                columnSetList.addAll(calculationView);
 
             } else {
                 List<ModelElement> elementList = catalogObj.getOwnedElement();
@@ -364,7 +385,7 @@ public class CatalogSchemaComparisonLevel extends AbstractComparisonLevel {
      */
     private boolean isValidTableHandle(EObject object) {
         TdTable table = SwitchHelpers.TABLE_SWITCH.doSwitch(object);
-        return isCompareTabel && table != null;
+        return (isCompareTabel || isCompareCalculationView) && table != null;
     }
 
     /*

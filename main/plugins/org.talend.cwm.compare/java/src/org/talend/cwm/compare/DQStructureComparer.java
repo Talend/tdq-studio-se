@@ -392,6 +392,13 @@ public final class DQStructureComparer {
                     break;
                 }
             }
+            tables = PackageHelper.getCalculationViews(toReloadPackage);
+            for (TdTable table : tables) {
+                if (oldTable.getName().equals(table.getName())) {
+                    toReloadcolumnSet = table;
+                    break;
+                }
+            }
 
         } else {
             List<TdView> views = PackageHelper.getViews(toReloadPackage);
