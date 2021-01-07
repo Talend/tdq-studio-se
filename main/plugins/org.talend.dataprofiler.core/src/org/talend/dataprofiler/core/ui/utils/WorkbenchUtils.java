@@ -47,6 +47,7 @@ import org.eclipse.ui.WorkbenchException;
 import org.eclipse.ui.forms.widgets.ImageHyperlink;
 import org.talend.commons.exception.BusinessException;
 import org.talend.commons.exception.ExceptionHandler;
+import org.talend.commons.utils.system.EnvironmentUtils;
 import org.talend.core.model.metadata.builder.connection.MetadataTable;
 import org.talend.core.model.properties.ConnectionItem;
 import org.talend.core.model.properties.FolderItem;
@@ -663,7 +664,12 @@ public final class WorkbenchUtils {
      * @param image
      */
     public static void setHyperlinkImage(ImageHyperlink imageHyperlink, Image image) {
-        imageHyperlink.setActiveImage(image);
-        imageHyperlink.setBackgroundImage(image);
+        if (EnvironmentUtils.isMacOsSytem()) {
+            // if the os is mac, need to use setImage(), otherwise the icon can not be shown correctly
+            imageHyperlink.setImage(image);
+        } else {
+            imageHyperlink.setActiveImage(image);
+            imageHyperlink.setBackgroundImage(image);
+        }
     }
 }
