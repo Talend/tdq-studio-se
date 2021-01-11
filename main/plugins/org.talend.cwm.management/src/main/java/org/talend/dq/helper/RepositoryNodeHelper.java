@@ -167,6 +167,7 @@ import org.talend.repository.model.IRepositoryNode.ENodeType;
 import org.talend.repository.model.IRepositoryNode.EProperties;
 import org.talend.repository.model.RepositoryNode;
 import org.talend.resource.EResourceConstant;
+import org.talend.utils.sql.metadata.constants.TableType;
 
 import orgomg.cwm.foundation.softwaredeployment.DataManager;
 import orgomg.cwm.objectmodel.core.ModelElement;
@@ -1732,7 +1733,11 @@ public final class RepositoryNodeHelper {
         List<IRepositoryNode> childrens = schemaOrCatalogNode.getChildren();
         List<IRepositoryNode> children = null;
         if (!childrens.isEmpty()) {
-            children = childrens.get(0).getChildren();
+            if (TableType.CALCULATION_VIEW.toString().equalsIgnoreCase(tdTable.getTableType())) {
+                children = childrens.get(2).getChildren();
+            } else {
+                children = childrens.get(0).getChildren();
+            }
         }
         if (null != children && children.size() > 0) {
             IRepositoryNode iRepositoryNode = children.get(0);

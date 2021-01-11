@@ -33,6 +33,7 @@ import org.talend.cwm.helper.ConnectionHelper;
 import org.talend.cwm.helper.SchemaHelper;
 import org.talend.cwm.helper.SwitchHelpers;
 import org.talend.cwm.management.i18n.Messages;
+import org.talend.cwm.relational.TdTable;
 import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.helpers.IndicatorHelper;
 import org.talend.dataquality.indicators.Indicator;
@@ -504,8 +505,15 @@ public abstract class AbstractSchemaEvaluator<T> extends Evaluator<T> {
                 checkConnectionBeforeGetTableView();
                 List<? extends NamedColumnSet> views = DqRepositoryViewService.getViews(getConnection(), getDataManager(),
                         pacage, trimPat, true, false);
+                List<TdTable> calculationViews = DqRepositoryViewService
+                        .getCalculationViews(getConnection(), getDataManager(), pacage, trimPat, true, false);
                 // ~TDQ-3607
                 for (NamedColumnSet t : views) {
+                    viewCount++;
+                    evalAllCounts(catName, schemaName, t, schemaIndic, false, ok);
+                }
+                // ~TDQ-3607
+                for (NamedColumnSet t : calculationViews) {
                     viewCount++;
                     evalAllCounts(catName, schemaName, t, schemaIndic, false, ok);
                 }

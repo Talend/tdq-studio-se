@@ -84,6 +84,7 @@ import org.talend.dq.analysis.AnalysisHandler;
 import org.talend.dq.helper.ProxyRepositoryManager;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.helper.SqlExplorerUtils;
+import org.talend.dq.nodes.DBCalculationViewFolderRepNode;
 import org.talend.dq.nodes.DBTableFolderRepNode;
 import org.talend.dq.nodes.DBViewFolderRepNode;
 import org.talend.dq.nodes.DBViewRepNode;
@@ -272,6 +273,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
             schemaTableViewer.addSelectionChangedListener(new DisplayTableAndViewListener());
             catalogTableViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
+                @Override
                 public void selectionChanged(SelectionChangedEvent event) {
                     StructuredSelection selection = (StructuredSelection) event.getSelection();
                     OverviewIndUIElement firstElement = (OverviewIndUIElement) selection.getFirstElement();
@@ -346,6 +348,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
      *
      * @seejava.beans.PropertyChangeListener#propertyChange(java.beans. PropertyChangeEvent)
      */
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (PluginConstant.ISDIRTY_PROPERTY.equals(evt.getPropertyName())) {
             ((AnalysisEditor) this.getEditor()).firePropertyChange(IEditorPart.PROP_DIRTY);
@@ -568,6 +571,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
 
     class DisplayTableAndViewListener implements ISelectionChangedListener {
 
+        @Override
         public void selectionChanged(SelectionChangedEvent event) {
             StructuredSelection selection = (StructuredSelection) event.getSelection();
             OverviewIndUIElement firstElement = (OverviewIndUIElement) selection.getFirstElement();
@@ -750,8 +754,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
 
                                 @Override
                                 public void widgetSelected(SelectionEvent e) {
-                                    ViewIndicator viewIndicator = (ViewIndicator) data.getOverviewIndicator();
-                                    runTableAnalysis(viewIndicator.getTableName());
+                                    runTableAnalysis(data);
                                 }
 
                             });
@@ -793,8 +796,11 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
         List<OverviewIndUIElement> cataUIEleList = new ArrayList<OverviewIndUIElement>();
         List<IRepositoryNode> children = parentNode.getChildren();
         for (IRepositoryNode folderNode : children) {
-            if (folderNode instanceof DBViewFolderRepNode) {
+            if (folderNode instanceof DBViewFolderRepNode || folderNode instanceof DBCalculationViewFolderRepNode) {
                 List<IRepositoryNode> tableNodes = folderNode.getChildren();
+                if (tableNodes == null || tableNodes.isEmpty()) {
+                    continue;
+                }
                 // MOD 20120315 klliu&yyin TDQ-2391, avoid getting many times for table nodes.
                 for (ViewIndicator indicator : indicatorViewList) {
                     boolean equals = false;
@@ -884,6 +890,9 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
         for (IRepositoryNode folderNode : children) {
             if (folderNode instanceof DBTableFolderRepNode) {
                 List<IRepositoryNode> tableNodes = folderNode.getChildren();
+                if (tableNodes == null || tableNodes.isEmpty()) {
+                    continue;
+                }
                 // MOD 20120315 klliu&yyin TDQ-2391, avoid getting many times for table nodes.
                 for (TableIndicator indicator : indicatorTableList) {
                     boolean equals = false;
@@ -953,6 +962,7 @@ public class OverviewResultPage extends AbstractAnalysisResultPage implements Pr
         contextMenu.setRemoveAllWhenShown(true);
         contextMenu.addMenuListener(new IMenuListener() {
 
+            @Override
             public void menuAboutToShow(IMenuManager mgr) {
                 Object overviewObject = ((StructuredSelection) viewer.getSelection()).getFirstElement();
                 if (overviewObject instanceof OverviewIndUIElement) {
