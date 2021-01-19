@@ -710,24 +710,21 @@
             language="java"
             message="Wizard use for TOP"
             name="httpcore-4.1.2.jar" mvn_uri="mvn:org.talend.libraries/httpcore-4.1.2/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.http/lib/httpcore-4.1.2.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Impala wizard"
             language="java"
             message="Wizard use for TOP"
             name="httpclient-4.2.5.jar" mvn_uri="mvn:org.talend.libraries/httpclient-4.2.5/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.http/lib/httpclient-4.2.5.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Impala wizard"
             language="java"
             message="Wizard use for TOP"
             name="httpcore-4.2.5.jar" mvn_uri="mvn:org.talend.libraries/httpcore-4.2.5/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.http/lib/httpcore-4.2.5.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
@@ -784,8 +781,7 @@
             message="Wizard use for TOP"
             mvn_uri="mvn:commons-httpclient/commons-httpclient/3.0.1"
             name="commons-httpclient-3.0.1.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.http/lib/commons-httpclient-3.0.1.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.apache.common"
