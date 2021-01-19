@@ -54,24 +54,21 @@
             language="java"
             message="Wizard use for TOP"
             name="commons-logging-1.0.4.jar" mvn_uri="mvn:org.talend.libraries/commons-logging-1.0.4/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-api-1.0.4.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-configuration-1.6.jar" mvn_uri="mvn:commons-configuration/commons-configuration/1.6" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-configuration-1.6.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-lang-2.4.jar" mvn_uri="mvn:org.talend.libraries/commons-lang-2.4/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.5.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
@@ -542,24 +539,21 @@
             language="java"
             message="Wizard use for TOP"
             name="commons-dbcp-1.4.jar" mvn_uri="mvn:commons-dbcp/commons-dbcp/1.4" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-dbcp-1.4.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-pool-1.5.4.jar" mvn_uri="mvn:commons-pool/commons-pool/1.5.4" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-pool-1.5.4.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-logging-1.1.1.jar" mvn_uri="mvn:org.talend.libraries/commons-logging-1.1.1/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
@@ -670,24 +664,21 @@
             language="java"
             message="Wizard use for TOP"
             name="commons-lang-2.6.jar" mvn_uri="mvn:commons-lang/commons-lang/2.6" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-lang-2.6.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-cli-1.2.jar" mvn_uri="mvn:commons-cli/commons-cli/1.2" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-cli-1.2.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-codec-1.4.jar" mvn_uri="mvn:commons-codec/commons-codec/1.4" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-codec-1.4.jar">
+            required="true">
       </libraryNeeded>
       
       <libraryNeeded
@@ -695,16 +686,14 @@
             language="java"
             message="Wizard use for TOP"
             name="commons-collections-3.2.2.jar" mvn_uri="mvn:org.talend.libraries/commons-collections-3.2.2/6.0.0" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-collections-3.2.2.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
             name="commons-logging-1.1.3.jar" mvn_uri="mvn:commons-logging/commons-logging/1.1.3" 
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-logging-1.1.jar">
+            required="true">
       </libraryNeeded>
       
       <libraryNeeded
@@ -763,7 +752,7 @@
             name="slf4j-log4j12-1.7.5.jar" mvn_uri="mvn:org.talend.libraries/slf4j-log4j12-1.7.5/6.0.0" 
             required="true"
             uripath="platform:/plugin/org.talend.libraries.slf4j/lib/slf4j-log4j12-1.7.5.jar">
-      </libraryNeeded>      
+      </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
             language="java"
@@ -804,8 +793,7 @@
             message="Wizard use for TOP"
             mvn_uri="mvn:commons-io/commons-io/2.4"
             name="commons-io-2.4.jar"
-            required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-io-2.4.jar">
+            required="true">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.zookeeper"
