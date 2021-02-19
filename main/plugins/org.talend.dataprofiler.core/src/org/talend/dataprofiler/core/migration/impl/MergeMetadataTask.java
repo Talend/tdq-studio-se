@@ -29,14 +29,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.talend.commons.emf.FactoriesUtil;
-import org.talend.core.GlobalServiceRegister;
-import org.talend.core.IMigrateDIMetadataItemService;
-import org.talend.core.model.properties.Item;
-import org.talend.core.model.properties.Property;
 import org.talend.dataprofiler.core.migration.AbstractWorksapceUpdateTask;
-import org.talend.dq.helper.PropertyHelper;
-import org.talend.model.migration.TopMetadataMigrationFrom400to410usingGenericVM;
-import org.talend.resource.EResourceConstant;
 
 /**
  * DOC xqliu class global comment. Detailled comment
@@ -54,8 +47,6 @@ public class MergeMetadataTask extends AbstractWorksapceUpdateTask {
     private static final String TDQ_DATAPROFILING = "TDQ_Data Profiling"; //$NON-NLS-1$
 
     private static final String TDQ_LIBRARIES = "TDQ_Libraries"; //$NON-NLS-1$
-
-    private TopMetadataMigrationFrom400to410usingGenericVM metadata400to410;
 
     /**
      * replace strings for update ana file from 400 to 410.
@@ -212,66 +203,7 @@ public class MergeMetadataTask extends AbstractWorksapceUpdateTask {
         return true;
     }
 
-    /**
-     * DOC Use ATL transformation rules to migrate from 400 to 410.
-     *
-     * @param migFolder
-     * @param result
-     * @param final String[] acceptFileExtentionNames
-     * @return
-     */
-    private boolean migrateFolder(File migFolder, final String[] acceptFileExtentionNames) {
 
-        if (metadata400to410 == null) {
-            metadata400to410 = new TopMetadataMigrationFrom400to410usingGenericVM();
-        }
-
-        ArrayList<File> fileList = new ArrayList<File>();
-        getAllFilesFromFolder(migFolder, fileList, new FilenameFilter() {
-
-            public boolean accept(File dir, String name) {
-                for (String extName : acceptFileExtentionNames) {
-                    if (name.endsWith(extName)) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-        log.info("-------------- Migrating " + fileList.size() + " files"); //$NON-NLS-1$ //$NON-NLS-2$
-
-        int counter = 0;
-        int errorCounter = 0;
-        Throwable error = null;
-
-        for (File sample : fileList) {
-            log.info("-------------- Migrating (" + counter++ + ") : " + sample.getAbsolutePath()); //$NON-NLS-1$ //$NON-NLS-2$
-            try {
-                String inURI = sample.toURI().toString();
-                String outURI = new File(sample.getAbsolutePath() + MIGRATION_FILE_EXT).toURI().toString();
-                metadata400to410.migrate(inURI, outURI, new NullProgressMonitor());
-            } catch (Exception e) {
-                error = e;
-                errorCounter++;
-                log.error("!!!!!!!!!!!  Error transforming (" + sample.getAbsolutePath() + ")\n" + e.getMessage(), e); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-            log.info("-------------- Migration done of " + counter + " files" //$NON-NLS-1$ //$NON-NLS-2$
-                    + (errorCounter != 0 ? (",  there are " + errorCounter + " files in error.") : ".")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        }
-
-        if (error != null) {
-            return false;
-        } else {
-            // remove original files and rename new ones to old ones
-            for (File sample : fileList) {
-                boolean isDeleted = sample.delete();
-                log.info(sample.getAbsolutePath() + (isDeleted ? " is deleted." : " failed to delete.")); //$NON-NLS-1$ //$NON-NLS-2$
-                boolean isrenamed = new File(sample.getAbsolutePath() + MIGRATION_FILE_EXT).renameTo(sample);
-                log.info(sample.getAbsolutePath() + MIGRATION_FILE_EXT + (isrenamed ? " is renamed." : " failed to rename.")); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
-        return true;
-    }
 
     /*
      * (non-Javadoc)
@@ -310,72 +242,7 @@ public class MergeMetadataTask extends AbstractWorksapceUpdateTask {
         }
 
         for (File rawFile : fileMap.keySet()) {
-            result = result && merge(rawFile, fileMap.get(rawFile));
-        }
-
-        for (File rawFile : fileMap.keySet()) {
             fileMap.get(rawFile).renameTo(rawFile.getAbsoluteFile());
-        }
-
-        if (!isWorksapcePath() && GlobalServiceRegister.getDefault().isServiceRegistered(IMigrateDIMetadataItemService.class)) {
-            IMigrateDIMetadataItemService service = (IMigrateDIMetadataItemService) GlobalServiceRegister.getDefault()
-                    .getService(IMigrateDIMetadataItemService.class);
-
-            File parentFolder = getWorkspacePath().append("metadata").toFile(); //$NON-NLS-1$
-            if (parentFolder.exists()) {
-                for (File propFile : getPropertyFiles(parentFolder)) {
-                    Property property = PropertyHelper.getProperty(propFile);
-                    if (property != null) {
-                        Item item = property.getItem();
-                        if (item != null) {
-                            service.migrateDIItems(item);
-                        }
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
-     * DOC bZhou Comment method "merge".
-     *
-     * @param rawFile
-     * @param migFile TODO
-     * @return
-     */
-    private boolean merge(File rawFile, File migFile) {
-        boolean result = false;
-
-        if (migFile.exists()) {
-            String fname = rawFile.getName();
-
-            if (migFile.isDirectory()) {
-                try {
-                    String[] fileExts;
-                    if (StringUtils.equals(fname, "TDQ_Metadata")) { //$NON-NLS-1$
-                        // If folder is TDQ_Metadata
-                        fileExts = new String[] { ".prv" }; //$NON-NLS-1$
-                        result = migrateFolder(migFile, fileExts);
-                    } else if (StringUtils.equals(fname, EResourceConstant.LIBRARIES.getName())) {
-                        // If folder is TDQ_Libaries
-                        fileExts = new String[] { ".softwaresystem.softwaredeployment" }; //$NON-NLS-1$
-                        result = migrateFolder(migFile, fileExts);
-
-                        fileExts = new String[] { ".rules" }; //$NON-NLS-1$
-                        result = migrateFolder(migFile, fileExts, this.getReplaceStringMapRules());
-                    } else if (StringUtils.equals(fname, EResourceConstant.DATA_PROFILING.getName())) {
-                        // If folder is TDQ_Data Profiling
-                        fileExts = new String[] { ".ana" }; //$NON-NLS-1$
-                        result = migrateFolder(migFile, fileExts, this.getReplaceStringMapAna());
-                    }
-                } catch (Exception e) {
-                    result = false;
-                    log.error(e, e);
-                }
-
-            }
         }
 
         return result;
