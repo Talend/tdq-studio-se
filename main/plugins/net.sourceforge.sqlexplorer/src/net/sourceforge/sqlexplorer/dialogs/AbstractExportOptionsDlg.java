@@ -176,7 +176,7 @@ public abstract class AbstractExportOptionsDlg extends TitleAreaDialog {
                 for (Iterator it = m.keySet().iterator(); it.hasNext(); i++) {
                     Charset cs = (Charset) m.get(it.next());
                     uiCharset.add(cs.displayName());
-                    if (cs.displayName().toLowerCase().equals("utf-8")) {
+                    if (cs.displayName().equalsIgnoreCase("utf-8")) {
                         def = i;
                     }
                 }
@@ -189,7 +189,7 @@ public abstract class AbstractExportOptionsDlg extends TitleAreaDialog {
                 uiDelim = new Combo(fmtGroup, SWT.NONE);
                 for (i = 0, def = 0; i < DELIMS.length; i++) {
                     uiDelim.add(DELIMS[i]);
-                    if (DELIMS[i].toLowerCase().equals(columnSeparator)) {
+                    if (DELIMS[i].equalsIgnoreCase(columnSeparator)) {
                         def = i;
                     }
                 }
