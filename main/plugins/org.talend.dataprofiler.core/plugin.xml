@@ -1263,186 +1263,18 @@
   </extension>
   <extension
         point="org.talend.dataprofiler.migration">
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.TDCPFolderMergeTask"
-           id="org.talend.dataprofiler.core.migration.impl.TDCPFolderMergeTask"
-           name="Secluded Folder Merge Task"
-           version="1.3.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.CreateDQRulesFolderTask"
-           id="org.talend.dataprofiler.core.migration.impl.CreateDQRulesFolderTask"
-           name="Create DQRules Folder"
-           version="1.2.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.EncryptAndDecryptPasswordTask"
-           id="org.talend.dataprofiler.core.migration.impl.EncryptAndDecryptPasswordTask"
-           name="Encrypt And Decrypt Password"
-           version="1.2.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.CreateExchangeFolderTask"
-           id="org.talend.dataprofiler.core.migration.impl.CreateExchangeFolderTask"
-           name="Create Exchange Folder"
-           version="3.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.ReorderingLibraryFoldersTask"
-           id="org.talend.dataprofiler.core.migration.impl.ReorderingLibraryFoldersTask"
-           name="Reordering library folders"
-           version="3.2.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.CreateUserDefIndicatorFolderTask"
-           id="org.talend.dataprofiler.core.migration.impl.CreateUserDefIndicatorFolderTask"
-           name="Create User Defined Indicator Folder"
-           version="3.2.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateDependenciesFileTask"
-           id="org.talend.dataprofiler.core.updateDependencies"
-           name="Update Dependencies between patterns and analyses"
-           version="3.2.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.CreateElementPropertiesTask"
-           id="org.talend.dataprofiler.core.migration.impl.CreateElementPropertiesTask"
-           name="Create Element Properties"
-           version="3.2.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.SoundexIndicatorQueryTask"
-           id="org.talend.dataprofiler.core.migration.impl.SoundexIndicatorQueryTask"
-           name="Change Soundex Query"
-           version="3.2.2">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.MDMConnectionTask"
-           id="org.talend.dataprofiler.core.migration.impl.MDMConnectionTask"
-           name="MDM Connection Task"
-           version="4.0.0">
-     </workspacetask>
      <projecttask
            class="org.talend.dataprofiler.core.migration.impl.UpdateVersionsTask"
            id="org.talend.dataprofiler.core.migration.impl.UpdateVersionsTask"
            name="Update Version And Finish Migration">
      </projecttask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.ThresholdsValuesTask"
-           id="org.talend.dataprofiler.core.migration.impl.ThresholdsValuesTask"
-           name="Thresholds Values Task"
-           version="3.2.3">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateOracleTextIndicatorQueryTask"
-           id="org.talend.dataprofiler.core.updateOracleTextIndicators"
-           name="Update Oracle Text Indicators"
-           version="4.0.1">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateAccessDistinctQueryTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateAccessDistinctQueryTask"
-           name="Update Access Distinct Query Task"
-           version="4.0.1">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UniquePkAndFkTask"
-           id="org.talend.dataprofiler.core.migration.impl.UniquePkAndFkTask"
-           name="Unique Pk And Fk In Xmi file"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateAllMatchIndicatorTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateAllMatchIndicatorTask"
-           name="Update All Match Indicator Task"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateAnalysisWithMinLengthIndicator"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateAnalysisWithMinLengthIndicator"
-           name="Update Analysis With MinLengthIndicator Task"
-           version="4.1.0">
-     </workspacetask>     
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.SplitSysIndicatorTask"
-           id="org.talend.dataprofiler.core.migration.impl.SplitSysIndicatorTask"
-           name="Split system indicators "
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateMDMConnectionXSDPathTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateMDMConnectionXSDPathTask"
-           name="Update MDMConnection XSDPath Task"
-           version="4.0.3">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.MergeMetadataTask"
-           id="org.talend.dataprofiler.core.migration.impl.MergeMetadataTask"
-           name="Merge Metadata Task"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.RefactMdmMetadataTask"
-           id="org.talend.dataprofiler.core.migration.impl.RefactMdmMetadataTask"
-           name="Refact Mdm Metadata Task"
-           version="4.1.0">
-     </workspacetask>
 
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.ExchangeFileNameToReferenceTask"
-           id="org.talend.dataprofiler.core.migration.impl.ExchangeFileNameToReferenceTask"
-           name="Exchange attribute of properties file from FileName To Reference"
-           version="4.1.0">
-     </workspacetask>
 
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateSimpleStatisticsIndicatorsForSybaseIqTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateSimpleStatisticsIndicatorsForSybaseIqTask"
-           name="Update SimpleStatistics Indicators For Sybase IQ Task"
-           version="4.1.0">
-     </workspacetask>
      <workspacetask
            class="org.talend.dataprofiler.core.migration.impl.UpdateTextStatisticsIndicatorsForSQLiteTask"
            id="org.talend.dataprofiler.core.migration.impl.UpdateTextStatisticsIndicatorsForSQLiteTask"
            name="Update TextStatistics Indicators For SQLite Task"
            version="5.0.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateFileAfterMergeConnectionTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateFileAfterMergeConnectionTask"
-           name="Update analysis and DQRule File After Merge Connection"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdatePropertiesFileTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdatePropertiesFileTask"
-           name="Update Properties File Task"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateRegularExpressionMatchingMysqlExpressionTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateRegularExpressionMatchingMysqlExpressionTask"
-           name="Update Regular Expression Matching Mysql Expression Task"
-           version="4.0.3">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateSoundexIndicatorsForIngresTask"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateSoundexIndicatorsForIngresTask"
-           name="Update Soundex Indicators For Ingres"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.RefineTextIndicatorsTask"
-           id="org.talend.dataprofiler.core.migration.impl.RefineTextIndicatorsTask"
-           name="Refine text statistics indicators task"
-           version="4.1.0">
-     </workspacetask>
-     <workspacetask
-           class="org.talend.dataprofiler.core.migration.impl.UpdateSomePatternToMatchMysql"
-           id="org.talend.dataprofiler.core.migration.impl.UpdateSomePatternToMatchMysql"
-           name="update International phone number to matching mysql if exist"
-           version="4.1.0">
      </workspacetask>
      <workspacetask
            class="org.talend.dataprofiler.core.migration.impl.UpdateAfterMergeTosApiTask"
