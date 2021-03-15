@@ -113,8 +113,7 @@ public abstract class AMigrationTask implements IMigrationTask {
 
     @Override
     public Boolean isModelTask() {
-        return "org.talend.dataprofiler.core.migration.impl.MergeMetadataTask".equals(getId())//$NON-NLS-1$
-                || "org.talend.dataprofiler.core.migration.impl.ExchangeFileNameToReferenceTask".equals(getId())//$NON-NLS-1$
+        return  "org.talend.dataprofiler.core.migration.impl.ExchangeFileNameToReferenceTask".equals(getId())//$NON-NLS-1$
                 || "org.talend.dataprofiler.core.migration.impl.UpdatePropertiesFileTask".equals(getId())//$NON-NLS-1$
                 || "org.talend.dataprofiler.core.migration.impl.UpdateAnalysisWithMinLengthIndicator".equals(getId())//$NON-NLS-1$
                 || "org.talend.dataprofiler.core.migration.impl.RefactMdmMetadataTask".equals(getId())//$NON-NLS-1$
