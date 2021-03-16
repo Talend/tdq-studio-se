@@ -20,7 +20,6 @@ import org.talend.dataprofiler.core.CorePluginTest;
 import org.talend.dataprofiler.core.helper.WorkspaceResourceHelperTest;
 import org.talend.dataprofiler.core.migration.helper.IndicatorDefinitionFileHelperTest;
 import org.talend.dataprofiler.core.migration.impl.CreateBenforLawIndicatorTaskTest;
-import org.talend.dataprofiler.core.migration.impl.SplitSysIndicatorTaskTest;
 import org.talend.dataprofiler.core.migration.impl.UpdateIndicatorForHiveTaskTest;
 import org.talend.dataprofiler.core.migration.impl.UpdateMsSqlToJdbcTaskTest;
 import org.talend.dataprofiler.core.pattern.ExportFactoryTest;
@@ -61,7 +60,7 @@ import org.talend.metadata.managment.SwitchContextGroupNameImplTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses({ TalendCWMServiceTest.class, WorkspaceResourceHelperTest.class, IndicatorDefinitionFileHelperTest.class,
-        CreateBenforLawIndicatorTaskTest.class, SplitSysIndicatorTaskTest.class, UpdateIndicatorForHiveTaskTest.class,
+        CreateBenforLawIndicatorTaskTest.class, UpdateIndicatorForHiveTaskTest.class,
         UpdateMsSqlToJdbcTaskTest.class, ExportFactoryTest.class, ImportFactoryTest.class,
         TDQResourceChangeHandlerTest.class, TOPRepositoryServiceTest.class, AnalysisHandleTest.class,
         DBConnectionDuplicateHandleTest.class, ExportConnectionToTOSActionRealTest.class, ImportObjectTest.class,
