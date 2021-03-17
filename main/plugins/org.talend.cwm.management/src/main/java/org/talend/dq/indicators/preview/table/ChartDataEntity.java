@@ -307,13 +307,19 @@ public class ChartDataEntity {
                 }
 
                 if (isPercent) {
-                    return dValue < min * 100 || dValue > max * 100;
+                    // TDQ-19273 msjian: fix Bad DQ warning on indicator threshold in analysis result
+                    return (!considerDelta(dValue, min * 100) && dValue < min * 100)
+                            || (!considerDelta(dValue, max * 100) && dValue > max * 100);
                 }
                 return dValue < min || dValue > max;
             }
         }
 
         return false;
+    }
+
+    private static boolean considerDelta(double v1, double v2) {
+        return Math.abs(v1 - v2) <= 0.000001;
     }
 
     /**
