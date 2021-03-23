@@ -113,13 +113,7 @@ public abstract class AMigrationTask implements IMigrationTask {
 
     @Override
     public Boolean isModelTask() {
-        return "org.talend.dataprofiler.core.migration.impl.MergeMetadataTask".equals(getId())//$NON-NLS-1$
-                || "org.talend.dataprofiler.core.migration.impl.ExchangeFileNameToReferenceTask".equals(getId())//$NON-NLS-1$
-                || "org.talend.dataprofiler.core.migration.impl.UpdatePropertiesFileTask".equals(getId())//$NON-NLS-1$
-                || "org.talend.dataprofiler.core.migration.impl.UpdateAnalysisWithMinLengthIndicator".equals(getId())//$NON-NLS-1$
-                || "org.talend.dataprofiler.core.migration.impl.RefactMdmMetadataTask".equals(getId())//$NON-NLS-1$
-                || "org.talend.dataprofiler.core.migration.impl.UpdateFileAfterMergeConnectionTask".equals(getId())//$NON-NLS-1$
-                || "update the value of path on the property files".equals(getId())//$NON-NLS-1$
+        return  "update the value of path on the property files".equals(getId())//$NON-NLS-1$
                 || "org.talend.dataprofiler.core.changeBinFrequanceUUID".equals(getId()) //$NON-NLS-1$
                 || "org.talend.dataprofiler.core.tdq.migration.UpdateReportUserDefinedJrxmlFilePathTask".equals(getId()) //$NON-NLS-1$
                 || "org.talend.dataprofiler.core.migration.impl.UpdateAggrDefinitionTask".equals(getId()) //$NON-NLS-1$
