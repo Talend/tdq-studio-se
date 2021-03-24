@@ -38,6 +38,7 @@ import org.talend.cwm.dependencies.DependenciesHandler;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
 import org.talend.cwm.helper.ConnectionHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataprofiler.core.PluginConstant;
 import org.talend.dataprofiler.core.i18n.internal.DefaultMessagesImpl;
@@ -49,8 +50,10 @@ import org.talend.dataquality.helpers.AnalysisHelper;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.columnset.ColumnsetFactory;
 import org.talend.dataquality.indicators.columnset.RowMatchingIndicator;
+import org.talend.dataquality.indicators.columnset.impl.RowMatchingIndicatorImpl;
 import org.talend.dq.analysis.AnalysisBuilder;
 import org.talend.dq.analysis.AnalysisHandler;
+import org.talend.dq.analysis.connpool.TdqAnalysisConnectionPool;
 import org.talend.dq.helper.RepositoryNodeHelper;
 import org.talend.dq.indicators.definitions.DefinitionHandler;
 import org.talend.dq.writer.impl.ElementWriterFactory;
@@ -258,6 +261,10 @@ public class RedundancyAnalysisDetailsPage extends AbstractAnalysisMetadataPage 
         }
         anaBuilder.addElementsToAnalyze(analysedElements.toArray(new ModelElement[analysedElements.size()]), new Indicator[] {
                 rowMatchingIndicatorA, rowMatchingIndicatorB });
+
+        //TDQ-19030 add Ignore NUll checkbox
+        TaggedValueHelper.setTaggedValue(getCurrentModelElement(), TaggedValueHelper.IS_IGNORE_NULL,
+        		Boolean.toString(anaColumnCompareViewer.getIgnoreNullSelection()));
 
         // save the number of connections per analysis
         this.saveNumberOfConnectionsPerAnalysis();
