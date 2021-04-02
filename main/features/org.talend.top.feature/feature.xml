@@ -10,7 +10,6 @@
     <import feature="org.eclipse.rcp" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.core.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.hadoop.distribution.feature" version="0.0.0" match="greaterOrEqual"/>
-    <import feature="org.talend.model.migration.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.repository.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.top.libraries.feature" version="0.0.0" match="greaterOrEqual"/>
     <import feature="org.talend.updates.feature" version="0.0.0" match="greaterOrEqual"/>
