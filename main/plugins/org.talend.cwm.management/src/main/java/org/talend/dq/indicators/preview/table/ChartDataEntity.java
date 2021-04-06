@@ -294,10 +294,10 @@ public class ChartDataEntity {
 
             } else {
                 Double min = StringFormatUtil.formatFourDecimalDouble(definedRange[0]);
-                Double max = StringFormatUtil.formatFourDecimalDouble(definedRange[1]);
+                Double max = StringFormatUtil.formatFourDecimalDouble(definedRange[1]);// 0.08650000000000001-->0.0865
 
                 // handle min and max
-                Double dValue = inString != null ? StringFormatUtil.parseDouble(inString) : Double.NaN;
+                Double dValue = inString != null ? StringFormatUtil.parseDouble(inString) : Double.NaN;// 8.65%-->8.65
                 if (min == null || Double.isNaN(min)) {
                     min = Double.NEGATIVE_INFINITY;
                 }
@@ -318,7 +318,7 @@ public class ChartDataEntity {
         return false;
     }
 
-    private static boolean considerDelta(double v1, double v2) {
+    public static boolean considerDelta(double v1, double v2) {
         return Math.abs(v1 - v2) <= 0.000001;
     }
 
