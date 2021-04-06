@@ -54,6 +54,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.ImageLib;
@@ -119,6 +120,8 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
     private boolean allowColumnDupcation = false;
 
     private Button columnReverseButtion;
+
+    private Button ignoreNullButton;
 
     /**
      * ADD msjian TDQ-11606: the preview data table, we will show all the columns of it. this table is the
@@ -211,12 +214,12 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
             }
         }
 
+        this.analysis = analysis;
+
         String mainTitle = DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.analyzedColumnSets");//$NON-NLS-1$
         String description = DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.SelectTableOrColumnsCompare");//$NON-NLS-1$
         createAnalyzedColumnSetsSection(mainTitle, description);
         // ~
-
-        this.analysis = analysis;
 
         checkComputButton = analysis.getParameters().getDeactivatedIndicators().size() != 0;
         // ADD by msjian 2011-5-6 21022: the checkbox to "compute only number of A rows not in B" value is not saved
@@ -237,7 +240,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
         if (showCheckButton) {
             checkComputeButton = new Button(sectionClient, SWT.CHECK);
             GridData layoutData = new GridData(GridData.FILL_BOTH);
-            layoutData.horizontalAlignment = SWT.CENTER;
+            layoutData.horizontalAlignment = SWT.LEFT;
             checkComputeButton.setLayoutData(layoutData);
             checkComputeButton.setText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.Compute")); //$NON-NLS-1$
             checkComputeButton.setToolTipText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.WhenUnchecked")); //$NON-NLS-1$
@@ -251,6 +254,25 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
             });
             checkComputeButton.setSelection(checkComputButton);
         }
+        
+        //Added yyin TDQ-19030
+        ignoreNullButton = new Button(sectionClient, SWT.CHECK);
+        GridData layoutData = new GridData(GridData.FILL_BOTH);
+        layoutData.horizontalAlignment = SWT.LEFT;
+        ignoreNullButton.setLayoutData(layoutData);
+        ignoreNullButton.setText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.IgnoreNull")); //$NON-NLS-1$
+        ignoreNullButton.setToolTipText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.IgnoreNullTip")); //$NON-NLS-1$
+        ignoreNullButton.addSelectionListener(new SelectionAdapter() {
+
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                masterPage.setDirty(true);
+            }
+
+        });
+        Boolean isIgnoreNull = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_IGNORE_NULL,
+                this.analysis);
+        ignoreNullButton.setSelection(isIgnoreNull);
 
         Composite columnComp = toolkit.createComposite(sectionClient);
         columnComp.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -843,6 +865,10 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
         return checkComputeButton;
     }
 
+    public boolean getIgnoreNullSelection() {
+    	return this.ignoreNullButton.getSelection();
+    }
+    
     public List<RepositoryNode> getColumnListA() {
         return columnListA;
     }
