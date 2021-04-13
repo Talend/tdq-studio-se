@@ -294,10 +294,10 @@ public class ChartDataEntity {
 
             } else {
                 Double min = StringFormatUtil.formatFourDecimalDouble(definedRange[0]);
-                Double max = StringFormatUtil.formatFourDecimalDouble(definedRange[1]);
+                Double max = StringFormatUtil.formatFourDecimalDouble(definedRange[1]);// 0.08650000000000001-->0.0865
 
                 // handle min and max
-                Double dValue = inString != null ? StringFormatUtil.parseDouble(inString) : Double.NaN;
+                Double dValue = inString != null ? StringFormatUtil.parseDouble(inString) : Double.NaN;// 8.65%-->8.65
                 if (min == null || Double.isNaN(min)) {
                     min = Double.NEGATIVE_INFINITY;
                 }
@@ -307,13 +307,19 @@ public class ChartDataEntity {
                 }
 
                 if (isPercent) {
-                    return dValue < min * 100 || dValue > max * 100;
+                    // TDQ-19273 msjian: fix Bad DQ warning on indicator threshold in analysis result
+                    return (!considerDelta(dValue, min * 100) && dValue < min * 100)
+                            || (!considerDelta(dValue, max * 100) && dValue > max * 100);
                 }
                 return dValue < min || dValue > max;
             }
         }
 
         return false;
+    }
+
+    public static boolean considerDelta(double v1, double v2) {
+        return Math.abs(v1 - v2) <= 0.000001;
     }
 
     /**
