@@ -166,35 +166,42 @@ public class RowMatchExplorer extends DataExplorer {
                             : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null))
                     + ") B";//$NON-NLS-1$
 
-//            query = "";//$NON-NLS-1$
+			String clause = PluginConstant.EMPTY_STRING;
+			if (!ignoreNull) {
+				query = "SELECT * FROM " + fullyQualifiedTableAName;//$NON-NLS-1$
 
-            //String clause = PluginConstant.EMPTY_STRING;
-//            String columnNameByAlias = PluginConstant.EMPTY_STRING;
-//            for (int i = 0; i < columnSetA.size(); i++) {
-//                columnNameByAlias += " A" + dbmsLanguage.getDelimiter() + dbmsLanguage.quote(columnSetA.get(i).getName());//$NON-NLS-1$
-//                if (i != columnSetA.size() - 1) {
-//                    columnNameByAlias += ","; //$NON-NLS-1$
-//                }
-//            }
-            String clause = "SELECT A.* "  + dbmsLanguage.from() + clauseA + " JOIN " + clauseB + onClause ;//$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+				String columnNameByAlias = PluginConstant.EMPTY_STRING;
+				for (int i = 0; i < columnSetA.size(); i++) {
+					columnNameByAlias += " A" + dbmsLanguage.getDelimiter() //$NON-NLS-1$
+							+ dbmsLanguage.quote(columnSetA.get(i).getName());
+					if (i != columnSetA.size() - 1) {
+						columnNameByAlias += ","; //$NON-NLS-1$
+					}
+				}
+				clause = "(SELECT " + columnNameByAlias + dbmsLanguage.from() + clauseA + " JOIN " + clauseB + onClause //$NON-NLS-1$//$NON-NLS-2$
+						+ ")";//$NON-NLS-1$
+		           String fullColumnAName = "("; //$NON-NLS-1$
 
-            String fullColumnAName = "("; //$NON-NLS-1$
+		            for (int j = 0; j < columnSetA.size(); j++) {
+		                fullColumnAName += fullyQualifiedTableAName + PluginConstant.DOT_STRING
+		                        + dbmsLanguage.quote(columnSetA.get(j).getName());
+		                if (j != columnSetA.size() - 1) {
+		                    fullColumnAName += ","; //$NON-NLS-1$
+		                } else {
+		                    fullColumnAName += ")"; //$NON-NLS-1$
+		                }
+		            }
+		            clause = dbmsLanguage.where() + "(" + fullColumnAName + dbmsLanguage.in() + clause;//$NON-NLS-1$
+		            query += clause;
+		            query += ") ";//$NON-NLS-1$
 
-            for (int j = 0; j < columnSetA.size(); j++) {
-                fullColumnAName += fullyQualifiedTableAName + PluginConstant.DOT_STRING
-                        + dbmsLanguage.quote(columnSetA.get(j).getName());
-                if (j != columnSetA.size() - 1) {
-                    fullColumnAName += ","; //$NON-NLS-1$
-                } else {
-                    fullColumnAName += ")"; //$NON-NLS-1$
-                }
-            }
-            //clause = dbmsLanguage.where() + "(" + fullColumnAName + dbmsLanguage.in() + clause;//$NON-NLS-1$
-            //query += clause;
-
-            query = clause + (tableA.equals(tableB) ? andDataFilter(tableA,
-                            (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_A
-                                    : AnalysisHelper.DATA_FILTER_B)) : andDataFilter(tableA, null));
+			} else {
+				clause = "SELECT A.* " + dbmsLanguage.from() + clauseA + " JOIN " + clauseB + onClause;//$NON-NLS-1$//$NON-NLS-2$
+				query += clause;
+			}
+			query += (tableA.equals(tableB) ? andDataFilter(tableA,
+					(getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_A
+							: AnalysisHelper.DATA_FILTER_B)) : andDataFilter(tableA, null));
 
             // `test_tbd_4452`.`testalltypes_kmo`.`strCol`-->`testalltypes_kmo`.`strCol`
             if (dbmsLanguage instanceof BigQueryDbmsLanguage) {
@@ -204,7 +211,6 @@ public class RowMatchExplorer extends DataExplorer {
 
         return getComment(MENU_VIEW_MATCH_ROWS) + query;
     }
-
     /**
      * get All Rows Statement.
      *
