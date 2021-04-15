@@ -24,7 +24,6 @@ import org.talend.cwm.exception.AnalysisExecutionException;
 import org.talend.cwm.helper.CatalogHelper;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.SchemaHelper;
-import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.management.i18n.Messages;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataquality.PluginConstant;
@@ -79,10 +78,6 @@ public class RowMatchingAnalysisExecutor extends ColumnAnalysisSqlExecutor {
         if (indiReversionMap == null) {
             indiReversionMap = new HashMap<Indicator, Boolean>();
         }
-        
-        boolean isIgnoreNull = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_IGNORE_NULL,
-                analysis);
-        
         for (int i = 0; i < indicators.size(); i++) {
             Indicator indicator = indicators.get(i);
             if (i == 1) {
@@ -90,7 +85,7 @@ public class RowMatchingAnalysisExecutor extends ColumnAnalysisSqlExecutor {
             } else {
                 indiReversionMap.put(indicator, Boolean.FALSE);
             }
-            instantiateQuery(indicator, isIgnoreNull);
+            instantiateQuery(indicator);
         }
 
         // no query to return, here we only instantiate several SQL queries
@@ -101,9 +96,8 @@ public class RowMatchingAnalysisExecutor extends ColumnAnalysisSqlExecutor {
      * DOC scorreia Comment method "instantiateQuery".
      *
      * @param indicator
-     * @param isIgnoreNull TDQ-19030 added. 
      */
-    private boolean instantiateQuery(Indicator indicator, boolean isIgnoreNull) {
+    private boolean instantiateQuery(Indicator indicator) {
         // indicator.reset(); // rli reset will clear columnSetA and columnSetB, we will lost our analysedElement
         // information. So comment it. // scorreia -> changed the implementation of reset() so that it can now be called
         // (but is not need, hence we keep it commented)
@@ -119,9 +113,10 @@ public class RowMatchingAnalysisExecutor extends ColumnAnalysisSqlExecutor {
 
             IndicatorDefinition indicatorDefinition = indicator.getIndicatorDefinition();
             Expression sqlGenericExpression = dbms().getSqlExpression(indicatorDefinition);
-            
+
+            boolean useNulls = false; // TODO scorreia create an indicator for each option
             Expression instantiatedSqlExpression = createInstantiatedSqlExpression(sqlGenericExpression, columnSetA, columnSetB,
-            		isIgnoreNull, indicator);
+                    useNulls, indicator);
             indicator.setInstantiatedExpression(instantiatedSqlExpression);
             return true;
         }
