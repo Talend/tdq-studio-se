@@ -826,12 +826,12 @@
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.apache.common"
-            id="commons-io-2.4.jar"
+            id="commons-io-2.7.jar"
             message="Wizard use for TOP"
-            mvn_uri="mvn:commons-io/commons-io/2.4"
-            name="commons-io-2.4.jar"
+            mvn_uri="mvn:commons-io/commons-io/2.7"
+            name="commons-io-2.7.jar"
             required="true"
-            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-io-2.4.jar">
+            uripath="platform:/plugin/org.talend.libraries.apache.common/lib/commons-io-2.7.jar">
       </libraryNeeded>
       <libraryNeeded
             context="plugin:org.talend.libraries.zookeeper"
