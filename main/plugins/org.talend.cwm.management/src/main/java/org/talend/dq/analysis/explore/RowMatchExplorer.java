@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.emf.common.util.EList;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.TaggedValueHelper;
@@ -80,6 +81,11 @@ public class RowMatchExplorer extends DataExplorer {
             String where = null;
             String onClause = " ON ";//$NON-NLS-1$
             String realWhereClause = dbmsLanguage.where();
+            if (ignoreNull) {
+           	 	onClause = " WHERE ";//$NON-NLS-1$
+           	 	query = StringUtils.EMPTY;
+           	 	clauseB = " SELECT *" + dbmsLanguage.from() + getFullyQualifiedTableName(tableb);//$NON-NLS-1$
+            }
             for (int i = 0; i < columnSetA.size(); i++) {
                 where = dbmsLanguage.and();
                 if (i == 0) {
@@ -107,14 +113,19 @@ public class RowMatchExplorer extends DataExplorer {
 
             clauseB += (tableB.equals(tableA) ? whereDataFilter(tableB,
                     (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_B
-                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null))
-                    + ") B";//$NON-NLS-1$
-            // MOD qiongli 2012-8-14 TDQ-5907.
-            if (dbmsLanguage instanceof HiveDbmsLanguage) {
-                query += clauseA + " LEFT OUTER JOIN " + clauseB + onClause + realWhereClause;//$NON-NLS-1$
-            } else {
-                query += clauseA + " LEFT JOIN " + clauseB + onClause + realWhereClause;//$NON-NLS-1$
-            }
+                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null));
+			clauseB += ignoreNull ? " B " : ") B";//$NON-NLS-1$
+			if (!ignoreNull) {
+				// MOD qiongli 2012-8-14 TDQ-5907.
+				if (dbmsLanguage instanceof HiveDbmsLanguage) {
+					query += clauseA + " LEFT OUTER JOIN " + clauseB + onClause + realWhereClause;//$NON-NLS-1$
+				} else {
+					query += clauseA + " LEFT JOIN " + clauseB + onClause + realWhereClause;//$NON-NLS-1$
+				}
+			} else {
+				query += "SELECT * " + dbmsLanguage.from() + getFullyQualifiedTableName(tablea) //$NON-NLS-1$
+						+ " A WHERE  NOT EXISTS (( " + clauseB + onClause + "))";//$NON-NLS-1$
+			}
         }
         return getComment(MENU_VIEW_NOT_MATCH_ROWS) + query;
     }
@@ -139,7 +150,11 @@ public class RowMatchExplorer extends DataExplorer {
             String clauseB = " (SELECT *" + dbmsLanguage.from() + getFullyQualifiedTableName(tableb);//$NON-NLS-1$
             String where = null;
             String onClause = " ON ";//$NON-NLS-1$
-            
+            if (ignoreNull) {
+           	 onClause = " WHERE ";//$NON-NLS-1$
+           	 clauseB = " SELECT *" + dbmsLanguage.from() + getFullyQualifiedTableName(tableb);//$NON-NLS-1$
+           }
+           
             for (int i = 0; i < columnSetA.size(); i++) {
                 where = dbmsLanguage.and();
                 if (i == 0) {
@@ -163,8 +178,8 @@ public class RowMatchExplorer extends DataExplorer {
 
             clauseB += (tableB.equals(tableA) ? whereDataFilter(tableB,
                     (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_B
-                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null))
-                    + ") B";//$NON-NLS-1$
+                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null));
+                    clauseB += ignoreNull ? " B " : ") B";//$NON-NLS-1$
 
 			String clause = PluginConstant.EMPTY_STRING;
 			if (!ignoreNull) {
@@ -196,7 +211,7 @@ public class RowMatchExplorer extends DataExplorer {
 		            query += ") ";//$NON-NLS-1$
 
 			} else {
-				clause = "SELECT A.* " + dbmsLanguage.from() + clauseA + " JOIN " + clauseB + onClause;//$NON-NLS-1$//$NON-NLS-2$
+				clause = "SELECT * " + dbmsLanguage.from() + fullyQualifiedTableAName + " A WHERE EXISTS (( " + clauseB + onClause +"))";//$NON-NLS-1$//$NON-NLS-2$
 				query += clause;
 			}
 			query += (tableA.equals(tableB) ? andDataFilter(tableA,
