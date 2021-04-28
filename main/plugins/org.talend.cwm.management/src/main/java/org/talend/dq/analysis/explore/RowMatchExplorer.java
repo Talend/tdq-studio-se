@@ -106,6 +106,10 @@ public class RowMatchExplorer extends DataExplorer {
                 			" B" + dbmsLanguage.getDelimiter() + dbmsLanguage.quote(columnSetB.get(i).getName()) + " IS NULL )) " ;//$NON-NLS-1$
                 }
             }
+            if (ignoreNull) {
+            	clauseA += ") A";//$NON-NLS-1$
+            	clauseB += " B ";//$NON-NLS-1$
+            } else {
             clauseA += (tableA.equals(tableB) ? whereDataFilter(tableA,
                     (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_A
                             : AnalysisHelper.DATA_FILTER_B)) : whereDataFilter(tableA, null))
@@ -113,8 +117,9 @@ public class RowMatchExplorer extends DataExplorer {
 
             clauseB += (tableB.equals(tableA) ? whereDataFilter(tableB,
                     (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_B
-                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null));
-			clauseB += ignoreNull ? " B " : ") B";//$NON-NLS-1$
+                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null)) + ") B";
+			
+            }
 			if (!ignoreNull) {
 				// MOD qiongli 2012-8-14 TDQ-5907.
 				if (dbmsLanguage instanceof HiveDbmsLanguage) {
@@ -125,6 +130,10 @@ public class RowMatchExplorer extends DataExplorer {
 			} else {
 				query += "SELECT * " + dbmsLanguage.from() + getFullyQualifiedTableName(tablea) //$NON-NLS-1$
 						+ " A WHERE  NOT EXISTS (( " + clauseB + onClause + "))";//$NON-NLS-1$
+				query += (tableA.equals(tableB) ? andDataFilter(tableA,
+						(getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_A
+								: AnalysisHelper.DATA_FILTER_B)) : andDataFilter(tableA, null));
+
 			}
         }
         return getComment(MENU_VIEW_NOT_MATCH_ROWS) + query;
@@ -171,6 +180,10 @@ public class RowMatchExplorer extends DataExplorer {
                 			" B" + dbmsLanguage.getDelimiter() + dbmsLanguage.quote(columnSetB.get(i).getName()) + " IS NULL )) " ;//$NON-NLS-1$
                 }
             }
+            if (ignoreNull) {
+            	clauseA += ") A";//$NON-NLS-1$
+            	clauseB += " B ";//$NON-NLS-1$
+            } else {
             clauseA += (tableA.equals(tableB) ? whereDataFilter(tableA,
                     (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_A
                             : AnalysisHelper.DATA_FILTER_B)) : whereDataFilter(tableA, null))
@@ -178,9 +191,9 @@ public class RowMatchExplorer extends DataExplorer {
 
             clauseB += (tableB.equals(tableA) ? whereDataFilter(tableB,
                     (getdataFilterIndex(null) == AnalysisHelper.DATA_FILTER_A ? AnalysisHelper.DATA_FILTER_B
-                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null));
-                    clauseB += ignoreNull ? " B " : ") B";//$NON-NLS-1$
-
+                            : AnalysisHelper.DATA_FILTER_A)) : whereDataFilter(tableB, null))
+                    + ") B";//$NON-NLS-1$
+            }
 			String clause = PluginConstant.EMPTY_STRING;
 			if (!ignoreNull) {
 				query = "SELECT * FROM " + fullyQualifiedTableAName;//$NON-NLS-1$
