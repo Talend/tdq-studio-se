@@ -54,6 +54,7 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.talend.core.repository.model.repositoryObject.MetadataColumnRepositoryObject;
 import org.talend.cwm.helper.ColumnHelper;
 import org.talend.cwm.helper.ColumnSetHelper;
+import org.talend.cwm.helper.TaggedValueHelper;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.dataprofiler.core.CorePlugin;
 import org.talend.dataprofiler.core.ImageLib;
@@ -119,6 +120,8 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
 
     private Button columnReverseButtion;
 
+    private Button ignoreNullButton;
+
     /**
      * ADD msjian TDQ-11606: the preview data table, we will show all the columns of it. this table is the
      * leftTableViewer's first column's owner.
@@ -162,7 +165,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
             previewDataColumnOwner = RepositoryNodeHelper.getColumnOwner(columnListA.get(0));
         }
 
-        createAnalyzedColumnSetsSection(mainTitle, description);
+        createAnalyzedColumnSetsSection(mainTitle, description, false);
     }
 
     /**
@@ -210,7 +213,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
 
         String mainTitle = DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.analyzedColumnSets");//$NON-NLS-1$
         String description = DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.SelectTableOrColumnsCompare");//$NON-NLS-1$
-        createAnalyzedColumnSetsSection(mainTitle, description);
+        createAnalyzedColumnSetsSection(mainTitle, description, true);
         // ~
 
         this.analysis = analysis;
@@ -223,7 +226,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
 
     }
 
-    private void createAnalyzedColumnSetsSection(String mainTitle, String description) {
+    private void createAnalyzedColumnSetsSection(String mainTitle, String description, boolean useIgnore) {
         columnsComparisonSection = masterPage.createSection(form, parentComp, mainTitle, description);
         Composite sectionClient = toolkit.createComposite(columnsComparisonSection);
         sectionClient.setLayout(new GridLayout());
@@ -248,10 +251,31 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
             });
             checkComputeButton.setSelection(checkComputButton);
         }
+        
+		// Added yyin TDQ-19030
+		if (useIgnore) {
+			ignoreNullButton = new Button(sectionClient, SWT.CHECK);
+			GridData layoutData = new GridData(GridData.FILL_BOTH);
+			layoutData.horizontalAlignment = SWT.CENTER;
+			ignoreNullButton.setLayoutData(layoutData);
+			ignoreNullButton.setText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.IgnoreNull")); //$NON-NLS-1$
+			ignoreNullButton
+					.setToolTipText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.IgnoreNullTip")); //$NON-NLS-1$
+			ignoreNullButton.addSelectionListener(new SelectionAdapter() {
 
-        Composite columnComp = toolkit.createComposite(sectionClient);
-        columnComp.setLayoutData(new GridData(GridData.FILL_BOTH));
-        columnComp.setLayout(new GridLayout());
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					masterPage.setDirty(true);
+				}
+
+			});
+			Boolean isIgnoreNull = TaggedValueHelper.getValueBoolean(TaggedValueHelper.IS_IGNORE_NULL, this.analysis);
+			ignoreNullButton.setSelection(isIgnoreNull);
+		}
+
+		Composite columnComp = toolkit.createComposite(sectionClient);
+		columnComp.setLayoutData(new GridData(GridData.FILL_BOTH));
+		columnComp.setLayout(new GridLayout());
 
         Composite compareToplevelComp = toolkit.createComposite(columnComp);
         GridLayout compareToplevelLayout = new GridLayout();
@@ -840,6 +864,10 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
         return checkComputeButton;
     }
 
+    public boolean getIgnoreNullSelection() {
+    	return this.ignoreNullButton.getSelection();
+    }
+    
     public List<RepositoryNode> getColumnListA() {
         return columnListA;
     }
