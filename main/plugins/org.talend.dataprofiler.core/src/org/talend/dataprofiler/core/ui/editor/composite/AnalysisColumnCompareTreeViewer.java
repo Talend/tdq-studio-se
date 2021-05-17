@@ -211,13 +211,13 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
             }
         }
 
+        this.analysis = analysis;
+        
         String mainTitle = DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.analyzedColumnSets");//$NON-NLS-1$
         String description = DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.SelectTableOrColumnsCompare");//$NON-NLS-1$
         createAnalyzedColumnSetsSection(mainTitle, description, true);
         // ~
-
-        this.analysis = analysis;
-
+        
         checkComputButton = analysis.getParameters().getDeactivatedIndicators().size() != 0;
         // ADD by msjian 2011-5-6 21022: the checkbox to "compute only number of A rows not in B" value is not saved
         if (null != checkComputeButton) {
