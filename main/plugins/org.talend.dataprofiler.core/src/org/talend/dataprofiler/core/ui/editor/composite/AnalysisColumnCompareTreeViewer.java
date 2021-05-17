@@ -237,7 +237,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
         if (showCheckButton) {
             checkComputeButton = new Button(sectionClient, SWT.CHECK);
             GridData layoutData = new GridData(GridData.FILL_BOTH);
-            layoutData.horizontalAlignment = SWT.CENTER;
+            layoutData.horizontalAlignment = SWT.LEFT;
             checkComputeButton.setLayoutData(layoutData);
             checkComputeButton.setText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.Compute")); //$NON-NLS-1$
             checkComputeButton.setToolTipText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.WhenUnchecked")); //$NON-NLS-1$
@@ -256,7 +256,7 @@ public class AnalysisColumnCompareTreeViewer extends AbstractPagePart implements
 		if (useIgnore) {
 			ignoreNullButton = new Button(sectionClient, SWT.CHECK);
 			GridData layoutData = new GridData(GridData.FILL_BOTH);
-			layoutData.horizontalAlignment = SWT.CENTER;
+			layoutData.horizontalAlignment = SWT.LEFT;
 			ignoreNullButton.setLayoutData(layoutData);
 			ignoreNullButton.setText(DefaultMessagesImpl.getString("ColumnsComparisonMasterDetailsPage.IgnoreNull")); //$NON-NLS-1$
 			ignoreNullButton
