@@ -713,20 +713,6 @@
             required="true">
       </libraryNeeded>
       <libraryNeeded
-            context="Impala wizard"
-            language="java"
-            message="Wizard use for TOP"
-            name="httpclient-4.5.13.jar" mvn_uri="mvn:org.apache.httpcomponents/httpclient/4.5.13" 
-            required="true">
-      </libraryNeeded>
-      <libraryNeeded
-            context="Impala wizard"
-            language="java"
-            message="Wizard use for TOP"
-            name="httpcore-4.2.5.jar" mvn_uri="mvn:org.talend.libraries/httpcore-4.2.5/6.0.0" 
-            required="true">
-      </libraryNeeded>
-      <libraryNeeded
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
