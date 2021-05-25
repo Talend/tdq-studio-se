@@ -27,7 +27,7 @@
     <import plugin="org.apache.commons.httpclient" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.io" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.lang" version="0.0.0" match="greaterOrEqual"/>
-    <import plugin="org.apache.commons.lang3" version="0.0.0" match="greaterOrEqual"/>
+    <import plugin="org.apache.commons.lang3" version="3.10" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.logging" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.commons.pool" version="0.0.0" match="greaterOrEqual"/>
     <import plugin="org.apache.httpcomponents.httpclient" version="0.0.0" match="greaterOrEqual"/>
