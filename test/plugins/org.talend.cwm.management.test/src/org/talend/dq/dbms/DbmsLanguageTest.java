@@ -35,6 +35,7 @@ import org.talend.cwm.relational.RelationalPackage;
 import org.talend.cwm.relational.TdColumn;
 import org.talend.cwm.relational.TdExpression;
 import org.talend.cwm.relational.TdTable;
+import org.talend.dataquality.PluginConstant;
 import org.talend.dataquality.analysis.ExecutionLanguage;
 import org.talend.dataquality.domain.pattern.ExpressionType;
 import org.talend.dataquality.domain.pattern.Pattern;
@@ -3128,4 +3129,36 @@ public class DbmsLanguageTest {
         }
     }
 
+    /**
+     * the input is null
+     */
+    @Test
+    public void testHandleContextModeOrAddQuotes1() {
+        DbmsLanguage dbmsLanguage = new DbmsLanguage();
+        String name = null;
+        String retStr = dbmsLanguage.handleContextModeOrAddQuotes(name);
+        Assert.assertEquals(PluginConstant.EMPTY_STRING, retStr);
+    }
+
+    /**
+     * the input is a context
+     */
+    @Test
+    public void testHandleContextModeOrAddQuotes2() {
+        DbmsLanguage dbmsLanguage = new DbmsLanguage();
+        String name = "context.name";
+        String retStr = dbmsLanguage.handleContextModeOrAddQuotes(name);
+        Assert.assertEquals("<%=" + name + "%>", retStr);
+    }
+
+    /**
+     * the input is a common string
+     */
+    @Test
+    public void testHandleContextModeOrAddQuotes3() {
+        DbmsLanguage dbmsLanguage = new DbmsLanguage();
+        String name = "name";
+        String retStr = dbmsLanguage.handleContextModeOrAddQuotes(name);
+        Assert.assertEquals(""+name+"", retStr);
+    }
 }
