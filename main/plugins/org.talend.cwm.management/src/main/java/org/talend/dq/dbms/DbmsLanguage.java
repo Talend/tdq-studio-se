@@ -380,7 +380,7 @@ public class DbmsLanguage {
      * @return
      */
     protected String handleContextModeOrAddQuotes(String param) {
-        if (param.startsWith("context.")) { //$NON-NLS-1$
+        if (param != null && param.startsWith("context.")) { //$NON-NLS-1$
             return "<%=" + param + "%>"; //$NON-NLS-1$ //$NON-NLS-2$
         }
         return this.quote(param);
