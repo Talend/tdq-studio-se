@@ -4,4 +4,4 @@ Bundle-Name: Migration of Integrated index for standardization
 Bundle-SymbolicName: org.talend.dataquality.standardization.migration
 Bundle-Version: 7.4.1.qualifier
 Bundle-Vendor: .Talend SA.
-Require-Bundle: org.talend.libraries.apache.lucene4
+Require-Bundle: org.talend.libraries.apache.lucene8
