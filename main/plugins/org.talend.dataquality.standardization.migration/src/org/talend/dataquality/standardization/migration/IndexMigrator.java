@@ -16,20 +16,29 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StringField;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.CheckIndex;
 import org.apache.lucene.index.CheckIndex.Status;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.index.IndexableField;
+import org.apache.lucene.index.MultiBits;
 import org.apache.lucene.store.FSDirectory;
 import org.apache.lucene.util.Bits;
-import org.apache.lucene.util.Version;
 
 /**
  * A tool to regenerate all "out of the box" indexes with specified analyzer. The regeneration simply reads and
@@ -133,7 +142,7 @@ public class IndexMigrator {
      * @throws java.io.IOException
      */
     private int regenerate(File inputFolder, File outputFolder) throws IOException {
-        FSDirectory inputDir = FSDirectory.open(inputFolder);
+        FSDirectory inputDir = FSDirectory.open(inputFolder.toPath());
         CheckIndex check = new CheckIndex(inputDir);
         Status status = check.checkIndex();
         if (status.missingSegments) {
@@ -146,10 +155,10 @@ public class IndexMigrator {
             }
         } else {
             System.out.println("REGENERATE: " + inputFolder.getPath());
-            FSDirectory outputDir = FSDirectory.open(outputFolder);
+            FSDirectory outputDir = FSDirectory.open(outputFolder.toPath());
 
             analyzer = new StandardAnalyzer(CharArraySet.EMPTY_SET);
-            IndexWriterConfig config = new IndexWriterConfig(Version.LATEST, analyzer);
+            IndexWriterConfig config = new IndexWriterConfig(analyzer);
             IndexWriter writer = new IndexWriter(outputDir, config);
 
             IndexReader reader = DirectoryReader.open(inputDir);
@@ -159,7 +168,7 @@ public class IndexMigrator {
             Collection<String> fieldNames = new ArrayList<String>();
 
             int count = 0;
-            Bits liveDocs = MultiFields.getLiveDocs(reader);
+            Bits liveDocs = MultiBits.getLiveDocs(reader);
             for (int i = 0; i < reader.maxDoc(); i++) {
                 if (liveDocs != null && !liveDocs.get(i)) {
                     continue;
@@ -217,7 +226,7 @@ public class IndexMigrator {
     private Document generateDocument(String word, Set<String> synonyms) {
         FieldType ft = new FieldType();
         ft.setStored(true);
-        ft.setIndexed(true);
+        // ft.setIndexed(true);
         ft.setOmitNorms(true);
         ft.freeze();
 

@@ -22,16 +22,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.util.CharArraySet;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
 import org.apache.lucene.document.StringField;
-import org.apache.lucene.index.*;
+import org.apache.lucene.index.CheckIndex;
 import org.apache.lucene.index.CheckIndex.Status;
+import org.apache.lucene.index.DirectoryReader;
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.util.Version;
 
 public class FirstNameIndexMigrator {
 
@@ -133,7 +136,7 @@ public class FirstNameIndexMigrator {
      * @throws java.io.IOException
      */
     private int regenerate(File inputFolder, File outputFolder) throws IOException {
-        FSDirectory indexDir = FSDirectory.open(inputFolder);
+        FSDirectory indexDir = FSDirectory.open(inputFolder.toPath());
         CheckIndex check = new CheckIndex(indexDir);
         Status status = check.checkIndex();
         if (status.missingSegments) {
@@ -146,9 +149,9 @@ public class FirstNameIndexMigrator {
             }
         } else {
             System.out.println("REGENERATE: " + inputFolder.getAbsoluteFile());
-            FSDirectory outputDir = FSDirectory.open(outputFolder);
+            FSDirectory outputDir = FSDirectory.open(outputFolder.toPath());
 
-            IndexWriterConfig config = new IndexWriterConfig(Version.LATEST, analyzer);
+            IndexWriterConfig config = new IndexWriterConfig(analyzer);
             IndexWriter writer = new IndexWriter(outputDir, config);
 
             IndexReader reader = DirectoryReader.open(indexDir);
@@ -224,7 +227,7 @@ public class FirstNameIndexMigrator {
         Document doc = new Document();
         FieldType ft = new FieldType();
         ft.setStored(true);
-        ft.setIndexed(true);
+        // ft.setIndexed(true);
         ft.setOmitNorms(true);
         ft.freeze();
 
