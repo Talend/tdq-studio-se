@@ -6,7 +6,7 @@ Bundle-Version: 7.3.1.qualifier
 Bundle-Activator: org.talend.dataprofiler.ecos.EcosPlugin
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.discovery,
- org.apache.commons.commons-beanutils,
+ org.apache.commons.beanutils,
  org.apache.commons.collections,
  org.apache.commons.io,
  org.apache.commons.httpclient,
