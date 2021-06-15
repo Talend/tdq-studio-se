@@ -615,9 +615,9 @@
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
-            name="guava-11.0.2.jar" mvn_uri="mvn:org.talend.libraries/guava-11.0.2/6.0.0" 
+            name="guava-30.0-jre.jar" mvn_uri="mvn:org.talend.libraries/guava-30.0-jre/6.0.0" 
             required="true"
-            uripath="platform:/plugin/org.talend.libraries.guava/lib/guava-11.0.2.jar">
+            uripath="platform:/plugin/org.talend.libraries.guava/lib/guava-30.0-jre.jar">
       </libraryNeeded>
       <libraryNeeded
             context="Hive wizard"
@@ -700,9 +700,9 @@
             context="Hive wizard"
             language="java"
             message="Wizard use for TOP"
-            name="guava-12.0.1.jar" mvn_uri="mvn:org.talend.libraries/guava-12.0.1/6.0.0" 
+            name="guava-30.0-jre.jar" mvn_uri="mvn:org.talend.libraries/guava-30.0-jre/6.0.0" 
             required="true"
-            uripath="platform:/plugin/org.talend.libraries.guava/lib/guava-12.0.1.jar">
+            uripath="platform:/plugin/org.talend.libraries.guava/lib/guava-30.0-jre.jar">
       </libraryNeeded>
       
       <libraryNeeded
