@@ -264,7 +264,9 @@ public class TOPRepositoryService implements ITDQRepositoryService {
         TypedReturnCode<Object> returnObject =
                 ElementWriterFactory.getInstance().createdRuleWriter().create(parserRule, folder);
         Object object = returnObject.getObject();
-
+        if (object == null) {
+            return;
+        }
         RuleRepNode parserRuleNode = RepositoryNodeHelper.recursiveFindRuleParser(parserRule);
         BusinessRuleItemEditorInput parserRuleEditorInput = new BusinessRuleItemEditorInput(parserRuleNode);
         CorePlugin.getDefault().openEditor(parserRuleEditorInput, DQRuleEditor.class.getName());

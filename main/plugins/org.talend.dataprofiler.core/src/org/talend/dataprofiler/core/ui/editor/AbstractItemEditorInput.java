@@ -25,6 +25,7 @@ import org.talend.cwm.helper.ResourceHelper;
 import org.talend.dq.helper.EObjectHelper;
 import org.talend.dq.helper.PropertyHelper;
 import org.talend.repository.model.IRepositoryNode;
+
 import orgomg.cwm.objectmodel.core.ModelElement;
 
 /**
@@ -93,6 +94,10 @@ public abstract class AbstractItemEditorInput implements IEditorInput {
             AbstractItemEditorInput other = (AbstractItemEditorInput) obj;
             if (getItem() == null && other.getItem() == null) {
                 return true;
+            }
+            //return false when anyone of item is null to avoid exception NPE
+            if (getItem() == null || other.getItem() == null) {
+                return false;
             }
             boolean isEqualsId = getItem().getProperty().getId().equals(other.getItem().getProperty().getId());
             if (isEqualsId) {
