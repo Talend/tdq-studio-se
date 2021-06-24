@@ -81,14 +81,10 @@ public class TextStatisticsExplorer extends DataExplorer {
                 }
                 break;
             case MinLengthWithBlankNullIndicatorEnum:
-                if (isSqlEngine) {
-                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getMinLengthWithBlankNullRowsStatement());
-                }
+                map.put(MENU_VIEW_ROWS, isSqlEngine ? getComment(MENU_VIEW_ROWS) + getMinLengthWithBlankNullRowsStatement() : null);
                 break;
             case MinLengthWithNullIndicatorEnum:
-                if (isSqlEngine) {
-                    map.put(MENU_VIEW_ROWS, getComment(MENU_VIEW_ROWS) + getMinLengthWithNullRowsStatement());
-                }
+                map.put(MENU_VIEW_ROWS, isSqlEngine ? getComment(MENU_VIEW_ROWS) + getMinLengthWithNullRowsStatement() : null);
                 break;
             case MinLengthIndicatorEnum:
             case MaxLengthIndicatorEnum:

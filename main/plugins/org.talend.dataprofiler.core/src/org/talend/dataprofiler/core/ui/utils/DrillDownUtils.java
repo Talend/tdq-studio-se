@@ -31,6 +31,7 @@ import org.talend.dataquality.indicators.FrequencyIndicator;
 import org.talend.dataquality.indicators.Indicator;
 import org.talend.dataquality.indicators.LengthIndicator;
 import org.talend.dataquality.indicators.columnset.SimpleStatIndicator;
+import org.talend.dataquality.indicators.impl.IndicatorImpl;
 import org.talend.dataquality.indicators.mapdb.AbstractDB;
 import org.talend.dataquality.indicators.mapdb.MapDBUtils;
 import org.talend.dataquality.indicators.mapdb.StandardDBName;
@@ -64,7 +65,7 @@ public class DrillDownUtils {
         }
 
         Indicator indicator = dataEntity.getIndicator();
-        String selectValue = dataEntity.getLabel();
+        String selectValue = ((IndicatorImpl) indicator).getDrillDownKeyWord(dataEntity.getLabel());
         // TDQ-10785: fix the drill down menu for frequency table indicator and pattern frequency indicator can not use
         // when the data is too long
         String keyLabel = String.valueOf(dataEntity.getKey());
