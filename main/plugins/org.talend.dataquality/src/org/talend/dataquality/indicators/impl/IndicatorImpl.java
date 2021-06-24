@@ -1447,4 +1447,12 @@ public class IndicatorImpl extends ModelElementImpl implements Indicator {
         return false;
     }
 
+    /**
+     * Get drill down key word. normally it is the name of indicatorDefinition.
+     * But for frequency indicator it is the value of column. So that override in the frequency indicator
+     */
+    public String getDrillDownKeyWord(String displayValue) {
+        return this.getName();
+    }
+
 } // IndicatorImpl

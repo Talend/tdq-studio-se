@@ -864,4 +864,9 @@ public class FrequencyIndicatorImpl extends IndicatorImpl implements FrequencyIn
         return sb.toString();
     }
 
+    @Override
+    public String getDrillDownKeyWord(String displayValue) {
+        return displayValue;
+    }
+
 } // FrequencyIndicatorImpl
