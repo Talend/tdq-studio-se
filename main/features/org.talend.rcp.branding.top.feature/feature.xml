@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<feature id="org.talend.rcp.branding.top.feature" label="Top_feature Feature" version="7.4.1.qualifier" provider-name=".Talend SA."> 
+<feature id="org.talend.rcp.branding.top.feature" label="Top_feature Feature" version="8.0.1.qualifier" provider-name=".Talend SA."> 
   <description>Talend Open Studio for Data Quality main feature.</description>  
   <copyright url="http://www.example.com/copyright">Talend Open Studio for Data Quality Copyright.</copyright>  
   <license>Talend Open Studio for Data Quality is licensed under the Apache License Version 2.0.</license>  
